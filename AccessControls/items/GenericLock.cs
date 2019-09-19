@@ -23,11 +23,6 @@ namespace FirstMachineAge
 
 		public uint LockTier { get; protected set; }
 
-		public byte[] CombinationCode { get; protected set; }
-
-		public uint? KeyID { get; protected set; }
-
-
 		public override void OnLoaded(ICoreAPI api)
 		{
 			base.OnLoaded(api);
@@ -62,12 +57,16 @@ namespace FirstMachineAge
 			//Set keyid,combo if unset...
 			if (this.LockStyle == LockKinds.Combination) {
 
-				if (this.CombinationCode == null) 
+				var comboCode = CombinationCode(slot);
+
+				if (comboCode == null) 
 				{
 					GenerateCombination(slot, this);
 				}
 			} else if (this.LockStyle == LockKinds.Key) {
-				if (this.KeyID.HasValue == false) {
+
+				var keyId = KeyID(slot);
+				if (keyId.HasValue == false) {
 					GenerateKeyId(slot, this);
 				}
 			}
@@ -81,8 +80,9 @@ namespace FirstMachineAge
 			if (LockStyle == LockKinds.Combination) {
 				dsc.AppendFormat("\nCombination#:");
 
-				if (this.CombinationCode != null) {
-					foreach (var digit in this.CombinationCode) {
+				var comboCode = CombinationCode(inSlot);
+				if (comboCode != null) {
+					foreach (var digit in comboCode) {
 						dsc.AppendFormat(" {0:D}\t", digit);
 					}
 				} else {
@@ -92,7 +92,8 @@ namespace FirstMachineAge
 
 			if (LockStyle == LockKinds.Key) {
 
-				if (this.KeyID.HasValue) dsc.AppendFormat("\nKeyID#: {0}", this.KeyID);
+				var keyId = KeyID(inSlot);
+				if (keyId.HasValue) dsc.AppendFormat("\nKeyID#: {0}", keyId);
 			}
 
 			if (LockTier > 0) {
@@ -104,9 +105,9 @@ namespace FirstMachineAge
 		/// <summary>
 		/// Stores AccessControlNode in Tree-Attributes.
 		/// </summary>
-		/// <remarks>AccessControlNode ->  (which are strangely part of 'ItemStack'...)</remarks>
+		/// <remarks>AccessControlNode ->  alterable Attributes (which are strangely part of 'ItemStack'...)</remarks>
 		/// <param name="acn">Control node settings.</param>
-		protected TreeAttribute TreeFromAttributes(AccessControlNode acn)
+		protected TreeAttribute TreeAttributesFromACN(AccessControlNode acn)
 		{
 			//Copy Combo number, keyID, type, ect...
 			switch (acn.LockStyle) 
@@ -143,6 +144,24 @@ namespace FirstMachineAge
 			slot.Itemstack.Attributes.SetInt(AccessControlsMod._KeyIDKey, this.AccessControlsMod.NextKeyID);
 		}
 
+
+		public byte[] CombinationCode(ItemSlot sourceSlot)
+		{
+			if (sourceSlot.Itemstack.Attributes.HasAttribute(_comboKey)) {
+				return sourceSlot.Itemstack.Attributes.GetBytes(_comboKey);
+			} else {
+				return null;
+			}
+		}
+
+		public uint? KeyID(ItemSlot sourceSlot)
+		{
+			if (sourceSlot.Itemstack.Attributes.HasAttribute(AccessControlsMod._KeyIDKey)) {
+				return ( uint? )sourceSlot.Itemstack.Attributes.GetInt(AccessControlsMod._KeyIDKey);
+			} else {
+				return new uint( );
+			}
+		}
 	}
 }
 

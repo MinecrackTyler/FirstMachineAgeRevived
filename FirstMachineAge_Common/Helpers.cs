@@ -13,9 +13,9 @@ namespace FirstMachineAge
 
 
 
-		public static string PrettyCoords(this BlockPos location, ICoreClientAPI ClientApi)
+		public static string PrettyCoords(this BlockPos location, ICoreAPI CoreApi)
 		{
-			var start = ClientApi.World.DefaultSpawnPosition.AsBlockPos;
+			var start = CoreApi.World.DefaultSpawnPosition.AsBlockPos;
 
 			return string.Format("X{0}, Y{1}, Z{2}", location.X - start.X, location.Y, location.Z - start.Z);
 		}
@@ -114,11 +114,6 @@ namespace FirstMachineAge
 		}
 
 
-
-
-
-
-
 		/// <summary>
 		/// Chunk local index. Not block position!
 		/// </summary>
@@ -138,6 +133,54 @@ namespace FirstMachineAge
 		{
 			//Chunk masked
 			return ((blockPos.Y & 31) * 32 + (blockPos.Z & 31)) * 32 + (blockPos.X & 31);
+		}
+
+
+		public static Vec3i[] ComputeChunkBubble(Vec3i center)
+		{
+			Vec3i[] chunkPositions = new Vec3i[]
+			{
+				center.AddCopy(-1,1,1),
+				center.AddCopy(0,1,1),
+				center.AddCopy(1,1,1),
+				center.AddCopy(-1,0,1),
+				center.AddCopy(0,0,1),
+				center.AddCopy(1,0,1),
+				center.AddCopy(-1,-1,1),
+				center.AddCopy(0,-1,1),
+				center.AddCopy(1,-1,1),
+
+				center.AddCopy(-1,1,0),
+		      	center.AddCopy(0,1,0),
+		      	center.AddCopy(1,1,0),
+				center.AddCopy(-1,0,0),
+				center.AddCopy(0,0,0),
+		      	center.AddCopy(1,0,0),
+		      	center.AddCopy(-1,-1,0),		      	
+		      	center.AddCopy(0,-1,0),
+		      	center.AddCopy(1,-1,0),
+
+				center.AddCopy(-1,1,-1),
+				center.AddCopy(0,1,-1),
+				center.AddCopy(1,1,-1),
+				center.AddCopy(-1,0,-1),
+				center.AddCopy(0,0,-1),
+				center.AddCopy(1,0,-1),
+				center.AddCopy(-1,-1,-1),
+				center.AddCopy(0,-1,-1),
+				center.AddCopy(1,-1,-1),
+
+			};
+
+
+
+
+			return chunkPositions;
+		}
+
+		public static Vec3i ToChunkPos(this IBlockAccessor blocks, BlockPos blockPos)
+		{
+			return new Vec3i(blockPos.X / blocks.ChunkSize, blockPos.Y / blocks.ChunkSize, blockPos.Z / blocks.ChunkSize);
 		}
 	}
 }

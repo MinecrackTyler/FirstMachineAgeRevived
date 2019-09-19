@@ -14,7 +14,7 @@ namespace FirstMachineAge
 
 		public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
 		{
-			if (byEntity.World.Side == EnumAppSide.Client) 
+			if (byEntity.World.Side.IsClient()) 
 			{
 				ClientAPI = (byEntity.World.Api as ICoreClientAPI);
 			}
@@ -24,17 +24,15 @@ namespace FirstMachineAge
 				IPlayer player = (byEntity as EntityPlayer).Player;
 
 
-
-
-				if (AccessControlsMod.LockedForPlayer(blockSel.Position, player, this.Code) == false)//already has a lock...
+				if (AccessControlsMod.LockState(blockSel.Position, player) != LockStatus.None )//already has a lock...?
 				{
 					ClientAPI?.TriggerIngameError(this, "cannotlock", Lang.Get("ingameerror-cannotlock"));
 				} else {
+					AccessControlsMod.ApplyLock(blockSel, player, slot);
+
 					ClientAPI?.ShowChatMessage(Lang.Get("lockapplied"));
 					slot.TakeOut(1);
 					slot.MarkDirty( );
-
-					AccessControlsMod.ApplyLock(blockSel, player, slot);
 				}
 
 				handling = EnumHandHandling.PreventDefault;

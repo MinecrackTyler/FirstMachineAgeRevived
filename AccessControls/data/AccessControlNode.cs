@@ -11,7 +11,7 @@ namespace FirstMachineAge
 
 
 	/// <summary>
-	/// Holds individual Access control entries for that Chunk 
+	/// Holds individual Access control entries for A Chunk 
 	/// </summary>
 	/// <remarks>
 	/// (by block Position)
@@ -84,23 +84,50 @@ namespace FirstMachineAge
 
 
 	/// <summary>
-	/// A Chunk's, Lock status list.
+	/// A Chunk's, Lock status list. (Client cache)
 	/// </summary>
 	/// <remarks>
-	/// Used client-side for fast lookup
+	/// Used client-side for fast lookup, server sends these as updates on changes
 	/// </remarks>
 	[ProtoContract]
 	public class LockStatusList
 	{
-		[ProtoMember(0)]
-		public Dictionary<BlockPos,LockStatus> LockStatesByBlockPos;
+		private LockStatusList( ) { throw new NotSupportedException(); }
 
+		public LockStatusList(BlockPos here)
+		{
+			//Clear an entry - remove lock from cache
+
+			LockStatesByBlockPos = new Dictionary<BlockPos, LockCacheNode>( );
+
+			var nullifier = new LockCacheNode { LockState = LockStatus.None, Tier = 0 };
+
+			LockStatesByBlockPos.Add(here.Copy( ), nullifier);
+		}
+
+		public LockStatusList( BlockPos here, LockCacheNode ownACN)
+		{						
+			LockStatesByBlockPos = new Dictionary<BlockPos, LockCacheNode>( );
+
+			LockStatesByBlockPos.Add(here.Copy( ), ownACN);
+		}
+
+		public LockStatusList(IDictionary<BlockPos, LockCacheNode> nodes)
+		{			
+			LockStatesByBlockPos = new Dictionary<BlockPos, LockCacheNode>( nodes );
+		}
+
+
+		[ProtoMember(0)]
+		public Dictionary<BlockPos,LockCacheNode> LockStatesByBlockPos;
+
+		/*
 		[ProtoMember(1)]
 		public Vec3i ChunkOrigin;
+		*/
 
 
-
-		//Last RX time for Cache-TTL
+		//Last RX time for Cache-TTL ?
 	}
 
 }

@@ -6,19 +6,23 @@ namespace FirstMachineAge
 {
 	public abstract class GenericKey : Item
 	{
-		private const string _keyIdKey = @"key_id";
-
-		public uint KeyID { 
-			get {
-				if (this.Attributes.Exists && this.Attributes.KeyExists(_keyIdKey)) {
-					uint keyId = ( uint )this.Attributes[_keyIdKey].AsInt(0);
-
-					return keyId;
-				}
-
-				return 0;
-			} 
+		
+		public uint? KeyID(ItemSlot sourceSlot)
+		{
+			if (sourceSlot.Itemstack.Attributes.HasAttribute(AccessControlsMod._KeyIDKey)) {
+				return ( uint? )sourceSlot.Itemstack.Attributes.GetInt(AccessControlsMod._KeyIDKey);
+			} else {
+				return new uint( );
+			}
 		}
+
+		/*
+		public string Description 
+		{
+			get;
+		}
+		*/		
+
 
 		//Attributes to -> AccessControlNode
 		//Copy keyID, owner?

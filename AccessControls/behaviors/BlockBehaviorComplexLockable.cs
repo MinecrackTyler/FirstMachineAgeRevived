@@ -67,7 +67,13 @@ namespace FirstMachineAge
 
 		protected void ShowComboLockGUI(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
 		{
-			throw new NotImplementedException( );
+			//Popup GUI window;
+
+			//On 'Try' button click event -> send packet on channel
+
+			byte[] comboGuess = null;
+
+			acm.Send_Lock_GUI_Message(byPlayer.PlayerUID, blockSel.Position, comboGuess);
 		}
 }
 }

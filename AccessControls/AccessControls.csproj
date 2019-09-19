@@ -67,6 +67,8 @@
     <Compile Include="data\LockStatus.cs" />
     <Compile Include="data\LockKinds.cs" />
     <Compile Include="data\ACLPersisted.cs" />
+    <Compile Include="data\LockGUIMessage.cs" />
+    <Compile Include="data\LockCacheNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />
