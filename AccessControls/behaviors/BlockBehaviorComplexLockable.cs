@@ -3,6 +3,7 @@
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
+using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
 
 namespace FirstMachineAge
@@ -24,9 +25,12 @@ namespace FirstMachineAge
 
 		public override bool OnBlockInteractStart(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, ref EnumHandling handling)
 		{
-			LockStatus lockState = acm.LockState(blockSel.Position, byPlayer);
+			var blockPos = blockSel.Position.Copy();
+			acm.AdjustBlockPostionForMultiBlockStructure(ref blockPos);
 
-			if (acm.LockedForPlayer(blockSel.Position, byPlayer)) //Checks for keys and known combos, ect...
+			LockStatus lockState = acm.LockState(blockPos, byPlayer);
+
+			if (acm.LockedForPlayer(blockPos, byPlayer)) //Checks for keys and known combos, ect...
 			{
 				if (world.Side == EnumAppSide.Client) 
 				{
@@ -36,7 +40,7 @@ namespace FirstMachineAge
 					{
 					case LockStatus.ComboUnknown:
 						//Does Not already know combo...
-						ShowComboLockGUI(world, byPlayer,blockSel);
+						ShowComboLockGUI(world, byPlayer,blockPos);
 
 					break;
 
@@ -65,7 +69,7 @@ namespace FirstMachineAge
 			return base.OnBlockInteractStart(world, byPlayer, blockSel, ref handling);
 		}
 
-		protected void ShowComboLockGUI(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel)
+		protected void ShowComboLockGUI(IWorldAccessor world, IPlayer byPlayer, BlockPos blockPos)
 		{
 			//Popup GUI window;
 
@@ -73,7 +77,7 @@ namespace FirstMachineAge
 
 			byte[] comboGuess = null;
 
-			acm.Send_Lock_GUI_Message(byPlayer.PlayerUID, blockSel.Position, comboGuess);
+			acm.Send_Lock_GUI_Message(byPlayer.PlayerUID, blockPos, comboGuess);
 		}
 }
 }

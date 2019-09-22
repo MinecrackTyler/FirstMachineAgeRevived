@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Vintagestory.API.Common;
+using Vintagestory.API.MathTools;
 
 namespace FirstMachineAge
 {
@@ -15,6 +16,17 @@ namespace FirstMachineAge
 				return new uint( );
 			}
 		}
+
+		public BlockPos LockLocation(ItemSlot sourceSlot)
+		{
+			if (sourceSlot.Itemstack.Attributes.HasAttribute(AccessControlsMod._LockLocationKey)) {
+				return sourceSlot.Itemstack.Attributes.GetBlockPos(AccessControlsMod._LockLocationKey);
+			}
+			else {
+				return null;
+			}
+		}
+
 
 		/*
 		public string Description 

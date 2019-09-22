@@ -9,7 +9,7 @@ namespace FirstMachineAge
 	{
 		None,//Do nothing = 'no lock here'.
 		Locked,//Old behavior
-		Unlocked,//Old style, but with ACL entry for your group/self
+		Unlocked,//Old style, but with ACL entry for your group/self ~ pre-unlocked
 		ComboUnknown,//GUI
 		ComboKnown,//pass-thru; skip GUI
 		KeyHave,//Message? (used key in inventory)

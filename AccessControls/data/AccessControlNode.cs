@@ -49,7 +49,7 @@ namespace FirstMachineAge
 		public LockKinds LockStyle;
 
 		[ProtoMember(2)]
-		public string SourceItemName;
+		public string NameOfLock;//Limit & trim length 
 
 		[ProtoMember(3)]
 		public byte[] CombinationCode;//Nullable
@@ -63,7 +63,8 @@ namespace FirstMachineAge
 		[ProtoMember(6)]
 		public bool LockDefeated;//Ya Picked it; Taffer!
 
-		//public BlockPos Origin ; //Placement of lock in world (on block)
+		[ProtoMember(7)]
+		public uint Tier;
 
 	}
 
