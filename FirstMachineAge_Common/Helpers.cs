@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 
 namespace FirstMachineAge
@@ -103,7 +105,10 @@ namespace FirstMachineAge
 			return ToChunkIndex3D(blocks, blockPos.X / blocks.ChunkSize, blockPos.Y / blocks.ChunkSize, blockPos.Z / blocks.ChunkSize);
 		}
 
-
+		public static long ToChunkIndex3D(this IBlockAccessor blocks, Vec3i chunkPos)
+		{
+			return ToChunkIndex3D(blocks, chunkPos.X , chunkPos.Y , chunkPos.Z );
+		}
 
 		public static long ToChunkIndex3D(this IBlockAccessor blocks, int chunkX, int chunkY, int chunkZ)
 		{
@@ -181,6 +186,37 @@ namespace FirstMachineAge
 		public static Vec3i ToChunkPos(this IBlockAccessor blocks, BlockPos blockPos)
 		{
 			return new Vec3i(blockPos.X / blocks.ChunkSize, blockPos.Y / blocks.ChunkSize, blockPos.Z / blocks.ChunkSize);
+		}
+
+
+		public static void SetBlockPos(this ITreeAttribute source, string key, BlockPos value) 
+		{
+			byte[] buffer = new byte[3];
+
+			using (MemoryStream bytesStream = new MemoryStream(buffer,true)) 
+			{
+				BinaryWriter byteWriter = new BinaryWriter(bytesStream);
+
+				value.ToBytes(byteWriter);
+
+				byteWriter.Flush( );
+
+				source.SetBytes(key, buffer);
+			}
+		}
+
+		public static BlockPos GetBlockPos(this ITreeAttribute source,string key) 
+		{
+			byte[] rawBytes = source.GetBytes(key);
+
+			BlockPos positon = null;
+
+			using (MemoryStream bytesStream = new MemoryStream(rawBytes)) {
+				BinaryReader binRead = new BinaryReader(bytesStream);
+
+				positon = BlockPos.CreateFromBytes(binRead);
+			}
+			return positon;
 		}
 	}
 }

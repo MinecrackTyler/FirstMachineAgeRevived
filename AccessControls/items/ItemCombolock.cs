@@ -1,4 +1,5 @@
 ﻿using System;
+
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
@@ -28,6 +29,7 @@ namespace FirstMachineAge
 				{
 					ClientAPI?.TriggerIngameError(this, "cannotlock", Lang.Get("ingameerror-cannotlock"));
 				} else {
+					
 					AccessControlsMod.ApplyLock(blockSel, player, slot);
 
 					ClientAPI?.ShowChatMessage(Lang.Get("lockapplied"));

@@ -7,10 +7,10 @@ namespace FirstMachineAge
 	[ProtoContract]
 	public struct LockCacheNode
 	{
-		[ProtoMember(0)]
+		[ProtoMember(1)]
 		public LockStatus LockState;
 
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public uint Tier;
 	}
 }

@@ -28,10 +28,10 @@ namespace FirstMachineAge
 			var blockPos = blockSel.Position.Copy();
 			acm.AdjustBlockPostionForMultiBlockStructure(ref blockPos);
 
-			LockStatus lockState = acm.LockState(blockPos, byPlayer);
-
 			if (acm.LockedForPlayer(blockPos, byPlayer)) //Checks for keys and known combos, ect...
 			{
+				LockStatus lockState = acm.LockState(blockPos, byPlayer);
+
 				if (world.Side == EnumAppSide.Client) 
 				{
 					ICoreClientAPI clientAPI = (world.Api as ICoreClientAPI);
@@ -40,7 +40,7 @@ namespace FirstMachineAge
 					{
 					case LockStatus.ComboUnknown:
 						//Does Not already know combo...
-						ShowComboLockGUI(world, byPlayer,blockPos);
+						ShowComboLockGUI(clientAPI, byPlayer,blockPos);
 
 					break;
 
@@ -69,15 +69,14 @@ namespace FirstMachineAge
 			return base.OnBlockInteractStart(world, byPlayer, blockSel, ref handling);
 		}
 
-		protected void ShowComboLockGUI(IWorldAccessor world, IPlayer byPlayer, BlockPos blockPos)
+		protected void ShowComboLockGUI(ICoreClientAPI clientAPI, IPlayer byPlayer, BlockPos blockPos)
 		{
-			//Popup GUI window;
+		//Popup GUI window;
 
-			//On 'Try' button click event -> send packet on channel
+		
 
-			byte[] comboGuess = null;
-
-			acm.Send_Lock_GUI_Message(byPlayer.PlayerUID, blockPos, comboGuess);
+		GuiDialog_ComboLock comboGUI = new GuiDialog_ComboLock(clientAPI );
+		comboGUI.TryOpen( );
 		}
 }
 }

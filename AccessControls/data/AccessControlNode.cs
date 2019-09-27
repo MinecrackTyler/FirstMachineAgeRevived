@@ -24,13 +24,19 @@ namespace FirstMachineAge
 			Entries = new SortedDictionary<BlockPos, AccessControlNode>( );//SET Comparer?
 		}
 
-		[ProtoMember(0)]
+		[ProtoMember(1)]
 		public Vec3i OriginChunk;
 
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public SortedDictionary<BlockPos, AccessControlNode> Entries;//CHECK: does it *NEED* to be sorted?
 
 		//Last update DateTime?
+
+		///<summary>
+		/// Chunk had some kinda activity - Save it Soonest!
+		///</summary>
+		[ProtoIgnore]
+		public bool Altered { get; set; }
 	}
 
 
@@ -42,28 +48,34 @@ namespace FirstMachineAge
 			LockStyle = LockKinds.None;
 		}
 
-		[ProtoMember(0)]
+		public AccessControlNode(string OwnerUID, LockKinds originalType)
+		{
+		this.OwnerPlayerUID = OwnerUID;
+		this.LockStyle = originalType;
+		}
+
+		[ProtoMember(1)]
 		public string OwnerPlayerUID;
 
-		[ProtoMember(1, IsRequired = true)]
+		[ProtoMember(2, IsRequired = true)]
 		public LockKinds LockStyle;
 
-		[ProtoMember(2)]
+		[ProtoMember(3)]
 		public string NameOfLock;//Limit & trim length 
 
-		[ProtoMember(3)]
+		[ProtoMember(4)]
 		public byte[] CombinationCode;//Nullable
 
-		[ProtoMember(4)]
+		[ProtoMember(5)]
 		public int? KeyID;
 
-		[ProtoMember(5)]
-		public List<AccessEntry> PermittedPlayers;//Also nullable - key locks should NEVER have entries here!
-
 		[ProtoMember(6)]
-		public bool LockDefeated;//Ya Picked it; Taffer!
+		public List<AccessEntry> PermittedPlayers;//Also nullable - key locks should NEVER have entries here (ignored)
 
 		[ProtoMember(7)]
+		public bool LockDefeated;//Ya Picked it; Taffer!
+
+		[ProtoMember(8)]
 		public uint Tier;
 
 	}

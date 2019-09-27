@@ -11,7 +11,7 @@ namespace FirstMachineAge
 	[ProtoContract]
 	public class ACLPersisted
 	{
-		[ProtoMember(0)]
+		[ProtoMember(1)]
 		public int KeyId_Sequence;
 
 		//Stats, other info?

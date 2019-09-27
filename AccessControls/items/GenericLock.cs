@@ -2,12 +2,14 @@
 
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.Server;
+using Vintagestory.GameContent;
 
 namespace FirstMachineAge
 {
-	public abstract class GenericLock : Item 
+	public abstract class GenericLock : ItemPadlock 
 	{
 		private const string _lockStyleKey = @"lock-style";
 		private const string _comboKey = @"combo";
@@ -19,13 +21,23 @@ namespace FirstMachineAge
 		protected ICoreClientAPI ClientAPI { get; set; }
 		protected AccessControlsMod AccessControlsMod { get; set; }
 
-		public LockKinds LockStyle { get; protected set;}
+		public LockKinds LockStyle { 
+			get
+			{
+			return Attributes[_lockStyleKey].AsObject<LockKinds>(LockKinds.None);
+			}
+		}
 
-		public uint LockTier { get; protected set; }
+		public uint LockTier {
+			get
+			{
+			return ( uint )Attributes[_lockTier].AsInt(0);
+			}  
+		}
 
 		public override void OnLoaded(ICoreAPI api)
 		{
-			base.OnLoaded(api);
+			base.OnLoaded(api);//Just for client interactions
 
 			if (api.Side.IsServer( )) {
 				this.ServerAPI = ( ICoreServerAPI )api;
@@ -40,15 +52,46 @@ namespace FirstMachineAge
 			}
 
 			Logger.VerboseDebug("{0} ~ OnLoaded", base.Code.ToString());
+		}
 
-			if (this.Attributes.Exists && this.Attributes.KeyExists(_lockStyleKey)) {
-				this.LockStyle = this.Attributes[_lockStyleKey].AsObject<LockKinds>(LockKinds.None);
-			}
 
-			if (LockStyle != LockKinds.None && this.Attributes.KeyExists(_lockTier)) 
+		public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
+		{
+		bool lockable = false;
+
+		if (blockSel != null && byEntity.World.BlockAccessor.GetBlock(blockSel.Position).HasBehavior<BlockBehaviorLockable>( )) 
+		{		
+		IPlayer player = (byEntity as EntityPlayer).Player;
+
+			if (this.api.Side.IsClient( )) 
 			{
-				this.LockTier = ( uint )this.Attributes[_lockTier].AsInt(0); 
+			lockable = !AccessControlsMod.CheckClientsideIsLocked(blockSel.Position, player);
 			}
+
+			if (this.api.Side.IsServer( )) 
+			{			
+			lockable = !AccessControlsMod.LockedForPlayer(blockSel.Position, player);
+			}
+
+
+		if (lockable == false) 
+		{
+		(byEntity.World.Api as ICoreClientAPI)?.TriggerIngameError(this, "cannotlock", Lang.Get("ingameerror-cannotlock"));
+		}
+		else {		
+		(byEntity.World.Api as ICoreClientAPI)?.ShowChatMessage(Lang.Get("lockapplied"));
+				
+		AccessControlsMod.ApplyLock(blockSel, player, slot);
+		slot.TakeOut(1);
+		slot.MarkDirty( );
+		//TODO: GUI for Description after lock applied, it - ACN edits the desc...
+		}
+
+		handling = EnumHandHandling.PreventDefault;
+		return;
+		}
+
+		handling = EnumHandHandling.NotHandled;
 		}
 
 		//or? OnCreatedByCrafting -- generate keyID and/or combo?
@@ -102,28 +145,7 @@ namespace FirstMachineAge
 		}
 
 
-		/// <summary>
-		/// Stores AccessControlNode in Tree-Attributes.
-		/// </summary>
-		/// <remarks>AccessControlNode ->  alterable Attributes (which are strangely part of 'ItemStack'...)</remarks>
-		/// <param name="acn">Control node settings.</param>
-		protected TreeAttribute TreeAttributesFromACN(AccessControlNode acn)
-		{
-			//Copy Combo number, keyID, type, ect...
-			switch (acn.LockStyle) 
-			{
-			case LockKinds.Classic:
-			//OwnerId?
 
-			break;
-
-
-
-			}
-
-			//itemstack.Collectible.Attributes["clothescategory"].AsString(null);
-			return null;
-		}
 
 
 		protected void GenerateCombination(ItemSlot slot, GenericLock genericLock)
@@ -154,12 +176,12 @@ namespace FirstMachineAge
 			}
 		}
 
-		public uint? KeyID(ItemSlot sourceSlot)
+		public int? KeyID(ItemSlot sourceSlot)
 		{
 			if (sourceSlot.Itemstack.Attributes.HasAttribute(AccessControlsMod._KeyIDKey)) {
-				return ( uint? )sourceSlot.Itemstack.Attributes.GetInt(AccessControlsMod._KeyIDKey);
+				return sourceSlot.Itemstack.Attributes.GetInt(AccessControlsMod._KeyIDKey);
 			} else {
-				return new uint( );
+				return new int( );
 			}
 		}
 	}

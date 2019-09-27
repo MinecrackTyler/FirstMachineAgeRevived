@@ -18,6 +18,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="7z -tzip a AccessControls_${ProjectConfig}.zip" workingdir="${TargetDir}" />
+        <Command type="AfterClean" command="rm -f *.zip" workingdir="${TargetDir}" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -69,6 +75,7 @@
     <Compile Include="data\ACLPersisted.cs" />
     <Compile Include="data\LockGUIMessage.cs" />
     <Compile Include="data\LockCacheNode.cs" />
+    <Compile Include="AccessControls_Internals.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />
@@ -86,12 +93,23 @@
     <None Include="assets\fma\itemtypes\locks\combolock.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="assets\fma\shapes\access_controls\combo_lock1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\shapes\access_controls\key1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\textures\locks\brass_symbols.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="modinfo.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FirstMachineAge_Common\Common.csproj">
       <Project>{DE0A4E7D-E5FA-441D-A11A-8279E6AC5BBC}</Project>
       <Name>Common</Name>
-      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

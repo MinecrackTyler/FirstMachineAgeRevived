@@ -1,6 +1,6 @@
 ﻿{
 	code: "combolock",
-	class: "ItemPadlock",
+	class: "ItemCombolock",
 	maxstacksize: 64,
 	variantgroups: [
 		{ code: "material", states: ["tinbronze", "blackbronze", "bismuthbronze", "iron", "steel" ] },
@@ -8,7 +8,33 @@
 	textures: {
 		"material": { base: "item/tool/material/{material}" }
 	},
-	shape: { base: "item/tool/padlock" },
+	shape: { base: "item/access_controls/combo_lock1" },
+    attributesByType: 
+    {
+		"*-tinbronze": {
+			lock-tier:3,
+            lock-style:Combination,
+		},
+        "*-blackbronze": {
+			lock-tier:3,
+            lock-style:Combination,
+		},
+        "*-bismuthbronze": {
+			lock-tier:3,
+            lock-style:Combination,
+		},
+         "*-iron": {
+			lock-tier:4,
+            lock-style:Combination,
+		},
+         "*-steel": {
+			lock-tier:5,
+            lock-style:Combination,
+		},
+        "*": {
+            lock-style:Combination
+            }
+	},
 	creativeinventory: { "general": ["*"], "items": ["*"] },
 	guiTransform: {
 		translation: { x: 4, y: 0, z: 0 },

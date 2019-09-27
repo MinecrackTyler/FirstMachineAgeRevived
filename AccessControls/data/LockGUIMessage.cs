@@ -10,10 +10,10 @@ namespace FirstMachineAge
 	[ProtoContract]
 	public class LockGUIMessage
 	{
-		[ProtoMember(0)]
+		[ProtoMember(1)]
 		public BlockPos position;
 
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public byte[] comboGuess;
 
 		public LockGUIMessage(BlockPos position, byte[] comboGuess)

@@ -12,7 +12,7 @@ namespace FirstMachineAge
 		Combination,//Mechanical locks that need manual input entry of a number or sequence to operate
 		Key,//Mech. locks which need a specific item in inventory to open
 		//Mech-linkage, lock?
-
+		//Time lock?
 	}
 }
 

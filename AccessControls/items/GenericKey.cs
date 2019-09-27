@@ -1,45 +1,66 @@
 ﻿using System;
+using System.Text;
 
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 
 namespace FirstMachineAge
 {
-	public abstract class GenericKey : Item
+	public class GenericKey : Item
 	{
 		
-		public uint? KeyID(ItemSlot sourceSlot)
+		public static int KeyID(ItemStack sourceStack)
 		{
-			if (sourceSlot.Itemstack.Attributes.HasAttribute(AccessControlsMod._KeyIDKey)) {
-				return ( uint? )sourceSlot.Itemstack.Attributes.GetInt(AccessControlsMod._KeyIDKey);
+			if (sourceStack.Attributes.HasAttribute(AccessControlsMod._KeyIDKey)) {
+				return sourceStack.Attributes.GetInt(AccessControlsMod._KeyIDKey);
 			} else {
-				return new uint( );
+				return new int( );
 			}
 		}
 
-		public BlockPos LockLocation(ItemSlot sourceSlot)
+		public static BlockPos LockLocation(ItemStack sourceStack)
 		{
-			if (sourceSlot.Itemstack.Attributes.HasAttribute(AccessControlsMod._LockLocationKey)) {
-				return sourceSlot.Itemstack.Attributes.GetBlockPos(AccessControlsMod._LockLocationKey);
+			if (sourceStack.Attributes.HasAttribute(AccessControlsMod._LockLocationKey)) {
+				return sourceStack.Attributes.GetBlockPos(AccessControlsMod._LockLocationKey);
 			}
 			else {
 				return null;
 			}
 		}
 
-
-		/*
-		public string Description 
+		public string Description(ItemStack sourceStack)
 		{
-			get;
+			if (sourceStack.Attributes.HasAttribute(AccessControlsMod._itemDescription)) 
+			{
+			return sourceStack.Attributes.GetString(AccessControlsMod._itemDescription);
+			}
+
+		return string.Empty;
 		}
-		*/		
+
+		internal static void WriteACL_ItemStack(ref ItemStack targetStack, AccessControlNode acn, BlockPos location)
+		{
+		targetStack.Attributes.SetInt(AccessControlsMod._KeyIDKey, acn.KeyID.Value);
+		targetStack.Attributes.SetBlockPos(AccessControlsMod._LockLocationKey, location);
+		targetStack.Attributes.SetString(AccessControlsMod._itemDescription, acn.NameOfLock);
+		}
 
 
-		//Attributes to -> AccessControlNode
-		//Copy keyID, owner?
+		public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+		{
+		base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);		
 
-		//itemstack.Collectible.Attributes[_keyIdKey].AsInt(null);
+		#if DEBUG
+		int keyId = KeyID(inSlot.Itemstack);
+		dsc.AppendFormat("\nKey #{0:D},", keyId);
+		#endif
+
+
+		string desc = Description(inSlot.Itemstack);
+		dsc.AppendFormat("\n' {0} '", desc);
+		}
+
+
 
 
 	}
