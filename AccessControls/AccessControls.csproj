@@ -76,6 +76,7 @@
     <Compile Include="data\LockGUIMessage.cs" />
     <Compile Include="data\LockCacheNode.cs" />
     <Compile Include="AccessControls_Internals.cs" />
+    <Compile Include="items\ItemKeylock.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />
@@ -86,17 +87,12 @@
     <Folder Include="behaviors\" />
     <Folder Include="GUIs\" />
     <Folder Include="assets\fma\shapes\" />
-    <Folder Include="assets\fma\shapes\access_controls\" />
     <Folder Include="data\" />
+    <Folder Include="assets\fma\shapes\item\" />
+    <Folder Include="assets\fma\shapes\item\access_controls\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\fma\itemtypes\locks\combolock.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\fma\shapes\access_controls\combo_lock1.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\fma\shapes\access_controls\key1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\fma\textures\locks\brass_symbols.png">
@@ -105,6 +101,16 @@
     <None Include="modinfo.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="assets\fma\itemtypes\locks\key.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\shapes\item\access_controls\combo_lock1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\shapes\item\access_controls\key1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\shapes\item\access_controls\barrel_lock.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FirstMachineAge_Common\Common.csproj">

@@ -42,8 +42,9 @@ namespace FirstMachineAge
 
 		public override void Start(ICoreAPI api)
 		{
-		this.CoreAPI = api;
-		base.Start(api);
+		this.CoreAPI = api;		
+
+		RegisterStuff(api);
 		}
 
 		public override void StartClientSide(ICoreClientAPI api)
@@ -73,7 +74,7 @@ namespace FirstMachineAge
 
 		public override double ExecuteOrder( )
 		{
-		return 1.0;
+		return 0.19;
 		}
 		#endregion
 
@@ -139,9 +140,8 @@ namespace FirstMachineAge
 			return Client_LockLookup[pos.Copy( )].LockState;
 			}
 			else 
-			{
-			//TODO: Force fetch from Server ?
-			return LockStatus.Unknown;			
+			{			
+			return LockStatus.None;			
 			}
 		}
 		else {
@@ -192,6 +192,31 @@ namespace FirstMachineAge
 		}
 
 		return 0;
+		}
+
+		public string LockOwnerName(BlockPos pos, IPlayer forPlayer)
+		{
+		if (CoreAPI.Side.IsClient( )) {
+		if (Client_LockLookup.ContainsKey(pos.Copy( ))) {
+		return Client_LockLookup[pos.Copy( )].OwnerName;
+		}
+		else {
+		//TODO: Force fetch from Server ?
+
+		}
+		}
+		else {
+		//Server instance
+		Vec3i locksChunk = ServerAPI.World.BlockAccessor.ToChunkPos(pos);
+
+		if (Server_ACN.ContainsKey(locksChunk) && Server_ACN[locksChunk].Entries.ContainsKey(pos)) {
+		var controlNode = Server_ACN[locksChunk].Entries[pos];
+
+		return ServerAPI.World.PlayerByUid(controlNode.OwnerPlayerUID).PlayerName;
+		}
+		}
+
+		return String.Empty;
 		}
 
 
@@ -289,7 +314,7 @@ namespace FirstMachineAge
 			IServerPlayer serverPlayer = player as IServerPlayer;
 			Vec3i chunkPos = ServerAPI.World.BlockAccessor.ToChunkPos(blockPos);
 
-			Mod.Logger.VerboseDebug("Applying lock; {0} #{1} @ {2} by {3}", theLock.LockStyle, theLock.LockTier, blockSel.Position, player.PlayerName);
+			Mod.Logger.VerboseDebug("Applying lock; {0} T{1} @ {2} by {3}", theLock.LockStyle, theLock.LockTier, blockSel.Position, player.PlayerName);
 
 			AccessControlNode newLockACN = new AccessControlNode(player.PlayerUID, theLock.LockStyle );
 
@@ -317,17 +342,24 @@ namespace FirstMachineAge
 				//Mark slot dirty?
 			}
 
+		if (Server_ACN.ContainsKey(chunkPos)) {
+		Server_ACN[chunkPos].Entries.Add(blockPos, newLockACN);		
+		}
+		else 
+		{
+		Mod.Logger.Debug("Created ChunkACNodes for {0}", chunkPos);
+		Server_ACN.Add(chunkPos, new ChunkACNodes(chunkPos));
+		Server_ACN[chunkPos].Entries.Add(blockPos, newLockACN);
+		}
 
-			Server_ACN[chunkPos].Entries.Add(blockPos, newLockACN);
+		if (success) {
+			//Mark this host chunk had an ACL added, thus altered.
+			Server_ACN[chunkPos].Altered = true;
 
-			if (success) {
-				//Mark this host chunk had an ACL added, thus altered.
-				Server_ACN[chunkPos].Altered = true;
-
-				//Send message to player that object was locked with X type lock (and combo / key#)	
-				//Send out ACN update selective broadcast msg...
-				UpdateBroadcast(serverPlayer, blockPos, newLockACN );
-			}
+			//Send message to player that object was locked with X type lock (and combo / key#)	
+			//Send out ACN update selective broadcast msg...
+			UpdateBroadcast(serverPlayer, blockPos, newLockACN );
+		}
 
 
 

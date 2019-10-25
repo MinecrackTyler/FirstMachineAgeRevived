@@ -1,46 +1,47 @@
 ﻿{
 	code: "combolock",
 	class: "ItemCombolock",
-	maxstacksize: 64,
+	maxstacksize: 1,
 	variantgroups: [
 		{ code: "material", states: ["tinbronze", "blackbronze", "bismuthbronze", "iron", "steel" ] },
 	],
 	textures: {
-		"material": { base: "item/tool/material/{material}" }
+		"brass_symbols": { base: "fma:locks/brass_symbols" },
+        "bodymetal": { base: "game:block/metal/plate/{material}" }
 	},
 	shape: { base: "item/access_controls/combo_lock1" },
     attributesByType: 
     {
 		"*-tinbronze": {
-			lock-tier:3,
-            lock-style:Combination,
+			lockTier:1,
+            lockStyle:"Combination",
 		},
         "*-blackbronze": {
-			lock-tier:3,
-            lock-style:Combination,
+			lockTier:1,
+            lockStyle:"Combination",
 		},
         "*-bismuthbronze": {
-			lock-tier:3,
-            lock-style:Combination,
+			lockTier:1,
+            lockStyle:"Combination",
 		},
          "*-iron": {
-			lock-tier:4,
-            lock-style:Combination,
+			lockTier:2,
+            lockStyle:"Combination",
 		},
          "*-steel": {
-			lock-tier:5,
-            lock-style:Combination,
+			lockTier:3,
+            lockStyle:"Combination",
 		},
         "*": {
-            lock-style:Combination
+            lockStyle:"Combination"
             }
 	},
-	creativeinventory: { "general": ["*"], "items": ["*"] },
+	creativeinventory: { "general": ["*"], "gadgets": ["*"] },
 	guiTransform: {
-		translation: { x: 4, y: 0, z: 0 },
-		rotation: { x: 20, y: 16, z: -152 },
+		translation: { x: -8, y: 20, z: 1 },
+		rotation: { x: -1, y: 16, z: -152 },
 		origin: { x: 0.5, y: 0.12, z: 0.5 },
-		scale: 6
+		scale: 3.3
 	},
 	groundTransform: {
 		translation: { x: 0, y: 0, z: 0 },
@@ -49,10 +50,10 @@
 		scale: 3.5
 	},
 	fpHandTransform: {
-		translation: { x: 0, y: 0, z: 0 },
-		rotation: { x: -14, y: -78, z: 17 },
+		translation: { x: 0, y: 0.09, z: 0 },
+		rotation: { x: 19, y: -39, z: 28 },
 		origin: { x: 0.5, y: 0.1, z: 0.5 },
-		scale: 2.41
+		scale: 1.25
 	},
 	tpHandTransform: {
 		translation: { x: -0.83, y: -0.36, z: -0.7 },

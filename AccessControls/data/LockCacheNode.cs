@@ -12,6 +12,10 @@ namespace FirstMachineAge
 
 		[ProtoMember(2)]
 		public uint Tier;
+
+		[ProtoMember(3)]
+		public string OwnerName;
+
 	}
 }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -20,6 +21,11 @@ namespace FirstMachineAge
 		public BlockBehaviorComplexLockable(Block block) : base(block)
 		{
 
+		}
+
+		public override void OnLoaded(ICoreAPI api)
+		{
+			acm = api.ModLoader.GetModSystem<AccessControlsMod>( );
 		}
 
 
@@ -67,6 +73,30 @@ namespace FirstMachineAge
 
 
 			return base.OnBlockInteractStart(world, byPlayer, blockSel, ref handling);
+		}
+
+
+		public override string GetPlacedBlockInfo(IWorldAccessor world, BlockPos pos, IPlayer forPlayer)
+		{
+		StringBuilder lockInfo = new StringBuilder( );
+		//Is locked (by player); and How
+
+			if (acm != null) 
+			{
+			LockStatus lockstate = acm.LockState(pos.Copy( ), forPlayer);
+			
+			if (lockstate != LockStatus.None) 
+			{
+				var locktier = acm.LockTier(pos.Copy( ), forPlayer);
+				var lockowner = acm.LockOwnerName(pos.Copy( ), forPlayer);
+				lockInfo.AppendFormat("LockState: {0}, Owner: {1} - Tier: {2}", lockstate,lockowner, locktier);		
+
+				return lockInfo.ToString( );
+			}
+
+			}
+
+		return String.Empty;
 		}
 
 		protected void ShowComboLockGUI(ICoreClientAPI clientAPI, IPlayer byPlayer, BlockPos blockPos)

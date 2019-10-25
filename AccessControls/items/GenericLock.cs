@@ -11,9 +11,9 @@ namespace FirstMachineAge
 {
 	public abstract class GenericLock : ItemPadlock 
 	{
-		private const string _lockStyleKey = @"lock-style";
+		private const string _lockStyleKey = @"lockStyle";
 		private const string _comboKey = @"combo";
-		private const string _lockTier = @"lock-tier";
+		private const string _lockTier = @"lockTier";
 		private const uint MinimumComboDigits = 2;
 
 		protected ICoreServerAPI ServerAPI { get; set; }
@@ -24,14 +24,24 @@ namespace FirstMachineAge
 		public LockKinds LockStyle { 
 			get
 			{
-			return Attributes[_lockStyleKey].AsObject<LockKinds>(LockKinds.None);
+			LockKinds result = LockKinds.None;
+
+				if (Attributes.KeyExists(_lockStyleKey) && Attributes[_lockStyleKey].Exists) 
+				{
+				Enum.TryParse<LockKinds>(Attributes[_lockStyleKey].AsString( ), out result);
+				}
+
+				return result;
 			}
 		}
 
 		public uint LockTier {
 			get
 			{
+			if (Attributes.KeyExists(_lockTier)) {
 			return ( uint )Attributes[_lockTier].AsInt(0);
+			}
+			return 0;
 			}  
 		}
 
@@ -59,7 +69,7 @@ namespace FirstMachineAge
 		{
 		bool lockable = false;
 
-		if (blockSel != null && byEntity.World.BlockAccessor.GetBlock(blockSel.Position).HasBehavior<BlockBehaviorLockable>( )) 
+		if (blockSel != null && byEntity.World.BlockAccessor.GetBlock(blockSel.Position).HasBehavior<BlockBehaviorComplexLockable>( )) 
 		{		
 		IPlayer player = (byEntity as EntityPlayer).Player;
 
@@ -94,26 +104,35 @@ namespace FirstMachineAge
 		handling = EnumHandHandling.NotHandled;
 		}
 
-		//or? OnCreatedByCrafting -- generate keyID and/or combo?
+		//or? OnCreatedByCrafting -- generate keyID and/or combo (also when getting inv. from a packet) [CLIENTSIDE?!]
 		public override void OnModifiedInInventorySlot(IWorldAccessor world, ItemSlot slot, ItemStack extractedStack = null)
 		{
+		if (world.Side.IsServer( )) 
+			{
 			//Set keyid,combo if unset...
-			if (this.LockStyle == LockKinds.Combination) {
+			#if DEBUG
+			Logger.VerboseDebug("GenericLock: OnModifiedInInventorySlot ID:{0}", slot.Itemstack.Id);
+			#endif
 
+			if (this.LockStyle == LockKinds.Combination) 
+			{
 				var comboCode = CombinationCode(slot);
 
-				if (comboCode == null) 
+					if (comboCode == null || comboCode.Length == 0) {
+					GenerateCombination(slot);
+					}
+			}
+			else if (this.LockStyle == LockKinds.Key) 
+			{
+			var keyId = KeyID(slot);
+			
+				if (keyId.HasValue == false) 
 				{
-					GenerateCombination(slot, this);
-				}
-			} else if (this.LockStyle == LockKinds.Key) {
-
-				var keyId = KeyID(slot);
-				if (keyId.HasValue == false) {
-					GenerateKeyId(slot, this);
+				GenerateKeyId(slot, this);
 				}
 			}
 
+			}
 		}
 
 		public override void GetHeldItemInfo(ItemSlot inSlot, System.Text.StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
@@ -121,15 +140,15 @@ namespace FirstMachineAge
 			base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
 
 			if (LockStyle == LockKinds.Combination) {
-				dsc.AppendFormat("\nCombination#:");
+				dsc.AppendFormat("\nCombination#: ");
 
 				var comboCode = CombinationCode(inSlot);
 				if (comboCode != null) {
 					foreach (var digit in comboCode) {
-						dsc.AppendFormat(" {0:D}\t", digit);
+						dsc.AppendFormat("{0:D}-", digit);
 					}
 				} else {
-					dsc.AppendFormat("\nCombination ????");
+					dsc.AppendFormat("\n ????");
 				}
 			}
 
@@ -147,9 +166,9 @@ namespace FirstMachineAge
 
 
 
-
-		protected void GenerateCombination(ItemSlot slot, GenericLock genericLock)
+		protected void GenerateCombination(ItemSlot slot)
 		{
+			Logger.VerboseDebug("Generating new combination");
 			Random randNum = new Random( );
 			byte[] comboArray = new byte[this.LockTier + MinimumComboDigits];
 

@@ -39,7 +39,7 @@ namespace FirstMachineAge
 		private ICoreAPI CoreAPI;
 		private ICoreClientAPI ClientAPI;
 
-		private ModSystemBlockReinforcement brs;
+		//private ModSystemBlockReinforcement brs;
 
 		private Dictionary<Vec3i, ChunkACNodes> Server_ACN;//Track changes - and commit every ## minutes, in addition to server shutdown data-storage, chunk unloads
 		private Dictionary<BlockPos, LockCacheNode> Client_LockLookup;//By BlockPos - for fast local lookup. pre-computed by server...
@@ -59,7 +59,7 @@ namespace FirstMachineAge
 		{
 		//Replace blockBehaviorLockable - but only 'game' domain entires...
 		var rawBytes = ServerAPI.WorldManager.SaveGame.GetData(_persistedStateKey);
-		if (rawBytes != null && rawBytes.Length > 1) {
+		if (rawBytes != null ) {
 		this.PersistedState = SerializerUtil.Deserialize<ACLPersisted>(rawBytes);
 		Mod.Logger.Debug("Loaded Persisted state");
 		}
@@ -82,6 +82,7 @@ namespace FirstMachineAge
 		//Await lock-GUI events, send cache updates via NW channel...
 		accessControl_ServerChannel = ServerAPI.Network.RegisterChannel(_channel_name);
 		accessControl_ServerChannel.RegisterMessageType<LockGUIMessage>( );
+		accessControl_ServerChannel.RegisterMessageType<LockStatusList>( );
 		accessControl_ServerChannel.SetMessageHandler<LockGUIMessage>(LockGUIMessageHandler);				
 
 		ServerAPI.Event.PlayerJoin += TrackPlayerJoins;
@@ -93,7 +94,7 @@ namespace FirstMachineAge
 		portunus_thread.IsBackground = true;
 
 		//Re-wake Portunus to send out _possible_ updates for mutated LockStatus changes, and save altered ACL from chunks...
-		ServerAPI.Event.RegisterGameTickListener(AwakenPortunus, 1000);
+		ServerAPI.Event.RegisterGameTickListener(AwakenPortunus, 2000);
 
 		//Attach events to persist ACL data to chunks on server shutdown		
 		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.RunGame, PreloadACLData);
@@ -102,6 +103,15 @@ namespace FirstMachineAge
 		ServerAPI.Event.DidBreakBlock += RemoveACN_byBlockBreakage;
 
 		Mod.Logger.StoryEvent("...a tumbler turns, and opens\t*click*");
+		}
+
+		private void RegisterStuff(ICoreAPI api)
+		{
+
+		api.RegisterItemClass("ItemCombolock", typeof(ItemCombolock));
+		api.RegisterItemClass("ItemKeylock", typeof(ItemKeylock));
+		api.RegisterItemClass("ItemKey", typeof(GenericKey));
+		api.RegisterBlockBehaviorClass("Lockable", typeof(BlockBehaviorComplexLockable));
 		}
 
 		private void InitializeClientSide( )
@@ -189,6 +199,18 @@ namespace FirstMachineAge
 		if (ServerAPI.WorldManager.AllLoadedChunks.TryGetValue(chunkIndex, out targetChunk)) {
 
 		byte[ ] data = SerializerUtil.Serialize<ChunkACNodes>(entry.Value);
+
+		//TODO: Remove when bug in API is fixed!
+		if (targetChunk is ServerChunk) {
+		ServerChunk srvChunk = targetChunk as ServerChunk;
+
+		if (srvChunk.ServerSideModdata == null) {
+		srvChunk.ServerSideModdata = new Dictionary<string, byte[ ]>( );
+		}
+
+		data = srvChunk.GetServerModdata(_AccessControlNodesKey);
+		}
+
 		targetChunk.SetServerModdata(_AccessControlNodesKey, data);
 		}
 		else {
@@ -199,10 +221,10 @@ namespace FirstMachineAge
 		byte[ ] data = SerializerUtil.Serialize<ChunkACNodes>(entry.Value);
 		targetChunk.SetServerModdata(_AccessControlNodesKey, data);
 		}
-
-
-
 		}
+
+		var aclPersistBytes = SerializerUtil.Serialize<ACLPersisted>(this.PersistedState);
+		ServerAPI.WorldManager.SaveGame.StoreData(_persistedStateKey, aclPersistBytes);
 		}
 
 		internal int NextKeyID {
@@ -225,7 +247,7 @@ namespace FirstMachineAge
 		if (this.Client_LockLookup.ContainsKey(pos.Copy( ))) {
 		Mod.Logger.Warning("Can't overwrite cached lock entry located: {0}", pos);
 		}
-		else {
+		else {				
 		var lockStateNode = new LockCacheNode( );
 
 		lockStateNode.Tier = theLock.LockTier;
@@ -248,8 +270,8 @@ namespace FirstMachineAge
 			break;
 		}
 
-
 		this.Client_LockLookup.Add(pos.Copy( ), lockStateNode);
+		Mod.Logger.Debug("Added cached lock entry located: {0}", pos);
 		}
 		}
 
@@ -388,10 +410,10 @@ namespace FirstMachineAge
 			Mod.Logger.VerboseDebug("Portunus re-trigger [{0}]", portunus_thread.ThreadState);
 		#endif
 
-		if (portunus_thread.ThreadState == ThreadState.Unstarted) {
+			if (portunus_thread.ThreadState.HasFlag(ThreadState.Unstarted) ){
 		portunus_thread.Start( );
 		}
-		else if (portunus_thread.ThreadState == ThreadState.WaitSleepJoin) {
+		else if (portunus_thread.ThreadState.HasFlag(ThreadState.WaitSleepJoin)) {
 		//(re)Wake the sleeper!
 		portunus_thread.Interrupt( );
 		}
@@ -399,8 +421,8 @@ namespace FirstMachineAge
 
 		private void Portunus( )
 		{
-	wake:
-
+		wake:
+		Mod.Logger.VerboseDebug("Portunus thread awoken");
 		try {
 		//For all online players - ACN's for *new* chunks entered/in
 		foreach (var player in ServerAPI.World.AllOnlinePlayers) {//TODO: Parallel.ForEach
@@ -409,7 +431,10 @@ namespace FirstMachineAge
 
 		var center = ServerAPI.World.BlockAccessor.ToChunkPos(player.Entity.ServerPos.AsBlockPos.Copy( ));
 
-		var alreadyUpdatedSet = previousChunkSet_byPlayerUID[player.PlayerUID];
+		HashSet<Vec3i> alreadyUpdatedSet = null;
+		if (previousChunkSet_byPlayerUID.TryGetValue(player.PlayerUID, out alreadyUpdatedSet)) 
+		{
+
 		//All of them for nearest 27 CHUNKs, contacting ['new' Chunk ]
 		var fresh_chunks = Helpers.ComputeChunkBubble(center).Except(alreadyUpdatedSet).ToList( );
 
@@ -425,14 +450,14 @@ namespace FirstMachineAge
 
 		if (introducedNodes.Count > 0) {
 		#if DEBUG
-		Mod.Logger.VerboseDebug("Player {0} will get {1} ACNs from chunk {2}", player.PlayerName, introducedNodes.Count, center);
+		Mod.Logger.VerboseDebug("Player {0} will get {1} ACNs about chunk {2}", player.PlayerName, introducedNodes.Count, center);
 		#endif
 
 		SendClientACNMultiUpdates(player as IServerPlayer, introducedNodes);
 
 		previousChunkSet_byPlayerUID[player.PlayerUID].AddRange(fresh_chunks);
 		}
-
+		}
 		//Keys should already be marking their previous/current owner (called externally) - ACN
 
 
@@ -452,6 +477,7 @@ namespace FirstMachineAge
 		updatingChunk.SetServerModdata(_AccessControlNodesKey, data);
 
 		alteredEntry.Value.Altered = false;
+		Mod.Logger.VerboseDebug("Stored ACN for pos {0}", alteredEntry.Key);
 		}
 
 		//Then sleep until interupted again, and repeat
@@ -462,7 +488,7 @@ namespace FirstMachineAge
 
 		} catch (ThreadInterruptedException) {
 
-		Mod.Logger.VerboseDebug("Thread '{0}' awoken.", Thread.CurrentThread.Name);
+		Mod.Logger.VerboseDebug("Thread '{0}' interupted.", Thread.CurrentThread.Name);
 		goto wake;
 
 		} catch (ThreadAbortException) {
@@ -702,7 +728,7 @@ namespace FirstMachineAge
 		BlockPos lockLocation;
 		var player = ServerAPI.World.PlayerByUid(playerUID);
 
-		IInventory theInv = player.InventoryManager.GetInventory(inventoryClass);
+		IInventory theInv = player.InventoryManager.GetOwnInventory(inventoryClass);
 
 		ItemSlot alteredSlot = theInv[slotNum];
 

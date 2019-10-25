@@ -14,7 +14,7 @@ namespace FirstMachineAge
 		[ProtoMember(1)]
 		public int KeyId_Sequence;
 
-		//Stats, other info?
+		//Stats, version, other info?
 
 	}
 }

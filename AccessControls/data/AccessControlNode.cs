@@ -21,14 +21,21 @@ namespace FirstMachineAge
 	{
 		public ChunkACNodes( )
 		{
-			Entries = new SortedDictionary<BlockPos, AccessControlNode>( );//SET Comparer?
+			Entries = new Dictionary<BlockPos, AccessControlNode>( );
+		}
+
+		public ChunkACNodes(Vec3i originChunk )
+		{
+		Entries = new Dictionary<BlockPos, AccessControlNode>( );
+		Altered = true;
+		OriginChunk = originChunk;
 		}
 
 		[ProtoMember(1)]
 		public Vec3i OriginChunk;
 
 		[ProtoMember(2)]
-		public SortedDictionary<BlockPos, AccessControlNode> Entries;//CHECK: does it *NEED* to be sorted?
+		public Dictionary<BlockPos, AccessControlNode> Entries;
 
 		//Last update DateTime?
 
@@ -131,7 +138,7 @@ namespace FirstMachineAge
 		}
 
 
-		[ProtoMember(0)]
+		[ProtoMember(1)]
 		public Dictionary<BlockPos,LockCacheNode> LockStatesByBlockPos;
 
 		/*

@@ -20,7 +20,7 @@ namespace FirstMachineAge
 				ClientAPI = (byEntity.World.Api as ICoreClientAPI);
 			}
 
-			if (blockSel != null && byEntity.World.BlockAccessor.GetBlock(blockSel.Position).HasBehavior<BlockBehaviorLockable>( )) 
+			if (blockSel != null && byEntity.World.BlockAccessor.GetBlock(blockSel.Position).HasBehavior<BlockBehaviorComplexLockable>( )) 
 			{
 				IPlayer player = (byEntity as EntityPlayer).Player;
 

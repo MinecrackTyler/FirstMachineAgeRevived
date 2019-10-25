@@ -2,7 +2,7 @@
   "type": "code",
   "name": "Access Controls",
   "description" : "Combination & Key Locks, Group-Access controls extensions for lockables.",
-  "authors": ["Melchior"],
+  "authors": ["Melchior","bunnyviking"],
   "version": "0.1.0",
   "dependencies": { 
 	"game": "1.10.1",
