@@ -139,18 +139,7 @@ namespace FirstMachineAge
 		targetChunk = ServerAPI.WorldManager.GetChunk(chunkPos.X, chunkPos.Y, chunkPos.Z);
 		}
 		
-		//TODO: Remove when bug in API is fixed!
-		if (targetChunk is ServerChunk) 
-			{
-			ServerChunk srvChunk = targetChunk as ServerChunk;
-
-			if (srvChunk.ServerSideModdata == null) 
-			{
-			srvChunk.ServerSideModdata = new Dictionary<string, byte[ ]>( );			
-			}
-
-			data = srvChunk.GetServerModdata(_AccessControlNodesKey);
-			}
+		
 
 		if (data != null && data.Length > 0) {
 		#if DEBUG
@@ -163,7 +152,7 @@ namespace FirstMachineAge
 		}
 		else if (targetChunk != null){
 		#if DEBUG
-		Mod.Logger.VerboseDebug("Absent ACN structures for chunk: {0}", chunkPos);
+		Mod.Logger.VerboseDebug("Absent ACN structures for chunk: {0} !", chunkPos);
 		#endif
 		//Setup new AC Node list for this chunk.
 		ChunkACNodes newAcNodes = new ChunkACNodes( );
@@ -189,6 +178,9 @@ namespace FirstMachineAge
 		{
 		Mod.Logger.Debug("ACN Data persistence routines activated");
 
+		var alteredCount = Server_ACN.Count(ac => ac.Value.Altered == true);
+		if (alteredCount > 0) Mod.Logger.Debug("There are {0} unsaved chunk Nodes ( should be zero !)", alteredCount);
+
 		foreach (var entry in this.Server_ACN) {
 		if (entry.Value.Altered == false) continue;
 
@@ -200,16 +192,6 @@ namespace FirstMachineAge
 
 		byte[ ] data = SerializerUtil.Serialize<ChunkACNodes>(entry.Value);
 
-		//TODO: Remove when bug in API is fixed!
-		if (targetChunk is ServerChunk) {
-		ServerChunk srvChunk = targetChunk as ServerChunk;
-
-		if (srvChunk.ServerSideModdata == null) {
-		srvChunk.ServerSideModdata = new Dictionary<string, byte[ ]>( );
-		}
-
-		data = srvChunk.GetServerModdata(_AccessControlNodesKey);
-		}
 
 		targetChunk.SetServerModdata(_AccessControlNodesKey, data);
 		}
@@ -242,7 +224,7 @@ namespace FirstMachineAge
 		/// </summary>
 		/// <param name="pos">Block Position.</param>
 		/// <param name="theLock">The subject lock.</param>
-		protected void AddLock_ClientCache(BlockPos pos, GenericLock theLock)
+		protected void AddLock_ClientCache(BlockPos pos, GenericLock theLock, IPlayer owner)
 		{
 		if (this.Client_LockLookup.ContainsKey(pos.Copy( ))) {
 		Mod.Logger.Warning("Can't overwrite cached lock entry located: {0}", pos);
@@ -251,6 +233,7 @@ namespace FirstMachineAge
 		var lockStateNode = new LockCacheNode( );
 
 		lockStateNode.Tier = theLock.LockTier;
+		lockStateNode.OwnerName = owner.PlayerName;
 
 		switch (theLock.LockStyle) {
 		case LockKinds.None:
@@ -327,7 +310,7 @@ namespace FirstMachineAge
 
 		if (networkMessage != null && networkMessage.LockStatesByBlockPos != null) {
 		#if DEBUG
-		Mod.Logger.VerboseDebug("ACN Rx from Server; {0} nodes", networkMessage.LockStatesByBlockPos.Count);
+		Mod.Logger.VerboseDebug("ACN Rx from Server; {0} AC-nodes", networkMessage.LockStatesByBlockPos.Count);
 		#endif
 
 		foreach (var update in networkMessage.LockStatesByBlockPos) {
@@ -377,7 +360,7 @@ namespace FirstMachineAge
 
 		private void UpdateBroadcast(IServerPlayer byPlayer,  BlockPos blockPos,  AccessControlNode updatedLock)
 		{
-
+		Mod.Logger.Debug("Broadcast single ACN @{0} ", blockPos);
 		foreach (IServerPlayer tgtPlayer in ServerAPI.World.AllOnlinePlayers) 
 		{		
 		LockStatusList specificLSL = ComputeLSLFromACN(blockPos, updatedLock, tgtPlayer);
@@ -410,7 +393,7 @@ namespace FirstMachineAge
 			Mod.Logger.VerboseDebug("Portunus re-trigger [{0}]", portunus_thread.ThreadState);
 		#endif
 
-			if (portunus_thread.ThreadState.HasFlag(ThreadState.Unstarted) ){
+		if (portunus_thread.ThreadState.HasFlag(ThreadState.Unstarted) ){
 		portunus_thread.Start( );
 		}
 		else if (portunus_thread.ThreadState.HasFlag(ThreadState.WaitSleepJoin)) {
@@ -468,8 +451,10 @@ namespace FirstMachineAge
 		}
 
 		//Persist & SAVE-COMMIT Altered ACNs !
+		var alteredCount = Server_ACN.Count(ac => ac.Value.Altered == true);
+		if (alteredCount > 0) Mod.Logger.Debug("There are {0} altered chunk Nodes to persist", alteredCount);
 
-		foreach (var alteredEntry in Server_ACN.TakeWhile(node => node.Value.Altered == true)) {
+		foreach (var alteredEntry in Server_ACN.Where(node => node.Value.Altered == true).ToList()) {
 		byte[ ] data = SerializerUtil.Serialize<ChunkACNodes>(alteredEntry.Value);
 
 		IServerChunk updatingChunk = ServerAPI.WorldManager.GetChunk(alteredEntry.Key.X, alteredEntry.Key.Y, alteredEntry.Key.Z);
@@ -477,7 +462,7 @@ namespace FirstMachineAge
 		updatingChunk.SetServerModdata(_AccessControlNodesKey, data);
 
 		alteredEntry.Value.Altered = false;
-		Mod.Logger.VerboseDebug("Stored ACN for pos {0}", alteredEntry.Key);
+		Mod.Logger.VerboseDebug("Stored ACN(s) for pos {0}", alteredEntry.Key);
 		}
 
 		//Then sleep until interupted again, and repeat
@@ -516,15 +501,18 @@ namespace FirstMachineAge
 
 		case LockKinds.Classic:
 			lcn.LockState = locked ? LockStatus.Locked : LockStatus.Unlocked;
+			lcn.OwnerName = ServerAPI.World.PlayerByUid(entry.Value.OwnerPlayerUID).PlayerName;
 			break;
 
 		case LockKinds.Combination:
 			lcn.LockState = locked ? LockStatus.ComboUnknown : LockStatus.ComboKnown;
+			lcn.OwnerName = ServerAPI.World.PlayerByUid(entry.Value.OwnerPlayerUID).PlayerName;
 			lcn.Tier = entry.Value.Tier;
 			break;
 
 		case LockKinds.Key:
 			lcn.LockState = locked ? LockStatus.KeyNope : LockStatus.KeyHave;
+			lcn.OwnerName = ServerAPI.World.PlayerByUid(entry.Value.OwnerPlayerUID).PlayerName;
 			break;
 		}
 
@@ -548,18 +536,21 @@ namespace FirstMachineAge
 
 		case LockKinds.Classic:
 			lcn.LockState = locked ? LockStatus.Locked : LockStatus.Unlocked;
+			lcn.OwnerName = ServerAPI.World.PlayerByUid(updatedLock.OwnerPlayerUID).PlayerName;
 			break;
 
 		case LockKinds.Combination:
 			lcn.LockState = locked ? LockStatus.ComboUnknown : LockStatus.ComboKnown;
+			lcn.OwnerName = ServerAPI.World.PlayerByUid(updatedLock.OwnerPlayerUID).PlayerName;
 			lcn.Tier = updatedLock.Tier;
 			break;
 
 		case LockKinds.Key:
 			lcn.LockState = locked ? LockStatus.KeyNope : LockStatus.KeyHave;
+			lcn.OwnerName = ServerAPI.World.PlayerByUid(updatedLock.OwnerPlayerUID).PlayerName;
 			break;
-		}
-
+		}		
+				
 		LockStatusList singleLockState = new LockStatusList(blockPos, lcn);
 
 		return singleLockState;
@@ -634,7 +625,7 @@ namespace FirstMachineAge
 			{
 			var keyId = GenericKey.KeyID(slot.Itemstack);
 			//PlayerUID ?
-			keyIds.Add(keyId);
+			if (keyId > 0) keyIds.Add(keyId);
 			}
 		}
 

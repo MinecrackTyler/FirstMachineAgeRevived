@@ -91,12 +91,12 @@ namespace FirstMachineAge
     [ProtoContract]
 	public class AccessEntry
 	{
-		[ProtoMember(0)]
+		[ProtoMember(1)]
 		public string PlayerUID;
 
 		//Access type; Player or Group ?
 
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public int? GroupID;
 
 

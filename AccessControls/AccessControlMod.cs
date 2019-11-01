@@ -293,20 +293,19 @@ namespace FirstMachineAge
 
 		public void ApplyLock(BlockSelection blockSel, IPlayer player, ItemSlot itemSlot, string desc = null)
 		{
-			bool success = true;
+			bool commitACN = true;
 
 			GenericLock theLock = itemSlot.Itemstack.Item as GenericLock;
 			string material = theLock.Variant[_lockMaterial];
 
 			BlockPos blockPos = blockSel.Position.Copy( );
 
-
 			//TODO: Adjust position(s) with N block high doors, but player selected 'lower' part...
 			AdjustBlockPostionForMultiBlockStructure(ref blockPos);
 
 			//Client path only updates local cache?
 			if (CoreAPI.Side.IsClient( )) {
-				AddLock_ClientCache(blockPos, theLock);
+				AddLock_ClientCache(blockPos, theLock, player);
 				return;
 			}
 
@@ -324,8 +323,10 @@ namespace FirstMachineAge
 				newLockACN.CombinationCode = theLock.CombinationCode(itemSlot);
 				newLockACN.Tier = theLock.LockTier;
 
-				if (newLockACN.CombinationCode == null) {
+				if (newLockACN.CombinationCode == null) 
+				{
 				Mod.Logger.Warning("Undefined Combination # for existant lock - can't apply!");
+				commitACN = false;
 				}
 			}
 
@@ -342,27 +343,23 @@ namespace FirstMachineAge
 				//Mark slot dirty?
 			}
 
-		if (Server_ACN.ContainsKey(chunkPos)) {
-		Server_ACN[chunkPos].Entries.Add(blockPos, newLockACN);		
+		if (Server_ACN.ContainsKey(chunkPos) && commitACN) 
+		{
+		Mod.Logger.Debug("Appending to ChunkACNodes at {0}", chunkPos);
+		Server_ACN[chunkPos].Entries.Add(blockPos, newLockACN);	
+		Server_ACN[chunkPos].Altered = true;		
 		}
 		else 
 		{
 		Mod.Logger.Debug("Created ChunkACNodes for {0}", chunkPos);
 		Server_ACN.Add(chunkPos, new ChunkACNodes(chunkPos));
 		Server_ACN[chunkPos].Entries.Add(blockPos, newLockACN);
+		Server_ACN[chunkPos].Altered = true;		
 		}
-
-		if (success) {
-			//Mark this host chunk had an ACL added, thus altered.
-			Server_ACN[chunkPos].Altered = true;
-
-			//Send message to player that object was locked with X type lock (and combo / key#)	
-			//Send out ACN update selective broadcast msg...
-			UpdateBroadcast(serverPlayer, blockPos, newLockACN );
-		}
-
-
-
+		
+		//Send message to player that object was locked with X type lock (and combo / key#)	
+		//Send out ACN update selective broadcast msg...
+		if (commitACN) UpdateBroadcast(serverPlayer, blockPos, newLockACN );		
 
 		}
 

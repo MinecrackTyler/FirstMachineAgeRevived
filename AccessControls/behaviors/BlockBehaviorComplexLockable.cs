@@ -83,13 +83,16 @@ namespace FirstMachineAge
 
 			if (acm != null) 
 			{
-			LockStatus lockstate = acm.LockState(pos.Copy( ), forPlayer);
+			BlockPos adjPos = pos.Copy( );
+			acm.AdjustBlockPostionForMultiBlockStructure(ref adjPos);
+
+			LockStatus lockstate = acm.LockState(adjPos, forPlayer);
 			
 			if (lockstate != LockStatus.None) 
 			{
-				var locktier = acm.LockTier(pos.Copy( ), forPlayer);
-				var lockowner = acm.LockOwnerName(pos.Copy( ), forPlayer);
-				lockInfo.AppendFormat("LockState: {0}, Owner: {1} - Tier: {2}", lockstate,lockowner, locktier);		
+				var locktier = acm.LockTier(adjPos, forPlayer);
+				var lockowner = acm.LockOwnerName(adjPos, forPlayer);
+				lockInfo.AppendFormat("LockStatus: {0}, Owner: {1} @ Tier:{2}", lockstate,lockowner, locktier);		
 
 				return lockInfo.ToString( );
 			}

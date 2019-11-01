@@ -124,12 +124,12 @@ namespace FirstMachineAge
 			}
 			else if (this.LockStyle == LockKinds.Key) 
 			{
-			var keyId = KeyID(slot);
+				//var keyId = KeyID(slot);
 			
-				if (keyId.HasValue == false) 
-				{
-				GenerateKeyId(slot, this);
-				}
+				//if (keyId.HasValue == false) 
+				//{
+				//GenerateKeyId(slot, this);
+				//}
 			}
 
 			}
