@@ -81,9 +81,9 @@ namespace FirstMachineAge
 
 		//Await lock-GUI events, send cache updates via NW channel...
 		accessControl_ServerChannel = ServerAPI.Network.RegisterChannel(_channel_name);
-		accessControl_ServerChannel.RegisterMessageType<LockGUIMessage>( );
-		accessControl_ServerChannel.RegisterMessageType<LockStatusList>( );
-		accessControl_ServerChannel.SetMessageHandler<LockGUIMessage>(LockGUIMessageHandler);				
+		accessControl_ServerChannel = accessControl_ServerChannel.RegisterMessageType<LockGUIMessage>( );
+		accessControl_ServerChannel = accessControl_ServerChannel.RegisterMessageType<LockStatusList>( );
+		accessControl_ServerChannel = accessControl_ServerChannel.SetMessageHandler<LockGUIMessage>(LockGUIMessageHandler);				
 
 		ServerAPI.Event.PlayerJoin += TrackPlayerJoins;
 		ServerAPI.Event.PlayerLeave += TrackPlayerLeaves;
@@ -103,6 +103,7 @@ namespace FirstMachineAge
 		ServerAPI.Event.DidBreakBlock += RemoveACN_byBlockBreakage;
 
 		Mod.Logger.StoryEvent("...a tumbler turns, and opens\t*click*");
+		Mod.Logger.VerboseDebug("ACN done server-side Init");
 		}
 
 		private void RegisterStuff(ICoreAPI api)
@@ -116,48 +117,89 @@ namespace FirstMachineAge
 
 		private void InitializeClientSide( )
 		{
+		if (ClientAPI.Network.DidReceiveChannelId(_channel_name)) Mod.Logger.VerboseDebug("Server side channel: \"{0}\" existant", _channel_name);
 		accessControl_ClientChannel = ClientAPI.Network.RegisterChannel(_channel_name);
-		accessControl_ClientChannel.RegisterMessageType<LockStatusList>( );
+		accessControl_ClientChannel = accessControl_ClientChannel.RegisterMessageType<LockGUIMessage>( );
+		accessControl_ClientChannel = accessControl_ClientChannel.RegisterMessageType<LockStatusList>( );
 
-		accessControl_ClientChannel.SetMessageHandler<LockStatusList>(RecieveACNUpdate);//RX: Cache update 
+		accessControl_ClientChannel = accessControl_ClientChannel.SetMessageHandler<LockStatusList>(RecieveACNUpdate);//RX: Cache update 
+
+		Mod.Logger.Debug("{0} channel connected: {1}", accessControl_ClientChannel.ChannelName, accessControl_ClientChannel.Connected);
 
 		Client_LockLookup = new Dictionary<BlockPos, LockCacheNode>( );
+		Mod.Logger.VerboseDebug("ACN done client-side Init");
+		}
 
+		internal bool ACN_IsNew(BlockPos blockPos)
+		{
+		Vec3i chunkPos = ServerAPI.World.BlockAccessor.ToChunkPos(blockPos);
+
+		if (Server_ACN.ContainsKey(chunkPos )) 
+		{
+			if (Server_ACN[chunkPos].Entries.ContainsKey(blockPos)) 
+				{
+					return false;
+				}
+		}
+
+		return true;
 		}
 
 		internal void LoadACN_fromChunk(Vec3i chunkPos)
 		{
-		//Retrieve and add to local cache
+		//ATTEMPT to Retrieve and add to local cache...
 		IServerChunk targetChunk;
 		byte[ ] data = null;
 		long chunkIndex = ServerAPI.World.BulkBlockAccessor.ToChunkIndex3D(chunkPos);
-
+					
 		if (!ServerAPI.WorldManager.AllLoadedChunks.TryGetValue(chunkIndex, out targetChunk)) {
 		//An unloaded chunk huh...
 		Mod.Logger.Debug("Un-loaded chunk hit! {0}", chunkPos);
 
 		targetChunk = ServerAPI.WorldManager.GetChunk(chunkPos.X, chunkPos.Y, chunkPos.Z);
 		}
-		
-		
+
+		if (targetChunk != null) 
+		{
+		data = targetChunk.GetServerModdata(_AccessControlNodesKey);		
+		}
 
 		if (data != null && data.Length > 0) {
+		
+		ChunkACNodes existingNodes = SerializerUtil.Deserialize<ChunkACNodes>(data);
+
 		#if DEBUG
-		Mod.Logger.VerboseDebug("Data for ACNs present in chunk: {0}", chunkPos);
+		Mod.Logger.VerboseDebug("ACNs present in chunk: {0} - Nodes# {1}", chunkPos,existingNodes.Entries.Count);
 		#endif
 
-		ChunkACNodes acNodes = SerializerUtil.Deserialize<ChunkACNodes>(data);
-
-		Server_ACN.Add(chunkPos.Clone( ), acNodes);
-		}
-		else if (targetChunk != null){
+		Server_ACN.Add(chunkPos.Clone( ), existingNodes);
+		} else {
 		#if DEBUG
-		Mod.Logger.VerboseDebug("Absent ACN structures for chunk: {0} !", chunkPos);
+		Mod.Logger.VerboseDebug("Absent ACN data for chunk: {0}! (placeholder added)", chunkPos);
 		#endif
 		//Setup new AC Node list for this chunk.
-		ChunkACNodes newAcNodes = new ChunkACNodes( );
+		ChunkACNodes placeHolderNodes = new ChunkACNodes();
 
-		Server_ACN.Add(chunkPos.Clone( ), newAcNodes);
+		Server_ACN.Add(chunkPos.Clone( ), placeHolderNodes);
+		}
+
+		}
+
+		internal void AddACN_ToServerACNs(BlockPos blockPos, AccessControlNode node )
+		{
+		Vec3i chunkPos = ServerAPI.World.BlockAccessor.ToChunkPos(blockPos);
+
+		if (Server_ACN.ContainsKey(chunkPos) ) {
+		Mod.Logger.Debug("Appending to ChunkACNodes at {0}", chunkPos);
+		Server_ACN[chunkPos].Entries.Add(blockPos, node);
+		Server_ACN[chunkPos].Altered = true;
+		}
+		else {
+		Mod.Logger.Debug("Created ChunkACNodes for {0}", chunkPos);
+		Server_ACN.Add(chunkPos, new ChunkACNodes(chunkPos));
+		Server_ACN[chunkPos].Entries.Add(blockPos, node);
+		Server_ACN[chunkPos].Altered = true;
+		Server_ACN[chunkPos].OriginChunk = chunkPos.Clone( );
 		}
 
 		}
@@ -237,7 +279,7 @@ namespace FirstMachineAge
 
 		switch (theLock.LockStyle) {
 		case LockKinds.None:
-			Mod.Logger.Error("Adding a non-lock to ClientCache, this is in error!");
+			Mod.Logger.Error("Adding a non-lock to ClientCache, this is in error!");//Adding that is. Place-holders may exist like this
 			break;
 
 		case LockKinds.Classic:
@@ -307,31 +349,27 @@ namespace FirstMachineAge
 		private void RecieveACNUpdate(LockStatusList networkMessage)
 		{
 		//Client side; update local cache from whatever server sent
+		if (networkMessage != null && networkMessage.LockStatesByBlockPos != null) 
+		{
+			#if DEBUG
+			Mod.Logger.VerboseDebug("Rx from Server; {0} LSL-nodes", networkMessage.LockStatesByBlockPos.Count);
+			#endif
 
-		if (networkMessage != null && networkMessage.LockStatesByBlockPos != null) {
-		#if DEBUG
-		Mod.Logger.VerboseDebug("ACN Rx from Server; {0} AC-nodes", networkMessage.LockStatesByBlockPos.Count);
-		#endif
-
-		foreach (var update in networkMessage.LockStatesByBlockPos) {
-		if (Client_LockLookup.ContainsKey(update.Key)) {
-
-		if (update.Value.LockState != LockStatus.None) {
-		//Replace
-		Client_LockLookup[update.Key.Copy( )] = update.Value;
-		}
-		else {
-		Client_LockLookup.Remove(update.Key.Copy( ));
-		}
-
-		}
-		else {
-		//New
-		Client_LockLookup.Add(update.Key.Copy( ), update.Value);
+			foreach (var update in networkMessage.LockStatesByBlockPos) 
+			{
+			if (Client_LockLookup.ContainsKey(update.Key)) 
+				{
+				//Replace
+				Client_LockLookup[update.Key.Copy( )] = update.Value;		
+				}
+			else 
+				{
+				//New
+				Client_LockLookup.Add(update.Key.Copy( ), update.Value);
+				}
+			}
 		}
 
-		}
-		}
 		}
 
 		private void SendClientACNUpdate(IServerPlayer toPlayer, BlockPos pos, AccessControlNode subjectACN)
@@ -340,7 +378,7 @@ namespace FirstMachineAge
 		
 		LockStatusList lsl = ComputeLSLFromACN(pos, subjectACN, toPlayer);
 
-		accessControl_ServerChannel.SendPacket<LockStatusList>(lsl);
+		accessControl_ServerChannel.SendPacket<LockStatusList>(lsl, toPlayer);
 		}
 
 
@@ -350,10 +388,13 @@ namespace FirstMachineAge
 		//TODO: side-Thread this ?
 		ConnectedClient client = this.ServerMAIN.GetClientByUID(toPlayer.PlayerUID);
 
-		if (client.IsPlayingClient) {
+		if (client.State != EnumClientState.Offline) {
 		//Pre-cooked 'cache' ACLs Computed for the current player in question
 		LockStatusList lsl = ComputeLSLFromACNs(nodesList, toPlayer);
 
+		#if DEBUG
+		Mod.Logger.VerboseDebug("Sending {0} LSL(s) for {1}", lsl.LockStatesByBlockPos.Count, toPlayer.PlayerName);
+		#endif
 		accessControl_ServerChannel.SendPacket<LockStatusList>(lsl, toPlayer);
 		}
 		}
@@ -388,18 +429,23 @@ namespace FirstMachineAge
 
 		private void AwakenPortunus(float delayed)
 		{
-		//Start / Re-start thread to computed ACL node list to clients
-		#if DEBUG
-			Mod.Logger.VerboseDebug("Portunus re-trigger [{0}]", portunus_thread.ThreadState);
-		#endif
 
-		if (portunus_thread.ThreadState.HasFlag(ThreadState.Unstarted) ){
-		portunus_thread.Start( );
+		if (ServerAPI.Server.CurrentRunPhase == EnumServerRunPhase.RunGame && ServerAPI.World.AllOnlinePlayers.Count( ) > 0) 
+		{
+			//Start / Re-start thread to computed ACL node list to clients
+			#if DEBUG
+			Mod.Logger.VerboseDebug("Portunus re-trigger [{0}]", portunus_thread.ThreadState);
+			#endif
+
+			if (portunus_thread.ThreadState.HasFlag(ThreadState.Unstarted)) {
+			portunus_thread.Start( );
+			}
+			else if (portunus_thread.ThreadState.HasFlag(ThreadState.WaitSleepJoin)) {
+			//(re)Wake the sleeper!
+			portunus_thread.Interrupt( );
+			}
 		}
-		else if (portunus_thread.ThreadState.HasFlag(ThreadState.WaitSleepJoin)) {
-		//(re)Wake the sleeper!
-		portunus_thread.Interrupt( );
-		}
+
 		}
 
 		private void Portunus( )
@@ -407,7 +453,18 @@ namespace FirstMachineAge
 		wake:
 		Mod.Logger.VerboseDebug("Portunus thread awoken");
 		try {
-		//For all online players - ACN's for *new* chunks entered/in
+		//####################### Fetch ACN's for *INTRODUCED* (to A.C. system) Chunks... ######################		
+		foreach (var chunkEntry in ServerAPI.WorldManager.AllLoadedChunks) {
+
+		Vec3i loadedPos = ServerMAIN.WorldMap.ChunkPosFromChunkIndex3D(chunkEntry.Key);
+
+			if (Server_ACN.ContainsKey(loadedPos) == false) 
+			{			
+			LoadACN_fromChunk(loadedPos);
+			}
+		}
+
+		//####################### For all online players - ACN's for *new* chunks entered/in ###########################
 		foreach (var player in ServerAPI.World.AllOnlinePlayers) {//TODO: Parallel.ForEach
 
 		//var client = this.ServerMAIN.GetConnectedClient(player.PlayerUID);
@@ -443,14 +500,9 @@ namespace FirstMachineAge
 		}
 		//Keys should already be marking their previous/current owner (called externally) - ACN
 
-
-
-
-		//var chunk_ACLs_Cached = this.previousChunkSet_byPlayerUID.
-
 		}
 
-		//Persist & SAVE-COMMIT Altered ACNs !
+		//########################### Persist & SAVE-COMMIT Altered ACNs ! #########################
 		var alteredCount = Server_ACN.Count(ac => ac.Value.Altered == true);
 		if (alteredCount > 0) Mod.Logger.Debug("There are {0} altered chunk Nodes to persist", alteredCount);
 
@@ -524,14 +576,13 @@ namespace FirstMachineAge
 
 		private LockStatusList ComputeLSLFromACN(BlockPos blockPos , AccessControlNode updatedLock, IServerPlayer tgtPlayer)
 		{
-
 		bool locked = EvaulateACN_Rule(tgtPlayer, updatedLock);
 
 		LockCacheNode lcn = new LockCacheNode( );
 
-		switch (updatedLock.LockStyle) {
+		switch (updatedLock.LockStyle) {		
 		case LockKinds.None:
-			lcn.LockState = LockStatus.None;//Only used for 'remove' orders...
+			lcn.LockState = LockStatus.None;//Only used for lock 'removal'
 			break;
 
 		case LockKinds.Classic:

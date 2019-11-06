@@ -51,6 +51,8 @@ namespace FirstMachineAge
 		{
 		this.ClientAPI = api;		
 
+		//Called too early?
+
 		InitializeClientSide( );
 		}
 
@@ -134,14 +136,15 @@ namespace FirstMachineAge
 
 		public LockStatus LockState(BlockPos pos, IPlayer forPlayer)
 		{
+		pos = pos.Copy( );
 		if (CoreAPI.Side.IsClient( )) {
-			if (Client_LockLookup.ContainsKey(pos.Copy( ))) 
+			if (Client_LockLookup.ContainsKey(pos)) 
 			{
-			return Client_LockLookup[pos.Copy( )].LockState;
+			return Client_LockLookup[pos].LockState;
 			}
 			else 
 			{			
-			return LockStatus.None;			
+			return LockStatus.Unknown;//Any lock state lookup is from a Behavior Lockable - thus should have _SOME_ entry	
 			}
 		}
 		else {
@@ -167,7 +170,7 @@ namespace FirstMachineAge
 		}
 		}
 
-		return LockStatus.None;
+		return LockStatus.None;//No entry made here (new?)
 		}
 
 		public uint LockTier(BlockPos pos, IPlayer forPlayer)
@@ -235,11 +238,12 @@ namespace FirstMachineAge
 		}
 
 		var controlNode = RetrieveACN(position.Copy( ));
-
-		if (controlNode.LockStyle != LockKinds.None) {
-		return EvaulateACN_Rule(forPlayer, controlNode);
+	
+		if ( controlNode != null && controlNode.LockStyle != LockKinds.None) 
+		{
+		return EvaulateACN_Rule(forPlayer, controlNode);		
 		}
-
+		
 		return false;
 		}
 
@@ -287,9 +291,73 @@ namespace FirstMachineAge
 
 		return false;//Probably not...
 		}
-		 
+
+		/// <summary>
+		/// Adds a 'None' lock entry client-side only.
+		/// </summary>
+		/// <param name="pos">Position.</param>
+		/// <param name="owner">Owner.</param>
+		public void AddPlaceHolder_SelfCache(BlockPos pos)
+		{			
+		pos = pos.Copy( );
+
+		if (this.Client_LockLookup.ContainsKey(pos)) {
+		Mod.Logger.Error("Can't overwrite cached lock entry located: {0}", pos);
+		}
+		else {
+		var placheHolderState = new LockCacheNode( );
+
+		placheHolderState.Tier = 0;
+		placheHolderState.OwnerName = ClientAPI.World.Player.PlayerName;
+		placheHolderState.LockState = LockStatus.None;//Default Unlocked
 		
 
+		this.Client_LockLookup.Add(pos, placheHolderState);
+		Mod.Logger.Debug("Added cach entry located: {0}", pos);
+		}
+		
+		}
+
+		public void AddPlaceHolder_Server(BlockPos pos)
+		{		
+		if (CoreAPI.Side.IsServer( )) 
+		{
+		
+		BlockPos blockPos = pos.Copy( );
+						
+		AdjustBlockPostionForMultiBlockStructure(ref blockPos);
+
+		Mod.Logger.VerboseDebug("Creating placehodler; @{0} ", blockPos);
+
+		AccessControlNode placeHolder = new AccessControlNode();
+
+		if (ACN_IsNew(blockPos)) 
+			{
+			AddACN_ToServerACNs(blockPos, placeHolder);
+
+			//Send message to player that object was locked with X type lock (and combo / key#)	
+			//Send out ACN update selective broadcast msg...
+			UpdateBroadcast(null, blockPos, placeHolder);
+			}
+			else {
+			Mod.Logger.Warning("Prevented duplicate placeholder @{0} ...", blockPos);
+			}
+			}
+		}
+
+		public void RemovelaceHolder_SelfCache(BlockPos pos)
+		{
+		pos = pos.Copy( );
+
+		if (this.Client_LockLookup.ContainsKey(pos) == false) {
+		Mod.Logger.Error("Non-existant remove cached entry located: {0}", pos);
+		}
+		else {		 
+		this.Client_LockLookup.Remove(pos);
+		Mod.Logger.Debug("Removed cach entry located: {0}", pos);
+		}
+
+		}
 
 		public void ApplyLock(BlockSelection blockSel, IPlayer player, ItemSlot itemSlot, string desc = null)
 		{
@@ -343,30 +411,52 @@ namespace FirstMachineAge
 				//Mark slot dirty?
 			}
 
-		if (Server_ACN.ContainsKey(chunkPos) && commitACN) 
+		if (commitACN) 
 		{
-		Mod.Logger.Debug("Appending to ChunkACNodes at {0}", chunkPos);
-		Server_ACN[chunkPos].Entries.Add(blockPos, newLockACN);	
-		Server_ACN[chunkPos].Altered = true;		
-		}
-		else 
-		{
-		Mod.Logger.Debug("Created ChunkACNodes for {0}", chunkPos);
-		Server_ACN.Add(chunkPos, new ChunkACNodes(chunkPos));
-		Server_ACN[chunkPos].Entries.Add(blockPos, newLockACN);
-		Server_ACN[chunkPos].Altered = true;		
+		AddACN_ToServerACNs(blockPos, newLockACN);
 		}
 		
 		//Send message to player that object was locked with X type lock (and combo / key#)	
 		//Send out ACN update selective broadcast msg...
 		if (commitACN) UpdateBroadcast(serverPlayer, blockPos, newLockACN );		
-
 		}
 
-		public void RemoveLock(BlockSelection blockSel, IPlayer player)
+		/// <summary>
+		/// Destroy A.C.N. node at this Position. [Permanent!]
+		/// </summary>
+		/// <returns>The lock.</returns>
+		/// <param name="blockPos">Block position.</param>
+		public void DestroyLock(BlockPos blockPos)
 		{
+		//By a creative player or world edit - erase any lock entry here.
+		if (CoreAPI.Side.IsServer( )) 
+			{
+			blockPos = blockPos.Copy( );
+			//Server continues			
+			Vec3i chunkPos = ServerAPI.World.BlockAccessor.ToChunkPos(blockPos);
 
-		BlockPos blockPos = blockSel.Position.Copy( );		
+			Mod.Logger.VerboseDebug("Removing ACL entry @{0} ", blockPos);
+
+			AccessControlNode remLockACN = Server_ACN[chunkPos].Entries[blockPos];
+			remLockACN.LockStyle = LockKinds.None;//Remove from other players ACN caches'
+			remLockACN.Tier = 0;			
+
+			//Send message to other players that A.C.N. no longer exists here.	
+			UpdateBroadcast(null, blockPos, remLockACN);
+
+			Server_ACN[chunkPos].Entries.Remove(blockPos);
+			}
+		}
+
+		/// <summary>
+		/// Removes the lock. (set A.C.N. back to LockState.None)
+		/// </summary>
+		/// <returns>The lock.</returns>
+		/// <param name="blockSel">Block sel.</param>
+		/// <param name="player">Player.</param>
+		public void RemoveLock(BlockPos blockPos, IPlayer player)
+		{
+		blockPos = blockPos.Copy( );
 
 		//Client path only updates local cache?
 		if (CoreAPI.Side.IsClient( )) {
@@ -378,20 +468,22 @@ namespace FirstMachineAge
 		IServerPlayer serverPlayer = player as IServerPlayer;
 		Vec3i chunkPos = ServerAPI.World.BlockAccessor.ToChunkPos(blockPos);
 
-		Mod.Logger.VerboseDebug("Remove ACL entry @{0} by {1}", blockSel.Position, player.PlayerName);
-
-		AccessControlNode remLockACN = Server_ACN[chunkPos].Entries[blockPos];
+		Mod.Logger.VerboseDebug("De-lockify ACL entry @{0} by {1}", blockPos, player.PlayerName);
+					
+		if (Server_ACN[chunkPos].Entries.ContainsKey(blockPos)) {
+	    AccessControlNode remLockACN = Server_ACN[chunkPos].Entries[blockPos];
 		remLockACN.LockStyle = LockKinds.None;//Remove from other players ACN caches'
+		remLockACN.Tier = 0;
 
-		Server_ACN[chunkPos].Entries.Remove(blockPos);		
-				
-
-		//Send message to player that object was locked with X type lock (and combo / key#)	
-		//Send out ACN update selective broadcast msg...
+		//Send message to players that object was unlocked by a player		
 		UpdateBroadcast(serverPlayer, blockPos, remLockACN);
+		}
+		else 
+		{
+		Mod.Logger.Warning("Removing non-existant A.C.N.: @{0} by {1}", blockPos, player.PlayerName);
+		}
+
 		
-
-
 		}
 
 
@@ -403,23 +495,26 @@ namespace FirstMachineAge
 		/// <param name="byBlockPos">By block position.</param>
 		public AccessControlNode RetrieveACN(BlockPos byBlockPos)
 		{
-			var chunkPos= ServerAPI.World.BulkBlockAccessor.ToChunkPos(byBlockPos);
-			AccessControlNode node = new AccessControlNode( );
+			var chunkPos = ServerAPI.World.BulkBlockAccessor.ToChunkPos(byBlockPos);
+			AccessControlNode node = null;
 
 			if (this.Server_ACN.ContainsKey(chunkPos)) {
 
+					if (Server_ACN[chunkPos].Entries.TryGetValue(byBlockPos, out node)) 
+					{
+					return node;
+					}
+					
+			} else {
+			//Un cached chunk;
+			LoadACN_fromChunk(chunkPos);
 
 				if (Server_ACN[chunkPos].Entries.TryGetValue(byBlockPos, out node)) {
-					return node;
+				return node;
 				}
-
-
-			} else {
-				
 			}
 
-
-			return node;
+			return null;
 		}
 
 		//	byte[] GetServerModdata (string key);

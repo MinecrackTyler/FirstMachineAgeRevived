@@ -11,12 +11,13 @@ namespace FirstMachineAge
 {
 
 	/// <summary>
-	/// Multi-use Lockable behavior for combo/key/other locks
+	/// Multi-use Lockable behavior for combo/key/fancy locks
 	/// </summary>
 	/// <remarks>Replaces the old behavior...</remarks>
 	public class BlockBehaviorComplexLockable : BlockBehaviorLockable
 	{
 		private AccessControlsMod acm;
+		private ILogger Logger;
 
 		public BlockBehaviorComplexLockable(Block block) : base(block)
 		{
@@ -26,6 +27,7 @@ namespace FirstMachineAge
 		public override void OnLoaded(ICoreAPI api)
 		{
 			acm = api.ModLoader.GetModSystem<AccessControlsMod>( );
+			Logger = acm.Mod.Logger;
 		}
 
 
@@ -38,39 +40,44 @@ namespace FirstMachineAge
 			{
 				LockStatus lockState = acm.LockState(blockPos, byPlayer);
 
-				if (world.Side == EnumAppSide.Client) 
-				{
-					ICoreClientAPI clientAPI = (world.Api as ICoreClientAPI);
+				bool clientSide = world.Side.IsClient( );
+				ICoreClientAPI clientAPI = clientSide ? (world.Api as ICoreClientAPI): null;
 
 					switch (lockState) 
 					{
+					case LockStatus.None:
+					handling = EnumHandling.PassThrough;
+					return true;
+
 					case LockStatus.ComboUnknown:
 						//Does Not already know combo...
-						ShowComboLockGUI(clientAPI, byPlayer,blockPos);
+					if (clientSide) ShowComboLockGUI(clientAPI, byPlayer,blockPos);
 
 					break;
 
 					case LockStatus.KeyHave:
-						clientAPI.TriggerChatMessage("opened with a key...");
+						if (clientSide) clientAPI.TriggerChatMessage("opened with a key...");
 						handling = EnumHandling.PassThrough;
 						return true;
 
 					case LockStatus.KeyNope:
 			          	//Did not have key...
-						clientAPI.TriggerIngameError(this, "locked", Lang.Get("ingameerror-nokey", new object[0]));
+						if (clientSide) clientAPI.TriggerIngameError(this, "locked", Lang.Get("ingameerror-nokey", new object[0]));
+					break;
+
+					case LockStatus.Unknown:
+						if (clientSide) clientAPI.TriggerIngameError(this, "error", "Access-Control malfunction or lag?!");
 					break;
 
 					default:
 						//Normal or 'default' lock:
-						clientAPI.TriggerIngameError(this, "locked", Lang.Get("ingameerror-locked", new object[0]));
+						if (clientSide) clientAPI.TriggerIngameError(this, "locked", Lang.Get("ingameerror-locked", new object[0]));
 					break;
 					}
-				}
 
 				handling = EnumHandling.PreventSubsequent;
 				return false;
 			}
-
 
 			return base.OnBlockInteractStart(world, byPlayer, blockSel, ref handling);
 		}
@@ -101,6 +108,55 @@ namespace FirstMachineAge
 
 		return String.Empty;
 		}
+
+
+		public override void OnBlockPlaced(IWorldAccessor world, BlockPos blockPos, ref EnumHandling handling)
+		{
+		#if DEBUG
+		Logger.VerboseDebug("BlockBehaviorComplexLockable::OnBlockPlaced()");
+		#endif
+
+		if (world.Side.IsClient( )) {
+		//OnBlockPlaced --> add entry to (client) cache!
+		acm.AddPlaceHolder_SelfCache(blockPos);
+		}
+		else {
+		//Placeholder for SERVER too!
+		acm.AddPlaceHolder_Server(blockPos);
+		}
+
+		base.OnBlockPlaced(world, blockPos, ref handling);
+		}
+
+		public override void OnBlockRemoved(IWorldAccessor world, BlockPos pos, ref EnumHandling handling)
+		{
+		#if DEBUG
+		Logger.VerboseDebug("BlockBehaviorComplexLockable::OnBlockRemoved()");
+#endif
+
+		if (world.Side.IsClient( )) {
+		acm.RemovelaceHolder_SelfCache(pos);
+		} else 
+		{
+		acm.DestroyLock(pos);
+		}
+					
+		base.OnBlockRemoved(world, pos, ref handling);
+		}
+
+		public override void OnBlockBroken(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, ref EnumHandling handling)
+		{
+
+		if (world.Side.IsClient( )) {
+		acm.RemovelaceHolder_SelfCache(pos);
+		}
+		else {
+		acm.RemoveLock(pos, byPlayer);
+		}
+
+		base.OnBlockBroken(world, pos, byPlayer, ref handling);
+		}
+
 
 		protected void ShowComboLockGUI(ICoreClientAPI clientAPI, IPlayer byPlayer, BlockPos blockPos)
 		{

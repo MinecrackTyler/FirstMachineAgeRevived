@@ -28,7 +28,7 @@ namespace FirstMachineAge
 		{
 		Entries = new Dictionary<BlockPos, AccessControlNode>( );
 		Altered = true;
-		OriginChunk = originChunk;
+		OriginChunk = originChunk.Clone();
 		}
 
 		[ProtoMember(1)]
@@ -112,7 +112,9 @@ namespace FirstMachineAge
 	[ProtoContract]
 	public class LockStatusList
 	{
-		private LockStatusList( ) { throw new NotSupportedException(); }
+		private LockStatusList( ) { 
+			LockStatesByBlockPos = new Dictionary<BlockPos, LockCacheNode>( );
+		}
 
 		public LockStatusList(BlockPos here)
 		{
@@ -142,7 +144,7 @@ namespace FirstMachineAge
 		public Dictionary<BlockPos,LockCacheNode> LockStatesByBlockPos;
 
 		/*
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public Vec3i ChunkOrigin;
 		*/
 

@@ -12,7 +12,7 @@ namespace FirstMachineAge
 		
 
 
-
+		//TODO: Remove all this for generic?
 		public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
 		{
 			if (byEntity.World.Side.IsClient()) 
@@ -26,7 +26,7 @@ namespace FirstMachineAge
 
 
 				if (AccessControlsMod.LockState(blockSel.Position, player) != LockStatus.None )//already has a lock...?
-				{
+				{//TODO: Add Lock owner text
 					ClientAPI?.TriggerIngameError(this, "cannotlock", Lang.Get("ingameerror-cannotlock"));
 				} else {
 					
