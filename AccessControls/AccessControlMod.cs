@@ -453,7 +453,7 @@ namespace FirstMachineAge
 		/// Removes the lock. (set A.C.N. back to LockState.None)
 		/// </summary>
 		/// <returns>The lock.</returns>
-		/// <param name="blockSel">Block sel.</param>
+		/// <param name="blockPos">Block sel.</param>
 		/// <param name="player">Player.</param>
 		public void RemoveLock(BlockPos blockPos, IPlayer player)
 		{
@@ -472,12 +472,21 @@ namespace FirstMachineAge
 		Mod.Logger.VerboseDebug("De-lockify ACL entry @{0} by {1}", blockPos, player.PlayerName);
 					
 		if (Server_ACN[chunkPos].Entries.ContainsKey(blockPos)) {
-	    AccessControlNode remLockACN = Server_ACN[chunkPos].Entries[blockPos];
-		remLockACN.LockStyle = LockKinds.None;//Remove from other players ACN caches'
-		remLockACN.Tier = 0;
 
-		//Send message to players that object was unlocked by a player		
-		UpdateBroadcast(serverPlayer, blockPos, remLockACN);
+		var remLockACN = Server_ACN[chunkPos].Entries[blockPos];
+		if (remLockACN.LockStyle == LockKinds.Key  && ACNs_byKeyID.ContainsKey(remLockACN.KeyID.Value)) 
+		{
+		ACNs_byKeyID.Remove(remLockACN.KeyID.Value);
+		}
+		
+		Server_ACN[chunkPos].Entries.Remove(blockPos);
+		
+		remLockACN = new AccessControlNode();//Remove from other players ACN caches'
+		Server_ACN[chunkPos].Entries.Add(blockPos, remLockACN);
+		Server_ACN[chunkPos].Altered = true;
+		//Send message to players that object was de-locked by a player		
+		UpdateBroadcast(serverPlayer, blockPos, remLockACN);		
+		
 		}
 		else 
 		{

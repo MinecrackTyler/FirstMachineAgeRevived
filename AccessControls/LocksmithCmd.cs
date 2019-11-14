@@ -51,7 +51,14 @@ namespace FirstMachineAge
 			break;
 
 		case "remove":
+			BlockPos targetPos;
+			//if (args.Length > 0) {
+			//targetPos = args.PopVec3i(null).AsBlockPos;
 
+			if (player.CurrentBlockSelection == null) return;
+			targetPos = player.CurrentBlockSelection.Position.Copy( );
+
+			RemoveLock(targetPos, player);
 			break;
 
 		case "destroy":
@@ -59,7 +66,7 @@ namespace FirstMachineAge
 			break;
 
 		default:
-			player.SendMessage(GlobalConstants.CurrentChatGroup, "unecognised command", EnumChatType.CommandError);
+			player.SendMessage(GlobalConstants.CurrentChatGroup, "unrecognised command", EnumChatType.CommandError);
 			break;
 
 		}
@@ -77,13 +84,38 @@ namespace FirstMachineAge
 
 		}
 
+		private void RemoveLock(BlockPos targetPos, IServerPlayer player)
+		{
+		if (ServerAPI.World.BlockAccessor.IsValidPos(targetPos)) {
+		var actualThing = ServerAPI.World.BlockAccessor.GetBlock(targetPos);
+		if (actualThing.HasBehavior<BlockBehaviorComplexLockable>( )) {
+		var acn = AccessControlsMod.RetrieveACN(targetPos);
+
+		if (acn != null) 
+					{
+					if (acn.LockStyle != LockKinds.None) {
+					AccessControlsMod.RemoveLock(targetPos, player);
+					player.SendMessage(GlobalConstants.CurrentChatGroup, "OK, Lock Removed !", EnumChatType.CommandSuccess);
+					}
+						else { player.SendMessage(GlobalConstants.CurrentChatGroup, "ACN in Default 'None' state. (No lock)", EnumChatType.CommandError); }
+           			}
+					else {player.SendMessage(GlobalConstants.CurrentChatGroup, "NO ACN (or lock...) there!", EnumChatType.CommandError); } 
+		}
+		else { player.SendMessage(GlobalConstants.CurrentChatGroup, "Thing selected can't be lockable anyways...", EnumChatType.CommandError); }
+		}
+		else {
+			player.SendMessage(GlobalConstants.CurrentChatGroup, "Invalid location selected", EnumChatType.CommandError);
+		}
+
+		}
+
 		private void PrintNodes(IServerPlayer player, int groupId, CmdArgs args )
 		{
 		if (args.Length > 0) {
 		var chunkPos = args.PopVec3i(null);
 		}
 		else {
-		BlockPos location = player.Entity.ServerPos.AsBlockPos; ;
+		BlockPos location = player.Entity.ServerPos.AsBlockPos; 
 		Vec3i chunkPos = ServerAPI.World.BlockAccessor.ToChunkPos(location);
 
 		var acn_List = AccessControlsMod.RetrieveACNs_ByChunk(chunkPos);

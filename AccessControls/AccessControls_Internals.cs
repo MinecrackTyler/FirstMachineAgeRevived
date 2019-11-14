@@ -660,7 +660,10 @@ namespace FirstMachineAge
 			break;
 		}
 
-		stati.Add(entry.Key, lcn);
+			if (stati.ContainsKey(entry.Key) == false) 
+			{ stati.Add(entry.Key, lcn); }
+			else 
+			{ Mod.Logger.Error("Duplicate LSL entry @{0}", entry.Key); };
 		}
 
 		return new LockStatusList(stati);
