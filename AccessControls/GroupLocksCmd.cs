@@ -17,7 +17,7 @@ namespace FirstMachineAge
 			this.Description = "Change lock permissions and assigend groupIDs.";
 			//this.handler += LocksmithParser;
 			this.Syntax = "grant [group/player] [player-name/group-name] / revoke [group/player] [player-name/group-name]";
-			//this.RequiredPrivilege = "locksmith"; 
+			//this.RequiredPrivilege = "grouplocks"; 
 
 		}
 	}

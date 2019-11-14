@@ -191,7 +191,7 @@ namespace FirstMachineAge
 
 		public static void SetBlockPos(this ITreeAttribute source, string key, BlockPos value) 
 		{
-			byte[] buffer = new byte[3];
+			byte[] buffer = new byte[12];
 
 			using (MemoryStream bytesStream = new MemoryStream(buffer,true)) 
 			{

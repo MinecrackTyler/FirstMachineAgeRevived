@@ -2,19 +2,20 @@
 	code: "key",
 	class: "ItemKey",
 	maxstacksize: 1,
+    storageFlags: 1,
 	variantgroups: [
 		{ code: "material", states: ["tinbronze", "blackbronze", "bismuthbronze", "iron", "steel" ] },
 	],
 	textures: {
-		"material": { base: "item/tool/material/{material}" }
+		"metal": { base: "game:block/metal/plate/{material}" }
 	},
 	shape: { base: "item/access_controls/key1" },
 	creativeinventory: { "general": ["*"], "gadgets": ["*"] },
 	guiTransform: {
-		translation: { x: 4, y: 0, z: 0 },
-		rotation: { x: 20, y: 16, z: -152 },
+		translation: { x: -6, y: 27, z: 0 },
+		rotation: { x: 0, y: 21, z: -151 },
 		origin: { x: 0.5, y: 0.12, z: 0.5 },
-		scale: 6
+		scale: 2.99
 	},
 	groundTransform: {
 		translation: { x: 0, y: 0, z: 0 },
@@ -24,9 +25,9 @@
 	},
 	fpHandTransform: {
 		translation: { x: 0, y: 0, z: 0 },
-		rotation: { x: -14, y: -78, z: 17 },
+		rotation: { x: -81, y: -78, z: 17 },
 		origin: { x: 0.5, y: 0.1, z: 0.5 },
-		scale: 2.41
+		scale: 1.5
 	},
 	tpHandTransform: {
 		translation: { x: -0.83, y: -0.36, z: -0.7 },

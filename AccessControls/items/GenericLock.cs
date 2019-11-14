@@ -60,8 +60,6 @@ namespace FirstMachineAge
 				this.Logger = this.ClientAPI.World.Logger;
 				AccessControlsMod = ClientAPI.World.Api.ModLoader.GetModSystem<AccessControlsMod>( );
 			}
-
-			Logger.VerboseDebug("{0} ~ OnLoaded", base.Code.ToString());
 		}
 
 
@@ -104,12 +102,12 @@ namespace FirstMachineAge
 		handling = EnumHandHandling.NotHandled;
 		}
 
-		//or? OnCreatedByCrafting -- generate keyID and/or combo (also when getting inv. from a packet) [CLIENTSIDE?!]
+		//or? OnCreatedByCrafting -- generate keyID and/or combo (also when getting inv. from a packet) 
 		public override void OnModifiedInInventorySlot(IWorldAccessor world, ItemSlot slot, ItemStack extractedStack = null)
 		{
 		if (world.Side.IsServer( )) 
 			{
-			//Set keyid,combo if unset...
+			//should capture creat.inv. cases & trade...TODO: check crafting
 			#if DEBUG
 			Logger.VerboseDebug("GenericLock: OnModifiedInInventorySlot ID:{0}", slot.Itemstack.Id);
 			#endif
@@ -124,12 +122,9 @@ namespace FirstMachineAge
 			}
 			else if (this.LockStyle == LockKinds.Key) 
 			{
-				//var keyId = KeyID(slot);
-			
-				//if (keyId.HasValue == false) 
-				//{
-				//GenerateKeyId(slot, this);
-				//}
+				if (this.KeyID(slot).HasValue == false) {
+				GenerateKeyId(slot, this);
+				}
 			}
 
 			}
@@ -200,7 +195,7 @@ namespace FirstMachineAge
 			if (sourceSlot.Itemstack.Attributes.HasAttribute(AccessControlsMod._KeyIDKey)) {
 				return sourceSlot.Itemstack.Attributes.GetInt(AccessControlsMod._KeyIDKey);
 			} else {
-				return new int( );
+				return null;
 			}
 		}
 	}

@@ -40,8 +40,6 @@ namespace FirstMachineAge
 				handling = EnumHandHandling.PreventDefault;
 				return;
 			}
-
-			base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
 		}
 	}
 }

@@ -11,6 +11,11 @@ namespace FirstMachineAge
 	[ProtoContract]
 	public class ACLPersisted
 	{
+		public ACLPersisted( )
+		{
+		KeyId_Sequence = 1;
+		}
+
 		[ProtoMember(1)]
 		public int KeyId_Sequence;
 

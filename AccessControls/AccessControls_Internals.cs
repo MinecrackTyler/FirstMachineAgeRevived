@@ -24,7 +24,7 @@ namespace FirstMachineAge
 	/// </summary>
 	public partial class AccessControlsMod
 	{
-		private const string _domain = "FMA";
+		private const string _domain = @"fma";
 		private const string _AccessControlNodesKey = @"ACCESS_CONTROL_NODES";
 		private const string _channel_name = @"AccessControl";
 		internal const string _KeyIDKey = @"key_id";//for JSON attribute, DB key sequence
@@ -40,12 +40,17 @@ namespace FirstMachineAge
 		private ICoreClientAPI ClientAPI;
 
 		//private ModSystemBlockReinforcement brs;
-
+		private ACLPersisted PersistedState;//Holds; Sequence counters...
 		private Dictionary<Vec3i, ChunkACNodes> Server_ACN;//Track changes - and commit every ## minutes, in addition to server shutdown data-storage, chunk unloads
 		private Dictionary<BlockPos, LockCacheNode> Client_LockLookup;//By BlockPos - for fast local lookup. pre-computed by server...
-		private ACLPersisted PersistedState;//Holds; Sequence counters...
+
 		private SortedDictionary<string, HashSet<Vec3i>> previousChunkSet_byPlayerUID;
-		private SortedDictionary<string, HashSet<int>> playerKeyIDs_byPlayerUID;//Future thread access collision?
+		private SortedDictionary<int, KeyValuePair<BlockPos, AccessControlNode>> ACNs_byKeyID;//Built on extraction of ACN when loading chunks [1:1]
+
+		private SortedDictionary<string, HashSet<int>> playerKeyIDs_byPlayerUID;//All Keys ~current
+		private SortedDictionary<string, HashSet<int>> playerLostKeyIDs_byPlayerUID;//Kept only for single cycle
+		private SortedDictionary<string, HashSet<int>> playerGainKeyIDs_byPlayerUID;//Kept only for single cycle
+
 
 		//Comm. Channels
 		private IClientNetworkChannel accessControl_ClientChannel;
@@ -78,6 +83,9 @@ namespace FirstMachineAge
 		Server_ACN = new Dictionary<Vec3i, ChunkACNodes>();
 		previousChunkSet_byPlayerUID = new SortedDictionary<string, HashSet<Vec3i>>( );
 		playerKeyIDs_byPlayerUID = new SortedDictionary<string, HashSet<int>>( );
+		playerLostKeyIDs_byPlayerUID = new SortedDictionary<string, HashSet<int>>( );
+		playerGainKeyIDs_byPlayerUID = new SortedDictionary<string, HashSet<int>>( );
+		ACNs_byKeyID = new SortedDictionary<int, KeyValuePair<BlockPos, AccessControlNode>>( );
 
 		//Await lock-GUI events, send cache updates via NW channel...
 		accessControl_ServerChannel = ServerAPI.Network.RegisterChannel(_channel_name);
@@ -101,6 +109,7 @@ namespace FirstMachineAge
 		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.Shutdown, PersistACLData);
 		//TODO: Also chunk unload events??? (ideally - should be moot since data would mabey be already saved?)
 		ServerAPI.Event.DidBreakBlock += RemoveACN_byBlockBreakage;
+		ServerAPI.RegisterCommand(new LocksmithCmd(this.ServerAPI));
 
 		Mod.Logger.StoryEvent("...a tumbler turns, and opens\t*click*");
 		Mod.Logger.VerboseDebug("ACN done server-side Init");
@@ -112,12 +121,12 @@ namespace FirstMachineAge
 		api.RegisterItemClass("ItemCombolock", typeof(ItemCombolock));
 		api.RegisterItemClass("ItemKeylock", typeof(ItemKeylock));
 		api.RegisterItemClass("ItemKey", typeof(GenericKey));
-		api.RegisterBlockBehaviorClass("Lockable", typeof(BlockBehaviorComplexLockable));
+		api.RegisterBlockBehaviorClass("Lockable", typeof(BlockBehaviorComplexLockable));		
 		}
 
 		private void InitializeClientSide( )
 		{
-		if (ClientAPI.Network.DidReceiveChannelId(_channel_name)) Mod.Logger.VerboseDebug("Server side channel: \"{0}\" existant", _channel_name);
+		Mod.Logger.VerboseDebug("Server side channel: \"{0}\" is {1} ", _channel_name,ClientAPI.Network.GetChannelState(_channel_name));
 		accessControl_ClientChannel = ClientAPI.Network.RegisterChannel(_channel_name);
 		accessControl_ClientChannel = accessControl_ClientChannel.RegisterMessageType<LockGUIMessage>( );
 		accessControl_ClientChannel = accessControl_ClientChannel.RegisterMessageType<LockStatusList>( );
@@ -145,9 +154,9 @@ namespace FirstMachineAge
 		return true;
 		}
 
-		internal void LoadACN_fromChunk(Vec3i chunkPos)
+		internal void LoadACN_fromChunk(Vec3i chunkPos, bool verboseMsg = false)
 		{
-		//ATTEMPT to Retrieve and add to local cache...
+		//ATTEMPT to Retrieve and add to local cache: ACN, KeyID lookups...
 		IServerChunk targetChunk;
 		byte[ ] data = null;
 		long chunkIndex = ServerAPI.World.BulkBlockAccessor.ToChunkIndex3D(chunkPos);
@@ -173,9 +182,24 @@ namespace FirstMachineAge
 		#endif
 
 		Server_ACN.Add(chunkPos.Clone( ), existingNodes);
+
+		var keyCounter = existingNodes.Entries.Count(acn => acn.Value.LockStyle == LockKinds.Key);
+		if (keyCounter > 0) 
+		{
+		Mod.Logger.VerboseDebug("ACN has {0} key-lock entries to track", keyCounter);
+
+		foreach (KeyValuePair<BlockPos, AccessControlNode> kvp in existingNodes.Entries.Where(acn => acn.Value.LockStyle == LockKinds.Key)) 
+		{
+			if (kvp.Value.KeyID.HasValue) {
+			ACNs_byKeyID.Add(kvp.Value.KeyID.Value, kvp);
+			}
+		}
+
+		}
+
 		} else {
 		#if DEBUG
-		Mod.Logger.VerboseDebug("Absent ACN data for chunk: {0}! (placeholder added)", chunkPos);
+		if (verboseMsg) Mod.Logger.VerboseDebug("Absent ACN data for chunk: {0}! (placeholder added)", chunkPos);
 		#endif
 		//Setup new AC Node list for this chunk.
 		ChunkACNodes placeHolderNodes = new ChunkACNodes();
@@ -188,11 +212,35 @@ namespace FirstMachineAge
 		internal void AddACN_ToServerACNs(BlockPos blockPos, AccessControlNode node )
 		{
 		Vec3i chunkPos = ServerAPI.World.BlockAccessor.ToChunkPos(blockPos);
+		bool success = false;
 
 		if (Server_ACN.ContainsKey(chunkPos) ) {
-		Mod.Logger.Debug("Appending to ChunkACNodes at {0}", chunkPos);
-		Server_ACN[chunkPos].Entries.Add(blockPos, node);
-		Server_ACN[chunkPos].Altered = true;
+
+			if (Server_ACN[chunkPos].Entries.ContainsKey(blockPos)) 
+			{
+			var existingACN = Server_ACN[chunkPos].Entries[blockPos];
+				if (existingACN.LockStyle == LockKinds.None) {
+				Server_ACN[chunkPos].Entries[blockPos] = node;
+				Server_ACN[chunkPos].Altered = true;
+						Mod.Logger.Debug("Overwrote 'None' -> '{0}', Chunk at {1}", node.LockStyle, chunkPos);
+				success = true;
+				}
+				else {						
+					Mod.Logger.Error("Rejecting overwrite of ACN @{0} was: ({1}){2} to ({3}){4}", blockPos, 
+					                existingACN.OwnerPlayerUID,
+				                 	existingACN.LockStyle,
+									node.OwnerPlayerUID,
+									node.LockStyle
+					                );
+				}
+			}
+			else {
+			Mod.Logger.Debug("Appending New ACN Chunk at {0}", chunkPos);
+			Server_ACN[chunkPos].Entries.Add(blockPos, node);
+			Server_ACN[chunkPos].Altered = true;
+			success = true;
+			}
+
 		}
 		else {
 		Mod.Logger.Debug("Created ChunkACNodes for {0}", chunkPos);
@@ -200,8 +248,19 @@ namespace FirstMachineAge
 		Server_ACN[chunkPos].Entries.Add(blockPos, node);
 		Server_ACN[chunkPos].Altered = true;
 		Server_ACN[chunkPos].OriginChunk = chunkPos.Clone( );
+		success = true;
 		}
 
+		if (success && node.LockStyle == LockKinds.Key) {
+			if (ACNs_byKeyID.ContainsKey(node.KeyID.Value)) {
+			//Duplicate??
+			Mod.Logger.Error("Duplicate ACN_byKeyID ?! #{0} @{1}", node.KeyID.Value, blockPos);
+			}
+			else {
+				ACNs_byKeyID.Add(node.KeyID.Value, new KeyValuePair<BlockPos, AccessControlNode>(blockPos, node));
+			}
+
+			}		
 		}
 
 		private void PreloadACLData( )
@@ -357,6 +416,9 @@ namespace FirstMachineAge
 
 			foreach (var update in networkMessage.LockStatesByBlockPos) 
 			{
+			#if DEBUG
+			if (update.Value.LockState != LockStatus.None) Mod.Logger.VerboseDebug("pos {0} LS: {1}", update.Key, update.Value.LockState);
+			#endif
 			if (Client_LockLookup.ContainsKey(update.Key)) 
 				{
 				//Replace
@@ -453,7 +515,8 @@ namespace FirstMachineAge
 		wake:
 		Mod.Logger.VerboseDebug("Portunus thread awoken");
 		try {
-		//####################### Fetch ACN's for *INTRODUCED* (to A.C. system) Chunks... ######################		
+		//####################### Fetch ACN's for *INTRODUCED* (to A.C. system) Chunks... ######################	
+		uint newChunkCount = 0;
 		foreach (var chunkEntry in ServerAPI.WorldManager.AllLoadedChunks) {
 
 		Vec3i loadedPos = ServerMAIN.WorldMap.ChunkPosFromChunkIndex3D(chunkEntry.Key);
@@ -461,12 +524,13 @@ namespace FirstMachineAge
 			if (Server_ACN.ContainsKey(loadedPos) == false) 
 			{			
 			LoadACN_fromChunk(loadedPos);
+			newChunkCount++;
 			}
 		}
+		if (newChunkCount > 0) Mod.Logger.Debug("Noticed {0} new chunks", newChunkCount);
 
 		//####################### For all online players - ACN's for *new* chunks entered/in ###########################
 		foreach (var player in ServerAPI.World.AllOnlinePlayers) {//TODO: Parallel.ForEach
-
 		//var client = this.ServerMAIN.GetConnectedClient(player.PlayerUID);
 
 		var center = ServerAPI.World.BlockAccessor.ToChunkPos(player.Entity.ServerPos.AsBlockPos.Copy( ));
@@ -474,7 +538,6 @@ namespace FirstMachineAge
 		HashSet<Vec3i> alreadyUpdatedSet = null;
 		if (previousChunkSet_byPlayerUID.TryGetValue(player.PlayerUID, out alreadyUpdatedSet)) 
 		{
-
 		//All of them for nearest 27 CHUNKs, contacting ['new' Chunk ]
 		var fresh_chunks = Helpers.ComputeChunkBubble(center).Except(alreadyUpdatedSet).ToList( );
 
@@ -487,20 +550,50 @@ namespace FirstMachineAge
 		introducedNodes.AddRange(ACNs_byChunk);
 		}
 		}
+			if (introducedNodes.Count > 0) 
+			{
+			#if DEBUG
+			Mod.Logger.VerboseDebug("Player {0} will get {1} ACNs about chunk {2}", player.PlayerName, introducedNodes.Count, center);
+			#endif
 
-		if (introducedNodes.Count > 0) {
-		#if DEBUG
-		Mod.Logger.VerboseDebug("Player {0} will get {1} ACNs about chunk {2}", player.PlayerName, introducedNodes.Count, center);
-		#endif
+			SendClientACNMultiUpdates(player as IServerPlayer, introducedNodes);
 
-		SendClientACNMultiUpdates(player as IServerPlayer, introducedNodes);
-
-		previousChunkSet_byPlayerUID[player.PlayerUID].AddRange(fresh_chunks);
+			previousChunkSet_byPlayerUID[player.PlayerUID].AddRange(fresh_chunks);
+			}
 		}
 		}
-		//Keys should already be marking their previous/current owner (called externally) - ACN
+
+		//################### Key holding status changes ########################		
+		if (playerLostKeyIDs_byPlayerUID.Count > 0 || playerGainKeyIDs_byPlayerUID.Count > 0) {
+		Stack<string> playerKeyChanges = new Stack<string>( playerGainKeyIDs_byPlayerUID.Keys.Union(playerLostKeyIDs_byPlayerUID.Keys));
+
+		while (playerKeyChanges.Count > 0) {
+		string pid = playerKeyChanges.Pop( );
+
+		IServerPlayer tgtPlayer = ServerAPI.World.PlayerByUid(pid) as IServerPlayer;
+
+		Mod.Logger.VerboseDebug("Player {0} held key(s) changed ~ re-evaluating ACNs", tgtPlayer.PlayerName);
+		//Extract ACN from Key's stored position data...
+
+		var ACNs_comboKeys = new List<KeyValuePair<BlockPos, AccessControlNode>>( ); 
+
+		if (playerLostKeyIDs_byPlayerUID.ContainsKey(pid)) ACNs_comboKeys = GetACNs_byKeyID(playerLostKeyIDs_byPlayerUID[pid]);		
+						
+		if (playerGainKeyIDs_byPlayerUID.ContainsKey(pid)) ACNs_comboKeys = ACNs_comboKeys.Concat(GetACNs_byKeyID(playerGainKeyIDs_byPlayerUID[pid])).ToList();
+
+		if ( ACNs_comboKeys.Count > 0) {
+		var keyCount = playerKeyIDs_byPlayerUID.ContainsKey(pid) ? playerKeyIDs_byPlayerUID [pid].Count: 0;
+		Mod.Logger.VerboseDebug("Player {0} - {1} key(s) updates for {2} ACNs", tgtPlayer.PlayerName, keyCount ,ACNs_comboKeys.Count);
+		SendClientACNMultiUpdates(tgtPlayer, ACNs_comboKeys);
+
+		//Done set - cleanup;				
+		if (playerGainKeyIDs_byPlayerUID.ContainsKey(pid)) playerGainKeyIDs_byPlayerUID[pid].Clear( );
+		if (playerLostKeyIDs_byPlayerUID.ContainsKey(pid)) playerLostKeyIDs_byPlayerUID[pid].Clear( );
+		}
 
 		}
+
+		}	
 
 		//########################### Persist & SAVE-COMMIT Altered ACNs ! #########################
 		var alteredCount = Server_ACN.Count(ac => ac.Value.Altered == true);
@@ -535,7 +628,6 @@ namespace FirstMachineAge
 		Mod.Logger.VerboseDebug("Thread '{0}' executing finally block.", Thread.CurrentThread.Name);
 		}
 		}
-
 
 		private LockStatusList ComputeLSLFromACNs(ICollection<KeyValuePair<BlockPos, AccessControlNode>> nodesByPos, IServerPlayer byPlayer)
 		{
@@ -676,7 +768,7 @@ namespace FirstMachineAge
 			{
 			var keyId = GenericKey.KeyID(slot.Itemstack);
 			//PlayerUID ?
-			if (keyId > 0) keyIds.Add(keyId);
+			if (keyId > 0) keyIds.Add(keyId.Value);
 			}
 		}
 
@@ -716,32 +808,40 @@ namespace FirstMachineAge
 		IInventory theInv = player.InventoryManager.GetOwnInventory(inventoryClass);
 
 		ItemSlot alteredSlot = theInv[slotNum];
-
+		
 		if (alteredSlot.Empty) return;
-
-		if (alteredSlot.StorageType == EnumItemStorageFlags.General &&
+					
+			if (
 			alteredSlot.Itemstack.Class == EnumItemClass.Item &&
 			alteredSlot.Itemstack.Item.Code.BeginsWith(_domain, _keyCodeName)
 	   		) 
 			{
-			#if DEBUG		
-				Mod.Logger.VerboseDebug("Key appears on slot# {0} in Inv: {1} for {2}", slotNum, alteredSlot.Inventory.InventoryID, player.PlayerName);
+			#if DEBUG
+			Mod.Logger.VerboseDebug("AttainKeyBySlotChange: {0} {1} {2}", player.PlayerName, inventoryClass, slotNum);
+			Mod.Logger.VerboseDebug("Itemstack(code): {0}", alteredSlot.Itemstack.Collectible.Code);
 			#endif
-							
-			var ivbp = alteredSlot.Inventory as InventoryBasePlayer;
+
+		var ivbp = alteredSlot.Inventory as InventoryBasePlayer;
 
 			keyID = GenericKey.KeyID(alteredSlot.Itemstack);
 			lockLocation = GenericKey.LockLocation(alteredSlot.Itemstack);
 
+			#if DEBUG
+			Mod.Logger.VerboseDebug("Key #{0} gained  slot# {1} in Inv: {2} for {3}", keyID, slotNum, alteredSlot.Inventory.InventoryID, player.PlayerName);
+			#endif
+
 			if (keyID.HasValue && playerKeyIDs_byPlayerUID.ContainsKey(playerUID)) 
 			{
 				playerKeyIDs_byPlayerUID[playerUID].Add(keyID.Value);
+				if (playerGainKeyIDs_byPlayerUID.ContainsKey(playerUID)) { playerGainKeyIDs_byPlayerUID[playerUID].Add(keyID.Value); }
+					else 
+					{ 
+						playerGainKeyIDs_byPlayerUID.Add(playerUID, new HashSet<int>()); 
+						playerGainKeyIDs_byPlayerUID[playerUID].Add(keyID.Value);
+					}
 			}
-			
-			
-			}
-		
 
+			}		
 		}
 
 		private void RemoveACN_byBlockBreakage(IServerPlayer byPlayer, int oldblockId, BlockSelection blockSel)
@@ -758,8 +858,7 @@ namespace FirstMachineAge
 					Server_ACN[chunkPos].Entries.Remove(adjPos);
 
 					UpdateBroadcast(byPlayer, adjPos, toRemoveACN);
-
-					Mod.Logger.Notification("player {0} broke @({1}) with ACN Owned by [{2}]", byPlayer.PlayerName, adjPos, toRemoveACN.OwnerPlayerUID);
+					if (toRemoveACN.LockStyle != LockKinds.None) Mod.Logger.Notification("player {0} broke @({1}) with ACN Owned by [{2}]", byPlayer.PlayerName, adjPos, toRemoveACN.OwnerPlayerUID);
 				}
 			}	
 		}
@@ -773,30 +872,92 @@ namespace FirstMachineAge
 		IInventory theInv = player.InventoryManager.GetOwnInventory(inventoryClass);
 
 		ItemSlot alteredSlot = theInv[slotNum];
-
+		
 		if (alteredSlot.Empty) return;
 
-		if (alteredSlot.StorageType == EnumItemStorageFlags.General &&
+		if (
 			alteredSlot.Itemstack.Class == EnumItemClass.Item &&
 			alteredSlot.Itemstack.Item.Code.BeginsWith(_domain, _keyCodeName)
-	   		) {
+	   		) 
+			{
 			#if DEBUG
-			Mod.Logger.VerboseDebug("Key lost on slot# {0} in Inv: {1} for {2}", slotNum, alteredSlot.Inventory.InventoryID, player.PlayerName);
+			Mod.Logger.VerboseDebug("LoseKeyBySlotChange: {0} {1} {2}", player.PlayerName, inventoryClass, slotNum);
+			Mod.Logger.VerboseDebug("Itemstack(code): {0}", alteredSlot.Itemstack.Collectible.Code);
 			#endif
 
-			var ivbp = alteredSlot.Inventory as InventoryBasePlayer;
+		var ivbp = alteredSlot.Inventory as InventoryBasePlayer;
 
 			keyID = GenericKey.KeyID(alteredSlot.Itemstack);
 			lockLocation = GenericKey.LockLocation(alteredSlot.Itemstack);
 
-			if (keyID.HasValue && playerKeyIDs_byPlayerUID.ContainsKey(playerUID)) 
+		#if DEBUG
+		Mod.Logger.VerboseDebug("Key #{0} lost on slot# {1} in Inv: {2} for {3}", keyID, slotNum, alteredSlot.Inventory.InventoryID, player.PlayerName);
+		#endif
+
+		if (keyID.HasValue && playerKeyIDs_byPlayerUID.ContainsKey(playerUID)) 
 				{
-				playerKeyIDs_byPlayerUID[playerUID].Remove(keyID.Value);
+				playerKeyIDs_byPlayerUID[playerUID].Remove(keyID.Value);//Having duplicate keys - is a problem still.				
+				if (playerLostKeyIDs_byPlayerUID.ContainsKey(playerUID)) { playerLostKeyIDs_byPlayerUID[playerUID].Add(keyID.Value); }
+				else 
+					{
+					playerLostKeyIDs_byPlayerUID.Add(playerUID, new HashSet<int>( ));
+					playerLostKeyIDs_byPlayerUID[playerUID].Add(keyID.Value);
+					}
 				}
 			}
 		}
 
+		private List<KeyValuePair<BlockPos, AccessControlNode>> GetACNs_byKeyID(HashSet<int> setKeyIDs)
+		{
+		List<KeyValuePair<BlockPos, AccessControlNode>> acnList = new List<KeyValuePair<BlockPos, AccessControlNode>>( );
+					
+		foreach (int keyID in setKeyIDs) 
+		{		
+		 	if (ACNs_byKeyID.ContainsKey(keyID)) {
+			acnList.Add(ACNs_byKeyID[keyID]);
+			}//else: log error? missing ACN in Keys#
+		}	           
 
+		return acnList;
+		}
+
+		private List<AccessControlNode> ExtractACNsFromKeysFromPlayerInventory(string playerID)
+		{
+		var targetPlayer = ServerAPI.World.PlayerByUid(playerID);
+		List<AccessControlNode> associatedACNs = new List<AccessControlNode>( );
+
+		foreach (var inventory in targetPlayer.InventoryManager.Inventories) {
+			foreach (ItemSlot slot in inventory.Value) {
+			if (slot.Empty) continue;
+
+			if (slot.Itemstack.Collectible.ItemClass == EnumItemClass.Item &&
+				slot.Itemstack.Item.Code.BeginsWith(_domain, _keyCodeName)) 
+					{
+					var keyId = GenericKey.KeyID(slot.Itemstack);
+					var ACN_location = GenericKey.LockLocation(slot.Itemstack);
+
+					if (keyId == null || ACN_location == null) {
+							Mod.Logger.Error("Corrupt '{3}' Item in {0}'s {2} Slot#{1}", targetPlayer.PlayerName,inventory.Value.GetSlotId(slot), inventory.Value.InventoryID,slot.Itemstack.Item.Code);
+					continue;
+					}
+
+					Vec3i locksChunk = ServerAPI.World.BlockAccessor.ToChunkPos(ACN_location);
+
+				if (Server_ACN.ContainsKey(locksChunk) && Server_ACN[locksChunk].Entries.ContainsKey(ACN_location)) {
+				var controlNode = Server_ACN[locksChunk].Entries[ACN_location];//Instead by KEY#
+
+				associatedACNs.Add(controlNode);
+				}
+				else {
+					Mod.Logger.Warning("Key-lock without ACN match K#{0} @{1}", keyId, ACN_location);
+				}
+			}
+			}
+
+			}
+
+		return associatedACNs;
+		}
 
 		#endregion
 	}

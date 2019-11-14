@@ -113,6 +113,9 @@
     <None Include="assets\fma\shapes\item\access_controls\barrel_lock.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="assets\fma\itemtypes\locks\keylock.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FirstMachineAge_Common\Common.csproj">

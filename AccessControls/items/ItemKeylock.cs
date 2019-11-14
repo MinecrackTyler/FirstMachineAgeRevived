@@ -13,16 +13,17 @@ namespace FirstMachineAge
 
 		public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
 		{
+			
 		if (byEntity.World.Side.IsClient( )) {
 		ClientAPI = (byEntity.World.Api as ICoreClientAPI);
 		}
 
-		if (blockSel != null && byEntity.World.BlockAccessor.GetBlock(blockSel.Position).HasBehavior<BlockBehaviorLockable>( )) {
+		if (blockSel != null && byEntity.World.BlockAccessor.GetBlock(blockSel.Position).HasBehavior<BlockBehaviorComplexLockable>( )) {
 		IPlayer player = (byEntity as EntityPlayer).Player;
 
 
-		if (AccessControlsMod.LockState(blockSel.Position, player) != LockStatus.None)//already has a lock...?
-		{
+		if (AccessControlsMod.LockState(blockSel.Position, player) != LockStatus.None)//already has a lock...
+		{//TODO: Add Lock owner text
 		ClientAPI?.TriggerIngameError(this, "cannotlock", Lang.Get("ingameerror-cannotlock"));
 		}
 		else {
@@ -32,15 +33,12 @@ namespace FirstMachineAge
 		ClientAPI?.ShowChatMessage(Lang.Get("lockapplied"));
 		slot.TakeOut(1);
 		slot.MarkDirty( );
-		//TODO: after create matching KEY for lock - make this slot highlighted for that key??
-
 		}
 
 		handling = EnumHandHandling.PreventDefault;
 		return;
 		}
-
-		base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
+					
 		}
 	}
 }

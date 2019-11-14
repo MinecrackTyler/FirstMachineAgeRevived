@@ -381,7 +381,7 @@ namespace FirstMachineAge
 			IServerPlayer serverPlayer = player as IServerPlayer;
 			Vec3i chunkPos = ServerAPI.World.BlockAccessor.ToChunkPos(blockPos);
 
-			Mod.Logger.VerboseDebug("Applying lock; {0} T{1} @ {2} by {3}", theLock.LockStyle, theLock.LockTier, blockSel.Position, player.PlayerName);
+			Mod.Logger.VerboseDebug("Applying lock; {0} T{1} @ {2} by {3}", theLock.LockStyle, theLock.LockTier, blockPos, player.PlayerName);
 
 			AccessControlNode newLockACN = new AccessControlNode(player.PlayerUID, theLock.LockStyle );
 
@@ -399,7 +399,7 @@ namespace FirstMachineAge
 			}
 
 			if (theLock.LockStyle == LockKinds.Key) {
-				newLockACN.KeyID = theLock.KeyID(itemSlot).GetValueOrDefault(PersistedState.KeyId_Sequence);
+				newLockACN.KeyID = theLock.KeyID(itemSlot).GetValueOrDefault(-1);
 
 				//Perform inventory item swap to true Key from lock (create key first...)
 				GenericKey matchingKey = ServerAPI.World.GetItem(new AssetLocation(_domain,_keyCodeName+"-"+material)) as GenericKey;
@@ -408,7 +408,8 @@ namespace FirstMachineAge
 				GenericKey.WriteACL_ItemStack(ref itemStackForKey, newLockACN, blockPos);
 
 				serverPlayer.InventoryManager.TryGiveItemstack(itemStackForKey, true);
-				//Mark slot dirty?
+			//Mark slot dirty?
+			Mod.Logger.VerboseDebug("Created matching Key #{0} for lock@{1}", newLockACN.KeyID, blockPos);
 			}
 
 		if (commitACN) 
@@ -540,7 +541,10 @@ namespace FirstMachineAge
 		return null;
 	}
 
-	
+	public ReadOnlyDictionary<int, KeyValuePair<BlockPos, AccessControlNode>>  RetrieveKnownKeys( )
+	{
+		return new ReadOnlyDictionary<int, KeyValuePair<BlockPos, AccessControlNode>>(ACNs_byKeyID);
+	}
 
 	protected bool AttemptAccess(IPlayer byPlayer, BlockPos atPosition, byte[] guess = null)
 	{

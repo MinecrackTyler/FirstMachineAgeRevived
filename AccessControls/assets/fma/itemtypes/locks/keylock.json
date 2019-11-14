@@ -1,40 +1,41 @@
 ﻿{
-	code: "combolock",
-	class: "ItemCombolock",
+	code: "lockkey",
+	class: "ItemKeylock",
 	maxstacksize: 1,
     storageFlags: 1,
 	variantgroups: [
 		{ code: "material", states: ["tinbronze", "blackbronze", "bismuthbronze", "iron", "steel" ] },
 	],
-	textures: {
-		"brass_symbols": { base: "fma:locks/brass_symbols" },
-        "bodymetal": { base: "game:block/metal/plate/{material}" }
+	textures: {		        
+        "keymetal": { base: "game:block/metal/plate/{material}" },
+		"slotmetal": { base: "game:item/tool/material/copper" },
+		"body": { base: "game:item/tool/material/iron" },
 	},
-	shape: { base: "item/access_controls/combo_lock1" },
+	shape: { base: "item/access_controls/barrel_lock" },
     attributesByType: 
     {
 		"*-tinbronze": {
 			lockTier:1,
-            lockStyle:"Combination",
+            lockStyle:"Key",
 		},
         "*-blackbronze": {
 			lockTier:1,
-            lockStyle:"Combination",
+            lockStyle:"Key",
 		},
         "*-bismuthbronze": {
 			lockTier:1,
-            lockStyle:"Combination",
+            lockStyle:"Key",
 		},
          "*-iron": {
 			lockTier:2,
-            lockStyle:"Combination",
+            lockStyle:"Key",
 		},
          "*-steel": {
 			lockTier:3,
-            lockStyle:"Combination",
+            lockStyle:"Key",
 		},
         "*": {
-            lockStyle:"Combination"
+            lockStyle:"Key"
             }
 	},
 	creativeinventory: { "general": ["*"], "gadgets": ["*"] },
