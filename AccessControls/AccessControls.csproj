@@ -116,6 +116,7 @@
     <None Include="assets\fma\itemtypes\locks\keylock.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FirstMachineAge_Common\Common.csproj">
