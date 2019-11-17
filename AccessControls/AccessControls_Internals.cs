@@ -563,8 +563,9 @@ namespace FirstMachineAge
 		}
 		}
 
-		//################### Key holding status changes ########################		
+		//################### Key holding status changes ########################	
 		if (playerLostKeyIDs_byPlayerUID.Count > 0 || playerGainKeyIDs_byPlayerUID.Count > 0) {
+
 		Stack<string> playerKeyChanges = new Stack<string>( playerGainKeyIDs_byPlayerUID.Keys.Union(playerLostKeyIDs_byPlayerUID.Keys));
 
 		while (playerKeyChanges.Count > 0) {
@@ -573,6 +574,12 @@ namespace FirstMachineAge
 		IServerPlayer tgtPlayer = ServerAPI.World.PlayerByUid(pid) as IServerPlayer;
 
 		Mod.Logger.VerboseDebug("Player {0} held key(s) changed ~ re-evaluating ACNs", tgtPlayer.PlayerName);
+
+		string lostKeys = string.Empty;
+		string gainedKeys = string.Empty;
+		if (playerLostKeyIDs_byPlayerUID.ContainsKey(pid)) lostKeys = String.Join(",", playerLostKeyIDs_byPlayerUID[pid]);
+		if (playerGainKeyIDs_byPlayerUID.ContainsKey(pid)) gainedKeys = String.Join(",", playerGainKeyIDs_byPlayerUID[pid]);
+		Mod.Logger.VerboseDebug("Player {0}   Gains [{1}]     Loss [{2}] ", tgtPlayer.PlayerName, gainedKeys,lostKeys);
 		//Extract ACN from Key's stored position data...
 
 		var ACNs_comboKeys = new List<KeyValuePair<BlockPos, AccessControlNode>>( ); 
@@ -582,17 +589,19 @@ namespace FirstMachineAge
 		if (playerGainKeyIDs_byPlayerUID.ContainsKey(pid)) ACNs_comboKeys = ACNs_comboKeys.Concat(GetACNs_byKeyID(playerGainKeyIDs_byPlayerUID[pid])).ToList();
 
 		if ( ACNs_comboKeys.Count > 0) {
-		var keyCount = playerKeyIDs_byPlayerUID.ContainsKey(pid) ? playerKeyIDs_byPlayerUID [pid].Count: 0;
+		var keyCount = playerKeyIDs_byPlayerUID.ContainsKey(pid) ? playerKeyIDs_byPlayerUID[pid].Count: 0;
 		Mod.Logger.VerboseDebug("Player {0} - {1} key(s) updates for {2} ACNs", tgtPlayer.PlayerName, keyCount ,ACNs_comboKeys.Count);
 		SendClientACNMultiUpdates(tgtPlayer, ACNs_comboKeys);
 
-		//Done set - cleanup;				
-		if (playerGainKeyIDs_byPlayerUID.ContainsKey(pid)) playerGainKeyIDs_byPlayerUID[pid].Clear( );
-		if (playerLostKeyIDs_byPlayerUID.ContainsKey(pid)) playerLostKeyIDs_byPlayerUID[pid].Clear( );
+		//Done set - cleanup for player;				
+		if (playerGainKeyIDs_byPlayerUID.ContainsKey(pid)) playerGainKeyIDs_byPlayerUID[pid].Clear();
+		if (playerLostKeyIDs_byPlayerUID.ContainsKey(pid)) playerLostKeyIDs_byPlayerUID[pid].Clear();
 		}
 
 		}
-
+		//Cleanup, all players
+		playerGainKeyIDs_byPlayerUID.Clear( );
+		playerLostKeyIDs_byPlayerUID.Clear( );
 		}	
 
 		//########################### Persist & SAVE-COMMIT Altered ACNs ! #########################
@@ -715,7 +724,7 @@ namespace FirstMachineAge
 		if (controlNode.OwnerPlayerUID == forPlayer.PlayerUID) return false;
 
 		//In same faction? 
-		if (controlNode.PermittedPlayers != null & controlNode.PermittedPlayers.Count > 0) {
+		if (controlNode.PermittedPlayers != null && controlNode.PermittedPlayers.Count > 0) {
 
 		foreach (var perp in controlNode.PermittedPlayers) {
 		if (perp.PlayerUID == forPlayer.PlayerUID) {

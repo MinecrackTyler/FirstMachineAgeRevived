@@ -162,9 +162,9 @@ namespace FirstMachineAge
 		{
 		//Popup GUI window;
 
-		
+		var tier = acm.LockTier(blockPos, byPlayer );
 
-		GuiDialog_ComboLock comboGUI = new GuiDialog_ComboLock(clientAPI );
+		GuiDialog_ComboLock comboGUI = new GuiDialog_ComboLock(clientAPI,tier,blockPos );
 		comboGUI.TryOpen( );
 		}
 }

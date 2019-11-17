@@ -389,6 +389,7 @@ namespace FirstMachineAge
 			{				
 				newLockACN.LockStyle = LockKinds.Combination;
 				newLockACN.CombinationCode = theLock.CombinationCode(itemSlot);
+				newLockACN.PermittedPlayers = new List<AccessEntry>( );
 				newLockACN.Tier = theLock.LockTier;
 
 				if (newLockACN.CombinationCode == null) 
