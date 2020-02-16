@@ -18,12 +18,11 @@ namespace FirstMachineAge
 
 		LogicNetwork Circuit { get; } //Per domain (AKA Network ID), encloses several 'sub' circuits (possibly monotonic), all connected (at least 1 io). Zero - considered unassigned or invalid
 
-		IDictionary<BlockFacing, LogicNetworkSubcircuit> SubCircuits { get; } //A CONNECTED 'Sub' Circuit; MUST be unique for each sub-circuit; an IO going somewhere, doing SOMETHING...
+		IDictionary<BlockFacing, LogicNetworkSubcircuit> SubCircuits { get; } //A CONNECTED 'Sub' Circuit; MUST be unique for each sub-circuit; an impulse going somewhere, doing SOMETHING...
 
 		IDictionary<BlockFacing, bool> VALUEs { get; set;} //Boolean STATE - per face, may/should trigger "events" on changes forced or 'natural'
 
 		IDictionary<BlockFacing, EndpointDescriptor> AvailableConnections { get; } //Pins, sockets, connections; Inputs - Outputs, Both? Which faces?? Default Pullups/down???
-
 
 
 		bool TryGetNetwork(IWorldAccessor world, BlockPos anywhere, out LogicNetwork linkedNet);
@@ -43,11 +42,14 @@ namespace FirstMachineAge
 
 		void BreakConnection(BlockFacing cutLinkBySide);
 
+		void BreakAllConnections();
+
+		event LogicStateChange OnAnyChange;
 	}
 
 	public abstract class LogicDomain
 	{
-		readonly static string NAME;//TTL, CMOS, Rod-Logic, Cable-Link, Pnumatic, ect...
+		public readonly static string NAME;//TTL, CMOS, Rod-Logic, Cable-Link, Pnumatic, ect...
 		//Global ID tag?
 		//Other information about domain features
 
@@ -55,27 +57,30 @@ namespace FirstMachineAge
 
 	public abstract class LogicNetwork
 	{
-		LogicDomain ParentDomain { get; }
-		ulong NetworkID { get; }//Monotonic - reuse ID# only at own peril.
-		IList<LogicNetworkSubcircuit> ConnectedSubCircuits { get; }
+		public LogicDomain ParentDomain { get; }
+		public ulong NetworkID { get; }//Monotonic - reuse ID# only at own peril.
+		public IList<LogicNetworkSubcircuit> ConnectedSubCircuits { get; }
 
 	}
 
-	public abstract class LogicNetworkSubcircuit
+	public abstract class LogicNetworkSubcircuit//A link between Pin, contact, face or perhaps functions?
 	{
-		uint SubCircuitID { get; }
-		IList<LogicNetworkSubcircuit> AtttachedNodes { get; }
-		LogicNetwork ParentCircuit { get; }
+		public uint SubCircuitID { get; }
+		public IList<LogicNetworkSubcircuit> AtttachedNodes { get; }
+		public LogicNetwork ParentCircuit { get; }
+		public EndpointDescriptor LocalPoint{ get; }
+		public bool PreviousState { get; }
+		public event LogicStateChange OnChange;
 	}
 
 	//As it might change 'dyamically' or be editable...
 	public abstract class EndpointDescriptor
 	{
-		sbyte Number { get; }
-		readonly string Description;
-		BlockFacing ForFace { get; }
-		LogicIO EndKind { get; }
-		DefaultState Normally { get; }
+		public sbyte Number { get; }
+		public readonly string Description;//Name of Pin or Contact or function
+		public BlockFacing ForFace { get; }
+		public LogicIO EndKind { get; }
+		public DefaultState Normally { get; }
 	}
 
 	public enum LogicIO
@@ -92,6 +97,9 @@ namespace FirstMachineAge
 		Low,
 		Undefined//! - Mabey Random, or can't be determined before execution
 	}
+
+	public delegate void LogicStateChange(LogicNetworkSubcircuit origin, bool from, bool to);//Same state ~ pulse?
+
 
 
 }
