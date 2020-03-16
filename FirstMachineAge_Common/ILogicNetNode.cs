@@ -7,7 +7,7 @@ using Vintagestory.API.MathTools;
 namespace FirstMachineAge
 {
 
-
+	//The Basis for ABSTRACT-CIRCUITS.
 	/*
 	 Domain (LogicDomain) <- Circuits (LogicNetwork) <- Subcircuit <LogicNetworkSubcircuit) <- BlockFace; <EndpointDescriptor>
 	 */
@@ -81,6 +81,7 @@ namespace FirstMachineAge
 		public BlockFacing ForFace { get; }
 		public LogicIO EndKind { get; }
 		public DefaultState Normally { get; }
+		public LogicDomain TargetDomain { get; }//For Adaptors
 	}
 
 	public enum LogicIO
@@ -99,6 +100,8 @@ namespace FirstMachineAge
 	}
 
 	public delegate void LogicStateChange(LogicNetworkSubcircuit origin, bool from, bool to);//Same state ~ pulse?
+
+
 
 
 

@@ -45,6 +45,7 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ILogicNetNode.cs" />
+    <Compile Include="IMultiBlockModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="vs_libs\" />
