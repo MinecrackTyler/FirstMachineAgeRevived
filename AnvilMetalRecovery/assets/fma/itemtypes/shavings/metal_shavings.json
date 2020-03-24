@@ -141,10 +141,11 @@
 		}
 	},
 	guiTransform: {
-		translation: { x: 2, y: 0, z: 0 },
-		rotation: { x: 149, y: -36, z: 0 },
+        rotate: true,
+		translation: { x: -3, y: 0, z: 0 },
+		rotation: { x: 149, y: -30, z: 7 },
 		origin: { x: 0.5, y: 0.1, z: 0.5 },
-		scale: 3.5
+		scale: 3.02
 	},
 	fpHandTransform: {
 		translation: { x: 0, y: 0.1, z: 0 },
