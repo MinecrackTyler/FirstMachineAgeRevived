@@ -1,0 +1,167 @@
+﻿{
+	code: "metal_shaving",
+	
+	maxstacksize: 128,
+	attributes: {		
+		handbook: {
+			excludeByType: {
+				"*-chromium": true,
+				"*-platinum": true,
+				"*-titanium": true,
+				"*-rhodium": true,
+				"*-stainlessteel": true,
+				"*-uranium": true
+			}
+		}		
+	},
+	variantgroups: [
+		{ code: "metal", loadFromProperties: "game:block/metal" },
+	],	
+	storageFlags: 5,
+
+	shape: { base: "fma:item/shavings/metal_shavings" },
+	textures: {
+		"metal": { base: "game:block/metal/ingot/{metal}" },
+	},
+	creativeinventory: { "general": ["*"], "items": ["*"] },
+	materialDensityByType: {
+		"*-copper": 8960,
+		"*-brass": 8500,
+		"*-tinbronze": 7600,
+		"*-bismuthbronze": 7900,
+		"*-blackbronze": 9000,
+		"*-iron": 7870,
+		"*-gold": 19300,
+		"*-lead": 11300,
+		"*-tin": 7260,
+		"*-chromium": 7150,
+		"*-platinum": 21500,
+		"*-titanium": 4510,
+		"*-zinc": 7140,
+		"*-silver": 10500,
+		"*-bismuth": 9790,
+		"*-molybdochalkos": 9600
+	},
+	combustiblePropsByType: {
+		"*-copper": {
+			meltingPoint: 1084,
+			meltingDuration: 30,
+			smeltedRatio: 20,
+			smeltedStack: { type: "item", code: "game:ingot-copper" }
+		},
+		"*-brass": {
+			meltingPoint: 920,
+			meltingDuration: 30,
+			smeltedRatio: 20,
+			smeltedStack: { type: "item", code: "game:ingot-brass" }
+		},
+		"*-tinbronze": {
+			meltingPoint: 950,
+			meltingDuration: 30,
+			smeltedRatio: 20,
+			smeltedStack: { type: "item", code: "game:ingot-tinbronze" }
+		},
+		"*-bismuthbronze": {
+			meltingPoint: 850,
+			meltingDuration: 30,
+			smeltedRatio: 20,
+			smeltedStack: { type: "item", code: "game:ingot-bismuthbronze" }
+		},
+		"*-blackbronze": {
+			meltingPoint: 1020,
+			meltingDuration: 30,
+			smeltedRatio: 20,
+			smeltedStack: { type: "item", code: "game:ingot-blackbronze" }
+		},
+		"*-iron": {
+			meltingPoint: 1482,
+			meltingDuration: 30,
+			smeltedRatio: 20,
+			smeltedStack: { type: "item", code: "game:ingot-iron" }
+		},
+		"*-gold": {
+			meltingPoint: 1063,
+			meltingDuration: 30,
+			smeltedRatio: 20,
+			smeltedStack: { type: "item", code: "game:ingot-gold", }
+		},
+		"*-lead": {
+			meltingPoint: 327,
+			meltingDuration: 30,
+			smeltedRatio: 20,
+			smeltedStack: { type: "item", code: "game:ingot-lead" }
+		},
+		"*-tin": {
+			meltingPoint: 232,
+			meltingDuration: 30,
+			smeltedRatio: 20,
+			smeltedStack: { type: "item", code: "game:ingot-tin" }
+		},
+		"*-chromium": {
+			meltingPoint: 1907,
+			meltingDuration: 30,
+			smeltedRatio: 20,
+			smeltedStack: { type: "item", code: "game:ingot-chromium" }
+		},
+		"*-platinum": {
+			meltingPoint: 1770,
+			meltingDuration: 30,
+			smeltedRatio: 20,
+			smeltedStack: { type: "item", code: "game:ingot-platinum" }
+		},
+		"*-titanium": {
+			meltingPoint: 1668,
+			meltingDuration: 30,
+			smeltedRatio: 20,
+			smeltedStack: { type: "item", code: "game:ingot-titanium" }
+		},
+		"*-zinc": {
+			meltingPoint: 419,
+			meltingDuration: 30,
+			smeltedRatio: 20,
+			smeltedStack: { type: "item", code: "game:ingot-zinc" }
+		},
+		"*-silver": {
+			meltingPoint: 961,
+			meltingDuration: 30,
+			smeltedRatio: 20,
+			smeltedStack: { type: "item", code: "game:ingot-silver" }
+		},
+		"*-bismuth": {
+			meltingPoint: 271,
+			meltingDuration: 30,
+			smeltedRatio: 20,
+			smeltedStack: { type: "item", code: "game:ingot-bismuth" }
+		},
+		"*-molybdochalkos": {
+			meltingPoint: 902,
+			meltingDuration: 30,
+			smeltedRatio: 20,
+			smeltedStack: { type: "item", code: "game:ingot-molybdochalkos" }
+		}
+	},
+	guiTransform: {
+		translation: { x: 2, y: 0, z: 0 },
+		rotation: { x: 149, y: -36, z: 0 },
+		origin: { x: 0.5, y: 0.1, z: 0.5 },
+		scale: 3.5
+	},
+	fpHandTransform: {
+		translation: { x: 0, y: 0.1, z: 0 },
+		rotation: { x: 65, y: 21, z: -6 },
+		origin: { x: 0.5, y: 0.1, z: 0.5 },
+		scale: 2.15
+	},
+	tpHandTransform: {
+		translation: { x: -0.77, y: -0.15, z: -0.64 },
+		rotation: { x: 0, y: -71, z: 18 },
+		origin: { x: 0.5, y: 0.1, z: 0.5 },
+		scale: 0.75
+	},
+	groundTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 4.8
+	}
+}
