@@ -11,10 +11,14 @@ namespace AnvilMetalRecovery
 {
 	public class MetalRecovery_BlockEntityAnvil : BlockEntityAnvil
 	{
-		private uint SplitCount;
+		private const string splitCountKey = @"splitCount";	
 
-
-		private ILogger Logger { get; set; }
+		private ILogger Logger { 
+			get
+			{
+			return Api.World.Logger;
+			}
+		}
 
 		public static AssetLocation MetalShavingsCode {
 			get
@@ -23,40 +27,23 @@ namespace AnvilMetalRecovery
 			}
 		}
 
-		public override void Initialize(ICoreAPI api)
-		{
-		base.Initialize(api);
-		Logger = api.World.Logger;
-#if DEBUG
-		Logger.VerboseDebug("Metal Recovery - Initialize");
-#endif
-		}
 
-		public override void FromTreeAtributes(ITreeAttribute tree, IWorldAccessor worldForResolving)
+		internal int SplitCount 
 		{
-		base.FromTreeAtributes(tree, worldForResolving);
-		Logger = worldForResolving.Logger;
-#if DEBUG
-		Logger.VerboseDebug("Metal Recovery - FromTreeAtributes");
-#endif
-		//Get SplitCount
-		}
-
-		public override void ToTreeAttributes(ITreeAttribute tree)
-		{
-		base.ToTreeAttributes(tree);
-#if DEBUG
-		Logger.VerboseDebug("Metal Recovery - ToTreeAttributes");
-#endif
-		//Set SplitCount
+			get {				
+			return this.WorkItemStack?.Attributes.TryGetInt(splitCountKey) ?? 0;
+			}
+			set {
+			this.WorkItemStack?.Attributes.SetInt(splitCountKey, value);
+			}
 		}
 
 		public override void OnSplit(Vec3i voxelPos)
 		{
 		if (Voxels[voxelPos.X, voxelPos.Y, voxelPos.Z] == ( byte )EnumVoxelMaterial.Metal) {
-#if DEBUG
+		#if DEBUG
 		Logger.VerboseDebug("Split some {0} @{1}, Total:{2}", this.BaseMaterial.Collectible.LastCodePart( ), voxelPos, SplitCount);
-#endif
+		#endif
 		SplitCount++;
 		}
 
@@ -67,6 +54,7 @@ namespace AnvilMetalRecovery
 		//Would be great if this returned a bool!
 		public override void CheckIfFinished(IPlayer byPlayer)
 		{
+		int splitTemp = SplitCount;
 		base.CheckIfFinished(byPlayer);
 		// base.MatchesRecipe( ) -- Private; argh
 		/*
@@ -77,8 +65,8 @@ namespace AnvilMetalRecovery
 		base.MarkDirty (false);	
 		 */
 
-		if (SplitCount > 0 && this.WorkItemStack == null && this.SelectedRecipe == null) {
-			int metalShavings = ( int )(SplitCount / 5);
+		if (splitTemp > 0 && this.WorkItemStack == null && this.SelectedRecipe == null) {
+			int metalShavings = ( int )(splitTemp / 5);
 
 			if (metalShavings > 0) 
 			{
@@ -87,7 +75,7 @@ namespace AnvilMetalRecovery
 			#endif
 
 			Item metalShavingsItem = Api.World.GetItem(MetalShavingsCode.WithPathAppendix("-" + this.BaseMaterial.Collectible.LastCodePart( )));
-			ItemStack metalShavingsStack = new ItemStack(metalShavingsItem, ( int )(SplitCount / 5));
+			ItemStack metalShavingsStack = new ItemStack(metalShavingsItem, metalShavings);
 
 				if (byPlayer != null) {
 				byPlayer.InventoryManager.TryGiveItemstack(metalShavingsStack, false);
