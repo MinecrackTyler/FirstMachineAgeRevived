@@ -1,0 +1,53 @@
+{
+	code: "grille_vertical",		
+	variantgroups: [		
+		{ code: "orient", states: ["up", "down"] },
+	],	
+	shapebytype: {		
+		"*-up": { base: "block/iron/grille_vertical" },
+		"*-down": { base: "block/iron/grille_vertical" , rotateX: 180 },	
+	},
+	textures: {
+		rivets: { base: "game:block/metal/sheet/iron1" },
+		iron: { base: "game:block/metal/plate/iron" },		
+	},
+	blockmaterial: "Metal",
+	sidesolid: {
+		all: false		
+	},
+	sideopaque: {
+		all: false
+	},
+	behaviors: [
+		{name: "HorUDOrientable" }		
+	],
+	creativeinventory: { "general": ["grille_vertical-*"], "decorative": ["grille_vertical-*"] },	
+	resistance: 4,
+	rainPermeable: true,
+	lightAbsorption: 0,
+	selectionboxesByType: {					
+		"*-up": [		
+		{ x1: 0, y1: 0.825, z1: 0, x2: 1, y2: 1, z2: 1 }
+		],		
+		"*-down": [		
+		{ x1: 0, y1: 0.825, z1: 0, x2: 1, y2: 1, z2: 1, rotateX:180 }
+		],		
+	},
+	collisionboxesByType: {		
+		"*-up": [		
+		{ x1: 0, y1: 0.825, z1: 0, x2: 1, y2: 1, z2: 1 }
+		],		
+		"*-down": [		
+		{ x1: 0, y1: 0.825, z1: 0, x2: 1, y2: 1, z2: 1, rotateX:180 }
+		],			
+	},
+	materialDensity: 600,
+	sounds: {
+		"place": "game:block/anvil",
+		"break": "game:block/anvil",
+		"hit": "game:block/anvil",
+		"walk": "game:block/plate",
+	},
+}
+
+

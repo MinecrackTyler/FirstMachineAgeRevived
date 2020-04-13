@@ -5,6 +5,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "FirstMachineAge_C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccessControls", "AccessControls\AccessControls.csproj", "{180853A2-7E1D-4876-9D1E-AA8608D701C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnvilMetalRecovery", "AnvilMetalRecovery\AnvilMetalRecovery.csproj", "{3EC9A581-655C-4F68-898C-4E773C292082}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assorted", "Assorted\Assorted.csproj", "{805B37F5-F87D-4A63-BD3F-66AE59F1C998}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +23,14 @@ Global
 		{180853A2-7E1D-4876-9D1E-AA8608D701C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{180853A2-7E1D-4876-9D1E-AA8608D701C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{180853A2-7E1D-4876-9D1E-AA8608D701C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EC9A581-655C-4F68-898C-4E773C292082}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EC9A581-655C-4F68-898C-4E773C292082}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EC9A581-655C-4F68-898C-4E773C292082}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EC9A581-655C-4F68-898C-4E773C292082}.Release|Any CPU.Build.0 = Release|Any CPU
+		{805B37F5-F87D-4A63-BD3F-66AE59F1C998}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{805B37F5-F87D-4A63-BD3F-66AE59F1C998}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{805B37F5-F87D-4A63-BD3F-66AE59F1C998}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{805B37F5-F87D-4A63-BD3F-66AE59F1C998}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

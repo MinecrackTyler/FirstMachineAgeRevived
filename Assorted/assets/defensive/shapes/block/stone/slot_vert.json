@@ -1,0 +1,40 @@
+{
+	"editor": {
+		"allAngles": true,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+	},
+	"textures": {
+		"andesite": "block/stone/cobblestoneslab/andesite"
+	},
+	"elements": [
+		{
+			"name": "OuterLeftSide",
+			"from": [ 0.0, 0.0, 0.0 ], 
+			"to": [ 4.0, 16.0, 8.0 ], 
+			"faces": {
+				"north": { "texture": "#andesite", "uv": [ 7.0, 0.0, 11.0, 16.0 ] },
+				"east": { "texture": "#andesite", "uv": [ 0.0, 0.0, 8.0, 16.0 ] },
+				"south": { "texture": "#andesite", "uv": [ 7.0, 0.0, 11.0, 16.0 ] },
+				"west": { "texture": "#andesite", "uv": [ 0.0, 0.0, 8.0, 16.0 ] },
+				"up": { "texture": "#andesite", "uv": [ 7.0, 0.0, 11.0, 8.0 ] },
+				"down": { "texture": "#andesite", "uv": [ 7.0, 0.0, 11.0, 8.0 ] }
+			}
+		},
+		{
+			"name": "OuterRightSide",
+			"from": [ 12.0, 0.0, 0.0 ], 
+			"to": [ 16.0, 16.0, 8.0 ], 
+			"faces": {
+				"north": { "texture": "#andesite", "uv": [ 0.0, 0.0, 4.0, 16.0 ] },
+				"east": { "texture": "#andesite", "uv": [ 0.0, 0.0, 8.0, 16.0 ] },
+				"south": { "texture": "#andesite", "uv": [ 0.0, 0.0, 4.0, 16.0 ] },
+				"west": { "texture": "#andesite", "uv": [ 0.0, 0.0, 8.0, 16.0 ] },
+				"up": { "texture": "#andesite", "uv": [ 0.0, 0.0, 4.0, 8.0 ] },
+				"down": { "texture": "#andesite", "uv": [ 0.0, 0.0, 4.0, 8.0 ] }
+			}
+		}
+	]}

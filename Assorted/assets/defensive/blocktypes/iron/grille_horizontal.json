@@ -1,0 +1,90 @@
+{
+	code: "grille_horizontal",		
+	variantgroups: [		
+		{ code: "side", loadFromProperties: "abstract/horizontalorientation" }
+	],		
+	shapebytype: {		
+		"*-north": { base: "block/iron/grille_horizontal", rotateY: 0 },
+		"*-east": { base: "block/iron/grille_horizontal" , rotateY: 270 },
+		"*-south": { base: "block/iron/grille_horizontal" , rotateY: 180 },
+		"*-west": { base: "block/iron/grille_horizontal", rotateY: 90 },		
+	},
+	textures: {
+		rivets: { base: "game:block/metal/sheet/iron1" },
+		iron: { base: "game:block/metal/plate/iron" },		
+	},
+	blockmaterial: "Metal",
+	sidesolid: {
+		all: false		
+	},
+	sideopaque: {
+		all: false
+	},
+	behaviors: [
+		{name: "HorizontalOrientable", properties: {  dropBlockFace: "north" }}		
+	],
+	creativeinventory: { "general": ["grille_horizontal-*"], "decorative": ["grille_horizontal-*"] },	
+	resistance: 4,
+	rainPermeable: true,
+	lightAbsorption: 0,
+	selectionboxesByType: {		
+		"*-north": [		
+		{ x1: 0.875, y1: 0, z1: 0.125, x2: 0.95, y2: 1, z2: 0.25, rotateY: 90 },
+		{ x1: 0.875, y1: 0, z1: 0.75, x2: 0.95, y2: 1, z2: 0.875, rotateY: 90 },
+		{ x1: 0.8, y1: 0.125, z1: 0, x2: 0.95, y2: 0.25, z2: 1, rotateY: 90 },
+		{ x1: 0.8, y1: 0.75, z1: 0, x2: 0.95, y2: 0.875, z2: 1, rotateY: 90 },
+		],		
+		"*-east": [		
+		{ x1: 0.875, y1: 0, z1: 0.125, x2: 0.95, y2: 1, z2: 0.25},
+		{ x1: 0.875, y1: 0, z1: 0.75, x2: 0.95, y2: 1, z2: 0.875 },
+		{ x1: 0.8, y1: 0.125, z1: 0, x2: 0.95, y2: 0.25, z2: 1 },
+		{ x1: 0.8, y1: 0.75, z1: 0, x2: 0.95, y2: 0.875, z2: 1 },
+		],
+		"*-south": [
+		{ x1: 0.875, y1: 0, z1: 0.125, x2: 0.95, y2: 1, z2: 0.25, rotateY: 270 },
+		{ x1: 0.875, y1: 0, z1: 0.75, x2: 0.95, y2: 1, z2: 0.875, rotateY: 270 },
+		{ x1: 0.8, y1: 0.125, z1: 0, x2: 0.95, y2: 0.25, z2: 1, rotateY: 270 },
+		{ x1: 0.8, y1: 0.75, z1: 0, x2: 0.95, y2: 0.875, z2: 1, rotateY: 270 },
+		],
+		"*-west": [
+		{ x1: 0.875, y1: 0, z1: 0.125, x2: 0.95, y2: 1, z2: 0.25, rotateY: 180},
+		{ x1: 0.875, y1: 0, z1: 0.75, x2: 0.95, y2: 1, z2: 0.875, rotateY: 180 },
+		{ x1: 0.8, y1: 0.125, z1: 0, x2: 0.95, y2: 0.25, z2: 1, rotateY: 180 },
+		{ x1: 0.8, y1: 0.75, z1: 0, x2: 0.95, y2: 0.875, z2: 1, rotateY: 180 },
+		],	
+	},
+	collisionboxesByType: {		
+		"*-north": [		
+		{ x1: 0.875, y1: 0, z1: 0.125, x2: 0.95, y2: 1, z2: 0.25, rotateY: 90 },
+		{ x1: 0.875, y1: 0, z1: 0.75, x2: 0.95, y2: 1, z2: 0.875, rotateY: 90 },
+		{ x1: 0.8, y1: 0.125, z1: 0, x2: 0.95, y2: 0.25, z2: 1, rotateY: 90 },
+		{ x1: 0.8, y1: 0.75, z1: 0, x2: 0.95, y2: 0.875, z2: 1, rotateY: 90 },
+		],		
+		"*-east": [		
+		{ x1: 0.875, y1: 0, z1: 0.125, x2: 0.95, y2: 1, z2: 0.25},
+		{ x1: 0.875, y1: 0, z1: 0.75, x2: 0.95, y2: 1, z2: 0.875 },
+		{ x1: 0.8, y1: 0.125, z1: 0, x2: 0.95, y2: 0.25, z2: 1 },
+		{ x1: 0.8, y1: 0.75, z1: 0, x2: 0.95, y2: 0.875, z2: 1 },
+		],
+		"*-south": [
+		{ x1: 0.875, y1: 0, z1: 0.125, x2: 0.95, y2: 1, z2: 0.25, rotateY: 270 },
+		{ x1: 0.875, y1: 0, z1: 0.75, x2: 0.95, y2: 1, z2: 0.875, rotateY: 270 },
+		{ x1: 0.8, y1: 0.125, z1: 0, x2: 0.95, y2: 0.25, z2: 1, rotateY: 270 },
+		{ x1: 0.8, y1: 0.75, z1: 0, x2: 0.95, y2: 0.875, z2: 1, rotateY: 270 },
+		],
+		"*-west": [
+		{ x1: 0.875, y1: 0, z1: 0.125, x2: 0.95, y2: 1, z2: 0.25, rotateY: 180},
+		{ x1: 0.875, y1: 0, z1: 0.75, x2: 0.95, y2: 1, z2: 0.875, rotateY: 180 },
+		{ x1: 0.8, y1: 0.125, z1: 0, x2: 0.95, y2: 0.25, z2: 1, rotateY: 180 },
+		{ x1: 0.8, y1: 0.75, z1: 0, x2: 0.95, y2: 0.875, z2: 1, rotateY: 180 },
+		],	
+	},
+	materialDensity: 600,
+	sounds: {
+		"place": "game:block/anvil",
+		"break": "game:block/anvil",
+		"hit": "game:block/anvil"
+	},
+}
+
+

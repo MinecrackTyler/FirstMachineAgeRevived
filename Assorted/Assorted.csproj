@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{805B37F5-F87D-4A63-BD3F-66AE59F1C998}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>FirstMachineAge</RootNamespace>
+    <AssemblyName>Assorted</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="cairo-sharp">
+      <HintPath>vs_libs\cairo-sharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="protobuf-net">
+      <HintPath>vs_libs\protobuf-net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VintagestoryAPI">
+      <HintPath>vs_libs\VintagestoryAPI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VintagestoryLib">
+      <HintPath>vs_libs\VintagestoryLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VSCreativeMod">
+      <HintPath>vs_libs\VSCreativeMod.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VSEssentials">
+      <HintPath>vs_libs\VSEssentials.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VSSurvivalMod">
+      <HintPath>vs_libs\VSSurvivalMod.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssortedModLoader.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BlockClasses\BoltableDoor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BlockClasses\" />
+    <Folder Include="assets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\defensive\blocktypes\iron\grille_horizontal.json" />
+    <None Include="assets\defensive\blocktypes\iron\grille_vertical.json" />
+    <None Include="assets\defensive\blocktypes\stone\slot_vert.json" />
+    <None Include="assets\defensive\blocktypes\wood\boltable_door.json" />
+    <None Include="assets\defensive\lang\en.json" />
+    <None Include="assets\defensive\recipes\smithing\grille.json" />
+    <None Include="assets\defensive\shapes\block\iron\grille_horizontal.json" />
+    <None Include="assets\defensive\shapes\block\iron\grille_vertical.json" />
+    <None Include="assets\defensive\shapes\block\iron\strut_vert.json" />
+    <None Include="assets\defensive\shapes\block\stone\slot_vert.json" />
+    <None Include="assets\defensive\shapes\block\wood\heavydoor_lower_closed_left.json" />
+    <None Include="assets\defensive\shapes\block\wood\heavydoor_lower_opened_left.json" />
+    <None Include="assets\defensive\shapes\block\wood\heavydoor_upper_closed_left.json" />
+    <None Include="assets\defensive\shapes\block\wood\heavydoor_upper_opened_left.json" />
+    <None Include="assets\defensive\textures\metal\iron_rusty.png" />
+    <None Include="modinfo.json" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

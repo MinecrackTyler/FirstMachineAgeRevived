@@ -12,7 +12,7 @@ namespace FirstMachineAge
 	/*
 	 MBM:
 
-	'Cyto' block: points to Nucleus block - 'structural'
+	'Cyto' block: points to Nucleus block - 'structural' (placeholder for Atomic MBM's)
 	'Membrane' block: points to Nucleus block, but also is input/output point for AbstractCircuits / Power
 	'Nucleus' block: houses MBM state/data & definition, as well as list of component block pos, and prototype
 	 */
@@ -22,11 +22,12 @@ namespace FirstMachineAge
 		IMultiBlockModule<T> NucleusBlock { get; }
 		BlockPos NucleusLocation { get; }
 		T HostBlock { get; }//The Nucleus - as block
+		bool AtomicBlock { get; } // Is this a self-contained singular MBM (with one model/shape/main-block & some placeholders)
 
 		ILogicNetNode<T> LogicNode { get; }//Possibly null - Only "Membrane's" should have this...
 		MBMType ComponentType { get; }
 
-		IList<T> RelatedBlocks { get; }
+		IList<IMultiBlockModule<T>> RelatedBlocks { get; }
 		//Way to determine - annother module can connect here?
 		bool CheckCompatibility(Block subject, BlockFacing forSide);//Could it be 'placed' if it were a "normal" block
 		IMultiBlockModule<T> FuseBlock(Block subject, BlockFacing forSide);//Pass back resulting Complex, if fused together...

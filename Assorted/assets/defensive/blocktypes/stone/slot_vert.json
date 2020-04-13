@@ -1,0 +1,78 @@
+{
+	code: "slot_vertical",		
+	variantgroups: [		
+		{ code: "side", loadFromProperties: "abstract/horizontalorientation" }
+	],		
+	shapebytype: {		
+		"*-north": { base: "block/stone/slot_vert", rotateY: 0 },
+		"*-east": { base: "block/stone/slot_vert" , rotateY: 270 },
+		"*-south": { base: "block/stone/slot_vert" , rotateY: 180 },
+		"*-west": { base: "block/stone/slot_vert", rotateY: 90 },		
+	},
+	variantgroups: [
+		{ loadFromProperties: "block/rock" },
+		{ code: "rot", states: ["north", "east", "south", "west"] }
+	],
+	textures: {		
+		all: { base: "game:block/stone/cobblestone/{rock}1" },
+	},	
+	blockmaterial: "Stone",
+	sidesolid: {
+		all: false		
+	},
+	sideopaque: {
+		all: false
+	},
+	behaviors: [
+		{name: "HorizontalOrientable", properties: {  dropBlockFace: "north" }}		
+	],
+	creativeinventory: { "general": ["slot_vertical-*"], "decorative": ["slot_vertical-*"] },	
+	resistance: 3,
+	rainPermeable: true,
+	lightAbsorption: 0,
+	selectionboxesByType: {		
+		"*-north": [		
+		{ x1: 0.5, y1: 0, z1: 0, x2: 0, y2: 1, z2: 0.25 , rotateY: 270 },
+		{ x1: 0, y1: 0, z1: 0.75, x2: 0.5, y2: 1, z2: 1 , rotateY: 270 },
+		],		
+		"*-east": [		
+		{ x1: 0.5, y1: 0, z1: 0, x2: 0, y2: 1, z2: 0.25 , rotateY: 180 },
+		{ x1: 0, y1: 0, z1: 0.75, x2: 0.5, y2: 1, z2: 1 , rotateY: 180 },
+		],
+		"*-south": [
+		{ x1: 0.5, y1: 0, z1: 0, x2: 0, y2: 1, z2: 0.25 , rotateY: 90},
+		{ x1: 0, y1: 0, z1: 0.75, x2: 0.5, y2: 1, z2: 1 , rotateY: 90},
+		],
+		"*-west": [
+		{ x1: 0.5, y1: 0, z1: 0, x2: 0, y2: 1, z2: 0.25 },
+		{ x1: 0, y1: 0, z1: 0.75, x2: 0.5, y2: 1, z2: 1 },
+		],	
+	},
+	collisionboxesByType: {		
+		"*-north": [		
+		{ x1: 0.5, y1: 0, z1: 0, x2: 0, y2: 1, z2: 0.25 , rotateY: 270 },
+		{ x1: 0, y1: 0, z1: 0.75, x2: 0.5, y2: 1, z2: 1 , rotateY: 270 },
+		],		
+		"*-east": [		
+		{ x1: 0.5, y1: 0, z1: 0, x2: 0, y2: 1, z2: 0.25 , rotateY: 180 },
+		{ x1: 0, y1: 0, z1: 0.75, x2: 0.5, y2: 1, z2: 1 , rotateY: 180 },
+		],
+		"*-south": [
+		{ x1: 0.5, y1: 0, z1: 0, x2: 0, y2: 1, z2: 0.25 , rotateY: 90},
+		{ x1: 0, y1: 0, z1: 0.75, x2: 0.5, y2: 1, z2: 1 , rotateY: 90},
+		],
+		"*-west": [
+		{ x1: 0.5, y1: 0, z1: 0, x2: 0, y2: 1, z2: 0.25 },
+		{ x1: 0, y1: 0, z1: 0.75, x2: 0.5, y2: 1, z2: 1 },
+		],	
+	},
+	materialDensity: 600,
+	sounds: {
+		"walk": "walk/stone",
+		byTool: {
+			"Pickaxe": { hit: "block/rock-hit-pickaxe", break: "block/rock-break-pickaxe" }
+		}
+	},
+}
+
+

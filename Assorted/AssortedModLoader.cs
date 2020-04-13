@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;
 using Vintagestory.Common;
 using Vintagestory.Server;
 
-namespace AnvilMetalRecovery
+namespace FirstMachineAge
 {
-	public class MetalRecoverySystem : ModSystem
-	{
-		internal const string anvilKey = @"Anvil";
-
+	public class AssortedModSystems : ModSystem
+	{		
 		private ICoreAPI CoreAPI;
 		private ICoreServerAPI ServerAPI;
 		private ServerCoreAPI ServerCore { get; set; }
@@ -21,18 +20,20 @@ namespace AnvilMetalRecovery
 
 		public override bool ShouldLoad(EnumAppSide forSide)
 		{
-		return forSide.IsServer( );
+			return forSide.IsClient() || forSide.IsServer();
 		}
 
 		public override double ExecuteOrder( )
 		{
-		return 0.11d;
+		return 0.1d;
 		}
 
 		public override void Start(ICoreAPI api)
 		{
 		base.Start(api);
 		this.CoreAPI = api;
+
+		RegisterBlockClasses( );
 		}
 
 		public override void StartServerSide(ICoreServerAPI api)
@@ -49,36 +50,17 @@ namespace AnvilMetalRecovery
 		Mod.Logger.Error("Cannot access 'ServerCoreAPI' class:  API (implimentation) has changed, Contact Developer!");
 		return;
 		}
-		//ServerAPI.ClassRegistry.GetBlockEntityClass
-		//ServerAPI.RegisterBlockEntityClass(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));
 
-		ServerCore.ClassRegistryNative.ReplaceBlockEntityType(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));
-
-		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
 		}
 
-		internal void GenerateMetalShavingsItems( )
+		private void RegisterBlockClasses( )
 		{
-		//TODO: Automatic Generation of Item 'metal_shaving' by metal & alloy list at RUNTIME
-		var genericShaving = ServerAPI.World.ClassRegistry.CreateItem("metal_shaving");
-		//genericShaving.CombustibleProps.
+		CoreAPI.RegisterBlockClass("BoltableDoor", typeof(BoltableDoor));
 
-		var metalProperties = new Dictionary<AssetLocation, MetalProperty>( );
-
-		foreach (var entry in ServerAPI.Assets.GetMany<MetalProperty>(Mod.Logger, "worldproperties/")) 
-			{
-			AssetLocation loc = entry.Key.Clone( );
-			loc.Path = loc.Path.Replace("worldproperties/", "");
-			loc.RemoveEnding( );
-
-			entry.Value.Code.Domain = entry.Key.Domain;
-
-			metalProperties.Add(loc, entry.Value);
-
-			}
-		}	
+		}
 	}
 
+	/*
 	internal static class Helpers
 	{
 		internal static void ReplaceBlockEntityType(this ClassRegistry registry, string className, Type blockentity)
@@ -90,5 +72,6 @@ namespace AnvilMetalRecovery
 		}
 		}
 	}
+	*/
 }
 
