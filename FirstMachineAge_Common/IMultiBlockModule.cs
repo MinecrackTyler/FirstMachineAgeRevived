@@ -23,6 +23,7 @@ namespace FirstMachineAge
 		BlockPos NucleusLocation { get; }
 		T HostBlock { get; }//The Nucleus - as block
 		bool AtomicBlock { get; } // Is this a self-contained singular MBM (with one model/shape/main-block & some placeholders)
+		bool Intact { get; }//Is the MBM actually coherent - by schematic or dynamic - its complete?
 
 		ILogicNetNode<T> LogicNode { get; }//Possibly null - Only "Membrane's" should have this...
 		MBMType ComponentType { get; }

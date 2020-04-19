@@ -1,11 +1,14 @@
 {
 	"editor": {
 		"allAngles": false,
-		"singleTexture": false
+		"entityTextureMode": false
 	},
 	"textureWidth": 16,
 	"textureHeight": 16,
+	"textureSizes": {
+	},
 	"textures": {
+		"wall-inside": "block/wood/crate/wall-inside",
 		"oak2": "block/wood/planks/oak2",
 		"oak1": "block/wood/planks/oak1"
 	},
@@ -17,12 +20,12 @@
 			"rotationOrigin": [ 0.0, 0.0, 13.0 ],
 			"rotationY": -90.0,
 			"faces": {
-				"north": { "texture": "#oak1", "uv": [ 0.0, 9.0, 16.0, 11.0 ], "rotation": 90 },
-				"east": { "texture": "#oak1", "uv": [ 0.0, 0.0, 16.0, 16.0 ], "rotation": 90 },
-				"south": { "texture": "#oak1", "uv": [ 0.0, 4.0, 16.0, 6.0 ], "rotation": 90 },
-				"west": { "texture": "#oak1", "uv": [ 0.0, 0.0, 16.0, 16.0 ], "rotation": 90 },
-				"up": { "texture": "#oak1", "uv": [ 0.0, 8.0, 16.0, 10.0 ], "rotation": 90 },
-				"down": { "texture": "#oak1", "uv": [ 0.0, 8.5, 16.0, 10.5 ], "rotation": 90 }
+				"north": { "texture": "#wall-inside", "uv": [ 7.0, 3.0, 5.0, 16.0 ], "autoUv": false, "snapUv": false },
+				"east": { "texture": "#wall-inside", "uv": [ 0.0, 3.0, 14.0, 16.0 ], "autoUv": false, "snapUv": false },
+				"south": { "texture": "#wall-inside", "uv": [ 7.0, 3.0, 5.0, 16.0 ], "autoUv": false, "snapUv": false },
+				"west": { "texture": "#wall-inside", "uv": [ 0.0, 3.0, 14.0, 16.0 ], "autoUv": false, "snapUv": false },
+				"up": { "texture": "#wall-inside", "uv": [ 0.0, 7.0, 14.0, 4.0 ], "rotation": 90, "autoUv": false, "snapUv": false },
+				"down": { "texture": "#wall-inside", "uv": [ 0.0, 8.0, 16.0, 10.0 ], "rotation": 90 }
 			}
 		},
 		{

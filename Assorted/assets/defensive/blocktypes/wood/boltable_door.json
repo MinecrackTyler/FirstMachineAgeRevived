@@ -2,7 +2,7 @@
 	code: "boltable_door",
 	class: "BoltableDoor",
 	renderpass: "OpaqueNoCull",
-	
+	entityClass: "BoltableDoorEntity",
 	heldTpIdleAnimation: "holdunderarm",
 	attributes: {
 		handbook: {
@@ -76,30 +76,40 @@
 		],		
 		"*-north-up-closed": [		
 		{ x1: 0, y1: 0, z1: 0.875, x2: 1, y2: 1, z2: 1 },
-		{ x1: 0.4, y1: 0.625, z1: 0.875, x2: 0.03, y2: 0.375, z2: 0.67 }				
+		{ x1: 0.05, y1: 0.225, z1: 0.67, x2: 0.4125, y2: 0.55, z2: 0.875 },				
+		],		
+		"*-west-down-closed": [	
+		{ x1: 0, y1: 0, z1: 0.875, x2: 1, y2: 1, z2: 1 , rotateY: 270},		
+		],		
+		"*-west-up-closed": [		
+		{ x1: 0, y1: 0, z1: 0.875, x2: 1, y2: 1, z2: 1 , rotateY: 270},
+		{ x1: 0.05, y1: 0.225, z1: 0.67, x2: 0.4125, y2: 0.55, z2: 0.875 , rotateY: 270}				
+		],		
+		"*-east-down-closed": [	
+		{ x1: 0, y1: 0, z1: 0.875, x2: 1, y2: 1, z2: 1 , rotateY: 90},		
+		],		
+		"*-east-up-closed": [		
+		{ x1: 0, y1: 0, z1: 0.875, x2: 1, y2: 1, z2: 1 , rotateY: 90},
+		{ x1: 0.05, y1: 0.225, z1: 0.67, x2: 0.4125, y2: 0.55, z2: 0.875, rotateY: 90}				
+		],		
+		"*-south-down-closed": [	
+		{ x1: 0, y1: 0, z1: 0.875, x2: 1, y2: 1, z2: 1 , rotateY: 180},		
+		],		
+		"*-south-up-closed": [		
+		{ x1: 0, y1: 0, z1: 0.875, x2: 1, y2: 1, z2: 1 , rotateY: 180},
+		{ x1: 0.05, y1: 0.225, z1: 0.67, x2: 0.4125, y2: 0.55, z2: 0.875 , rotateY: 180}				
 		],		
 	},	
 	collisionbox: { x1: 0, y1: 0, z1: 0.875, x2: 1, y2: 1, z2: 1,
 		rotateYByType: {
-			"*-north-*-opened-left": 90,
-			"*-north-*-closed-left": 0,
-			"*-west-*-opened-left": 180,
-			"*-west-*-closed-left": 90,
-
-			"*-east-*-opened-left": 0,
-			"*-east-*-closed-left": 270,
-			"*-south-*-opened-left": 270,
-			"*-south-*-closed-left": 180,
-
-			"*-north-*-opened-right": 270,
-			"*-north-*-closed-right": 0,
-			"*-west-*-opened-right": 0,
-			"*-west-*-closed-right": 90,
-
-			"*-east-*-opened-right": 180,
-			"*-east-*-closed-right": 270,
-			"*-south-*-opened-right": 90,
-			"*-south-*-closed-right": 180
+			"*-north-*-opened": 90,
+			"*-north-*-closed": 0,
+			"*-west-*-opened": 180,
+			"*-west-*-closed": 90,
+			"*-east-*-opened": 0,
+			"*-east-*-closed": 270,
+			"*-south-*-opened": 270,
+			"*-south-*-closed": 180,
 		}
 	},
 	combustibleProps: {
@@ -107,10 +117,10 @@
 		burnDuration: 25,
 	},
 	sounds: {
-		"place": "block/planks",
-		"hit": "block/planks",
-		"break": "block/planks",
-		"walk": "walk/wood"
+		"place": "game:block/planks",
+		"hit": "game:block/planks",
+		"break": "game:block/planks",
+		"walk": "game:walk/wood"
 	},
 	materialDensity: 600
 }

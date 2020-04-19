@@ -56,7 +56,7 @@ namespace FirstMachineAge
 		private void RegisterBlockClasses( )
 		{
 		CoreAPI.RegisterBlockClass("BoltableDoor", typeof(BoltableDoor));
-
+		CoreAPI.RegisterBlockEntityClass("BoltableDoorEntity", typeof(BoltableDoorBlockEntity));
 		}
 	}
 
