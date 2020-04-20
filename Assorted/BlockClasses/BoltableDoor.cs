@@ -68,7 +68,7 @@ namespace FirstMachineAge
 			else 
 			{
 			//Door in Bolted shut state; 
-			(api as ICoreClientAPI)?.TriggerIngameError(this, "boltedclosed", Lang.Get("ingameerror-boltedclosed"));
+			(api as ICoreClientAPI)?.TriggerIngameError(this, "boltedclosed", Lang.Get("defensive:ingameerror-boltedclosed"));
 			}
 		}else if (selBox.SelectionBoxIndex == 1) {
 		//Bolt toggle behavior
