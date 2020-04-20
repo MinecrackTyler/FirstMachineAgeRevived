@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using Vintagestory.API;
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;
 using Vintagestory.Common;
@@ -34,6 +34,7 @@ namespace FirstMachineAge
 		this.CoreAPI = api;
 
 		RegisterBlockClasses( );
+		RegisterBehaviorClasses( );
 		}
 
 		public override void StartServerSide(ICoreServerAPI api)
@@ -58,20 +59,16 @@ namespace FirstMachineAge
 		CoreAPI.RegisterBlockClass("BoltableDoor", typeof(BoltableDoor));
 		CoreAPI.RegisterBlockEntityClass("BoltableDoorEntity", typeof(BoltableDoorBlockEntity));
 		}
+
+		private void RegisterBehaviorClasses( )
+		{
+		CoreAPI.RegisterBlockBehaviorClass("FreeReinforcement", typeof(BlockBehaviorFreeReinforcement));
+		
+		}
 	}
 
-	/*
-	internal static class Helpers
-	{
-		internal static void ReplaceBlockEntityType(this ClassRegistry registry, string className, Type blockentity)
-		{
-		if (registry.blockEntityClassnameToTypeMapping.ContainsKey(className)) {
-		//replace it
-		registry.blockEntityClassnameToTypeMapping[className] = blockentity;
-		registry.blockEntityTypeToClassnameMapping[blockentity] = className;
-		}
-		}
-	}
-	*/
+
+
+
 }
 

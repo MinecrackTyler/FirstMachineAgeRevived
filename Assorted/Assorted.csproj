@@ -62,17 +62,24 @@
       <HintPath>vs_libs\VSSurvivalMod.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>vs_libs\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssortedModLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BlockClasses\BoltableDoor.cs" />
     <Compile Include="BlockEntityClasses\BoltableDoorBlockEntity.cs" />
+    <Compile Include="BlockBehaviors\BlockBehaviorFreeReinforcement.cs" />
+    <Compile Include="Helpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BlockClasses\" />
     <Folder Include="assets\" />
     <Folder Include="BlockEntityClasses\" />
+    <Folder Include="BlockBehaviors\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\defensive\blocktypes\iron\grille_horizontal.json">
