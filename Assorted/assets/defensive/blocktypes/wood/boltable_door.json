@@ -1,8 +1,11 @@
 {
 	code: "boltable_door",
 	class: "BoltableDoor",
-	renderpass: "OpaqueNoCull",
-	entityClass: "BoltableDoorEntity",
+	renderpass: "OpaqueNoCull",	
+    entityClassByType: {
+		"*-down-*": null,
+		"*-up-*": "BoltableDoorEntity",
+	},
 	heldTpIdleAnimation: "holdunderarm",
 	attributes: {
 		handbook: {

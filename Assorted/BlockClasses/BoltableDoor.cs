@@ -68,14 +68,14 @@ namespace FirstMachineAge
 			else 
 			{
 			//Door in Bolted shut state; 
-			(api as ICoreClientAPI).TriggerIngameError(this, "doorbolted", Lang.Get("ingameerror-door-boltedclosed"));
+			(api as ICoreClientAPI)?.TriggerIngameError(this, "boltedclosed", Lang.Get("ingameerror-boltedclosed"));
 			}
 		}else if (selBox.SelectionBoxIndex == 1) {
 		//Bolt toggle behavior
-		world.PlaySoundAt(new AssetLocation(GlobalConstants.DefaultDomain,"sounds/tool/padlock"), ( double )(( float )position.X + 0.5f), ( double )(( float )position.Y + 0.5f), ( double )(( float )position.Z + 0.5f), byPlayer, true, 32f, 1f);
+		world.PlaySoundAt(new AssetLocation(GlobalConstants.DefaultDomain,"sounds/effect/woodswitch"), ( double )(( float )position.X + 0.5f), ( double )(( float )position.Y + 0.5f), ( double )(( float )position.Z + 0.5f), byPlayer, true, 32f, 1f);
 		doorEntity.Bolted = !doorEntity.Bolted;
 		//TODO: Start bolt animation
-
+		//SEE: > BlockEntityAnimationUtil 
 		}
 		
 		return true;
