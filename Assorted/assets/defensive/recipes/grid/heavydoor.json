@@ -1,0 +1,11 @@
+﻿{
+	ingredientPattern: "WPW	WSW	WPW",
+	ingredients: {
+		"W": { type: "item", code: "game:plank-*" },
+        "P": { type:"block", code:"game:plankslab-*"},
+        "S": { type: "item", code: "game:stick" },
+	},
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "defensive:boltable_door-north-down-closed"  }
+}

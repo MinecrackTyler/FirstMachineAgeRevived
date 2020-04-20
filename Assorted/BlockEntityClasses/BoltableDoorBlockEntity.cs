@@ -44,7 +44,7 @@ namespace FirstMachineAge
 		var boltableDoor = this.Block as BoltableDoor;
 		BoltableDoorBlockEntity realEntity = boltableDoor.Entity(this.Pos.Copy( ));
 		
-		dsc.AppendLine($"Bolted: {(realEntity.Bolted?"Yes":"No")}");		
+		dsc.AppendLine($"Bolted: {(realEntity.Bolted?"<font color='red'>Yes</font>":"No")}");		
 		}
 	}
 }

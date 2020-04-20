@@ -12,6 +12,9 @@
 			groupBy: ["woodendoor-*"]
 		},
 	},
+    behaviors: [
+		 {name: "FreeReinforcement", properties: { howmuch: 5 } }	
+	],
 	variantgroups: [
 		{ loadFromProperties: "abstract/horizontalorientation" },
 		{ code: "part", states: ["down", "up"] },
@@ -23,6 +26,7 @@
 		"oak2": { base:"game:block/wood/planks/oak2"},
 		"oak1": { base:"game:block/wood/planks/oak1"}				
 	},
+    shapeinventory: { base: "block/wood/heavydoor_inv" },
 	shapebytype: {
 		"*-north-down-closed": { base: "block/wood/heavydoor_lower_closed_left", rotateY: 90 },
 		"*-north-up-closed": { base: "block/wood/heavydoor_upper_closed_left", rotateY: 90 },

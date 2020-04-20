@@ -1,61 +1,63 @@
 {
 	"editor": {
 		"allAngles": false,
-		"singleTexture": false
+		"entityTextureMode": false
 	},
 	"textureWidth": 16,
 	"textureHeight": 16,
+	"textureSizes": {
+	},
 	"textures": {
 		"iron": "block/metal/plate/iron"
 	},
 	"elements": [
 		{
 			"name": "LeftBar",
-			"from": [ 2.0, 0.0, 1.0 ], 
-			"to": [ 4.0, 16.0, 1.5 ], 
-			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
+			"from": [ 2.0, -0.5, 1.0 ], 
+			"to": [ 4.0, 16.5, 1.5 ], 
+			"rotationOrigin": [ 8.0, -1.0, 8.0 ],
 			"faces": {
-				"north": { "texture": "#iron", "uv": [ 4.5, 0.0, 6.5, 16.0 ] },
-				"east": { "texture": "#iron", "uv": [ 8.0, 0.0, 8.5, 16.0 ] },
-				"south": { "texture": "#iron", "uv": [ 5.5, 0.0, 7.5, 16.0 ] },
-				"west": { "texture": "#iron", "uv": [ 9.0, 0.0, 9.5, 16.0 ] },
+				"north": { "texture": "#iron", "uv": [ 4.5, 0.0, 6.5, 16.0 ], "autoUv": false, "snapUv": false },
+				"east": { "texture": "#iron", "uv": [ 8.0, 0.0, 8.5, 16.0 ], "autoUv": false, "snapUv": false },
+				"south": { "texture": "#iron", "uv": [ 5.5, 0.0, 7.5, 16.0 ], "autoUv": false, "snapUv": false },
+				"west": { "texture": "#iron", "uv": [ 9.0, 0.0, 9.5, 16.0 ], "autoUv": false, "snapUv": false },
 				"up": { "texture": "#iron", "uv": [ 8.0, 6.5, 10.0, 7.0 ] },
 				"down": { "texture": "#iron", "uv": [ 4.0, 7.5, 6.0, 8.0 ] }
 			}
 		},
 		{
 			"name": "RightBar",
-			"from": [ 12.0, 0.0, 1.0 ], 
-			"to": [ 14.0, 16.0, 1.5 ], 
+			"from": [ 12.0, -0.5, 1.0 ], 
+			"to": [ 14.0, 16.5, 1.5 ], 
 			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
 			"faces": {
-				"north": { "texture": "#iron", "uv": [ 7.0, 0.0, 9.0, 16.0 ] },
-				"east": { "texture": "#iron", "uv": [ 11.5, 0.0, 12.0, 16.0 ] },
-				"south": { "texture": "#iron", "uv": [ 13.5, 0.0, 15.5, 16.0 ] },
-				"west": { "texture": "#iron", "uv": [ 15.0, 0.0, 15.5, 16.0 ] },
+				"north": { "texture": "#iron", "uv": [ 7.0, 0.0, 9.0, 16.0 ], "autoUv": false, "snapUv": false },
+				"east": { "texture": "#iron", "uv": [ 11.5, 0.0, 12.0, 16.0 ], "autoUv": false, "snapUv": false },
+				"south": { "texture": "#iron", "uv": [ 13.5, 0.0, 15.5, 16.0 ], "autoUv": false, "snapUv": false },
+				"west": { "texture": "#iron", "uv": [ 15.0, 0.0, 15.5, 16.0 ], "autoUv": false, "snapUv": false },
 				"up": { "texture": "#iron", "uv": [ 12.5, 11.5, 14.5, 12.0 ] },
 				"down": { "texture": "#iron", "uv": [ 5.0, 4.5, 7.0, 5.0 ] }
 			}
 		},
 		{
 			"name": "UpperBar",
-			"from": [ 0.0, 12.0, 1.5 ], 
-			"to": [ 16.0, 14.0, 2.0 ], 
+			"from": [ -0.5, 12.0, 1.5 ], 
+			"to": [ 16.5, 14.0, 2.0 ], 
 			"rotationOrigin": [ 0.0, 12.0, 8.0 ],
 			"faces": {
-				"north": { "texture": "#iron", "uv": [ 0.0, 6.5, 16.0, 8.5 ] },
+				"north": { "texture": "#iron", "uv": [ 0.0, 6.5, 16.0, 8.5 ], "autoUv": false, "snapUv": false },
 				"east": { "texture": "#iron", "uv": [ 2.5, 12.0, 3.0, 14.0 ] },
-				"south": { "texture": "#iron", "uv": [ 0.0, 5.5, 16.0, 7.5 ] },
+				"south": { "texture": "#iron", "uv": [ 0.0, 5.5, 16.0, 7.5 ], "autoUv": false, "snapUv": false },
 				"west": { "texture": "#iron", "uv": [ 0.5, 5.5, 1.0, 7.5 ] },
-				"up": { "texture": "#iron", "uv": [ 0.0, 3.0, 16.0, 3.5 ] },
-				"down": { "texture": "#iron", "uv": [ 0.0, 5.0, 16.0, 5.5 ] }
+				"up": { "texture": "#iron", "uv": [ 0.0, 3.0, 16.0, 3.5 ], "autoUv": false, "snapUv": false },
+				"down": { "texture": "#iron", "uv": [ 0.0, 5.0, 16.0, 5.5 ], "autoUv": false, "snapUv": false }
 			},
 			"children": [
 				{
 					"name": "Rivet3",
-					"from": [ 2.5, 0.5, -1.0 ], 
-					"to": [ 3.5, 1.5, 0.75 ], 
-					"rotationOrigin": [ 3.0, 1.0, -1.0 ],
+					"from": [ 1.75, -0.25, -1.0 ], 
+					"to": [ 2.75, 0.75, 0.75 ], 
+					"rotationOrigin": [ 2.0, 2.0, -1.0 ],
 					"rotationZ": 45.0,
 					"faces": {
 						"north": { "texture": "#rivets", "uv": [ 4.0, 8.0, 5.0, 9.0 ] },
@@ -68,8 +70,8 @@
 				},
 				{
 					"name": "Rivet4",
-					"from": [ 12.5, 0.5, -1.0 ], 
-					"to": [ 13.5, 1.5, 1.0 ], 
+					"from": [ 12.75, 0.25, -1.0 ], 
+					"to": [ 13.75, 1.25, 1.0 ], 
 					"rotationOrigin": [ 13.0, 1.0, -1.0 ],
 					"rotationZ": 45.0,
 					"faces": {
@@ -85,23 +87,23 @@
 		},
 		{
 			"name": "LowerBar",
-			"from": [ 0.0, 2.0, 1.5 ], 
-			"to": [ 16.0, 4.0, 2.0 ], 
+			"from": [ -0.5, 2.0, 1.5 ], 
+			"to": [ 16.5, 4.0, 2.0 ], 
 			"rotationOrigin": [ 0.0, 2.0, 8.0 ],
 			"faces": {
-				"north": { "texture": "#iron", "uv": [ 0.0, 3.5, 16.0, 5.5 ] },
+				"north": { "texture": "#iron", "uv": [ 0.0, 3.5, 16.0, 5.5 ], "autoUv": false, "snapUv": false },
 				"east": { "texture": "#iron", "uv": [ 3.0, 3.0, 3.5, 5.0 ] },
-				"south": { "texture": "#iron", "uv": [ 0.0, 2.0, 16.0, 4.0 ] },
+				"south": { "texture": "#iron", "uv": [ 0.0, 1.0, 16.0, 3.0 ], "autoUv": false, "snapUv": false },
 				"west": { "texture": "#iron", "uv": [ 0.0, 0.0, 0.5, 2.0 ] },
-				"up": { "texture": "#iron", "uv": [ 0.0, 9.0, 16.0, 9.5 ] },
-				"down": { "texture": "#iron", "uv": [ 0.0, 2.0, 16.0, 2.5 ] }
+				"up": { "texture": "#iron", "uv": [ 0.0, 9.0, 16.0, 9.5 ], "autoUv": false, "snapUv": false },
+				"down": { "texture": "#iron", "uv": [ 0.0, 2.0, 16.0, 2.5 ], "autoUv": false, "snapUv": false }
 			},
 			"children": [
 				{
 					"name": "Rivet1",
 					"from": [ 2.75, 0.5, -1.0 ], 
 					"to": [ 3.75, 1.5, 1.0 ], 
-					"rotationOrigin": [ 3.25, 0.75, 0.0 ],
+					"rotationOrigin": [ 3.5, 1.25, 0.0 ],
 					"rotationZ": 45.0,
 					"faces": {
 						"north": { "texture": "#rivets", "uv": [ 6.0, 6.5, 7.0, 7.5 ] },
@@ -116,7 +118,7 @@
 					"name": "Rivet2",
 					"from": [ 12.75, 0.5, -1.0 ], 
 					"to": [ 13.75, 1.5, 1.0 ], 
-					"rotationOrigin": [ 13.25, 0.75, -1.0 ],
+					"rotationOrigin": [ 13.25, 1.25, -1.0 ],
 					"rotationZ": 45.0,
 					"faces": {
 						"north": { "texture": "#rivets", "uv": [ 3.5, 6.5, 4.5, 7.5 ] },

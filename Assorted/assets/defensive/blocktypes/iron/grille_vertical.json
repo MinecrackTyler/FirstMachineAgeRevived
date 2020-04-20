@@ -20,7 +20,7 @@
 	},
 	behaviors: [
 		{name: "HorizontalUpDownOrientable" },
-		{name: "FreeReinforcement", properties: { howmuch: 5 }}
+		{name: "FreeReinforcement", properties: { howmuch: 15 }}
 	],
 	creativeinventory: { "general": ["grille_vertical-*"], "decorative": ["grille_vertical-*"] },	
 	resistance: 4,

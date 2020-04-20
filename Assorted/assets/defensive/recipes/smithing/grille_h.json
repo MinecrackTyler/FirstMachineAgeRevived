@@ -1,0 +1,16 @@
+{
+	ingredient: { type: "item", code: "game:ingot-iron", name: "metal" },
+	pattern: [[
+		"_#___#___#_",
+		"_#___#___#_",
+		"###########",
+		"_#___#___#_",
+		"###########",
+		"_#___#___#_",		
+		"###########",
+        "_#___#___#_",
+		"_#___#___#_",		
+	]],
+	name: "Lattice Iron Grille",
+	output: { type: "block", code: "defensive:grille_horizontal-north", stacksize: 3  }
+}

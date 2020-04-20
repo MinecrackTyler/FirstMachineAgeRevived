@@ -1,6 +1,8 @@
 {
 	"defensive:block-grille_vertical-*": "Grille (Iron)",
-	"defensive:itemdesc-grille_vertical-*": "A grille of latticed wrought iron bars.",
+	"defensive:itemdesc-grille_vertical-*": "A vertical grille of latticed wrought iron bars.",
 	"defensive:ingameerror-boltedclosed":"Bolted Shut.",
 	"defensive:block-boltable_door-*":"Heavy wooden door",
+    "defensive:block-grille_horizontal-*": "Grille (Iron)",
+	"defensive:itemdesc-grille_horizontal-*": "A horizontal grille of latticed wrought iron bars.",
 }

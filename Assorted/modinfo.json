@@ -1,7 +1,7 @@
 {
   "type": "code",
   "name": "Defensive Structures",
-  "description" : "Buildable structures and emplacments, for Defense!",
+  "description" : "Defensive structures and emplacements, ideal for castles...",
   "authors": ["Melchior"],
   "version": "0.1.1",
   "dependencies": { 

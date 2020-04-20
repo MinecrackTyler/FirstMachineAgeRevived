@@ -80,6 +80,7 @@
     <Folder Include="assets\" />
     <Folder Include="BlockEntityClasses\" />
     <Folder Include="BlockBehaviors\" />
+    <Folder Include="assets\defensive\recipes\grid\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\defensive\blocktypes\iron\grille_horizontal.json">
@@ -97,7 +98,7 @@
     <None Include="assets\defensive\lang\en.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\recipes\smithing\grille.json">
+    <None Include="assets\defensive\recipes\smithing\grille_v.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\defensive\shapes\block\iron\grille_horizontal.json">
@@ -126,6 +127,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="modinfo.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\recipes\smithing\grille_h.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\recipes\grid\heavydoor.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\shapes\block\wood\heavydoor_inv.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
