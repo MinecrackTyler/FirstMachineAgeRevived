@@ -149,13 +149,15 @@ namespace FirstMachineAge
 
 		public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref string failureCode)
 		{
-		BlockPos abovePos = blockSel.Position.AddCopy(0, 1, 0);
+		BlockPos upperPos = blockSel.Position.AddCopy(0, 1, 0);
+		BlockPos lowerPos = blockSel.Position.Copy( );
+
 		IBlockAccessor ba = world.BlockAccessor;
 
-		if (ba.GetBlockId(abovePos) == 0 && CanPlaceBlock(world, byPlayer, blockSel, ref failureCode)) {
+			        
+		if (ba.GetBlockId(upperPos) == 0 && CanPlaceBlock(world, byPlayer, blockSel, ref failureCode)) {
 		BlockFacing[ ] horVer = SuggestedHVOrientation(byPlayer, blockSel);
 						
-
 		AssetLocation downBlockCode = CodeWithVariants(new Dictionary<string, string>( ) {
 					{ "horizontalorientation", horVer[0].Code },
 					{ "part", "down" },
@@ -163,12 +165,12 @@ namespace FirstMachineAge
 				});
 
 		Block downBlock = ba.GetBlock(downBlockCode);
-
 		AssetLocation upBlockCode = downBlock.CodeWithVariant("part", "up");
 		Block upBlock = ba.GetBlock(upBlockCode);
-						
-		ba.SetBlock(downBlock.BlockId, blockSel.Position);
-		ba.SetBlock(upBlock.BlockId, abovePos);
+
+		ba.RemoveBlockEntity(upperPos);
+		ba.SetBlock(upBlock.BlockId, upperPos);
+		ba.SetBlock(downBlock.BlockId, lowerPos);
 		return true;
 		}
 

@@ -43,8 +43,7 @@ namespace FirstMachineAge
 		base.GetBlockInfo(forPlayer, dsc);
 		var boltableDoor = this.Block as BoltableDoor;
 		BoltableDoorBlockEntity realEntity = boltableDoor.Entity(this.Pos.Copy( ));
-		
-		dsc.AppendLine($"Bolted: {(realEntity.Bolted?"<font color='red'>Yes</font>":"No")}");		
+		if (realEntity != null) dsc.AppendLine($"Bolted: {(realEntity.Bolted?"<font color='red'>Yes</font>":"No")}");		
 		}
 	}
 }
