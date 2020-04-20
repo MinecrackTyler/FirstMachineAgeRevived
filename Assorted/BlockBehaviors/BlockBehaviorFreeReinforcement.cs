@@ -46,9 +46,9 @@ namespace FirstMachineAge
 		public override bool DoPlaceBlock(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, ItemStack byItemStack, ref EnumHandling handling)
 		{
 		handling = EnumHandling.PassThrough;
-
-		world.Api.Event.RegisterCallback((elapse) => { PostPlacementReinforce(elapse,blockSel.Position.Copy( ), byPlayer, this.Howmuch); }, 16);
-
+		if (world.Api.Side.IsServer( )) {
+		world.Api.Event.RegisterCallback((elapse) => { PostPlacementReinforce(elapse, blockSel.Position.Copy( ), byPlayer, this.Howmuch); }, 16);
+		}
 		return true;
 		}
 
