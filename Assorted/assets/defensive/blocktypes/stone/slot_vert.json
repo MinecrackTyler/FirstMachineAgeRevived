@@ -27,7 +27,7 @@
 		{name: "HorizontalOrientable", properties: {  dropBlockFace: "north" }}		
 	],
 	creativeinventory: { "general": ["slot_vertical-*"], "decorative": ["slot_vertical-*"] },	
-	resistance: 3,
+	resistance: 2,
 	rainPermeable: true,
 	lightAbsorption: 0,
 	selectionboxesByType: {		
