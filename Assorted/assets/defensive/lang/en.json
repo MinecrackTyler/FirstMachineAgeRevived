@@ -6,4 +6,6 @@
     "defensive:blockdesc-boltable_door-*":"Integrated bolt lock.",
     "defensive:block-grille_horizontal-*": "Grille (Iron)",
 	"defensive:blockdesc-grille_horizontal-*": "A horizontal grille of latticed wrought iron bars.",
+    "defensive:block-slot_hole-*": "Stone hole",
+    "defensive:block-slot_vertical-*": "Stone slit",
 }
