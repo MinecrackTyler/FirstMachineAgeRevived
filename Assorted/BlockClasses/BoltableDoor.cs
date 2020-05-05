@@ -28,7 +28,14 @@ namespace FirstMachineAge
 		upperPos = here.UpCopy( );
 		}
 
-		return api.World.BlockAccessor.GetBlockEntity(upperPos) as BoltableDoorBlockEntity;			
+		var doorEntity = api.World.BlockAccessor.GetBlockEntity(upperPos) as BoltableDoorBlockEntity;
+
+		if (doorEntity == null) {
+		api.World.Logger.Warning($"BoltableDoor [{here}]: BlockEntity NULL! (regenerating)" );
+		api.World.BlockAccessor.SpawnBlockEntity(AssortedModSystems.BoltableDoorEntityNameKey, here);
+		}
+
+		return doorEntity;
 		}
 
 		public override BlockFacing GetDirection( )
@@ -51,9 +58,13 @@ namespace FirstMachineAge
 		if (!this.DoesBehaviorAllow(world, byPlayer, selBox)) {
 		return true;
 		}
+
 		BlockPos position = selBox.Position;
 		var doorEntity = this.Entity(position);
 		var clientPlayer = byPlayer as IClientPlayer;
+
+		if (doorEntity == null) return false;//Corrupted world!
+
 		if (selBox.SelectionBoxIndex == 0) 
 		{						
 			if (doorEntity.Bolted == false) 

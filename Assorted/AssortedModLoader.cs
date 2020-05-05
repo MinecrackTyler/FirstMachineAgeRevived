@@ -14,6 +14,8 @@ namespace FirstMachineAge
 		private ICoreServerAPI ServerAPI;
 		private ServerCoreAPI ServerCore { get; set; }
 
+		public const string BoltableDoorEntityNameKey = @"BoltableDoorEntity";
+
 		public override bool AllowRuntimeReload {
 			get { return false; }
 		}
@@ -57,7 +59,7 @@ namespace FirstMachineAge
 		private void RegisterBlockClasses( )
 		{
 		CoreAPI.RegisterBlockClass("BoltableDoor", typeof(BoltableDoor));
-		CoreAPI.RegisterBlockEntityClass("BoltableDoorEntity", typeof(BoltableDoorBlockEntity));
+		CoreAPI.RegisterBlockEntityClass(BoltableDoorEntityNameKey, typeof(BoltableDoorBlockEntity));
 		}
 
 		private void RegisterBehaviorClasses( )

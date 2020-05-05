@@ -41,8 +41,7 @@ namespace FirstMachineAge
 		public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
 		{
 		base.GetBlockInfo(forPlayer, dsc);
-		var boltableDoor = this.Block as BoltableDoor;
-		BoltableDoorBlockEntity realEntity = boltableDoor.Entity(this.Pos.Copy( ));
+		BoltableDoorBlockEntity realEntity = (this.Block as BoltableDoor).Entity(this.Pos.Copy( ));
 		if (realEntity != null) dsc.AppendLine($"Bolted: {(realEntity.Bolted?"<font color='red'>Yes</font>":"No")}");		
 		}
 	}
