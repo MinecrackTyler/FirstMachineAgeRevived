@@ -4,9 +4,9 @@
 		{ loadFromProperties: "block/rock" },
 		{ loadFromProperties: "abstract/verticalorientation" },
 	],
-	shapebytype: {		
-		"*-up": { base: "block/stone/slot_hole", rotateY: 180 },
-		"*-down": { base: "block/stone/slot_hole" , rotateY: 0 },
+	shapeByType: {		
+		"*-up": { base: "block/stone/slot_hole"  },
+		"*-down": { base: "block/stone/slot_hole", rotateZ: 180 },
 	},
 	textures: {		
 		all: { base: "game:block/stone/cobblestone/{rock}1" },
@@ -21,15 +21,7 @@
 		"*-up":   { all: false, north: true, east: true, south: true, west: true  }
 	},
 	behaviors: [
-		{
-			name: "OmniRotatable",
-			properties: {				
-				"rotateV": true,
-				"rotateSides": false,
-				"rotateH":false,
-				"facing": "block",
-			}
-		}
+		{ name: "VerticalOrentiation"  }
 	],
 	creativeinventory: { "general": ["slot_hole-*"], "decorative": ["slot_hole-*"] },	
 	resistance: 2,

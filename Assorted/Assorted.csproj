@@ -74,6 +74,7 @@
     <Compile Include="BlockEntityClasses\BoltableDoorBlockEntity.cs" />
     <Compile Include="BlockBehaviors\BlockBehaviorFreeReinforcement.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="BlockBehaviors\BlockBehaviorVerticalOrientation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BlockClasses\" />
