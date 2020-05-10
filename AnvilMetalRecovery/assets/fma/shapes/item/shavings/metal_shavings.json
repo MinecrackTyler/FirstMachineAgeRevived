@@ -6,7 +6,7 @@
 	"textureWidth": 16,
 	"textureHeight": 16,
 	"textures": {
-		"metal": "game:block/metal/ingot/metal"
+		"metal": "game:block/metal/ingot/iron"
 	},
 	"elements": [
 		{

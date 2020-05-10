@@ -1,9 +1,9 @@
 ﻿{
   "type": "code",
-  "name": "Anvil Metal Recovery",
-  "description" : "Get back that lost scrap and smithing discards!",
+  "name": "Metal Recovery & More",
+  "description" : "Get back lost scrap and smithing discards, and more.",
   "authors": ["Melchior"],
-  "version": "0.1.1",
+  "version": "0.1.2",
   "dependencies": { 
 	"game": "1.12.11",
 	"survival": ""

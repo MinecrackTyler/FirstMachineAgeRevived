@@ -1,0 +1,11 @@
+﻿{
+	ingredientPattern: "K	H	S",
+	ingredients: {
+		"K": { type: "item", code:"game:knife-*", isTool: true},
+		"H": { type: "block", code: "game:log-*", name: "head"  },
+		"S": { type: "item", code: "game:stick" }
+	},
+	width: 1,
+	height: 3,
+	output: { type: "item", code: "mallet", quantity: 1  }
+}
