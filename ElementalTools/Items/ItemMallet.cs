@@ -3,7 +3,7 @@
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 
-namespace AnvilMetalRecovery
+namespace ElementalTools
 {
 	public class ItemMallet : Item
 	{
@@ -28,7 +28,10 @@ namespace AnvilMetalRecovery
 		return false;
 		}
 
-		if (ingredient.IsTool && ingredient.Code.BeginsWith(GlobalConstants.DefaultDomain, @"hammer")) {
+		if (ingredient.IsTool && 
+			(ingredient.Code.BeginsWith(GlobalConstants.DefaultDomain, @"hammer") ||
+			 ingredient.Code.BeginsWith("fma",ElementalToolsSystem.malletAssetKey))) 
+		{
 		return true;
 		}
 

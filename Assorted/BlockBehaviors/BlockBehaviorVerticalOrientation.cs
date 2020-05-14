@@ -13,7 +13,7 @@ namespace FirstMachineAge
 		private readonly string verticalKey;
 
 		/* 
-		 * abstact/"horizontalorientation"
+		 * "abstract/verticalorientation"
 		*/
 
 

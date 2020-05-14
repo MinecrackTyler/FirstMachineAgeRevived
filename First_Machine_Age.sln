@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnvilMetalRecovery", "Anvil
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assorted", "Assorted\Assorted.csproj", "{805B37F5-F87D-4A63-BD3F-66AE59F1C998}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PsudeoTarget", "PsudeoTarget\PsudeoTarget.csproj", "{DF81DB59-817A-48BA-88CC-8173E6D2919D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElementalTools", "ElementalTools\ElementalTools.csproj", "{EA9BA3EC-EF08-4192-A844-4D3F398B1FFF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +35,14 @@ Global
 		{805B37F5-F87D-4A63-BD3F-66AE59F1C998}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{805B37F5-F87D-4A63-BD3F-66AE59F1C998}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{805B37F5-F87D-4A63-BD3F-66AE59F1C998}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF81DB59-817A-48BA-88CC-8173E6D2919D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF81DB59-817A-48BA-88CC-8173E6D2919D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF81DB59-817A-48BA-88CC-8173E6D2919D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF81DB59-817A-48BA-88CC-8173E6D2919D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA9BA3EC-EF08-4192-A844-4D3F398B1FFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA9BA3EC-EF08-4192-A844-4D3F398B1FFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA9BA3EC-EF08-4192-A844-4D3F398B1FFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA9BA3EC-EF08-4192-A844-4D3F398B1FFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

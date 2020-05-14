@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3EC9A581-655C-4F68-898C-4E773C292082}</ProjectGuid>
+    <ProjectGuid>{EA9BA3EC-EF08-4192-A844-4D3F398B1FFF}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>AnvilMetalRecovery</RootNamespace>
-    <AssemblyName>AnvilMetalRecovery</AssemblyName>
+    <RootNamespace>ElementalTools</RootNamespace>
+    <AssemblyName>ElementalTools</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -34,6 +34,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>vs_libs\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="protobuf-net">
+      <HintPath>vs_libs\protobuf-net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="VintagestoryAPI">
       <HintPath>vs_libs\VintagestoryAPI.dll</HintPath>
       <Private>False</Private>
@@ -54,55 +62,36 @@
       <HintPath>vs_libs\VSSurvivalMod.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>vs_libs\Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MetalRecoverySystem.cs" />
+    <Compile Include="ElementalToolsMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BlockEntities\MetalRecovery_BlockEntityAnvil.cs" />
-    <Compile Include="Helpers.cs" />
+    <Compile Include="Assignments.cs" />
+    <Compile Include="Items\ItemMallet.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Items\" />
+    <Folder Include="assets\" />
+    <Folder Include="assets\fma\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\shavings\metal_shavings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\fma\shapes\item\shavings\metal_shavings.json">
+    <None Include="assets\fma\itemtypes\tools\mallet.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\fma\lang\en.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\shapes\item\tools\mallet.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\fma\itemtypes\tools\mallet.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="assets\fma\recipes\grid\tool\mallet.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="assets\" />
-    <Folder Include="assets\fma\" />
-    <Folder Include="assets\fma\shapes\" />
-    <Folder Include="assets\fma\itemtypes\" />
-    <Folder Include="assets\fma\itemtypes\shavings\" />
-    <Folder Include="assets\fma\shapes\item\" />
-    <Folder Include="assets\fma\shapes\item\shavings\" />
-    <Folder Include="assets\fma\lang\" />
-    <Folder Include="BlockEntities\" />
-    <Folder Include="assets\fma\shapes\item\tools\" />
-    <Folder Include="assets\fma\itemtypes\tools\" />
-    <Folder Include="assets\fma\recipes\" />
-    <Folder Include="assets\fma\recipes\grid\" />
-    <Folder Include="assets\fma\recipes\grid\tool\" />
+    <None Include="assets\fma\shapes\item\tools\mallet.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

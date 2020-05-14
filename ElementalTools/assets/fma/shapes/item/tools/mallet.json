@@ -1,0 +1,44 @@
+{
+	"editor": {
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 8,
+	"textureSizes": {
+	},
+	"textures": {
+		"head": "game:block/wood/debarked/birch",
+		"side": "game:block/wood/treetrunk/oak",
+		"wood": "game:item/tool/material/wood"
+	},
+	"elements": [
+		{
+			"name": "handle",
+			"from": [ 0.5, 7.5, 7.5 ], 
+			"to": [ 13.5, 8.5, 8.5 ], 
+			"rotationOrigin": [ -3.0, 0.0, 8.0 ],
+			"faces": {
+				"north": { "texture": "#wood", "uv": [ 2.0, 3.0, 15.0, 4.0 ] },
+				"east": { "texture": "#wood", "uv": [ 6.5, 5.25, 7.5, 6.25 ] },
+				"south": { "texture": "#wood", "uv": [ 1.5, 5.5, 14.5, 6.5 ] },
+				"west": { "texture": "#wood", "uv": [ 7.0, 3.25, 8.0, 4.25 ] },
+				"up": { "texture": "#wood", "uv": [ 2.0, 4.0, 15.0, 5.0 ] },
+				"down": { "texture": "#wood", "uv": [ 1.5, 4.25, 14.5, 5.25 ] }
+			}
+		},
+		{
+			"name": "Head",
+			"from": [ 7.5, 5.5, 5.5 ], 
+			"to": [ 13.0, 10.5, 10.5 ], 
+			"rotationOrigin": [ -1.0, -1.0, -1.0 ],
+			"faces": {
+				"north": { "texture": "#head", "uv": [ 4.0, 2.0, 9.5, 7.0 ] },
+				"east": { "texture": "#side", "uv": [ 5.0, 1.5, 10.0, 6.5 ] },
+				"south": { "texture": "#head", "uv": [ 5.0, 1.75, 10.5, 6.75 ] },
+				"west": { "texture": "#side", "uv": [ 5.5, 1.75, 10.5, 6.75 ] },
+				"up": { "texture": "#head", "uv": [ 5.0, 1.5, 13.0, 6.5 ], "autoUv": false },
+				"down": { "texture": "#head", "uv": [ 4.5, 1.75, 10.0, 6.75 ] }
+			}
+		}
+	]}

@@ -16,7 +16,7 @@ namespace FirstMachineAge
 	'Membrane' block: points to Nucleus block, but also is input/output point for AbstractCircuits / Power
 	'Nucleus' block: houses MBM state/data & definition, as well as list of component block pos, and prototype
 	 */
-	public interface IMultiBlockModule<T> where T : Block
+	public interface IMultiBlockModule<T> where T : Block //MultiBlock ?
 	{		
 		ulong UniqueModuleID { get; }
 		IMultiBlockModule<T> NucleusBlock { get; }
@@ -46,11 +46,16 @@ namespace FirstMachineAge
 	public enum MBMType
 	{
 		Cyto,
-		Membrane,
+		Membrane, //or 'Ports' / Interface
 		Nucleus,
-		//Vacuole // a "empty" 'Space' for Hardpoints or Sub-modules?
+		//Vacuole // a "empty" 'Space' for Hardpoints or Sub-modules? Optional slot?
 	}
 
 
 }
 
+/*****
+
+public virtual void OnBlockPlaced <- will set BlockEntity in BASE overirde for  MultiBlock : Block
+
+*/

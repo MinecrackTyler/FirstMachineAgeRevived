@@ -7,10 +7,10 @@ using Vintagestory.Common;
 using Vintagestory.Server;
 using Vintagestory.ServerMods;
 
-namespace AnvilMetalRecovery
+namespace ElementalTools
 {
-	public partial class MetalRecoverySystem : ModSystem
-	{		
+	public partial class ElementalToolsSystem : ModSystem
+	{
 		private ICoreAPI CoreAPI;
 		private ICoreServerAPI ServerAPI;
 		private ServerCoreAPI ServerCore { get; set; }
@@ -34,8 +34,8 @@ namespace AnvilMetalRecovery
 		{
 		this.CoreAPI = api;
 
-		RegisterItemClasses();
-		
+		RegisterItemClasses( );
+
 
 		base.Start(api);
 		}
@@ -54,19 +54,18 @@ namespace AnvilMetalRecovery
 		}
 
 		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.LoadGame, OnServerLoadGame);
-		//ServerAPI.ClassRegistry.GetBlockEntityClass
-		//ServerAPI.RegisterBlockEntityClass(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));
+		
 
-		ServerCore.ClassRegistryNative.ReplaceBlockEntityType(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));
+		
 
-		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
+		Mod.Logger.VerboseDebug("Elemental Tools - should be installed...");
 		}
 
 		private void OnServerLoadGame( )
 		{
-			ManipulateGridRecipies( );
+		ManipulateGridRecipies( );
 		}
-}
+	}
 
 
 }

@@ -3,6 +3,7 @@
   "name": "Metal Recovery & More",
   "description" : "Get back lost scrap and smithing discards, and more.",
   "authors": ["Melchior"],
+  "ModID":"metalrecovery",
   "version": "0.1.2",
   "dependencies": { 
 	"game": "1.12.11",

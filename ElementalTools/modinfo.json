@@ -1,0 +1,13 @@
+﻿{
+  "type": "code",
+  "name": "𝙴𝙻𝙴𝙼𝙴𝙽𝚃𝙰𝙻  𝚃𝙾𝙾𝙻𝚂",
+  "description" : "Devices of great empowerment.",
+  "authors": ["Melchior"],
+  "ModID":"elementaltools",
+  "version": "0.1.0",
+  "dependencies": { 
+	"game": "1.12.14",
+	"survival": ""
+  },
+  "website": "http://nowebsite.nope"
+}
