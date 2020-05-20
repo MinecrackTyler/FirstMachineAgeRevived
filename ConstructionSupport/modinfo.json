@@ -1,0 +1,13 @@
+﻿{
+  "type": "code",
+  "name": "Construction Supports",
+  "description" : "Scaffolds and Construction equipment, for the builders.",
+  "authors": ["Melchior"],
+  "ModID":"constructionsupport",
+  "version": "0.1.0",
+  "dependencies": { 
+	"game": "1.12.14",
+	"survival": ""
+  },
+  "website": "http://nowebsite.nope"
+}
