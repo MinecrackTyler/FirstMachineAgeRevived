@@ -45,7 +45,35 @@ namespace ConstructionSupport
 			return _AirgapFaces;			
 			}
 		}
+
+		public override bool CanCreatureSpawnOn(IBlockAccessor blockAccessor, BlockPos pos, Vintagestory.API.Common.Entities.EntityProperties type, Vintagestory.API.Common.Entities.BaseSpawnConditions sc)
+		{
+		return false;//Never, anything.
+		}
+
+		protected bool IsHardSurface(IBlockAccessor world, Block checkBlock, BlockPos checkPos, BlockFacing checkFace)
+		{
+			if (checkBlock.MatterState == EnumMatterState.Solid &&
+			    (
+			    checkBlock.BlockMaterial == EnumBlockMaterial.Brick ||
+			 	checkBlock.BlockMaterial == EnumBlockMaterial.Ceramic ||
+			    checkBlock.BlockMaterial == EnumBlockMaterial.Mantle ||
+			    checkBlock.BlockMaterial == EnumBlockMaterial.Ore ||
+			    checkBlock.BlockMaterial == EnumBlockMaterial.Other ||
+			    checkBlock.BlockMaterial == EnumBlockMaterial.Stone ||
+			    checkBlock.BlockMaterial == EnumBlockMaterial.Wood 			   
+			   ))
+			{
+			return checkBlock.CanAttachBlockAt(world, this, checkPos, checkFace);
+			//checkBlock.SideSolid[blockFace.Index]
+		}
+			
+		return false;
+		}
+
 	}
+
+
 
 	/*
 	 public override bool TryPlaceBlock
