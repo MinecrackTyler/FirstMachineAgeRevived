@@ -18,6 +18,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="7z -tzip a ${ProjectName}_${ProjectConfig}.zip" workingdir="${TargetDir}" />
+        <Command type="AfterClean" command="rm -f *.zip" workingdir="${TargetDir}" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -69,25 +75,39 @@
     <Compile Include="Blocks\DeckworkCornerBlock.cs" />
     <Compile Include="Blocks\TrussBlock.cs" />
     <Compile Include="Blocks\Common\GenericScaffold.cs" />
+    <Compile Include="Blocks\Common\BlockHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\shapes\blocks\frames\deckwork_diag.json" />
-    <None Include="assets\fma\shapes\blocks\frames\deckwork_horiz.json" />
-    <None Include="assets\fma\shapes\blocks\frames\truss_vert.json" />
+    <None Include="assets\fma\shapes\block\frames\deckwork_diag.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\shapes\block\frames\deckwork_horiz.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\shapes\block\frames\truss_vert.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\blocktypes\frames\deckwork_horiz.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\blocktypes\frames\deckwork_corner.json" />
+    <None Include="assets\fma\blocktypes\frames\truss_vert.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />
     <Folder Include="assets\fma\itemtypes\tools\" />
     <Folder Include="assets\fma\recipes\grid\frames\" />
     <Folder Include="assets\fma\lang\" />
-    <Folder Include="assets\fma\shapes\blocks\" />
-    <Folder Include="assets\fma\shapes\blocks\frames\" />
+    <Folder Include="assets\fma\shapes\block\" />
+    <Folder Include="assets\fma\shapes\block\frames\" />
     <Folder Include="Blocks\" />
     <Folder Include="Blocks\Behaviors\" />
     <Folder Include="Blocks\Common\" />
+    <Folder Include="assets\fma\blocktypes\" />
+    <Folder Include="assets\fma\blocktypes\frames\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

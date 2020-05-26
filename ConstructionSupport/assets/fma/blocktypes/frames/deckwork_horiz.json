@@ -1,0 +1,55 @@
+﻿{
+	code: "deckwork_horiz",
+	class: "DeckworkHorizontal",
+	attributes: {
+		reinforcable: false,
+		canChisel: false,
+		handbook: {
+			groupBy: ["deckwork_horiz-*"]	
+		}
+	},
+	replaceable: 200,
+	resistance: 1.5,
+	blockmaterial: "Wood",
+	variantgroups: [		
+		{ code: "rot", states: ["north", "east", "south", "west"] }
+	],
+	creativeinventory: { "general": ["*-north"], "construction": ["*-north"] },
+	drops: [{ code: "deckwork_horiz-north" }],
+	shapebytype: {		
+		"*-north": { base: "block/frames/deckwork_horiz", rotateY: 0 },
+		"*-east": { base: "block/frames/deckwork_horiz", rotateY: 270 },
+		"*-west": { base: "block/frames/deckwork_horiz", rotateY: 180 },
+		"*-south": { base: "block/frames/deckwork_horiz", rotateY: 90 },
+	},
+	sideopaque: { all: false, up: true },
+	emitSideAo: {all: false, up: true },
+	textures: {		
+		"ladder": { base: "game:block/wood/ladder" },
+		"generic": { base:"game:block/wood/planks/generic"}			
+	},
+	collisionbox: 
+	{ x1: 0, y1: 0, z1: 0,   x2: 1, y2: 0.5, z2: 1	},
+	selectionbox: { x1: 0, y1: 0, z1: 0,   x2: 1, y2: 0.5, z2: 1 },
+	sounds: {
+		"hit": "game:block/planks",
+		"break": "game:block/planks",
+		"place": "game:block/planks",
+		"walk": "game:walk/wood"
+	},
+	combustibleProps: {
+		burnTemperature: 800,
+		burnDuration: 20,
+	},
+	materialDensity: 600,
+	guiTransform: {
+		translation: { x: 0, y: 2, z: 0 },
+		origin: { x: 0.5, y: 0.25, z: 0.5 }
+	},
+	heldTpIdleAnimation: "holdbothhandslarge", heldTpUseAnimation: "twohandplaceblock",
+	tpHandTransform: {
+		translation: { x: -1.2, y: -1.1, z: -0.8 },
+		rotation: { x: -2, y: 25, z: -78 },
+		scale: 0.37
+	}
+}

@@ -6,6 +6,8 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 
+using Vintagestory.GameContent;
+
 namespace ConstructionSupport
 {
 	public class DeckworkHorizontalBlock : GenericScaffold
@@ -55,9 +57,18 @@ namespace ConstructionSupport
 		return false;
 		}
 
+		//If above block is unsupported material; BREAK OFF!
 		public override void OnNeighourBlockChange(IWorldAccessor world, BlockPos pos, BlockPos neibpos)
 		{
-		base.OnNeighourBlockChange(world, pos, neibpos);
+
+		if (pos.Above(neibpos)) {
+		var blockAbove = api.World.BlockAccessor.GetBlock(neibpos);
+		if (blockAbove.MaterialDensity > 200 && blockAbove.HasBehavior<BlockBehaviorUnstableFalling>( )) {		
+		//blockAbove.IsSolid( ) &&
+		world.BlockAccessor.BreakBlock(pos, null);
+		}
+		}
+
 		}
 	}
 }
