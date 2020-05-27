@@ -29,6 +29,61 @@ namespace ConstructionSupport
 		[If B.U.D. with solid (non-truss) block Above - scaffold(s) breaks !]
 		 */
 
+		public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref string failureCode)
+		{
+		var surfaceBlock = world.BlockAccessor.GetBlock(blockSel.Position.Copy().Offset(blockSel.Face.GetOpposite()));
+
+		if (base.ValidAttachmentFaces.Contains(blockSel.Face)) 
+		{		
+
+		if (IsHardSurface(world.BlockAccessor, surfaceBlock, blockSel.Position, OwnRotation.GetOpposite())) 
+		{		
+
+		api.World.Logger.VerboseDebug($"Success: {blockSel.Face} for {this.Code} onto {surfaceBlock.Code} @ {blockSel.Position}");
+		
+		if (CanPlaceBlock(world, byPlayer, blockSel, ref failureCode)) {						
+		return DoPlaceBlock(world, byPlayer, blockSel, itemstack);
+		}		
+		}
+		}
+
+		api.World.Logger.VerboseDebug($"Attempt to place fails: {blockSel.Face} for {this.Code} onto {surfaceBlock.Code}");
+
+		failureCode = "surface_solid_horizontal";
+		return false;
+		}
+
+		public override bool DoPlaceBlock(IWorldAccessor world, IPlayer byPlayer, BlockSelection blockSel, ItemStack byItemStack)
+		{
+		bool result = true;
+		bool preventDefault = false;
+
+		foreach (BlockBehavior behavior in BlockBehaviors) {
+		EnumHandling handled = EnumHandling.PassThrough;
+
+		bool behaviorResult = behavior.DoPlaceBlock(world, byPlayer, blockSel, byItemStack, ref handled);
+
+		if (handled != EnumHandling.PassThrough) {
+		result &= behaviorResult;
+		preventDefault = true;
+		}
+
+		if (handled == EnumHandling.PreventSubsequent) return result;
+		}
+
+		if (preventDefault) return result;
+
+		var rotatedBlockId = RotateToFace(blockSel.Face.GetOpposite());
+		//Switcheroo!
+		world.BlockAccessor.SetBlock(rotatedBlockId.BlockId, blockSel.Position, byItemStack);
+		
+
+		return true;
+		}
+
+
+
+
 		/// <summary>
 		/// Prevent most other 'normal' blocks from attaching to this.
 		/// </summary>
@@ -39,36 +94,39 @@ namespace ConstructionSupport
 		/// <param name="blockFace">Block face.</param>
 		public override bool CanAttachBlockAt(IBlockAccessor world, Block block, BlockPos pos, BlockFacing blockFace)
 		{
-		if (ValidAttachmentFaces.Contains(blockFace)) {
 
-		if (block is TrussBlock) return true;
+		if (block.HasBehavior<BlockBehaviorLadder>()) return true;
+		
 
-		if (IsHardSurface(world, block, pos, blockFace)) return true;
-
-
-		}
-		else {
-		//Wrong Side
-		if (api.Side.IsClient()) {
-		(api as ICoreClientAPI).TriggerIngameError(this, "surface_unplacable", Lang.Get("surface_unplacable"));
-		}
-		}
-
+		api.World.Logger.VerboseDebug($"Reject Attach: {blockFace} for {this.Code} onto {block.Code} @ {pos}");
+		
+		
 		return false;
 		}
 
-		//If above block is unsupported material; BREAK OFF!
+		//If above block is unsupported/interfereing material; BREAK OFF!
 		public override void OnNeighourBlockChange(IWorldAccessor world, BlockPos pos, BlockPos neibpos)
 		{
-
+		//Above: Dropping blocks cause breakage!
 		if (pos.Above(neibpos)) {
 		var blockAbove = api.World.BlockAccessor.GetBlock(neibpos);
-		if (blockAbove.MaterialDensity > 200 && blockAbove.HasBehavior<BlockBehaviorUnstableFalling>( )) {		
-		//blockAbove.IsSolid( ) &&
-		world.BlockAccessor.BreakBlock(pos, null);
-		}
-		}
 
+		if (blockAbove != null || !blockAbove.IsGaseous()) {
+		if (blockAbove.HasBehavior<BlockBehaviorLadder>( )) return;
+
+		if (blockAbove.MaterialDensity > 200 || blockAbove.HasBehavior<BlockBehaviorUnstableFalling>( )) 
+		world.BlockAccessor.BreakBlock(pos, null);
+		api.World.Logger.VerboseDebug($"Collapsing! {this.Code} because {blockAbove.Code} @ {pos}");
+		}
+		} else
+		//Sides: Missing supports cause brakeage!
+		if (pos.OnSide(this.OwnRotation, neibpos)) {
+		var mabeyBlock = api.World.BlockAccessor.GetBlock(neibpos);
+		if (mabeyBlock == null || mabeyBlock.IsGaseous())
+		world.BlockAccessor.BreakBlock(pos, null);
+		api.World.Logger.VerboseDebug($"V.Faces: {string.Join( "+",this.ValidAttachmentFaces.Select( bf=>bf.Code ))} , Facing:{OwnRotation.Code}, Other:{(mabeyBlock == null ? "null" : mabeyBlock.BlockMaterial.ToString( ))}");
+		}
+		//Things below arn't considered.
 		}
 	}
 }

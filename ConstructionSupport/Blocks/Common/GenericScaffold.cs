@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
@@ -9,11 +11,17 @@ namespace ConstructionSupport
 	{
 		internal const string ValidAttachmentFacesKey = @"ValidAttachemtFaces";
 		internal const string AirgapFacesKey = @"AirgapFaces";
+		internal const string RotationKey = @"rot";
 
 		internal BlockFacing[ ] _ValidAttachmentFaces;
 		internal BlockFacing[ ] _AirgapFaces;
 
-		//Decode from readonly Json properties
+
+		/// <summary>
+		/// Where can this block be stuck onto?
+		/// </summary>
+		/// <value>The valid attachment faces.</value>
+		/// <remarks>Decode from readonly Json properties</remarks>
 		public virtual BlockFacing[] ValidAttachmentFaces 
 		{ 
 			get
@@ -21,7 +29,8 @@ namespace ConstructionSupport
 			if (_ValidAttachmentFaces != null) return _ValidAttachmentFaces;
 
 			if (this.Attributes[ValidAttachmentFacesKey].Exists) {
-			_ValidAttachmentFaces = this.Attributes[ValidAttachmentFacesKey].AsArray<BlockFacing>(BlockFacing.ALLFACES);
+			var directions = this.Attributes[ValidAttachmentFacesKey].AsArray<string>( );
+			_ValidAttachmentFaces = directions.Select(dir => BlockFacing.FromCode(dir)).ToArray( );
 			}
 			else {
 			_ValidAttachmentFaces = BlockFacing.ALLFACES;
@@ -53,7 +62,7 @@ namespace ConstructionSupport
 
 		protected bool IsHardSurface(IBlockAccessor world, Block checkBlock, BlockPos checkPos, BlockFacing checkFace)
 		{
-			if (checkBlock.MatterState == EnumMatterState.Solid &&
+			if (checkBlock != null && checkBlock.MatterState == EnumMatterState.Solid &&
 			    (
 			    checkBlock.BlockMaterial == EnumBlockMaterial.Brick ||
 			 	checkBlock.BlockMaterial == EnumBlockMaterial.Ceramic ||
@@ -71,12 +80,32 @@ namespace ConstructionSupport
 		return false;
 		}
 
+		protected BlockFacing OwnRotation 
+		{
+			get
+			{
+			if (this.Variant.ContainsKey(RotationKey)) 
+			{
+			return BlockFacing.FromCode(this.Variant[RotationKey]);
+			}
+			return BlockFacing.NORTH;
+			}
+		}
+
+		protected Block RotateToFace(BlockFacing turnTo)
+		{
+		AssetLocation rotatedCode = CodeWithVariant(RotationKey, turnTo.Code);
+		var rotBlock = api.World.BlockAccessor.GetBlock(rotatedCode);
+		return rotBlock;
+		}
+
 	}
 
 
 
 	/*
 	 public override bool TryPlaceBlock
+	 public virtual bool DoPlaceBlock
 	 public override ItemStack OnPickBlock
 	 public override void OnNeighbourBlockChange
 	 public override bool CanAttachBlockAt(

@@ -14,13 +14,24 @@ namespace ConstructionSupport
 		return @this.MatterState == EnumMatterState.Solid;
 		}
 
+		public static bool IsGaseous(this Block @this)
+		{
+		return @this.BlockMaterial == EnumBlockMaterial.Air || @this.MatterState == EnumMatterState.Gas;
+		}
+
 		public static bool Above(this BlockPos pos, BlockPos other)
 		{
 		if (pos.UpCopy( ) == other.Copy( )) return true;
 
 		return false;
 		}
-	
+
+		public static bool OnSide(this BlockPos pos, BlockFacing side, BlockPos other)
+		{
+		if (pos.AddCopy(side) == other.Copy( )) return true;
+
+		return false;
+		}
 	}
 }
 

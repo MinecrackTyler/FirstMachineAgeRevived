@@ -6,7 +6,8 @@
 		canChisel: false,
 		handbook: {
 			groupBy: ["deckwork_horiz-*"]	
-		}
+		},
+        ValidAttachemtFaces: ["north","east", "south", "west"],
 	},
 	replaceable: 200,
 	resistance: 1.5,
@@ -19,8 +20,8 @@
 	shapebytype: {		
 		"*-north": { base: "block/frames/deckwork_horiz", rotateY: 0 },
 		"*-east": { base: "block/frames/deckwork_horiz", rotateY: 270 },
-		"*-west": { base: "block/frames/deckwork_horiz", rotateY: 180 },
-		"*-south": { base: "block/frames/deckwork_horiz", rotateY: 90 },
+		"*-south": { base: "block/frames/deckwork_horiz", rotateY: 180 },	
+    	"*-west": { base: "block/frames/deckwork_horiz", rotateY: 90 },		
 	},
 	sideopaque: { all: false, up: true },
 	emitSideAo: {all: false, up: true },
@@ -28,9 +29,8 @@
 		"ladder": { base: "game:block/wood/ladder" },
 		"generic": { base:"game:block/wood/planks/generic"}			
 	},
-	collisionbox: 
-	{ x1: 0, y1: 0, z1: 0,   x2: 1, y2: 0.5, z2: 1	},
-	selectionbox: { x1: 0, y1: 0, z1: 0,   x2: 1, y2: 0.5, z2: 1 },
+	collisionbox: { x1: 0, y1: 0.5, z1: 0, x2: 1, y2: 0.94, z2: 1 },
+	selectionBox: { x1: 0, y1: 0.5, z1: 0, x2: 1, y2: 0.94, z2: 1 },
 	sounds: {
 		"hit": "game:block/planks",
 		"break": "game:block/planks",
