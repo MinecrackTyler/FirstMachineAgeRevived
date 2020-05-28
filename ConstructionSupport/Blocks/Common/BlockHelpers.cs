@@ -16,7 +16,7 @@ namespace ConstructionSupport
 
 		public static bool IsGaseous(this Block @this)
 		{
-		return @this.BlockMaterial == EnumBlockMaterial.Air || @this.MatterState == EnumMatterState.Gas;
+		return @this.MatterState == EnumMatterState.Gas || @this.BlockMaterial == EnumBlockMaterial.Air;
 		}
 
 		public static bool Above(this BlockPos pos, BlockPos other)

@@ -38,16 +38,20 @@ namespace ConstructionSupport
 
 		if (IsHardSurface(world.BlockAccessor, surfaceBlock, blockSel.Position, OwnRotation.GetOpposite())) 
 		{		
-
-		api.World.Logger.VerboseDebug($"Success: {blockSel.Face} for {this.Code} onto {surfaceBlock.Code} @ {blockSel.Position}");
 		
+		#if DEBUG
+		api.World.Logger.VerboseDebug($"Success: {blockSel.Face} for {this.Code} onto {surfaceBlock.Code} @ {blockSel.Position}");
+		#endif
+
 		if (CanPlaceBlock(world, byPlayer, blockSel, ref failureCode)) {						
 		return DoPlaceBlock(world, byPlayer, blockSel, itemstack);
 		}		
 		}
 		}
 
+		#if DEBUG
 		api.World.Logger.VerboseDebug($"Attempt to place fails: {blockSel.Face} for {this.Code} onto {surfaceBlock.Code}");
+		#endif
 
 		failureCode = "surface_solid_horizontal";
 		return false;
@@ -96,11 +100,11 @@ namespace ConstructionSupport
 		{
 
 		if (block.HasBehavior<BlockBehaviorLadder>()) return true;
-		
 
+		#if DEBUG
 		api.World.Logger.VerboseDebug($"Reject Attach: {blockFace} for {this.Code} onto {block.Code} @ {pos}");
-		
-		
+		#endif
+
 		return false;
 		}
 
@@ -111,12 +115,17 @@ namespace ConstructionSupport
 		if (pos.Above(neibpos)) {
 		var blockAbove = api.World.BlockAccessor.GetBlock(neibpos);
 
-		if (blockAbove != null || !blockAbove.IsGaseous()) {
-		if (blockAbove.HasBehavior<BlockBehaviorLadder>( )) return;
+		if (blockAbove.IsGaseous() == false) {
+		if (blockAbove.RainPermeable 
+					|| blockAbove.HasBehavior<BlockBehaviorLadder>( ) 
+					|| blockAbove.HasBehavior<BlockBehaviorOmniAttachable>( )
+				) return;
 
 		if (blockAbove.MaterialDensity > 200 || blockAbove.HasBehavior<BlockBehaviorUnstableFalling>( )) 
 		world.BlockAccessor.BreakBlock(pos, null);
+		#if DEBUG
 		api.World.Logger.VerboseDebug($"Collapsing! {this.Code} because {blockAbove.Code} @ {pos}");
+		#endif
 		}
 		} else
 		//Sides: Missing supports cause brakeage!
@@ -124,7 +133,9 @@ namespace ConstructionSupport
 		var mabeyBlock = api.World.BlockAccessor.GetBlock(neibpos);
 		if (mabeyBlock == null || mabeyBlock.IsGaseous())
 		world.BlockAccessor.BreakBlock(pos, null);
-		api.World.Logger.VerboseDebug($"V.Faces: {string.Join( "+",this.ValidAttachmentFaces.Select( bf=>bf.Code ))} , Facing:{OwnRotation.Code}, Other:{(mabeyBlock == null ? "null" : mabeyBlock.BlockMaterial.ToString( ))}");
+		#if DEBUG
+		api.World.Logger.VerboseDebug($"Lost support! V.Faces: {string.Join( "+",this.ValidAttachmentFaces.Select( bf=>bf.Code ))} , Facing:{OwnRotation.Code}, Other:{(mabeyBlock == null ? "null" : mabeyBlock.BlockMaterial.ToString( ))}");
+		#endif
 		}
 		//Things below arn't considered.
 		}

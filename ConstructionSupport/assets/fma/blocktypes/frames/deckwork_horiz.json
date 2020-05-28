@@ -29,8 +29,8 @@
 		"ladder": { base: "game:block/wood/ladder" },
 		"generic": { base:"game:block/wood/planks/generic"}			
 	},
-	collisionbox: { x1: 0, y1: 0.5, z1: 0, x2: 1, y2: 0.94, z2: 1 },
-	selectionBox: { x1: 0, y1: 0.5, z1: 0, x2: 1, y2: 0.94, z2: 1 },
+	selectionBox: { x1: 0, y1: 0.55, z1: 0, x2: 1, y2: 1, z2: 1 },
+	selectionBox: { x1: 0, y1: 0.55, z1: 0, x2: 1, y2: 1, z2: 1 },
 	sounds: {
 		"hit": "game:block/planks",
 		"break": "game:block/planks",
