@@ -95,6 +95,9 @@
     </None>
     <None Include="assets\fma\blocktypes\frames\deckwork_corner.json" />
     <None Include="assets\fma\blocktypes\frames\truss_vert.json" />
+    <None Include="assets\fma\recipes\grid\frames\deckwork_horiz.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />
