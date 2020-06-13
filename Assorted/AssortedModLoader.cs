@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Vintagestory.API;
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;
@@ -15,6 +16,8 @@ namespace FirstMachineAge
 		private ServerCoreAPI ServerCore { get; set; }
 
 		public const string BoltableDoorEntityNameKey = @"BoltableDoorEntity";
+		public const string CollapsingBlockEntityNameKey = @"CollapsingBlockEntity";
+
 
 		public override bool AllowRuntimeReload {
 			get { return false; }

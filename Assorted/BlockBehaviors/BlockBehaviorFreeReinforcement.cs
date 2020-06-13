@@ -47,7 +47,7 @@ namespace FirstMachineAge
 		{
 		handling = EnumHandling.PassThrough;
 		if (world.Api.Side.IsServer( )) {
-		world.Api.Event.RegisterCallback((elapse) => { PostPlacementReinforce(elapse, blockSel.Position.Copy( ), byPlayer, this.Howmuch); }, 16);
+		world.Api.Event.RegisterCallback((elapse) => { PostPlacementReinforce(elapse, blockSel.Position.Copy( ), byPlayer, this.Howmuch); }, 64);
 		}
 		return true;
 		}

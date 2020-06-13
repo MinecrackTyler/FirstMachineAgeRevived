@@ -1,0 +1,79 @@
+﻿{
+	code: "brazier",	
+	
+	maxstacksize: 1,
+	variantgroups: [
+		{ code: "state", states: ["unlit", "ignighted", "extinguished"] }
+	],
+	behaviors: [ {name: "Unstable"} ],
+    renderpass: "OpaqueNoCull",
+	shapeByType: {
+		"*-unlit": { 
+			base: "block/iron/brazier2", SelectiveElements:["Base","Leg1","Leg2","Leg3","Leg4","Grille1","Fuel","Coal1","Coal2","Coal3"],
+			
+		},
+		"*-ignighted": { 
+			base: "block/iron/brazier2", SelectiveElements:["Base","Leg1","Leg2","Leg3","Leg4","Grille1","Embers"],
+			
+		},
+		"*-extinguished": { 
+			base: "block/iron/brazier2", SelectiveElements:["Base","Leg1","Leg2","Leg3","Leg4","Grille1","Ash","Lump1","Lump2","Lump3"],
+			
+		},		
+	},
+    textures: {
+        "nailtexture": { base: "game:block/nailtexture"},
+		"ember": { base: "game:block/ember"},
+		"aged": { base:  "game:block/metal/torchholder/aged"},
+		"coal": { base:  "game:block/coal"},
+		"rusty-iron": { base: "game:block/currency/rusty-iron"},		
+    },
+	creativeinventory: { "general": ["*"], "decorative": ["*"] },
+	blockmaterial: "Metal",
+	replaceable: 200,
+	lightAbsorption: 0,
+	resistance: 1.5,
+	sideopaque: { all: false },
+	sidesolid: { all: false },
+	lightHsvByType: {		
+		"*-ignighted": [8, 5, 6],			
+	},
+	particlePropertiesByType: {
+		"*-ignighted": [
+			{
+			"__comment": "Fire quads",
+			hsvaColor: [{ avg: 20, var: 20 }, { avg: 255, var: 50 }, { avg: 255, var: 50 },  { avg: 255, var: 0 }],
+			opacityEvolve: { transform: "quadratic", factor: -16 },
+			gravityEffect: { avg: 0, var: 0 },
+			velocity: [ { avg: 0, var: 0.0125 }, { avg: 0.03, var: 0.01 }, { avg: 0, var: 0.0125 }],
+			quantity: { avg: 0.1 },
+			size: { avg: 0.05, var: 0.025 },
+			lifeLength: { avg: 0.5 },
+			sizeEvolve: { transform: "linear", factor: 0.1 },
+			particleModel: "Quad",
+			vertexFlags: 128,
+			windAffectednes: 0.05
+			}	
+        ]	
+	},
+	sounds: {
+		"place": "game:block/anvil",
+		"break": "game:block/anvil",
+		"hit": "game:block/anvil",
+		ambientByType: { "*-ignighted": "game:effect/embers" }
+	},
+	dropsByType: {
+		"*-1": [  { type: "item", code: "candle", quantity: { avg: 1 } } ],
+		"*-2": [  { type: "item", code: "candle", quantity: { avg: 2 } } ],
+		"*-3": [  { type: "item", code: "candle", quantity: { avg: 3 } } ],
+		"*-4": [  { type: "item", code: "candle", quantity: { avg: 4 } } ],
+		"*-5": [  { type: "item", code: "candle", quantity: { avg: 5 } } ],
+		"*-6": [  { type: "item", code: "candle", quantity: { avg: 6 } } ],
+		"*-7": [  { type: "item", code: "candle", quantity: { avg: 7 } } ],
+		"*-8": [  { type: "item", code: "candle", quantity: { avg: 8 } } ],
+		"*-9": [  { type: "item", code: "candle", quantity: { avg: 9 } } ],
+	},
+	materialDensity: 700,	
+	collisionSelectionBox: { x1: 0, y1: 0, z1: 0.25, x2: 1, y2: 0.75, z2: 0.75 },
+    rainPermeable: false,
+}
