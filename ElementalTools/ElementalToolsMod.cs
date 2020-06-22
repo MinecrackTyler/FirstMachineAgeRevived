@@ -58,7 +58,7 @@ namespace ElementalTools
 
 		
 
-		Mod.Logger.VerboseDebug("Elemental Tools - should be installed...");
+		Mod.Logger.VerboseDebug("Elemental Tools - should be installed...");		
 		}
 
 		private void OnServerLoadGame( )

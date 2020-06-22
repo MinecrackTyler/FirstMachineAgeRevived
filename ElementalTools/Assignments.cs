@@ -14,9 +14,10 @@ namespace ElementalTools
 {
 	public partial class ElementalToolsSystem : ModSystem
 	{
-		internal const string anvilKey = @"Anvil";
+		
 		internal const string malletItemKey = @"ItemMallet";
 		internal const string malletAssetKey = @"mallet";
+		internal const string fmaKey = @"fma";
 
 		private void RegisterItemClasses()
 		{
@@ -30,36 +31,43 @@ namespace ElementalTools
 		//Thread.Sleep(1000);
 		Mod.Logger.VerboseDebug($"Total GridRecipies: {CoreAPI.World.GridRecipes.Count}");
 
-		/*
-	var alternateQuery = from gridRecipie in CoreAPI.World.GridRecipes
-						where gridRecipie.Ingredients.Any(gi => gi.Value.IsTool && gi.Value.Code.BeginsWith(GlobalConstants.DefaultDomain, @"hammer"))
-						where gridRecipie.Output.Code.BeginsWith(GlobalConstants.DefaultDomain, @"nugget") == false
-						where gridRecipie.Output.Code.BeginsWith(GlobalConstants.DefaultDomain, @"lime") == false                            
-						select gridRecipie;
 
-	Mod.Logger.VerboseDebug($"Found {alternateQuery.Count()} Recipies using Hammer, (non ore)");
+		var alternateQuery = from gridRecipie in CoreAPI.World.GridRecipes
+							 where gridRecipie.Ingredients.Any(gi => gi.Value.IsTool && gi.Value.Code.BeginsWith(GlobalConstants.DefaultDomain, @"hammer"))
+							 where gridRecipie.Output.Code.BeginsWith(GlobalConstants.DefaultDomain, @"nugget") == false
+							 where gridRecipie.Output.Code.BeginsWith(GlobalConstants.DefaultDomain, @"lime") == false
+							 select gridRecipie;
 
-	if (alternateQuery.Any()) {
-		foreach (var recipieToClone in alternateQuery.ToArray()) {
+		Mod.Logger.VerboseDebug($"Found {alternateQuery.Count( )} Recipies using Hammer, (non ore)");
+
+		if (alternateQuery.Any( )) {
+		foreach (var recipieToClone in alternateQuery.ToArray( )) 
+		{
 		var cloneRecipie = recipieToClone.Clone( );
+
+		cloneRecipie.Name = new AssetLocation("fma", $"clone_{malletizedCount}");
+
 		var hammerIngredient = cloneRecipie.Ingredients.First(gi => gi.Value.IsTool && gi.Value.Code.BeginsWith(GlobalConstants.DefaultDomain, @"hammer"));
 
 		CraftingRecipeIngredient malletIngredient = new CraftingRecipeIngredient {
-		Type = EnumItemClass.Item,
-		IsTool = true,
-		Code = new AssetLocation(@"fma", malletAssetKey),
-		IsWildCard = false,
-		//Name = "mallet",
+			Type = EnumItemClass.Item,
+			Name = "mallet",
+			IsTool = true,
+			Code = new AssetLocation(fmaKey, malletAssetKey),
+			Quantity = 1,
+			//IsWildCard = false,			
 		};
 		cloneRecipie.Ingredients[hammerIngredient.Key] = malletIngredient;
+
+		cloneRecipie.ResolveIngredients(ServerCore.World);
 		ServerCore.RegisterCraftingRecipe(cloneRecipie);
 		malletizedCount++;
 		}
 
-	Mod.Logger.VerboseDebug($"Added {malletizedCount} Mallet recipies");
-	}
-	*/
+		Mod.Logger.VerboseDebug($"Added {malletizedCount} Mallet recipies");
 
+
+		/*
 		GridRecipe testRecipie = new GridRecipe {
 			IngredientPattern = "M\tF",
 			Name = new AssetLocation("fma","LogToSticks"),
@@ -70,7 +78,7 @@ namespace ElementalTools
 					{"M", new CraftingRecipeIngredient{ 
 						Name = "mallet",
 						Type = EnumItemClass.Item,
-						Code = new AssetLocation("fma",malletAssetKey),
+						Code = new AssetLocation(fmaKey, malletAssetKey),
 						IsTool = true,						
 						Quantity = 1,} 
 					},
@@ -90,29 +98,13 @@ namespace ElementalTools
 		testRecipie.ResolveIngredients(ServerCore.World);
 
 		ServerCore.RegisterCraftingRecipe(testRecipie);
+		*/
+
 		}
 
 		//TODO: Recycling assignment of Smeltable properties from all smith/grid/recipe forms...
 
 
-		internal void GenerateMetalShavingsItems( )
-		{
-		//TODO: Automatic Generation of Item 'metal_shaving' by metal & alloy list at RUNTIME
-		var genericShaving = ServerAPI.World.ClassRegistry.CreateItem("metal_shaving");
-		//genericShaving.CombustibleProps.
-
-		var metalProperties = new Dictionary<AssetLocation, MetalProperty>( );
-
-		foreach (var entry in ServerAPI.Assets.GetMany<MetalProperty>(Mod.Logger, "worldproperties/")) {
-		AssetLocation loc = entry.Key.Clone( );
-		loc.Path = loc.Path.Replace("worldproperties/", "");
-		loc.RemoveEnding( );
-
-		entry.Value.Code.Domain = entry.Key.Domain;
-
-		metalProperties.Add(loc, entry.Value);
-
-		}
 		}
 
 
