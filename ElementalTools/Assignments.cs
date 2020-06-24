@@ -14,40 +14,37 @@ namespace ElementalTools
 {
 	public partial class ElementalToolsSystem : ModSystem
 	{
-		
+
 		internal const string malletItemKey = @"ItemMallet";
 		internal const string malletAssetKey = @"mallet";
+		internal const string hammerAssetKey = @"hammer";
 		internal const string fmaKey = @"fma";
 
-		private void RegisterItemClasses()
+		private void RegisterItemClasses( )
 		{
-			CoreAPI.RegisterItemClass(malletItemKey, typeof(ItemMallet));
+		CoreAPI.RegisterItemClass(malletItemKey, typeof(ItemMallet));
 		}
 
 
 		private void ManipulateGridRecipies( )
 		{
-		uint malletizedCount = 0;
-		//Thread.Sleep(1000);
 		Mod.Logger.VerboseDebug($"Total GridRecipies: {CoreAPI.World.GridRecipes.Count}");
 
 
-		var alternateQuery = from gridRecipie in CoreAPI.World.GridRecipes
-							 where gridRecipie.Ingredients.Any(gi => gi.Value.IsTool && gi.Value.Code.BeginsWith(GlobalConstants.DefaultDomain, @"hammer"))
+		var nonCrushingHammerRecipies = from gridRecipie in CoreAPI.World.GridRecipes
+							 where gridRecipie.Ingredients.Any(gi => gi.Value.IsTool && gi.Value.Code.BeginsWith(GlobalConstants.DefaultDomain, hammerAssetKey))
 							 where gridRecipie.Output.Code.BeginsWith(GlobalConstants.DefaultDomain, @"nugget") == false
 							 where gridRecipie.Output.Code.BeginsWith(GlobalConstants.DefaultDomain, @"lime") == false
 							 select gridRecipie;
 
-		Mod.Logger.VerboseDebug($"Found {alternateQuery.Count( )} Recipies using Hammer, (non ore)");
-
-		if (alternateQuery.Any( )) {
-		foreach (var recipieToClone in alternateQuery.ToArray( )) 
-		{
-		var cloneRecipie = recipieToClone.Clone( );
-
-		cloneRecipie.Name = new AssetLocation("fma", $"clone_{malletizedCount}");
-
-		var hammerIngredient = cloneRecipie.Ingredients.First(gi => gi.Value.IsTool && gi.Value.Code.BeginsWith(GlobalConstants.DefaultDomain, @"hammer"));
+		CraftingRecipeIngredient hammerIngredient = new CraftingRecipeIngredient {
+			Type = EnumItemClass.Item,
+			//Name = "hammer",
+			IsTool = true,
+			Code = new AssetLocation(GlobalConstants.DefaultDomain, hammerAssetKey),
+			Quantity = 1,
+			//IsWildCard = false,			
+		};
 
 		CraftingRecipeIngredient malletIngredient = new CraftingRecipeIngredient {
 			Type = EnumItemClass.Item,
@@ -57,57 +54,46 @@ namespace ElementalTools
 			Quantity = 1,
 			//IsWildCard = false,			
 		};
-		cloneRecipie.Ingredients[hammerIngredient.Key] = malletIngredient;
+
+		var results = SingleSwapinReplicas(nonCrushingHammerRecipies, hammerIngredient, malletIngredient);
+
+
+		Mod.Logger.VerboseDebug($"Added {results} Mallet recipies");
+
+
+		}
+
+
+
+		private uint SingleSwapinReplicas(IEnumerable<GridRecipe> sourceRecipies, CraftingRecipeIngredient target, CraftingRecipeIngredient replacement)
+		{
+		uint replicaCount = 0;
+
+		if (sourceRecipies.Any( )) 
+		{
+		foreach (var recipieToClone in sourceRecipies.ToArray( )) {
+		var cloneRecipie = recipieToClone.Clone( );
+
+		cloneRecipie.Name = new AssetLocation(fmaKey, $"clone_{replacement.Code.Path}_{replicaCount}");
+
+		var targetTag = cloneRecipie.Ingredients.FirstOrDefault(gi => gi.Value.Type == target.Type &&
+															  gi.Value.IsTool == target.IsTool &&
+															  gi.Value.Code == target.Code &&
+															  gi.Value.Quantity == target.Quantity
+															 );
+		if (targetTag.Key != null && targetTag.Value != null) {
+		cloneRecipie.Ingredients[targetTag.Key] = replacement;
 
 		cloneRecipie.ResolveIngredients(ServerCore.World);
 		ServerCore.RegisterCraftingRecipe(cloneRecipie);
-		malletizedCount++;
+		replicaCount++;
 		}
+		else Mod.Logger.Warning("Recipe replacement - fails to locate target| {0}", target.Code);		
 
-		Mod.Logger.VerboseDebug($"Added {malletizedCount} Mallet recipies");
-
-
-		/*
-		GridRecipe testRecipie = new GridRecipe {
-			IngredientPattern = "M\tF",
-			Name = new AssetLocation("fma","LogToSticks"),
-			Height = 2,
-			Width = 1,
-			Ingredients =
-				new Dictionary<string, CraftingRecipeIngredient>{
-					{"M", new CraftingRecipeIngredient{ 
-						Name = "mallet",
-						Type = EnumItemClass.Item,
-						Code = new AssetLocation(fmaKey, malletAssetKey),
-						IsTool = true,						
-						Quantity = 1,} 
-					},
-					{"F", new CraftingRecipeIngredient{ 
-						Name = "wood",
-						Type = EnumItemClass.Item,
-						Code = new AssetLocation(GlobalConstants.DefaultDomain,"firewood"),												
-						Quantity = 1,}
-					},
-				},
-				Output = new CraftingRecipeIngredient{ 
-					Type = EnumItemClass.Item,
-					Quantity = 3,
-					Code = new AssetLocation(GlobalConstants.DefaultDomain,"stick"),
-				},
-		};//Needs: ResolvedItemstack <- for Non-wildcard !!!!
-		testRecipie.ResolveIngredients(ServerCore.World);
-
-		ServerCore.RegisterCraftingRecipe(testRecipie);
-		*/
-
+		}				
+		}		
+		return replicaCount;
 		}
-
 		//TODO: Recycling assignment of Smeltable properties from all smith/grid/recipe forms...
-
-
-		}
-
-
 	}
 }
-
