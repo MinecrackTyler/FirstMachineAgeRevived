@@ -77,9 +77,9 @@ namespace ElementalTools
 		cloneRecipie.Name = new AssetLocation(fmaKey, $"clone_{replacement.Code.Path}_{replicaCount}");
 
 		var targetTag = cloneRecipie.Ingredients.FirstOrDefault(gi => gi.Value.Type == target.Type &&
-															  gi.Value.IsTool == target.IsTool &&
-															  gi.Value.Code == target.Code &&
-															  gi.Value.Quantity == target.Quantity
+															gi.Value.IsTool == target.IsTool &&
+															target.Code.IsChild(gi.Value.Code) &&
+															gi.Value.Quantity == target.Quantity
 															 );
 		if (targetTag.Key != null && targetTag.Value != null) {
 		cloneRecipie.Ingredients[targetTag.Key] = replacement;

@@ -2,6 +2,7 @@
 
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
+using Vintagestory.API.MathTools;
 
 namespace ElementalTools
 {
@@ -12,58 +13,49 @@ namespace ElementalTools
 		}
 
 		/// <summary>
-		/// Mallet is a Hammer compatible replacement for many of the same uses, most Crafstmen can't tell the difference.
-		/// Useless for smith work...
+		/// Ons the consumed by crafting.
 		/// </summary>
-		/// <param name="inputStack"></param>
-		/// <param name="gridRecipe"></param>
-		/// <param name="ingredient"></param>
-		/// <returns></returns>
-		public override bool MatchesForCrafting(ItemStack inputStack, GridRecipe gridRecipe, CraftingRecipeIngredient ingredient)
+		/// <returns>The consumed by crafting.</returns>
+		/// <param name="allInputSlots">All input slots.</param>
+		/// <param name="stackInSlot">Stack in slot.</param>
+		/// <param name="gridRecipe">Grid recipe.</param>
+		/// <param name="fromIngredient">From ingredient.</param>
+		/// <param name="byPlayer">By player.</param>
+		/// <param name="quantity">Quantity.</param>
+		public override void OnConsumedByCrafting(ItemSlot[ ] allInputSlots, ItemSlot stackInSlot, GridRecipe gridRecipe, CraftingRecipeIngredient fromIngredient, IPlayer byPlayer, int quantity)
 		{
-		api.World.Logger.VerboseDebug($"{gridRecipe.Name} : {ingredient.Code} ({ingredient.Name})");
-		if (gridRecipe.Output.Code.BeginsWith(GlobalConstants.DefaultDomain, @"nugget")||
-		gridRecipe.Output.Code.BeginsWith(GlobalConstants.DefaultDomain, @"lime")) {
-		//It don't *DO* rock crushing.
-		return false;
+		if (fromIngredient.IsTool) {
+		int effectiveTier = 1;
+
+
+		foreach (var itemSlot in allInputSlots) {
+		if (itemSlot.Empty) continue;
+		if ( itemSlot.Itemstack.Class == EnumItemClass.Block) {
+		Block ingBlock = itemSlot.Itemstack.Block;
+		effectiveTier = Math.Max(ingBlock.RequiredMiningTier, effectiveTier);
+		}
+		else {
+		Item ingItem = itemSlot.Itemstack.Item;
+		if (ingItem.Tool.HasValue) continue;
+		effectiveTier = Math.Max(ingItem.ToolTier, effectiveTier);
+		}
 		}
 
-		if (ingredient.IsTool && 
-			(ingredient.Code.BeginsWith(GlobalConstants.DefaultDomain, @"hammer") ||
-			 ingredient.Code.BeginsWith("fma",ElementalToolsSystem.malletAssetKey))) 
-		{
-		return true;
+		float burnRate = (effectiveTier / this.ToolTier);
+						
+		int actualDmg = ( int )Math.Round(NatFloat.createTri(effectiveTier, burnRate).nextFloat( ), 1);
+
+		#if DEBUG
+		api.World.Logger.VerboseDebug("Variable wear rate [ ToolTier:{0} VS {1}, BurnRate: {2} - apply dmg: {3} ]", this.ToolTier, effectiveTier, burnRate, actualDmg);
+		#endif
+
+		stackInSlot.Itemstack.Collectible.DamageItem(byPlayer.Entity.World, byPlayer.Entity, stackInSlot, actualDmg);
+		return;
 		}
 
-		return false;
+		base.OnConsumedByCrafting(allInputSlots, stackInSlot, gridRecipe, fromIngredient, byPlayer, quantity);
 		}
 
-		/// <summary>
-		/// Should return true if thisStack is a satisfactory replacement of otherStack. 
-		/// It's bascially an Equals() test, but it ignores any additional attributes that exist in otherStack
-		/// </summary>
-		/// <param name="thisStack"></param>
-		/// <param name="otherStack"></param>
-		/// <returns></returns>
-		//public override bool Satisfies(ItemStack thisStack, ItemStack otherStack)
-		//{
-		//return base.Satisfies(thisStack, otherStack);
-		//}
-
-		/// <summary>
-		/// Damages the item.
-		/// </summary>
-		/// <returns>The item.</returns>
-		/// <param name="world">World.</param>
-		/// <param name="byEntity">By entity.</param>
-		/// <param name="itemslot">Itemslot.</param>
-		/// <param name="amount">Amount.</param>
-		public override void DamageItem(IWorldAccessor world, Vintagestory.API.Common.Entities.Entity byEntity, ItemSlot itemslot, int amount = 1)
-		{
-		//Tweak Numbers...when chiseling
-		base.DamageItem(world, byEntity, itemslot, amount);
-
-		}
 
 	}
 }
