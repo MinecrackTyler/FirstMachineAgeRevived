@@ -1,0 +1,52 @@
+﻿{
+	code: "pack_carbirization",
+	class: "PackCarburization",
+	entityClass: "PackCarburizationEntity",
+	behaviors: [{name: "UnstableFalling"}],
+	attributes: {
+		handbook: {
+			
+		}
+	},
+	variantgroups: [
+		{ code: "type", states: ["unfired","fired"] },
+	],
+	shape: { base: "block/metallurgy/pack_carburization" },
+    texturesByType: {
+		"*-unfired": {
+			all: { base: "game:/block/clay/blueclay" },			
+		},
+		"*-fired": {
+			all: { base: "game:/block/clay/ceramic-dark" },				
+		},		
+	},
+	blockmaterial: "Ceramic",
+	creativeinventory: { "general": [""],  },
+	combustiblePropsByType: {
+		"pack_carbirization-unfired": {
+			meltingPoint: 1000,
+			meltingDuration: 256,
+			smeltedRatio: 1,
+			smeltingType: "convert",
+			smeltedStack: { type: "block", code: "pack_carbirization-fired" },
+			requiresContainer: false
+		}
+	},
+	replaceable: 1000,
+	resistance: 0.5,
+	maxStackSize: 1,
+	lightAbsorption: 0,
+	sounds: {
+		walk: "walk/stone",
+		break: "block/ceramicbreak",
+		hit: "block/ceramicbreak",
+		place: "block/ceramicplace"
+	},
+	sideopaque: {
+		all: false
+	},
+	sidesolid: {
+		all: false
+	},
+	collisionSelectionBox: { x1: 0.125, y1: 0, z1: 0.125, x2: 0.875, y2: 1, z2: 0.875 }
+}
