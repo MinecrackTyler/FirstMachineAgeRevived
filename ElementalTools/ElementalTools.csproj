@@ -72,6 +72,7 @@
     </Compile>
     <Compile Include="Block\PackCarburization.cs" />
     <Compile Include="BlockEntities\PackCarburizationEntity.cs" />
+    <Compile Include="Helpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Items\" />

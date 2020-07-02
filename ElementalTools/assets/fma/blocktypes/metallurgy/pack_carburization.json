@@ -3,10 +3,13 @@
 	class: "PackCarburization",
 	entityClass: "PackCarburizationEntity",
 	behaviors: [{name: "UnstableFalling"}],
+	maxstacksize: 1,
 	attributes: {
 		handbook: {
 			
-		}
+		},
+		SteelTransitionTemp:745,
+		SteelTransitionTime:200,
 	},
 	variantgroups: [
 		{ code: "type", states: ["unfired","fired"] },
@@ -24,7 +27,7 @@
 	creativeinventory: { "general": [""],  },
 	combustiblePropsByType: {
 		"pack_carbirization-unfired": {
-			meltingPoint: 1000,
+			meltingPoint: 700,
 			meltingDuration: 256,
 			smeltedRatio: 1,
 			smeltingType: "convert",

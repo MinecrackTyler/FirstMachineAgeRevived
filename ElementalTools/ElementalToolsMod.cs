@@ -13,6 +13,11 @@ namespace ElementalTools
 	{
 		private ICoreAPI CoreAPI;
 		private ICoreServerAPI ServerAPI;
+		internal static readonly string PackCarburizationEntityNameKey = @"PackCarburizationEntity";
+		internal static readonly string IronNameKey = @"iron";
+		internal static readonly string MaterialNameKey = @"metal";
+		internal static readonly string MetalNameKey = @"material";
+
 		private ServerCoreAPI ServerCore { get; set; }
 		//private RecipeLoader LoaderOfRecipies { get; set;}
 
