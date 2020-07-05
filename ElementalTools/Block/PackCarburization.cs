@@ -22,7 +22,7 @@ namespace ElementalTools
 		//Recipie Options #1: Charcoal & Bonemeal & Blue-clay
 		//Recipie Options #2: Leather & Fat & Blue-clay
 
-		//Heat to 'Red' hot for ~ 60 minutes (equive to ??? game cook time ??? )
+		//Heat to 'Red' hot for ~ 30-60 minutes (equive to ??? game cook time ??? )
 
 		internal PackCarburizationEntity Entity(BlockPos here)
 		{
@@ -73,13 +73,13 @@ namespace ElementalTools
 		                	 			select inputSlot).Single();
 		//Category: survival/itemtypes/toolhead/
 		//Variant(s):   metal,	material
-		//tool-heads, plates, scale, lamellae, chainmail 
+		//tool-stock, tool-heads, plates, scale, lamellae, chainmail 
 		//NOT: Ingots, Whole Anvils, big Gears, chunky large things....this ain't mass-production...
 
 		//outputSlot.Itemstack.Attributes = ironThingSlot.Itemstack.Attributes.Clone( );
 
-		ItemStack[] outputItemStacks=null;
-     	SetContents(outputSlot.Itemstack, outputItemStacks );
+		ItemStack[ ] encapsulatedItems = new ItemStack[ ] { ironThingSlot.Itemstack.Clone( ) };//More than 1 or Quantity *#
+     	SetContents(outputSlot.Itemstack, encapsulatedItems );
 
 
 		}
@@ -119,15 +119,21 @@ namespace ElementalTools
 
 		public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
 		{
-			//Add tooltip indicating contents...temperature, elapsed heat time, ect...
+		//Add tooltip indicating contents...temperature, elapsed heat time, ect...
+		float temp = GetTemperature(world, inSlot.Itemstack);
+		if (temp > 20) {
+		dsc.AppendLine(Lang.Get("Temperature: {0:F1}°C", temp));
+		}
+
+		var stuffedInside = GetContents(world, inSlot.Itemstack);
+		if (stuffedInside != null) 
+		{
+		foreach (var thing in stuffedInside) {
+		dsc.AppendFormat("{1} \u00d7 {0}\n", thing.GetName( ),thing.StackSize);
+		}
 
 		}
 
-		public override string GetPlacedBlockInfo(IWorldAccessor world, BlockPos pos, IPlayer forPlayer)
-		{
-			//Add tooltip indicating contents...temperature, elapsed heat time, ect...
-		
-		return String.Empty;
 		}
 
 
@@ -166,7 +172,7 @@ namespace ElementalTools
 		public override  void DoSmelt(IWorldAccessor world, ISlotProvider cookingSlotsProvider, ItemSlot inputSlot, ItemSlot outputSlot)
 		{
 		//base.DoSmelt(world, cookingSlotsProvider, inputSlot, outputSlot);
-		//Remap metal type of contained item...
+		//Remap metal type of contained item...Iron beccomes Austentic 'steel' - Quenching is ITEM SPECIFIC!
 		//Change own 'type' to "fired"...
 
 		//ItemStack smeltedStack = CombustibleProps.SmeltedStack.ResolvedItemstack.Clone(); //transform - to 'fired' pack
@@ -185,9 +191,12 @@ namespace ElementalTools
 		IWorldAccessor world = entityItem.World;
 		if (world.Side.IsClient()) return;
 
-		if (entityItem.Swimming && world.Rand.NextDouble( ) < 0.01) 
+			if ((entityItem.Swimming || entityItem.FeetInLiquid) ) 
 			{
-			//Something happens...
+			//Something happens...in liquid phase water
+			var blockHere = world.BlockAccessor.GetBlock(entityItem.Pos.AsBlockPos);
+
+			//RESEARCH: Block to EntityItem transition - need to customize or attach event handlers there !
 
 			}
 		}

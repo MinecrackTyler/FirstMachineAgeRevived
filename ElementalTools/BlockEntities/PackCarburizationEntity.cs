@@ -1,6 +1,7 @@
 ﻿using System;
-
+using System.Text;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.GameContent;
 
 namespace ElementalTools
@@ -29,6 +30,8 @@ namespace ElementalTools
 			get { return base.Block as PackCarburization; }
 		}
 
+		public float Temperature { get; private set; }
+
 
 		public PackCarburizationEntity( )
 		{
@@ -49,11 +52,13 @@ namespace ElementalTools
 		if (slot.Itemstack == null) continue;
 
 		AssetLocation objCode = slot.Itemstack.Collectible.Code;
-		float ownTemp = 5f;//this.Block.GetTemperature
-		slot.Itemstack.Collectible.SetTemperature(this.Api.World, slot.Itemstack, ownTemp, true);
+		
+		slot.Itemstack.Collectible.SetTemperature(this.Api.World, slot.Itemstack, Temperature, true);
 
-		if (ownTemp > this.Block.SteelTransitionTemp) {
-			//Convert here or on 'DoSmelt' ?
+		if (Temperature > this.Block.SteelTransitionTemp) {
+		//Convert here or on 'DoSmelt' ?
+		//Which is really mostly about the clay container...not quenching to make it Martensite
+
 		}
 
 		}
@@ -63,12 +68,15 @@ namespace ElementalTools
 		}
 
 		//Duplicated?
-		public override void GetBlockInfo(IPlayer forPlayer, System.Text.StringBuilder dsc)
+		public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
 		{
-		//base.GetBlockInfo(forPlayer, dsc);
+		
+		if (Temperature > 20) {
+		dsc.AppendLine(Lang.Get("Temperature: {0:F1}°C", Temperature));
+		}
 
 		/* 
-		 * Contents: 1x Iron/Steel Chisel, Drill-bit, files, ect...
+		 * Contents: 1x Iron/Steel Chisel, Drill-bit (unsharpened rod), files, ect...
 		 */
 		dsc.Append("Contents: ");
 
@@ -76,11 +84,16 @@ namespace ElementalTools
 		dsc.Append("Nothing.\n");
 		}
 		else {
-		ItemStack stack = internalInventory[0].Itemstack;
-		dsc.AppendFormat("{0}\u2715 {1}\n", stack.StackSize, stack.GetName( ));
+		
+		foreach (var thing in internalInventory) {
+		dsc.AppendFormat("{1} \u00d7 {0}\n", thing.Itemstack.GetName( ), thing.StackSize);
+		}
 		}
 
 		}
+
+		//OnBlockPlaced -- Perform base call!
+
 	}
 }
 
