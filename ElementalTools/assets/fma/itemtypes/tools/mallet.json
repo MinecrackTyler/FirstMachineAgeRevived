@@ -12,7 +12,7 @@
 		}
 	},	
 	tool: "hammer",
-	heldTpHitAnimation: "smithing",
+	heldTpHitAnimation: "breaktool",
 	shape: { base: "item/tools/mallet" },
 	textures: {				
     	"head": { base:"game:block/wood/debarked/oak"},
@@ -21,7 +21,9 @@
 	},
 	tooltier: 1,		
 	durability: 200,		
-	attackpower: 1,
+	attackpower: 1.25,
+	attackRange: 2,
+    damagedby: ["blockbreaking", "attacking"],
 	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
 	fpHandTransform: {
 		translation: { x: 0.0468, y: -0.2, z: 0 },

@@ -195,10 +195,20 @@ namespace ElementalTools
 			{
 			//Something happens...in liquid phase water
 			var blockHere = world.BlockAccessor.GetBlock(entityItem.Pos.AsBlockPos);
+			if (blockHere.Code.BeginsWith(GlobalConstants.DefaultDomain, "water")) {
+					//blockHere.LiquidCode == "water"
+					ItemStack[ ] stacks = GetContents(world, entityItem.Itemstack);
 
-			//RESEARCH: Block to EntityItem transition - need to customize or attach event handlers there !
+					//Spawn first?
+					world.SpawnItemEntity(stacks.First(), entityItem.ServerPos.XYZ);
+					//Or destroy? and eject contents?
+					entityItem.Die(EnumDespawnReason.Death);
 
+					}
 			}
+			//RESEARCH: Block to EntityItem transition - need to customize or attach event handlers there ?
+
+
 		}
 
 

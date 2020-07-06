@@ -9,7 +9,7 @@
 			
 		},
 		SteelTransitionTemp:750,
-		SteelTransitionTime:200,
+		SteelTransitionTime:38,
 	},
 	variantgroups: [
 		{ code: "type", states: ["unfired","fired"] },
