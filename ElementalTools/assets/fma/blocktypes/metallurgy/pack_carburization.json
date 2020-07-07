@@ -1,5 +1,5 @@
 ﻿{
-	code: "pack_carbirization",
+	code: "pack_carburization",
 	class: "PackCarburization",
 	entityClass: "PackCarburizationEntity",
 	behaviors: [{name: "UnstableFalling"}],
@@ -17,10 +17,10 @@
 	shape: { base: "block/metallurgy/pack_carburization" },
     texturesByType: {
 		"*-unfired": {
-			all: { base: "game:/block/clay/blueclay" },			
+			all: { base: "game:block/clay/blueclay" },			
 		},
 		"*-fired": {
-			all: { base: "game:/block/clay/ceramic-dark" },				
+			all: { base: "game:block/clay/ceramic-dark" },				
 		},		
 	},
 	blockmaterial: "Ceramic",

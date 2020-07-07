@@ -16,6 +16,8 @@ namespace ElementalTools
 	{
 
 		internal const string malletItemKey = @"ItemMallet";
+		internal const string pack_carburizationBlockKey = @"PackCarburization";
+		internal const string pack_carburizationBEKey = @"PackCarburizationEntity";
 		internal const string malletAssetKey = @"mallet";
 		internal const string hammerAssetKey = @"hammer";
 		internal const string fmaKey = @"fma";
@@ -25,6 +27,11 @@ namespace ElementalTools
 		CoreAPI.RegisterItemClass(malletItemKey, typeof(ItemMallet));
 		}
 
+		private void RegisterBlockClasses( )
+		{
+		CoreAPI.RegisterBlockClass(pack_carburizationBlockKey, typeof(PackCarburization));
+		CoreAPI.RegisterBlockEntityClass(pack_carburizationBEKey, typeof(PackCarburizationEntity));
+		}
 
 		private void ManipulateGridRecipies( )
 		{

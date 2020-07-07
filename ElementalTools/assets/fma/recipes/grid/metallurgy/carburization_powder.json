@@ -1,0 +1,13 @@
+﻿{
+	ingredientPattern: "H	C	B",
+	ingredients: {
+		"H": { type: "item", code: "game:hammer-*", quantity: 1, isTool: true },
+		"C": { type: "item", code: "game:charcoal", quantity: 4 },
+		"B": { type: "item", code: "game:bonemeal", quantity: 1 },
+	},
+	name: "carburization_powder",
+	width: 1,
+	height: 3,
+	shapeless: true,
+	output: { type: "item", code: "carburization_powder", quantity: 4  }
+}

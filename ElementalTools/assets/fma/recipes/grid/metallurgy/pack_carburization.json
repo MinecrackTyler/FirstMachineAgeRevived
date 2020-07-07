@@ -1,0 +1,158 @@
+﻿[
+{
+	ingredientPattern: "CCC	KXK	CCC",
+	ingredients: {
+		"X": { type: "item", code: "game:hammerhead-iron", quantity: 1 },
+		"C": { type: "item", code: "game:clay-blue", quantity: 1 },        
+        "K": { type: "item", code: "carburization_powder", quantity: 1 }
+	},
+	name: "pc_hammer",
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "pack_carburization-unfired"  }
+},
+{
+	ingredientPattern: "CCC	KXK	CCC",
+	ingredients: {
+		"X": { type: "item", code: "game:chisel-iron", quantity: 1 },
+		"C": { type: "item", code: "game:clay-blue", quantity: 1 },
+        "K": { type: "item", code: "carburization_powder", quantity: 1 }
+	},
+	name: "pc_chisel",
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "pack_carburization-unfired"  }
+},
+{
+	ingredientPattern: "CCC	KXK	CCC",
+	ingredients: {
+		"X": { type: "item", code: "game:cleaver-iron", quantity: 1 },
+		"C": { type: "item", code: "game:clay-blue", quantity: 1 },
+        "K": { type: "item", code: "carburization_powder", quantity: 1 }
+	},
+	name: "pc_cleaver",
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "pack_carburization-unfired"  }
+},
+{
+	ingredientPattern: "CCC	KXK	CCC",
+	ingredients: {
+		"X": { type: "item", code: "game:hoehead-iron", quantity: 1 },
+		"C": { type: "item", code: "game:clay-blue", quantity: 1 },
+        "K": { type: "item", code: "carburization_powder", quantity: 1 }
+	},
+	name: "pc_hoe",
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "pack_carburization-unfired"  }
+},
+{
+	ingredientPattern: "CCC	KXK	CCC",
+	ingredients: {
+		"X": { type: "item", code: "game:knifeblade-iron", quantity: 1 },
+		"C": { type: "item", code: "game:clay-blue", quantity: 1 },
+        "K": { type: "item", code: "carburization_powder", quantity: 1 }
+	},
+	name: "pc_kb",
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "pack_carburization-unfired"  }
+},
+{
+	ingredientPattern: "CCC	KXK	CCC",
+	ingredients: {
+		"X": { type: "item", code: "game:pickaxehead-iron", quantity: 1 },
+		"C": { type: "item", code: "game:clay-blue", quantity: 1 },
+        "K": { type: "item", code: "carburization_powder", quantity: 1 }
+	},
+	name: "pc_pro",
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "pack_carburization-unfired"  }
+},
+{
+	ingredientPattern: "CCC	KXK	CCC",
+	ingredients: {
+		"X": { type: "item", code: "game:metalchain-iron", quantity: 1 },
+		"C": { type: "item", code: "game:clay-blue", quantity: 1 },
+        "K": { type: "item", code: "carburization_powder", quantity: 1 }
+	},
+	name: "pc_mail",
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "pack_carburization-unfired"  }
+},
+    {
+	ingredientPattern: "CCC	KXK	CCC",
+	ingredients: {
+		"X": { type: "item", code: "game:metalscale-iron", quantity: 1 },
+		"C": { type: "item", code: "game:clay-blue", quantity: 1 },
+        "K": { type: "item", code: "carburization_powder", quantity: 1 }
+	},
+	name: "pc_scale",
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "pack_carburization-unfired"  }
+},
+    {
+	ingredientPattern: "CCC	KXK	CCC",
+	ingredients: {
+		"X": { type: "item", code: "game:shovelhead-iron", quantity: 1 },
+		"C": { type: "item", code: "game:clay-blue", quantity: 1 },
+        "K": { type: "item", code: "carburization_powder", quantity: 1 }
+	},
+	name: "pc_sh",
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "pack_carburization-unfired"  }
+},
+    {
+	ingredientPattern: "CCC	KXK	CCC",
+	ingredients: {
+		"X": { type: "item", code: "game:prospectingpickhead-iron", quantity: 1 },
+		"C": { type: "item", code: "game:clay-blue", quantity: 1 },
+        "K": { type: "item", code: "carburization_powder", quantity: 1 }
+	},
+	name: "pc_pror",
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "pack_carburization-unfired"  }
+},
+{
+	ingredientPattern: "CCC	KXK	CCC",
+	ingredients: {
+		"X": { type: "item", code: "game:sawblade-iron", quantity: 1 },
+		"C": { type: "item", code: "game:clay-blue", quantity: 1 },
+        "K": { type: "item", code: "carburization_powder", quantity: 1 }
+	},
+	name: "pc_saw",
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "pack_carburization-unfired"  }
+},
+{
+	ingredientPattern: "CCC	KXK	CCC",
+	ingredients: {
+		"X": { type: "item", code: "game:scythehead-iron", quantity: 1 },
+		"C": { type: "item", code: "game:clay-blue", quantity: 1 },
+        "K": { type: "item", code: "carburization_powder", quantity: 1 }
+	},
+	name: "pc_sc",
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "pack_carburization-unfired"  }
+},
+{
+	ingredientPattern: "CCC	KXK	CCC",
+	ingredients: {
+		"X": { type: "item", code: "game:swordblade-iron", quantity: 1 },
+		"C": { type: "item", code: "game:clay-blue", quantity: 1 },
+        "K": { type: "item", code: "carburization_powder", quantity: 1 }
+	},
+	name: "pc_sb",
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "pack_carburization-unfired"  }
+},    
+]

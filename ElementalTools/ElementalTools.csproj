@@ -85,6 +85,10 @@
     <Folder Include="assets\fma\shapes\block\metallurgy\" />
     <Folder Include="Block\" />
     <Folder Include="BlockEntities\" />
+    <Folder Include="assets\fma\recipes\grid\metallurgy\" />
+    <Folder Include="assets\fma\itemtypes\metallurgy\" />
+    <Folder Include="assets\fma\textures\" />
+    <Folder Include="assets\fma\textures\metallurgy\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
@@ -105,8 +109,24 @@
     <None Include="assets\fma\shapes\item\tools\bit_brace.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\blocktypes\metallurgy\pack_carburization.json" />
-    <None Include="assets\fma\shapes\block\metallurgy\pack_carburization.json" />
+    <None Include="assets\fma\blocktypes\metallurgy\pack_carburization.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\shapes\block\metallurgy\pack_carburization.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\recipes\grid\metallurgy\pack_carburization.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\itemtypes\metallurgy\carburization_powder.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\recipes\grid\metallurgy\carburization_powder.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\textures\metallurgy\carb_pwd.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

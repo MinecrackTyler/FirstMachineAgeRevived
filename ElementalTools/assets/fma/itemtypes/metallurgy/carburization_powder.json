@@ -1,0 +1,7 @@
+﻿{
+	code: "carburization_powder",
+	texture: { base: "metallurgy/carb_pwd" },
+	creativeinventory: { "general": ["*"], "items": ["*"] },
+	maxstacksize: 64,
+	materialDensity: 500
+}

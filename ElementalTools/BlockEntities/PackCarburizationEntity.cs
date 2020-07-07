@@ -78,7 +78,7 @@ namespace ElementalTools
 		/* 
 		 * Contents: 1x Iron/Steel Chisel, Drill-bit (unsharpened rod), files, ect...
 		 */
-		dsc.Append("Contents: ");
+		dsc.Append("Contents: \n");
 
 		if (internalInventory.IsEmpty) {
 		dsc.Append("Nothing.\n");

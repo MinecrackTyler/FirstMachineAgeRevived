@@ -40,7 +40,7 @@ namespace ElementalTools
 		this.CoreAPI = api;
 
 		RegisterItemClasses( );
-
+		RegisterBlockClasses( );
 
 		base.Start(api);
 		}
