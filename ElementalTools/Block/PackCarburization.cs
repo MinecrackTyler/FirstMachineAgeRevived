@@ -68,8 +68,7 @@ namespace ElementalTools
         var ironThingSlot = (from inputSlot in allInputslots
 										where inputSlot.Empty == false
 										//where       inputSlot.Itemstack.Collectible.MatterState         
-										where inputSlot.Itemstack.Collectible.Variant.KeyValueMatch(ElementalToolsSystem.MetalNameKey, ElementalToolsSystem.IronNameKey) 											
-                                   		|| inputSlot.Itemstack.Collectible.Variant.KeyValueMatch(ElementalToolsSystem.MaterialNameKey, ElementalToolsSystem.IronNameKey)	
+			                			 where inputSlot.Itemstack.Collectible.IsFerricMetal()
 		                	 			select inputSlot).Single();
 		//Category: survival/itemtypes/toolhead/
 		//Variant(s):   metal,	material
@@ -120,7 +119,7 @@ namespace ElementalTools
 		public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
 		{
 		//Add tooltip indicating contents...temperature, elapsed heat time, ect...
-		float temp = GetTemperature(world, inSlot.Itemstack);
+		float temp = GetTemperature(world, inSlot.Itemstack);//TODO: Get REAL Ambient
 		if (temp > 20) {
 		dsc.AppendLine(Lang.Get("Temperature: {0:F1}°C", temp));
 		}
@@ -139,6 +138,8 @@ namespace ElementalTools
 
 
 
+
+
 		/* 
 		 * GetMeltingDuration 
 		 * GetMeltingPoint
@@ -149,6 +150,9 @@ namespace ElementalTools
 		 */
 		public override float GetMeltingDuration(IWorldAccessor world, ISlotProvider cookingSlotsProvider, ItemSlot inputSlot)
 		{
+		#if DEBUG
+		return 5f;
+		#endif
 		//Randomize?
 		return SteelTransitionTime;
 		}
@@ -165,20 +169,57 @@ namespace ElementalTools
 		//Does pack contain a Iron item/block ?
 		//Is there an 'Upgrade' for that exact Item / Block ?
 		//Output stack should be _EMPTY_
-		
+		var stuffedInside = GetContents(world, inputStack);
+		if (stuffedInside != null) {
+		var stack = stuffedInside.First( );
+		var isIron = stack.Collectible.IsFerricMetal( );
+		#if DEBUG
+		world.Logger.VerboseDebug("Iron ready to smelt? {0}", isIron);
+		#endif
+		return isIron;		
+		}
 
 		return false;
 		}
 
-		public override  void DoSmelt(IWorldAccessor world, ISlotProvider cookingSlotsProvider, ItemSlot inputSlot, ItemSlot outputSlot)
+		public override void DoSmelt(IWorldAccessor world, ISlotProvider cookingSlotsProvider, ItemSlot inputSlot, ItemSlot outputSlot)
 		{
+
+		#if DEBUG
+		world.Logger.VerboseDebug("Invoked: 'DoSmelt'");
+		#endif
+
 		//base.DoSmelt(world, cookingSlotsProvider, inputSlot, outputSlot);
 		//Remap metal type of contained item...Iron beccomes Austentic 'steel' - Quenching is ITEM SPECIFIC!
 		//Change own 'type' to "fired"...
-
+		var stuffInside = GetContents(world, inputSlot.Itemstack);
 		//ItemStack smeltedStack = CombustibleProps.SmeltedStack.ResolvedItemstack.Clone(); //transform - to 'fired' pack
+		if (stuffInside != null) {
 
-		//outputSlot.MarkDirty();
+		Block firedPack = world.GetBlock(ElementalToolsSystem.fired_carburizationPackCode);
+		ItemStack contentStack = stuffInside.First( );
+		var temperature = contentStack.Collectible.GetTemperature(world, contentStack);
+		ItemStack outputStack = new ItemStack(firedPack);
+		//outputStack.SetFrom( firedPack);
+		/*
+		this.Id = stack.Collectible.Id;
+		this.Class = stack.Class;
+		this.item = stack.item;
+		this.block = stack.block;
+		this.stacksize = stack.stacksize;
+		*/
+		outputStack.Attributes = contentStack.Attributes.Clone( );
+		outputStack.TempAttributes = contentStack.TempAttributes.Clone( );
+		outputStack.Collectible.SetTemperature(world, outputStack, temperature);
+				
+		outputSlot.Itemstack = outputStack;
+		inputSlot.Itemstack = null;
+
+		//outputSlot.MarkDirty(); //?
+		}
+
+
+		
 		}
 
 		public override bool CanSpoil(ItemStack itemstack)

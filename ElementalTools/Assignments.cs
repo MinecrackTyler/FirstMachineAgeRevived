@@ -14,13 +14,21 @@ namespace ElementalTools
 {
 	public partial class ElementalToolsSystem : ModSystem
 	{
-
 		internal const string malletItemKey = @"ItemMallet";
-		internal const string pack_carburizationBlockKey = @"PackCarburization";
-		internal const string pack_carburizationBEKey = @"PackCarburizationEntity";
+		internal const string pack_carburizationBlockKey = @"pack_carburization";
+		internal const string pack_stateFired = @"fired";
 		internal const string malletAssetKey = @"mallet";
 		internal const string hammerAssetKey = @"hammer";
 		internal const string fmaKey = @"fma";
+
+		internal const string pack_carburizationClassKey = @"PackCarburization";
+		internal const string pack_carburizationBEKey = @"PackCarburizationEntity";
+		internal const string PackCarburizationEntityNameKey = @"PackCarburizationEntity";
+
+		internal const string IronNameKey = @"iron";
+		internal const string MaterialNameKey = @"metal";
+		internal const string MetalNameKey = @"material";
+		internal static readonly AssetLocation fired_carburizationPackCode = new AssetLocation(fmaKey, pack_carburizationBlockKey).AppendPaths(pack_stateFired);
 
 		private void RegisterItemClasses( )
 		{
@@ -29,7 +37,7 @@ namespace ElementalTools
 
 		private void RegisterBlockClasses( )
 		{
-		CoreAPI.RegisterBlockClass(pack_carburizationBlockKey, typeof(PackCarburization));
+		CoreAPI.RegisterBlockClass(pack_carburizationClassKey, typeof(PackCarburization));
 		CoreAPI.RegisterBlockEntityClass(pack_carburizationBEKey, typeof(PackCarburizationEntity));
 		}
 
