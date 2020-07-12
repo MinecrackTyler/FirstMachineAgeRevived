@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
+
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.GameContent;
@@ -8,6 +10,7 @@ namespace ElementalTools
 {
 	public class PackCarburizationEntity : BlockEntityContainer
 	{
+		private const string _invName = @"carburization_pack";
 		//Item Container for Iron object to convert...
 		internal InventoryGeneric internalInventory;
 
@@ -22,7 +25,7 @@ namespace ElementalTools
 		public override string InventoryClassName {
 			get
 			{
-			return @"Packcarburization_Inventory";
+			return _invName;
 			}
 		}
 
@@ -30,36 +33,30 @@ namespace ElementalTools
 			get { return base.Block as PackCarburization; }
 		}
 
-		public float Temperature { get; private set; }
+		public float Temperature { get; set; }
 
 
-		public PackCarburizationEntity( )
-		{
-		internalInventory = new InventoryGeneric(1, null, null);
+		public PackCarburizationEntity( ) 
+		{			
+			internalInventory = new InventoryGeneric(1, _invName+"-0", null);//required: 'Instance ID' is a Dummy...token (real value set later)
 		}
 
-		public override void Initialize(ICoreAPI api)
-		{
-		base.Initialize(api);
-		}
 
 		protected override void OnTick(float dt)
 		{
-		//Soak up Carbon; Transform into S-T-E-E-L .... eventually.
+
+		if (this.Temperature > 20) {
+		this.Temperature -= 1f;//Rain? Compute vs. ambient temp / biome, on snow/ice...	   
+		}
+
 		if (!internalInventory.IsEmpty) {
 		foreach (ItemSlot slot in internalInventory) {
 
-		if (slot.Itemstack == null) continue;
+		if (slot.Empty) continue;
 
 		AssetLocation objCode = slot.Itemstack.Collectible.Code;
 		
-		slot.Itemstack.Collectible.SetTemperature(this.Api.World, slot.Itemstack, Temperature, true);
-
-		if (Temperature > this.Block.SteelTransitionTemp) {
-		//Convert here or on 'DoSmelt' ?
-		//Which is really mostly about the clay container...not quenching to make it Martensite
-
-		}
+		slot.Itemstack.Collectible.SetTemperature(this.Api.World, slot.Itemstack, Temperature, false);
 
 		}
 		MarkDirty(true);
@@ -86,13 +83,30 @@ namespace ElementalTools
 		else {
 		
 		foreach (var thing in internalInventory) {
+		if (thing.Empty) continue;
 		dsc.AppendFormat("{1} \u00d7 {0}\n", thing.Itemstack.GetName( ), thing.StackSize);
 		}
 		}
 
 		}
 
-		//OnBlockPlaced -- Perform base call!
+
+		public override void OnBlockPlaced(ItemStack byItemStack = null)
+		{
+		if (byItemStack != null ) {
+		var contents = this.Block.GetContents(this.Api.World, byItemStack);
+		if (contents != null || contents.Length == 0) return;
+		
+		internalInventory[0].Itemstack = contents.First( ).Clone( );
+		//internalInventory[0].Itemstack.SetFrom(byItemStack);		
+		var temp =this.Block.GetTemperature(this.Api.World, byItemStack);		
+		this.Temperature = temp;
+		}
+		else {
+		Api.World.Logger.VerboseDebug("No items in Stacks?! - thus empty...");
+		}
+		}
+
 
 	}
 }

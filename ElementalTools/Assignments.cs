@@ -22,7 +22,6 @@ namespace ElementalTools
 		internal const string fmaKey = @"fma";
 
 		internal const string pack_carburizationClassKey = @"PackCarburization";
-		internal const string pack_carburizationBEKey = @"PackCarburizationEntity";
 		internal const string PackCarburizationEntityNameKey = @"PackCarburizationEntity";
 
 		internal const string IronNameKey = @"iron";
@@ -39,7 +38,7 @@ namespace ElementalTools
 		private void RegisterBlockClasses( )
 		{
 		CoreAPI.RegisterBlockClass(pack_carburizationClassKey, typeof(PackCarburization));
-		CoreAPI.RegisterBlockEntityClass(pack_carburizationBEKey, typeof(PackCarburizationEntity));
+		CoreAPI.RegisterBlockEntityClass(PackCarburizationEntityNameKey, typeof(PackCarburizationEntity));
 		}
 
 		private void ManipulateGridRecipies( )

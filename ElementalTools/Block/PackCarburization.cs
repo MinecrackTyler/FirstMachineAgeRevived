@@ -24,15 +24,18 @@ namespace ElementalTools
 
 		//Heat to 'Red' hot for ~ 30-60 minutes (equive to ??? game cook time ??? )
 
+		//Output 'Blister' steel... not 'Shear' steel
+
 		internal PackCarburizationEntity Entity(BlockPos here)
 		{
 		var pcEnt = api.World.BlockAccessor.GetBlockEntity(here) as PackCarburizationEntity;
 
 		if (pcEnt == null) {
-		api.World.Logger.Warning($"PackCarburization [{here}]: BlockEntity NULL! (regenerating)");
+		api.World.Logger.Warning($"PackCarburization [{here}]: {this.EntityClass} Not-present/NULL! (regenerating)");
 		api.World.BlockAccessor.SpawnBlockEntity(ElementalToolsSystem.PackCarburizationEntityNameKey, here);
+		pcEnt = api.World.BlockAccessor.GetBlockEntity(here) as PackCarburizationEntity;
 		}
-		return null; 
+		return pcEnt; 
 		}
 
 		public float SteelTransitionTemp {
@@ -52,6 +55,13 @@ namespace ElementalTools
 			if (this.Attributes[steelTransitionTempKey].Exists) { return this.Attributes[steelTransitionTempKey].AsFloat( ); }
 
 			return 999f;
+			}
+		}
+
+		public string State {
+			get
+			{
+			return this.Variant[@"type"];			
 			}
 		}
 
@@ -77,9 +87,9 @@ namespace ElementalTools
 
 		//outputSlot.Itemstack.Attributes = ironThingSlot.Itemstack.Attributes.Clone( );
 
-		ItemStack[ ] encapsulatedItems = new ItemStack[ ] { ironThingSlot.Itemstack.Clone( ) };//More than 1 or Quantity *#
+		ItemStack[ ] encapsulatedItems = new ItemStack[ ] { ironThingSlot.Itemstack.Clone( ) };
+		encapsulatedItems.First( ).StackSize = 1;//There can be only 1, per pack
      	SetContents(outputSlot.Itemstack, encapsulatedItems );
-
 
 		}
 
@@ -251,15 +261,14 @@ namespace ElementalTools
 		}
 
 
-		outputStack.Attributes = contentStack.Attributes.Clone( );
-		outputStack.TempAttributes = contentStack.TempAttributes.Clone( );
+		//outputStack.Attributes = contentStack.Attributes.Clone( );
+		//outputStack.TempAttributes = contentStack.TempAttributes.Clone( );
 		outputStack.Collectible.SetTemperature(world, outputStack, temperature);
-		firedPack.SetContents(outputStack, GetContents(world, contentStack));
-		SetTemperature(world, outputStack, temperature - 100f, false);
+		firedPack.SetContents(outputStack, GetContents(world, contentStack));		
 		outputSlot.Itemstack = outputStack;
 		inputSlot.Itemstack = null;
 		//inputSlot.MarkDirty( );
-		//outputSlot.MarkDirty(); //?
+		outputSlot.MarkDirty(); //?
 		#if DEBUG
 		world.Logger.VerboseDebug("Finished: 'DoSmelt' " );
 		#endif	
@@ -272,6 +281,7 @@ namespace ElementalTools
 
 		
 		}
+
 
 		public override bool CanSpoil(ItemStack itemstack)
 		{
@@ -304,6 +314,48 @@ namespace ElementalTools
 
 		}
 
+		public override float OnGettingBroken(IPlayer player, BlockSelection blockSel, ItemSlot itemslot, float remainingResistance, float dt, int counter)
+		{
+		EnumTool? tool = itemslot.Itemstack?.Collectible?.Tool;
+
+		if (tool == EnumTool.Hammer || tool == EnumTool.Pickaxe || tool == EnumTool.Shovel || tool == EnumTool.Sword || tool == EnumTool.Spear || tool == EnumTool.Axe || tool == EnumTool.Hoe) {
+		if (counter % 5 == 0 || remainingResistance <= 0) {
+		double posx = blockSel.Position.X + blockSel.HitPosition.X;
+		double posy = blockSel.Position.Y + blockSel.HitPosition.Y;
+		double posz = blockSel.Position.Z + blockSel.HitPosition.Z;
+		player.Entity.World.PlaySoundAt(remainingResistance > 0 ? Sounds.GetHitSound(player) : Sounds.GetBreakSound(player), posx, posy, posz, player, true, 16, 1);
+		}
+
+		return remainingResistance - 0.05f;
+		}
+
+		return base.OnGettingBroken(player, blockSel, itemslot, remainingResistance, dt, counter);
+		}
+
+		public override void OnBlockBroken(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
+		{
+		SimpleParticleProperties ash =
+			new SimpleParticleProperties(
+				9, 18,
+				ColorUtil.ToRgba(127, 222, 222, 222),
+				new Vec3d(pos.X, pos.Y, pos.Z),
+				new Vec3d(pos.X + 1, pos.Y + 1, pos.Z + 1),
+				new Vec3f(-0.2f, -0.1f, -0.2f),
+				new Vec3f(0.2f, 0.2f, 0.2f),
+				1.5f,
+				0,
+				0.5f,
+				1.0f,
+				EnumParticleModel.Quad
+			);
+
+		ash.OpacityEvolve = new EvolvingNatFloat(EnumTransformFunction.LINEAR, -200);
+		ash.SizeEvolve = new EvolvingNatFloat(EnumTransformFunction.LINEAR, 2);
+
+		world.SpawnParticles(ash);
+
+		base.OnBlockBroken(world, pos, byPlayer, dropQuantityMultiplier);
+		}
 
 	}
 }
