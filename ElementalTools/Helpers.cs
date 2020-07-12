@@ -41,6 +41,24 @@ namespace ElementalTools
 		return assetLoc.Clone();
 		}
 
+		/// <summary>
+		/// Transmutes the by variant's keyword.
+		/// </summary>
+		/// <returns>Altered Code.</returns>
+		/// <param name="originalAsset">Original asset.</param>
+		/// <param name="keywords">Keys in Variant(s).</param>
+		/// <param name="replacement">Replacement values for 1st matched key.</param>
+		public static AssetLocation TransmuteByVariants(this RegistryObject originalAsset, string[ ] keywords, string replacement)
+		{
+		foreach (var key in keywords) 
+		{
+		if (originalAsset.Variant.ContainsKey(key)) 
+		{
+		return originalAsset.CodeWithVariant(key, replacement);		
+		}	  	
+		}
+		return originalAsset.Code;
+		}
 	}
 }
 

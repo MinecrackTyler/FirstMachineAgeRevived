@@ -145,7 +145,7 @@ namespace ElementalTools
 		 * GetMeltingPoint
 		 * CanSmelt
 		 * DoSmelt
-		 * 
+		 * SetTemperature <<< Different Formula? // TODO: Thermal conduction of ceramic...
 		 * 
 		 */
 		public override float GetMeltingDuration(IWorldAccessor world, ISlotProvider cookingSlotsProvider, ItemSlot inputSlot)
@@ -184,40 +184,91 @@ namespace ElementalTools
 
 		public override void DoSmelt(IWorldAccessor world, ISlotProvider cookingSlotsProvider, ItemSlot inputSlot, ItemSlot outputSlot)
 		{
-
 		#if DEBUG
-		world.Logger.VerboseDebug("Invoked: 'DoSmelt'");
+			world.Logger.VerboseDebug("Invoked: 'DoSmelt' CookSlots#{1} In.stk: {0} ", (inputSlot.Empty ? "empty" : inputSlot.Itemstack.Collectible.Code.ToShortString()),cookingSlotsProvider.Slots.Length);
 		#endif
 
 		//base.DoSmelt(world, cookingSlotsProvider, inputSlot, outputSlot);
 		//Remap metal type of contained item...Iron beccomes Austentic 'steel' - Quenching is ITEM SPECIFIC!
 		//Change own 'type' to "fired"...
-		var stuffInside = GetContents(world, inputSlot.Itemstack);
+		ItemStack[ ] stuffInside = GetContents(world, inputSlot.Itemstack);
+		
 		//ItemStack smeltedStack = CombustibleProps.SmeltedStack.ResolvedItemstack.Clone(); //transform - to 'fired' pack
-		if (stuffInside != null) {
-
-		Block firedPack = world.GetBlock(ElementalToolsSystem.fired_carburizationPackCode);
+		if (stuffInside != null && stuffInside.Length > 0) {
 		ItemStack contentStack = stuffInside.First( );
+		PackCarburization firedPack = world.GetBlock(ElementalToolsSystem.fired_carburizationPackCode) as PackCarburization;
+		
 		var temperature = contentStack.Collectible.GetTemperature(world, contentStack);
 		ItemStack outputStack = new ItemStack(firedPack);
-		//outputStack.SetFrom( firedPack);
-		/*
-		this.Id = stack.Collectible.Id;
-		this.Class = stack.Class;
-		this.item = stack.item;
-		this.block = stack.block;
-		this.stacksize = stack.stacksize;
-		*/
+		//outputStack.SetFrom( firedPack);						
+
+		if (contentStack.Class == EnumItemClass.Block) {
+		var oldThing = contentStack.Block.Code;
+		var transumtedThing = contentStack.Block.TransmuteByVariants(
+			new string[ ] { ElementalToolsSystem.MetalNameKey, ElementalToolsSystem.MaterialNameKey },
+			ElementalToolsSystem.SteelNameKey);
+		
+		var convertedThing = world.GetBlock(transumtedThing);
+
+		if (convertedThing == null) {
+		world.Logger.VerboseDebug("Non-existant (Block): {1} from {0} !", oldThing, transumtedThing);
+		outputSlot.Itemstack = null;
+		inputSlot.Itemstack = null;
+		inputSlot.MarkDirty( );
+		outputSlot.MarkDirty( ); //?
+		return;
+		}
+
+		contentStack.Block.Code = transumtedThing;
+		contentStack.Id = convertedThing.Id;
+		#if DEBUG
+		world.Logger.VerboseDebug("Transmuting (Block): {0} >>> {1}", oldThing, transumtedThing);		
+		#endif
+		}
+		else {
+		var oldThing = contentStack.Item.Code;
+		var transumtedThing = contentStack.Item.TransmuteByVariants(
+			new string[ ] { ElementalToolsSystem.MetalNameKey, ElementalToolsSystem.MaterialNameKey },
+			ElementalToolsSystem.SteelNameKey);
+		
+		var convertedThing = world.GetItem(transumtedThing);
+
+		if (convertedThing == null) {
+		world.Logger.VerboseDebug("Non-existant (Item): {1} from {0} !", oldThing, transumtedThing);
+		outputSlot.Itemstack = null;
+		inputSlot.Itemstack = null;
+		inputSlot.MarkDirty( );
+		outputSlot.MarkDirty(); //?
+		return;
+		}
+
+		contentStack.Item.Code = transumtedThing;
+		contentStack.Id = convertedThing.Id;
+		#if DEBUG
+		world.Logger.VerboseDebug("Transmuting (Item): {0} >>> {1}", oldThing, transumtedThing);
+		
+		#endif
+		}
+
+
 		outputStack.Attributes = contentStack.Attributes.Clone( );
 		outputStack.TempAttributes = contentStack.TempAttributes.Clone( );
 		outputStack.Collectible.SetTemperature(world, outputStack, temperature);
-				
+		firedPack.SetContents(outputStack, GetContents(world, contentStack));
+		SetTemperature(world, outputStack, temperature - 100f, false);
 		outputSlot.Itemstack = outputStack;
 		inputSlot.Itemstack = null;
-
+		//inputSlot.MarkDirty( );
 		//outputSlot.MarkDirty(); //?
+		#if DEBUG
+		world.Logger.VerboseDebug("Finished: 'DoSmelt' " );
+		#endif	
 		}
-
+		else {
+		#if DEBUG
+		world.Logger.Warning("Pack contents emtpy?!? ");
+		#endif
+		}
 
 		
 		}

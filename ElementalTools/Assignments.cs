@@ -26,6 +26,7 @@ namespace ElementalTools
 		internal const string PackCarburizationEntityNameKey = @"PackCarburizationEntity";
 
 		internal const string IronNameKey = @"iron";
+		internal const string SteelNameKey = @"steel";
 		internal const string MaterialNameKey = @"metal";
 		internal const string MetalNameKey = @"material";
 		internal static readonly AssetLocation fired_carburizationPackCode = new AssetLocation(fmaKey, pack_carburizationBlockKey).AppendPaths(pack_stateFired);
