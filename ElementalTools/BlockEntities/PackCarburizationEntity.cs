@@ -95,15 +95,19 @@ namespace ElementalTools
 		{
 		if (byItemStack != null ) {
 		var contents = this.Block.GetContents(this.Api.World, byItemStack);
-		if (contents != null || contents.Length == 0) return;
-		
+		if (contents == null || contents.Length == 0) 
+		{
+		Api.World.Logger.VerboseDebug("Empty contents from stack !");
+		return;
+		}
+		var temp = this.Block.GetTemperature(this.Api.World, byItemStack);
 		internalInventory[0].Itemstack = contents.First( ).Clone( );
-		//internalInventory[0].Itemstack.SetFrom(byItemStack);		
-		var temp =this.Block.GetTemperature(this.Api.World, byItemStack);		
+		
+		//internalInventory[0].Itemstack.SetFrom(byItemStack);				
 		this.Temperature = temp;
 		}
 		else {
-		Api.World.Logger.VerboseDebug("No items in Stacks?! - thus empty...");
+		Api.World.Logger.VerboseDebug("No stackdata ?! - thus empty...");
 		}
 		}
 
