@@ -180,11 +180,11 @@ namespace ElementalTools
 		//Is there an 'Upgrade' for that exact Item / Block ?
 		//Output stack should be _EMPTY_
 		var stuffedInside = GetContents(world, inputStack);
-		if (stuffedInside != null) {
-		var stack = stuffedInside.First( );
-		var isIron = stack.Collectible.IsFerricMetal( );
+		if (stuffedInside != null && stuffedInside.Length > 0) {
+		var firstThing = stuffedInside.First( );
+		var isIron = firstThing.Collectible.IsFerricMetal( );
 		#if DEBUG
-		world.Logger.VerboseDebug("Iron ready to smelt? {0}", isIron);
+		world.Logger.VerboseDebug("Iron contents to smelt? {0} -> {1}", isIron, firstThing.GetName());
 		#endif
 		return isIron;		
 		}
@@ -218,9 +218,9 @@ namespace ElementalTools
 			new string[ ] { ElementalToolsSystem.MetalNameKey, ElementalToolsSystem.MaterialNameKey },
 			ElementalToolsSystem.SteelNameKey);
 		
-		var convertedThing = world.GetBlock(transumtedThing);
+		var convertedBlock = world.GetBlock(transumtedThing);
 
-		if (convertedThing == null) {
+		if (convertedBlock == null) {
 		world.Logger.VerboseDebug("Non-existant (Block): {1} from {0} !", oldThing, transumtedThing);
 		outputSlot.Itemstack = null;
 		inputSlot.Itemstack = null;
@@ -230,7 +230,7 @@ namespace ElementalTools
 		}
 
 		contentStack.Block.Code = transumtedThing;
-		contentStack.Id = convertedThing.Id;
+		contentStack.Id = convertedBlock.Id;
 		#if DEBUG
 		world.Logger.VerboseDebug("Transmuting (Block): {0} >>> {1}", oldThing, transumtedThing);		
 		#endif
@@ -241,9 +241,9 @@ namespace ElementalTools
 			new string[ ] { ElementalToolsSystem.MetalNameKey, ElementalToolsSystem.MaterialNameKey },
 			ElementalToolsSystem.SteelNameKey);
 		
-		var convertedThing = world.GetItem(transumtedThing);
+		var convertedItem = world.GetItem(transumtedThing);
 
-		if (convertedThing == null) {
+		if (convertedItem == null) {
 		world.Logger.VerboseDebug("Non-existant (Item): {1} from {0} !", oldThing, transumtedThing);
 		outputSlot.Itemstack = null;
 		inputSlot.Itemstack = null;
@@ -253,23 +253,30 @@ namespace ElementalTools
 		}
 
 		contentStack.Item.Code = transumtedThing;
-		contentStack.Id = convertedThing.Id;
+		contentStack.Id = convertedItem.Id;
 		#if DEBUG
-		world.Logger.VerboseDebug("Transmuting (Item): {0} >>> {1}", oldThing, transumtedThing);
-		
+		world.Logger.VerboseDebug("Transmuting (Item): {0} >>> {1}", oldThing, transumtedThing);		
 		#endif
 		}
 
 
 		//outputStack.Attributes = contentStack.Attributes.Clone( );
 		//outputStack.TempAttributes = contentStack.TempAttributes.Clone( );
-		outputStack.Collectible.SetTemperature(world, outputStack, temperature);
-		firedPack.SetContents(outputStack, GetContents(world, contentStack));		
-		outputSlot.Itemstack = outputStack;
+		outputSlot.Itemstack = outputStack.Clone();
+		outputSlot.Itemstack.Collectible.SetTemperature(world, outputStack, temperature);				
+		ItemStack[ ] transmutedItems = new ItemStack[ ] { contentStack.Clone( ) };
+		transmutedItems.First( ).StackSize = 1;//There can be only 1, per pack
+		SetContents(outputSlot.Itemstack, transmutedItems);
+
+
+		//outputSlot.Itemstack.Attributes = contentStack.Attributes.Clone( );
 		inputSlot.Itemstack = null;
 		//inputSlot.MarkDirty( );
-		outputSlot.MarkDirty(); //?
+		//outputSlot.MarkDirty(); //?
+
+
 		#if DEBUG
+		world.Logger.VerboseDebug("Contents of pack: {0}", contentStack);
 		world.Logger.VerboseDebug("Finished: 'DoSmelt' " );
 		#endif	
 		}
@@ -337,7 +344,7 @@ namespace ElementalTools
 		SimpleParticleProperties ash =
 			new SimpleParticleProperties(
 				9, 18,
-				ColorUtil.ToRgba(127, 222, 222, 222),
+				ColorUtil.ToRgba(127, 32, 32, 32),
 				new Vec3d(pos.X, pos.Y, pos.Z),
 				new Vec3d(pos.X + 1, pos.Y + 1, pos.Z + 1),
 				new Vec3f(-0.2f, -0.1f, -0.2f),

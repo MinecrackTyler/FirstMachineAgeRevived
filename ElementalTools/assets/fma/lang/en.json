@@ -4,5 +4,6 @@
     "item-carburization_powder":"Carburization Powder",
     "itemdesc-carburization_powder":"A 'magical' dark grey dust...ask the metal sages how its used...",    
 	"fma:block-pack_carburization-*":"Carburization Pack",
-    "fma:blockdesc-pack_carbirization-*":"A new Metal age dawns...SOOON!",
+    "fma:blockdesc-pack_carburization-unfired":"Heat to transition temperature for a while.",
+	"fma:blockdesc-pack_carburization-fired":"Break open to remove contents.",
 }
