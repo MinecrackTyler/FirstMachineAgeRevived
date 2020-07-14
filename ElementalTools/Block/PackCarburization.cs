@@ -5,6 +5,7 @@ using System.Text;
 
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
+using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
 
@@ -20,6 +21,7 @@ namespace ElementalTools
 
 		internal const string outputOverrideKey = @"outputOverride";
 		internal const string maxQuantityKey = @"maxQuantity";
+		internal const string extraCookTimeKey = @"extraCookTime";
 
 		//Recipie Options #1: Charcoal & Bonemeal & Blue-clay
 		//Recipie Options #2: Leather & Fat & Blue-clay
@@ -98,7 +100,7 @@ namespace ElementalTools
 		ItemStack[ ] encapsulatedItems = new ItemStack[ ] { ironThingSlot.Itemstack.Clone( ) };
 		encapsulatedItems.First( ).StackSize = Math.Min(ironQty,ironQtyMax);;
      	SetContents(outputSlot.Itemstack, encapsulatedItems );
-
+		SetOutputOverride(outputSlot.Itemstack,byRecipe.Attributes[outputOverrideKey].AsString( ));
 		}
 
 		/// <summary>
@@ -163,16 +165,14 @@ namespace ElementalTools
 		 * GetMeltingPoint
 		 * CanSmelt
 		 * DoSmelt
-		 * SetTemperature <<< Different Formula? // TODO: Thermal conduction of ceramic...
+		 * SetTemperature <<< Different Formula? // TODO: Thermal conduction of clay/ceramic...
 		 * 
 		 */
 		public override float GetMeltingDuration(IWorldAccessor world, ISlotProvider cookingSlotsProvider, ItemSlot inputSlot)
 		{
-		#if DEBUG
-		return 5f;
-		#endif
-		//Randomize?
-		return SteelTransitionTime;
+		var extraCookTime = GetExtraCookTime(inputSlot.Itemstack);
+
+		return SteelTransitionTime + extraCookTime;
 		}
 
 		public override float GetMeltingPoint(IWorldAccessor world, ISlotProvider cookingSlotsProvider, ItemSlot inputSlot)
@@ -185,7 +185,7 @@ namespace ElementalTools
 		//return base.CanSmelt(world, cookingSlotsProvider, inputStack, outputStack);
 
 		//Does pack contain a Iron item/block ?
-		//Is there an 'Upgrade' for that exact Item / Block ?
+		
 		//Output stack should be _EMPTY_
 		var stuffedInside = GetContents(world, inputStack);
 		if (stuffedInside != null && stuffedInside.Length > 0) {
@@ -194,6 +194,7 @@ namespace ElementalTools
 		#if DEBUG
 		world.Logger.VerboseDebug("Iron contents to smelt? {0} -> {1}", isIron, firstThing.GetName());
 		#endif
+		
 		return isIron;		
 		}
 
@@ -210,7 +211,7 @@ namespace ElementalTools
 		//Remap metal type of contained item...Iron beccomes Austentic 'steel' - Quenching is ITEM SPECIFIC!
 		//Change own 'type' to "fired"...
 		ItemStack[ ] stuffInside = GetContents(world, inputSlot.Itemstack);
-		
+		var overrideCode = GetOutputOverride(inputSlot.Itemstack);
 		//ItemStack smeltedStack = CombustibleProps.SmeltedStack.ResolvedItemstack.Clone(); //transform - to 'fired' pack
 		if (stuffInside != null && stuffInside.Length > 0) {
 		ItemStack contentStack = stuffInside.First( );
@@ -222,10 +223,10 @@ namespace ElementalTools
 
 		if (contentStack.Class == EnumItemClass.Block) {
 		var oldThing = contentStack.Block.Code;
-		var transumtedThing = contentStack.Block.TransmuteByVariants(
+		var transumtedThing = overrideCode ?? contentStack.Block.TransmuteByVariants(
 			new string[ ] { ElementalToolsSystem.MetalNameKey, ElementalToolsSystem.MaterialNameKey },
-			ElementalToolsSystem.SteelNameKey);
-		
+			ElementalToolsSystem.SteelNameKey);		
+
 		var convertedBlock = world.GetBlock(transumtedThing);
 
 		if (convertedBlock == null) {
@@ -245,7 +246,7 @@ namespace ElementalTools
 		}
 		else {
 		var oldThing = contentStack.Item.Code;
-		var transumtedThing = contentStack.Item.TransmuteByVariants(
+		var transumtedThing = overrideCode ?? contentStack.Item.TransmuteByVariants(
 			new string[ ] { ElementalToolsSystem.MetalNameKey, ElementalToolsSystem.MaterialNameKey },
 			ElementalToolsSystem.SteelNameKey);
 		
@@ -372,6 +373,31 @@ namespace ElementalTools
 		base.OnBlockBroken(world, pos, byPlayer, dropQuantityMultiplier);
 		}
 
+		private void SetOutputOverride(ItemStack containerStack, string overrideCode)
+		{
+		if (!string.IsNullOrEmpty(overrideCode)) {
+		containerStack.Attributes.SetString(outputOverrideKey, overrideCode);
+		}
+		}
+
+		private AssetLocation GetOutputOverride(ItemStack containerStack)
+		{
+		if (containerStack.Attributes.HasAttribute(outputOverrideKey)) 
+			{
+			var code =  new AssetLocation(ElementalToolsSystem.fmaKey, containerStack.Attributes.GetString(outputOverrideKey));
+
+			return code;
+			}
+		return null;
+		}
+
+		private int GetExtraCookTime(ItemStack containerStack)
+		{
+		if (containerStack.Attributes.HasAttribute(extraCookTimeKey)) {
+		return containerStack.Attributes.GetInt(extraCookTimeKey, 0);
+		}
+		return 0;
+		}
 	}
 }
 

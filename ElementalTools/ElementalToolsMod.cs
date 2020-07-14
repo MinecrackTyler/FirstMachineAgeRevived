@@ -38,6 +38,7 @@ namespace ElementalTools
 
 		RegisterItemClasses( );
 		RegisterBlockClasses( );
+		
 
 		base.Start(api);
 		}
@@ -65,7 +66,8 @@ namespace ElementalTools
 
 		private void OnServerLoadGame( )
 		{
-		ManipulateGridRecipies( );
+		GenerateSteelEquivalentObjects( );
+		ManipulateGridRecipies( );		
 		}
 	}
 

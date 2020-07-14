@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
+using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 
@@ -27,9 +28,11 @@ namespace ElementalTools
 		internal const string IronNameKey = @"iron";
 		internal const string SteelNameKey = @"steel";//Generic 'steel' of Unknown province...
 		internal const string BlisterSteelNameKey = @"blister_steel";//a Crude 'Steel' (layer) made by Carburization - mixed material props
-		internal const string MaterialNameKey = @"metal";
-		internal const string MetalNameKey = @"material";
+		internal const string ShearSteelNameKey = @"shear_steel";//forge-welded blister steel 
+		internal const string MaterialNameKey = @"material";
+		internal const string MetalNameKey = @"metal";
 		internal const string RecipieWildcard = @"X";
+
 
 		internal static readonly AssetLocation fired_carburizationPackCode = new AssetLocation(fmaKey, pack_carburizationBlockKey).AppendPaths(pack_stateFired);
 
@@ -81,7 +84,40 @@ namespace ElementalTools
 
 		}
 
+		private void GenerateSteelEquivalentObjects( )
+		{
+		//For  "blister_steel" Tier 4 steel tools & tool-heads ...ect...
+		var toolsEquivalentList = new string[]{
+		"axehead",
+		"hammerhead",
+		"arrowhead",
+		"swordblade",
+		"scythehead",
+		"sawblade",
+		"prospectingpickhead",
+		"shovelhead",
+		"pickaxehead",
+		"knifeblade",
+		"hoehead",
+		"cleaver",
+		"chisel"};
 
+		var ironThingsList = from collectee in CoreAPI.World.Collectibles	                                          
+							 			where toolsEquivalentList.Any(toolEqv => collectee.Code.BeginsWith(GlobalConstants.DefaultDomain, toolEqv))
+                                      	where collectee.IsFerricMetal()						                                        
+										select collectee.Code;
+
+		#if DEBUG
+		Mod.Logger.VerboseDebug("Found {0} Iron things to clone into '{1}' equivalents", ironThingsList.Count( ), BlisterSteelNameKey);
+		#endif
+
+		var result = MetalSwapCloning(ironThingsList, BlisterSteelNameKey);
+
+		#if DEBUG
+		Mod.Logger.VerboseDebug("Made {0} '{1}' things...", result, BlisterSteelNameKey);
+		#endif
+
+		}
 
 		private uint SingleSwapinReplicas(IEnumerable<GridRecipe> sourceRecipies, CraftingRecipeIngredient target, CraftingRecipeIngredient replacement)
 		{
@@ -112,6 +148,54 @@ namespace ElementalTools
 		}		
 		return replicaCount;
 		}
+
+		//before server runphase LoadGame
+		private uint MetalSwapCloning(IEnumerable<AssetLocation> sourceAssets, string materialReplacement)
+		{
+		uint counter = 0;
+
+		var metalTexture = new CompositeTexture(new AssetLocation(fmaKey, MetalNameKey+"/" +materialReplacement));
+
+		foreach (var asset in sourceAssets) {
+		var collectable = CoreAPI.World.Collectibles.Find(ci => ci.Code.Equals(asset));
+		if (collectable != null) {
+		if (collectable.ItemClass == EnumItemClass.Item) {
+		var Clonee = CoreAPI.World.GetItem(asset);
+
+		var transmutedAssetLocation = Clonee.TransmuteByVariants(new string[ ] { MaterialNameKey, MetalNameKey }, materialReplacement);
+		Clonee.Code = transmutedAssetLocation;
+		Clonee.Code.Domain = fmaKey;
+		Clonee.ToolTier = 4;
+		Clonee.ItemId = 0;
+		//SET: Textures, shape, other properties....		
+		Clonee.Textures[MaterialNameKey] = metalTexture;
+		Clonee.Textures[MetalNameKey] = metalTexture;
+							      
+		ServerCore.RegisterItem(Clonee.Clone());
+		counter++;
+		}
+		else {
+		var Clonee = CoreAPI.World.GetBlock(asset);
+		var transmutedAssetLocation = Clonee.TransmuteByVariants(new string[ ] { MaterialNameKey, MetalNameKey }, materialReplacement);
+		Clonee.Code = transmutedAssetLocation;
+		Clonee.Code.Domain = fmaKey;
+		Clonee.ToolTier = 4;		
+		Clonee.BlockId = 0;
+		//SET: Textures, shape, other properties....
+		Clonee.Textures[MaterialNameKey] = metalTexture;
+		Clonee.Textures[MetalNameKey] = metalTexture;
+
+		ServerCore.RegisterBlock(Clonee.Clone());
+		counter++;
+		}
+		}
+		else Mod.Logger.Warning("Cannot locate asset for cloning: {0}", asset);
+					
+		}
+
+		return counter;
+		}
+
 		//TODO: Recycling assignment of Smeltable properties from all smith/grid/recipe forms...
 	}
 }
@@ -127,19 +211,6 @@ namespace ElementalTools
  * 
  "blister_steel" Tier 4 steel:
 
-fma:
-hammerhead-blister_steel
-arrowhead-blister_steel
-swordblade-blister_steel
-scythehead-blister_steel
-sawblade-blister_steel
-prospectingpickhead-blister_steel
-shovelhead-blister_steel
-pickaxehead-blister_steel
-knifeblade-blister_steel
-hoehead-blister_steel
-cleaver-blister_steel
-chisel-blister_steel
 
 
 attributes: {

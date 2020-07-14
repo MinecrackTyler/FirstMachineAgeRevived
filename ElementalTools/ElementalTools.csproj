@@ -89,6 +89,7 @@
     <Folder Include="assets\fma\itemtypes\metallurgy\" />
     <Folder Include="assets\fma\textures\" />
     <Folder Include="assets\fma\textures\metallurgy\" />
+    <Folder Include="assets\fma\blocktypes\metal\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
@@ -130,6 +131,8 @@
     <None Include="assets\fma\textures\metal\blister_steel.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="assets\fma\blocktypes\metal\blister_steel_slips.json" />
+    <None Include="assets\fma\blocktypes\metal\shear_steel_ingot.json" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
