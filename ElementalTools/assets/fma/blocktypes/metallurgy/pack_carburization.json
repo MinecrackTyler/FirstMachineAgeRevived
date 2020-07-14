@@ -27,8 +27,8 @@
 	creativeinventory: { "general": [""],  },
 	combustiblePropsByType: {
 		"pack_carbirization-unfired": {
-			meltingPoint: 700,
-			meltingDuration: 256,
+			meltingPoint: 750,
+			meltingDuration: 38,
 			smeltedRatio: 1,
 			smeltingType: "convert",
 			smeltedStack: { type: "block", code: "pack_carbirization-fired" },
@@ -51,5 +51,5 @@
 	sidesolid: {
 		all: false
 	},
-	collisionSelectionBox: { x1: 0.125, y1: 0, z1: 0.125, x2: 0.875, y2: 1, z2: 0.875 }
+	collisionSelectionBox: { x1: 0.25, y1: 0, z1: 0.125, x2: 0.75, y2: 0.625, z2: 0.875 },   
 }

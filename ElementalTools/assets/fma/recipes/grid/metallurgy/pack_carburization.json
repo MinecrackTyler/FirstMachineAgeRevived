@@ -9,6 +9,9 @@
 	name: "pc_hammer",
 	width: 3,
 	height: 3,
+    attributes: {
+		outputOverride: "hammerhead-blister_steel"
+	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },
 {
@@ -21,6 +24,9 @@
 	name: "pc_chisel",
 	width: 3,
 	height: 3,
+    attributes: {
+		outputOverride: "chisel-blister_steel"
+	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },
 {
@@ -33,6 +39,9 @@
 	name: "pc_cleaver",
 	width: 3,
 	height: 3,
+    attributes: {
+		outputOverride: "cleaver-blister_steel"
+	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },
 {
@@ -45,6 +54,9 @@
 	name: "pc_hoe",
 	width: 3,
 	height: 3,
+	attributes: {
+		outputOverride: "hoehead-blister_steel"
+	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },
 {
@@ -57,6 +69,9 @@
 	name: "pc_kb",
 	width: 3,
 	height: 3,
+	attributes: {
+		outputOverride: "knifeblade-blister_steel"
+	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },
 {
@@ -69,6 +84,9 @@
 	name: "pc_pro",
 	width: 3,
 	height: 3,
+	attributes: {
+		outputOverride: "pickaxehead-blister_steel"
+	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },
 {
@@ -92,7 +110,7 @@
 	},
 	name: "pc_scale",
 	width: 3,
-	height: 3,
+	height: 3,	
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },
     {
@@ -105,6 +123,9 @@
 	name: "pc_sh",
 	width: 3,
 	height: 3,
+	attributes: {
+		outputOverride: "shovelhead-blister_steel"
+	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },
     {
@@ -117,6 +138,9 @@
 	name: "pc_pror",
 	width: 3,
 	height: 3,
+	attributes: {
+		outputOverride: "prospectingpickhead-blister_steel"
+	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },
 {
@@ -129,6 +153,9 @@
 	name: "pc_saw",
 	width: 3,
 	height: 3,
+    attributes: {
+		outputOverride: "sawblade-blister_steel"
+	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },
 {
@@ -141,6 +168,9 @@
 	name: "pc_sc",
 	width: 3,
 	height: 3,
+    attributes: {
+		outputOverride: "scythehead-blister_steel"
+	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },
 {
@@ -153,6 +183,25 @@
 	name: "pc_sb",
 	width: 3,
 	height: 3,
+    attributes: {
+		outputOverride: "swordblade-blister_steel"
+	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },    
+{
+	ingredientPattern: "CCC	KXK	CCC",
+	ingredients: {
+		"X": { type: "item", code: "game:arrowhead-iron", quantity: 1 },
+		"C": { type: "item", code: "game:clay-blue", quantity: 1 },        
+	    "K": { type: "item", code: "carburization_powder", quantity: 1 }
+	},
+	name: "pc_arrow",
+	width: 3,
+	height: 3,
+	attributes: {
+		outputOverride: "arrowhead-blister_steel",
+		maxQuantity: 6,
+	},
+	output: { type: "block", code: "pack_carburization-unfired"  }
+},
 ]

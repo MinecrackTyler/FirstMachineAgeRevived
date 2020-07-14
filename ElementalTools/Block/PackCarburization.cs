@@ -18,6 +18,8 @@ namespace ElementalTools
 		public const string steelTransitionTempKey = @"SteelTransitionTemp";
 		public const string steelTransitionTimeKey = @"SteelTransitionTime";
 
+		internal const string outputOverrideKey = @"outputOverride";
+		internal const string maxQuantityKey = @"maxQuantity";
 
 		//Recipie Options #1: Charcoal & Bonemeal & Blue-clay
 		//Recipie Options #2: Leather & Fat & Blue-clay
@@ -76,19 +78,25 @@ namespace ElementalTools
 		{
 		//Find the one Tool head / or anything Iron.
         var ironThingSlot = (from inputSlot in allInputslots
-										where inputSlot.Empty == false
-										//where       inputSlot.Itemstack.Collectible.MatterState         
+										where inputSlot.Empty == false										
 			                			 where inputSlot.Itemstack.Collectible.IsFerricMetal()
 		                	 			select inputSlot).Single();
+		int ironQtyMax, ironQty = 1;
+		if (byRecipe.Ingredients.ContainsKey(ElementalToolsSystem.RecipieWildcard))
+		{
+		ironQty = byRecipe.Ingredients[ElementalToolsSystem.RecipieWildcard].Quantity;
+		}
+
+		ironQtyMax = byRecipe.Attributes[maxQuantityKey].AsInt(1);
 		//Category: survival/itemtypes/toolhead/
 		//Variant(s):   metal,	material
-		//tool-stock, tool-heads, plates, scale, lamellae, chainmail 
-		//NOT: Ingots, Whole Anvils, big Gears, chunky large things....this ain't mass-production...
+		//tool-stock, tool-heads, scale, chainmail 
+		//NOT: Ingots, Whole Anvils, big Gears, chunky large things....thats more casting iron...
 
 		//outputSlot.Itemstack.Attributes = ironThingSlot.Itemstack.Attributes.Clone( );
 
 		ItemStack[ ] encapsulatedItems = new ItemStack[ ] { ironThingSlot.Itemstack.Clone( ) };
-		encapsulatedItems.First( ).StackSize = 1;//There can be only 1, per pack
+		encapsulatedItems.First( ).StackSize = Math.Min(ironQty,ironQtyMax);;
      	SetContents(outputSlot.Itemstack, encapsulatedItems );
 
 		}

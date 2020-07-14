@@ -1,10 +1,10 @@
 ﻿{
   "type": "code",
-  "name": "Elemental Tools",
-  "description" : "Devices of great empowerment.",
+  "name": "Elements of STEEL.",
+  "description" : "Anchient techniques for making STEEL, in your very own forge - today!",
   "authors": ["Melchior"],
   "ModID":"elementaltools",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "dependencies": { 
 	"game": "1.12.14",
 	"survival": ""

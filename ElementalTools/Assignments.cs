@@ -25,9 +25,12 @@ namespace ElementalTools
 		internal const string PackCarburizationEntityNameKey = @"PackCarburizationEntity";
 
 		internal const string IronNameKey = @"iron";
-		internal const string SteelNameKey = @"steel";
+		internal const string SteelNameKey = @"steel";//Generic 'steel' of Unknown province...
+		internal const string BlisterSteelNameKey = @"blister_steel";//a Crude 'Steel' (layer) made by Carburization - mixed material props
 		internal const string MaterialNameKey = @"metal";
 		internal const string MetalNameKey = @"material";
+		internal const string RecipieWildcard = @"X";
+
 		internal static readonly AssetLocation fired_carburizationPackCode = new AssetLocation(fmaKey, pack_carburizationBlockKey).AppendPaths(pack_stateFired);
 
 		private void RegisterItemClasses( )
@@ -112,3 +115,38 @@ namespace ElementalTools
 		//TODO: Recycling assignment of Smeltable properties from all smith/grid/recipe forms...
 	}
 }
+
+/**** Terminology *************
+ * Wrought Iron  -> Blister Steel [Pack carburization / Cementation ]
+ * Blister Steel -> Shear Steel [Smithing (Welding) ]
+ * Shear Steel -> Cast Steel [ Bessemer process / .... ] 
+ * Pig Iron -> Cast Iron [ Blast furnace / .... ]
+ * Cast Iron -> Steel-clad Cast Iron [ "fining" furnace; Decarburization, re-heat in air @900C]
+ * https://www.tf.uni-kiel.de/matwis/amat/iss/kap_a/backbone/ra_2_3.html
+ * Benjamin Huntsman's invention of the crucible steel process
+ * 
+ "blister_steel" Tier 4 steel:
+
+fma:
+hammerhead-blister_steel
+arrowhead-blister_steel
+swordblade-blister_steel
+scythehead-blister_steel
+sawblade-blister_steel
+prospectingpickhead-blister_steel
+shovelhead-blister_steel
+pickaxehead-blister_steel
+knifeblade-blister_steel
+hoehead-blister_steel
+cleaver-blister_steel
+chisel-blister_steel
+
+
+attributes: {
+	outputOverride: "fma:zzzzzzz"
+},	
+
+
+
+
+ ******************************/
