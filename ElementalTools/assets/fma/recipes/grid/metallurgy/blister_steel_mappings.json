@@ -1,0 +1,124 @@
+﻿[
+{
+	ingredientPattern: "H	S	F",
+	ingredients: {
+		"H": { type: "item", code: "fma:arrowhead-blister_steel", name: "metal" },
+		"S": { type: "item", code: "game:stick" },
+		"F": { type: "item", code: "game:feather" }
+	},
+	width: 1,
+	height: 3,
+	enabled:false,
+	output: { type: "item", code: "game:arrow-steel", quantity: 1  }
+},
+{
+	ingredientPattern: "T	S",
+	ingredients: {
+		"T": { type: "item", code: "fma:prospectingpickhead-blister_steel", name: "metal"  },
+		"S": { type: "item", code: "game:stick" }
+	},
+	width: 1,
+	height: 2,
+	enabled:false,
+	output: { type: "item", code: "game:prospectingpick-steel", quantity: 1  }
+},
+{
+	ingredientPattern: "T	S",
+	ingredients: {
+		"T": { type: "item", code: "fma:axehead-blister_steel", name: "material"  },
+		"S": { type: "item", code: "game:stick" }
+	},
+	width: 1,
+	height: 2,
+enabled:false,
+	output: { type: "item", code: "game:axe-steel", quantity: 1  }
+},
+{
+	ingredientPattern: "T	S",
+	ingredients: {
+		"T": { type: "item", code: "fma:hammerhead-blister_steel", name: "metal"  },
+		"S": { type: "item", code: "game:stick" }
+	},
+	width: 1,
+	height: 2,
+	enabled:false,
+	output: { type: "item", code: "game:hammer-steel", quantity: 1  }
+},
+{
+	ingredientPattern: "T	S",
+	ingredients: {
+		"T": { type: "item", code: "fma:hoehead-blister_steel", name: "metal"  },
+		"S": { type: "item", code: "game:stick" }
+	},
+	width: 1,
+	height: 2,
+	enabled:false,
+	output: { type: "item", code: "game:hoe-steel", quantity: 1  }
+},
+{
+	ingredientPattern: "T	S",
+	ingredients: {
+		"T": { type: "item", code: "fma:knifeblade-blister_steel", name: "material"  },
+		"S": { type: "item", code: "game:stick" }
+	},
+	width: 1,
+	height: 2,
+	enabled:false,
+	output: { type: "item", code: "game:knife-steel", quantity: 1  }
+},
+{
+	ingredientPattern: "T	S",
+	ingredients: {
+		"T": { type: "item", code: "fma:pickaxehead-blister_steel", name: "metal"  },
+		"S": { type: "item", code: "game:stick" }
+	},
+	width: 1,
+	height: 2,
+	enabled:false,
+	output: { type: "item", code: "game:pickaxe-steel", quantity: 1  }
+},
+{
+	ingredientPattern: "T	S",
+	ingredients: {
+		"T": { type: "item", code: "fma:sawblade-blister_steel", name: "metal"  },
+		"S": { type: "item", code: "game:stick" }
+	},
+	width: 1,
+	height: 2,
+	enabled:false,
+	output: { type: "item", code: "game:saw-steel", quantity: 1  }
+},
+{
+	ingredientPattern: "T	S",
+	ingredients: {
+		"T": { type: "item", code: "fma:scythehead-blister_steel", name: "metal"  },
+		"S": { type: "item", code: "game:stick" }
+	},
+	width: 1,
+	height: 2,
+	enabled:false,
+	output: { type: "item", code: "game:scythe-steel", quantity: 1  }
+},
+{
+	ingredientPattern: "T	S",
+	ingredients: {
+		"T": { type: "item", code: "fma:shovelhead-blister_steel", name: "material"  },
+		"S": { type: "item", code: "game:stick" }
+	},
+	width: 1,
+	height: 2,
+	enabled:false,
+	output: { type: "item", code: "game:shovel-steel", quantity: 1  }
+},
+{
+	ingredientPattern: "T	S",
+	ingredients: {
+		"T": { type: "item", code: "fma:swordblade-blister_steel", name: "metal"  },
+		"S": { type: "item", code: "game:stick" }
+	},
+	width: 1,
+	height: 2,
+	enabled:false,
+	output: { type: "item", code: "game:sword-steel", quantity: 1  }
+}
+]

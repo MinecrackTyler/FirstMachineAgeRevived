@@ -29,17 +29,21 @@ namespace ElementalTools
 
 		public override double ExecuteOrder( )
 		{
-		return 0.1d;
+		return 0.5d;
 		}
 
 		public override void Start(ICoreAPI api)
 		{
 		this.CoreAPI = api;
-
+					
 		RegisterItemClasses( );
 		RegisterBlockClasses( );
-		
-
+		Mod.Logger.Event("Registered classes for toolin' & steely stuff...");
+		/* WORKAROUND: Due to over-eager loading of GridRecipies - and block/item defs,  
+		 * Load Alternate Recipes, AND placeholder items Later than "normal"
+		 * as classes get registered "too" late...
+		 * Consider; OVERWRITE of all 'ignored' recipies/items/blocks - and force reload after registering...
+		*/
 		base.Start(api);
 		}
 
@@ -55,7 +59,7 @@ namespace ElementalTools
 		Mod.Logger.Error("Cannot access 'ServerCoreAPI' class:  API (implimentation) has changed, Contact Developer!");
 		return;
 		}
-
+		//api.Event.SaveGameLoaded += OnSaveGameLoaded;
 		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.LoadGame, OnServerLoadGame);
 		
 
@@ -67,7 +71,9 @@ namespace ElementalTools
 		private void OnServerLoadGame( )
 		{
 		GenerateSteelEquivalentObjects( );
-		ManipulateGridRecipies( );		
+		ManipulateGridRecipies( );
+		//Re-activate crafting recipes for blister_steel stuff
+		ReloadGridRecipes( );
 		}
 	}
 

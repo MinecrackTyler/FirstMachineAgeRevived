@@ -133,6 +133,9 @@
     </None>
     <None Include="assets\fma\blocktypes\metal\blister_steel_slips.json" />
     <None Include="assets\fma\blocktypes\metal\shear_steel_ingot.json" />
+    <None Include="assets\fma\recipes\grid\metallurgy\blister_steel_mappings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

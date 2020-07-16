@@ -83,7 +83,7 @@ namespace ElementalTools
 										where inputSlot.Empty == false										
 			                			 where inputSlot.Itemstack.Collectible.IsFerricMetal()
 		                	 			select inputSlot).Single();
-		int ironQtyMax, ironQty = 1;
+		int ironQtyMax = 1, ironQty = 1;
 		if (byRecipe.Ingredients.ContainsKey(ElementalToolsSystem.RecipieWildcard))
 		{
 		ironQty = byRecipe.Ingredients[ElementalToolsSystem.RecipieWildcard].Quantity;

@@ -6,7 +6,11 @@
 	maxstacksize: 1,
 	attributes: {
 		handbook: {
-			
+            include: true,
+			groupBy: ["pack_carburization-*"],
+            excludeByType: {
+				"*-fired": true,				
+			}
 		},
 		SteelTransitionTemp:750,
 		SteelTransitionTime:38,
@@ -24,7 +28,7 @@
 		},		
 	},
 	blockmaterial: "Ceramic",
-	creativeinventory: { "general": [""],  },
+	creativeinventory: { "general": ["pack_carburization-unfired"], "items": ["pack_carburization-unfired"],"tools": ["pack_carburization-unfired"]  },
 	combustiblePropsByType: {
 		"pack_carbirization-unfired": {
 			meltingPoint: 750,
@@ -52,4 +56,9 @@
 		all: false
 	},
 	collisionSelectionBox: { x1: 0.25, y1: 0, z1: 0.125, x2: 0.75, y2: 0.625, z2: 0.875 },   
+    guiTransform: {
+		translation: { x: 0, y: -10, z: 0 },
+		origin: { x: 0.5, y: 0.4, z: 0.5 },
+		scale: 2
+	},
 }

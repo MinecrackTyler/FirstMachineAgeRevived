@@ -24,10 +24,7 @@
 	},
 	name: "pc_chisel",
 	width: 3,
-	height: 3,
-    attributes: {
-		outputOverride: "chisel-blister_steel"
-	},
+	height: 3,    
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },
 {
@@ -40,8 +37,7 @@
 	name: "pc_cleaver",
 	width: 3,
 	height: 3,
-    attributes: {
-		outputOverride: "cleaver-blister_steel",
+    attributes: {		
         extraCookTime:10,
 	},
 	output: { type: "block", code: "pack_carburization-unfired"  }

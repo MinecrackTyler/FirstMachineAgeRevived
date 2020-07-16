@@ -3,13 +3,11 @@ using System.Collections.Generic;
 
 using System.Linq;
 using System.Threading;
-
+using Newtonsoft.Json.Linq;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
-
-
-
+using Vintagestory.ServerMods;
 
 namespace ElementalTools
 {
@@ -86,7 +84,7 @@ namespace ElementalTools
 
 		private void GenerateSteelEquivalentObjects( )
 		{
-		//For  "blister_steel" Tier 4 steel tools & tool-heads ...ect...
+		//For  "blister_steel" Tier 4 steel tools & tool-heads ...ect...made from iron templates
 		var toolsEquivalentList = new string[]{
 		"axehead",
 		"hammerhead",
@@ -98,9 +96,8 @@ namespace ElementalTools
 		"shovelhead",
 		"pickaxehead",
 		"knifeblade",
-		"hoehead",
-		"cleaver",
-		"chisel"};
+		"hoehead",		
+		};
 
 		var ironThingsList = from collectee in CoreAPI.World.Collectibles	                                          
 							 			where toolsEquivalentList.Any(toolEqv => collectee.Code.BeginsWith(GlobalConstants.DefaultDomain, toolEqv))
@@ -112,10 +109,8 @@ namespace ElementalTools
 		#endif
 
 		var result = MetalSwapCloning(ironThingsList, BlisterSteelNameKey);
-
-		#if DEBUG
-		Mod.Logger.VerboseDebug("Made {0} '{1}' things...", result, BlisterSteelNameKey);
-		#endif
+					
+		Mod.Logger.Event("Made {0} patterns of '{1}' (placeholders)", result, BlisterSteelNameKey);		
 
 		}
 
@@ -197,20 +192,50 @@ namespace ElementalTools
 		}
 
 		//TODO: Recycling assignment of Smeltable properties from all smith/grid/recipe forms...
+
+
+		private void ReloadGridRecipes( )
+		{
+		var RecipieLoader = CoreAPI.ModLoader.GetModSystem<RecipeLoader>( );
+
+		Dictionary<AssetLocation, JToken> fmaGridRecipieFiles = CoreAPI.Assets.GetMany<JToken>(Mod.Logger, "recipes/grid",fmaKey);
+		uint recipeQuantity = 0;
+
+		foreach (var val in fmaGridRecipieFiles) {
+		Mod.Logger.VerboseDebug("G.R: {0} Processing...", val.Key.ToString());
+		if (val.Value is JObject) {
+		var gridRecipe = val.Value.ToObject<GridRecipe>(val.Key.Domain);
+		gridRecipe.Enabled = true;
+		RecipieLoader.LoadRecipe(val.Key, gridRecipe );
+		recipeQuantity++;
+		}
+		if (val.Value is JArray) {
+		foreach (var token in (val.Value as JArray)) {
+		var gridRecipe = token.ToObject<GridRecipe>(val.Key.Domain);
+
+		RecipieLoader.LoadRecipe(val.Key, gridRecipe);
+		gridRecipe.Enabled = true;
+		recipeQuantity++;
+		}
+		}
+		}
+
+		Mod.Logger.Event("{0} grid recipes re-loaded from {1} files", recipeQuantity, fmaGridRecipieFiles.Count);		
+		}
 	}
 }
 
 /**** Terminology *************
  * Wrought Iron  -> Blister Steel [Pack carburization / Cementation ]
  * Blister Steel -> Shear Steel [Smithing (Welding) ]
- * Shear Steel -> Cast Steel [ Bessemer process / .... ] 
+ * Shear Steel -> Cast Steel [ Bessemer process / Open-hearth /.... ] 
  * Pig Iron -> Cast Iron [ Blast furnace / .... ]
  * Cast Iron -> Steel-clad Cast Iron [ "fining" furnace; Decarburization, re-heat in air @900C]
  * https://www.tf.uni-kiel.de/matwis/amat/iss/kap_a/backbone/ra_2_3.html
  * Benjamin Huntsman's invention of the crucible steel process
  * 
  "blister_steel" Tier 4 steel:
-
+TODO: Code to allow anvil to handle welding split blister rods/cards back into ONE consolidated ingot of 'steel'
 
 
 attributes: {
