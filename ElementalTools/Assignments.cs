@@ -82,7 +82,7 @@ namespace ElementalTools
 
 		}
 
-		private void GenerateSteelEquivalentObjects( )
+		private void GenerateSteelPlaceholders( )
 		{
 		//For  "blister_steel" Tier 4 steel tools & tool-heads ...ect...made from iron templates
 		var toolsEquivalentList = new string[]{
@@ -97,6 +97,7 @@ namespace ElementalTools
 		"pickaxehead",
 		"knifeblade",
 		"hoehead",		
+		"chisel"
 		};
 
 		var ironThingsList = from collectee in CoreAPI.World.Collectibles	                                          
@@ -165,7 +166,8 @@ namespace ElementalTools
 		//SET: Textures, shape, other properties....		
 		Clonee.Textures[MaterialNameKey] = metalTexture;
 		Clonee.Textures[MetalNameKey] = metalTexture;
-							      
+
+		Mod.Logger.VerboseDebug("Adding placeholder: {0} from {1}", Clonee.Code, asset);
 		ServerCore.RegisterItem(Clonee.Clone());
 		counter++;
 		}
@@ -180,6 +182,7 @@ namespace ElementalTools
 		Clonee.Textures[MaterialNameKey] = metalTexture;
 		Clonee.Textures[MetalNameKey] = metalTexture;
 
+		Mod.Logger.VerboseDebug("Adding placeholder: {0} from {1}", Clonee.Code, asset);
 		ServerCore.RegisterBlock(Clonee.Clone());
 		counter++;
 		}
@@ -194,11 +197,11 @@ namespace ElementalTools
 		//TODO: Recycling assignment of Smeltable properties from all smith/grid/recipe forms...
 
 
-		private void ReloadGridRecipes( )
+		private void RemapPlaceholders( )
 		{
 		var RecipieLoader = CoreAPI.ModLoader.GetModSystem<RecipeLoader>( );
 
-		Dictionary<AssetLocation, JToken> fmaGridRecipieFiles = CoreAPI.Assets.GetMany<JToken>(Mod.Logger, "recipes/grid",fmaKey);
+		Dictionary<AssetLocation, JToken> fmaGridRecipieFiles = CoreAPI.Assets.GetMany<JToken>(Mod.Logger, "recipes/grid/remapping",fmaKey);
 		uint recipeQuantity = 0;
 
 		foreach (var val in fmaGridRecipieFiles) {

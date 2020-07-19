@@ -74,6 +74,8 @@
     <Compile Include="BlockEntities\PackCarburizationEntity.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Items\ItemTemperableMetal.cs" />
+    <Compile Include="General\IAmSteel.cs" />
+    <Compile Include="General\ElementOfSteel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Items\" />
@@ -90,6 +92,8 @@
     <Folder Include="assets\fma\textures\" />
     <Folder Include="assets\fma\textures\metallurgy\" />
     <Folder Include="assets\fma\blocktypes\metal\" />
+    <Folder Include="assets\fma\recipes\grid\remapping\" />
+    <Folder Include="General\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
@@ -133,7 +137,7 @@
     </None>
     <None Include="assets\fma\blocktypes\metal\blister_steel_slips.json" />
     <None Include="assets\fma\blocktypes\metal\shear_steel_ingot.json" />
-    <None Include="assets\fma\recipes\grid\metallurgy\blister_steel_mappings.json">
+    <None Include="assets\fma\recipes\grid\remapping\blister_steel_mappings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

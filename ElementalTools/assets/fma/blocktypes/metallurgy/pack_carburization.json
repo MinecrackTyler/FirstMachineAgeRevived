@@ -44,10 +44,10 @@
 	maxStackSize: 1,
 	lightAbsorption: 0,
 	sounds: {
-		walk: "walk/stone",
-		break: "block/ceramicbreak",
-		hit: "block/ceramicbreak",
-		place: "block/ceramicplace"
+		walk: "game:walk/stone",
+		break: "game:block/ceramicbreak",
+		hit: "game:block/ceramicbreak",
+		place: "game:block/ceramicplace"
 	},
 	sideopaque: {
 		all: false

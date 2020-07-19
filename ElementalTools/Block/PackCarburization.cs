@@ -48,7 +48,7 @@ namespace ElementalTools
 			if (this.Attributes[steelTransitionTempKey].Exists) 
 				{ return this.Attributes[steelTransitionTempKey].AsFloat(); }
 
-			return 999f;
+			return 750f;
 			}
 		}
 
@@ -58,7 +58,7 @@ namespace ElementalTools
 			{
 			if (this.Attributes[steelTransitionTempKey].Exists) { return this.Attributes[steelTransitionTempKey].AsFloat( ); }
 
-			return 999f;
+			return 300f;
 			}
 		}
 
@@ -78,6 +78,14 @@ namespace ElementalTools
 		/// <param name="byRecipe">By recipe.</param>
 		public override void OnCreatedByCrafting(ItemSlot[ ] allInputslots, ItemSlot outputSlot, GridRecipe byRecipe)
 		{
+		//Failsafe[s]
+		if (byRecipe == null || byRecipe.Ingredients == null || byRecipe.IngredientPattern == null || byRecipe.Output == null ) {
+		string name = "unset!";
+		name = byRecipe?.Name.ToString( );
+		api.World.Logger.Error("Invalid / Incomplete / Corrupt Recipe: {0}", name);
+		return;
+		}
+
 		//Find the one Tool head / or anything Iron.
         var ironThingSlot = (from inputSlot in allInputslots
 										where inputSlot.Empty == false										
@@ -89,7 +97,9 @@ namespace ElementalTools
 		ironQty = byRecipe.Ingredients[ElementalToolsSystem.RecipieWildcard].Quantity;
 		}
 
+		if (byRecipe.Attributes != null && byRecipe.Attributes.KeyExists(maxQuantityKey)) {
 		ironQtyMax = byRecipe.Attributes[maxQuantityKey].AsInt(1);
+		}
 		//Category: survival/itemtypes/toolhead/
 		//Variant(s):   metal,	material
 		//tool-stock, tool-heads, scale, chainmail 
@@ -100,7 +110,9 @@ namespace ElementalTools
 		ItemStack[ ] encapsulatedItems = new ItemStack[ ] { ironThingSlot.Itemstack.Clone( ) };
 		encapsulatedItems.First( ).StackSize = Math.Min(ironQty,ironQtyMax);;
      	SetContents(outputSlot.Itemstack, encapsulatedItems );
-		SetOutputOverride(outputSlot.Itemstack,byRecipe.Attributes[outputOverrideKey].AsString( ));
+		if (byRecipe.Attributes !=null && byRecipe.Attributes.KeyExists(outputOverrideKey)) {
+			SetOutputOverride(outputSlot.Itemstack, byRecipe.Attributes[outputOverrideKey].AsString( ));
+			}
 		}
 
 		/// <summary>
@@ -382,7 +394,7 @@ namespace ElementalTools
 
 		private AssetLocation GetOutputOverride(ItemStack containerStack)
 		{
-		if (containerStack.Attributes.HasAttribute(outputOverrideKey)) 
+		if (containerStack.Attributes != null && containerStack.Attributes.HasAttribute(outputOverrideKey)) 
 			{
 			var code =  new AssetLocation(ElementalToolsSystem.fmaKey, containerStack.Attributes.GetString(outputOverrideKey));
 
@@ -393,7 +405,7 @@ namespace ElementalTools
 
 		private int GetExtraCookTime(ItemStack containerStack)
 		{
-		if (containerStack.Attributes.HasAttribute(extraCookTimeKey)) {
+		if (containerStack.Attributes  != null && containerStack.Attributes.HasAttribute(extraCookTimeKey)) {
 		return containerStack.Attributes.GetInt(extraCookTimeKey, 0);
 		}
 		return 0;

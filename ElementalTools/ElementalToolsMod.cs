@@ -29,7 +29,7 @@ namespace ElementalTools
 
 		public override double ExecuteOrder( )
 		{
-		return 0.5d;
+		return 0.1999d;
 		}
 
 		public override void Start(ICoreAPI api)
@@ -38,7 +38,7 @@ namespace ElementalTools
 					
 		RegisterItemClasses( );
 		RegisterBlockClasses( );
-		Mod.Logger.Event("Registered classes for toolin' & steely stuff...");
+		Mod.Logger.Notification("Registered classes for toolin' & steely stuff...");
 		/* WORKAROUND: Due to over-eager loading of GridRecipies - and block/item defs,  
 		 * Load Alternate Recipes, AND placeholder items Later than "normal"
 		 * as classes get registered "too" late...
@@ -59,21 +59,20 @@ namespace ElementalTools
 		Mod.Logger.Error("Cannot access 'ServerCoreAPI' class:  API (implimentation) has changed, Contact Developer!");
 		return;
 		}
-		//api.Event.SaveGameLoaded += OnSaveGameLoaded;
-		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.LoadGame, OnServerLoadGame);
 		
-
-		
+		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, PrepareRecipeTweaks);				
 
 		Mod.Logger.VerboseDebug("Elemental Tools - should be installed...");		
 		}
 
-		private void OnServerLoadGame( )
+		private void PrepareRecipeTweaks( )
 		{
-		GenerateSteelEquivalentObjects( );
+		Mod.Logger.Notification("Making a few changes to recipes...");
+		GenerateSteelPlaceholders( );
 		ManipulateGridRecipies( );
-		//Re-activate crafting recipes for blister_steel stuff
-		ReloadGridRecipes( );
+		//Re-activate crafting recipes for blister_steel stuff - to 'regular' steel;  Attributes later to denote: 'type'
+		//RemapPlaceholders( ); //Or have own Custom "Blister Steel" stuff......?
+
 		}
 	}
 
