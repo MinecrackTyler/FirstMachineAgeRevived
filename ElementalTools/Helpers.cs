@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using Vintagestory.API.Common;
+using Vintagestory.API.Datastructures;
 
 namespace ElementalTools
 {
@@ -59,6 +61,14 @@ namespace ElementalTools
 		}
 		return originalAsset.Code;
 		}
+
+		//Why C# 7.0 ? WHY?!?!
+		public static T GetEnum<T>(this ITreeAttribute treeAttr, string keyword, T defaultValue = default(T)) where T : System.Enum
+		{
+			
+			return defaultValue;
+		}
+
 	}
 }
 

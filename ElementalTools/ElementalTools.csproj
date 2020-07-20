@@ -73,9 +73,8 @@
     <Compile Include="Block\PackCarburization.cs" />
     <Compile Include="BlockEntities\PackCarburizationEntity.cs" />
     <Compile Include="Helpers.cs" />
-    <Compile Include="Items\ItemTemperableMetal.cs" />
     <Compile Include="General\IAmSteel.cs" />
-    <Compile Include="General\ElementOfSteel.cs" />
+    <Compile Include="Items\SteelItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Items\" />
@@ -140,6 +139,7 @@
     <None Include="assets\fma\recipes\grid\remapping\blister_steel_mappings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="General\FactoryOfSteel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

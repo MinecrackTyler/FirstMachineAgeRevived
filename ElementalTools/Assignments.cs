@@ -3,10 +3,13 @@ using System.Collections.Generic;
 
 using System.Linq;
 using System.Threading;
+
 using Newtonsoft.Json.Linq;
+
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
+using Vintagestory.GameContent;
 using Vintagestory.ServerMods;
 
 namespace ElementalTools
@@ -14,6 +17,7 @@ namespace ElementalTools
 	public partial class ElementalToolsSystem : ModSystem
 	{
 		internal const string malletItemKey = @"ItemMallet";
+		internal const string genericSteelSwordKey = @"Steel_ItemSword";
 		internal const string pack_carburizationBlockKey = @"pack_carburization";
 		internal const string pack_stateFired = @"fired";
 		internal const string malletAssetKey = @"mallet";
@@ -37,6 +41,9 @@ namespace ElementalTools
 		private void RegisterItemClasses( )
 		{
 		CoreAPI.RegisterItemClass(malletItemKey, typeof(ItemMallet));
+
+		CoreAPI.RegisterItemClass(genericSteelSwordKey, typeof(SteelItem<ItemSword>) );
+		
 		}
 
 		private void RegisterBlockClasses( )
