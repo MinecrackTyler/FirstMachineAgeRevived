@@ -33,6 +33,7 @@ namespace ElementalTools
 		public virtual void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
 		 * */
 
+		#region Properties
 		public virtual bool Hardenable {
 			get
 			{
@@ -54,8 +55,9 @@ namespace ElementalTools
 			return this.Attributes[sharpenableKeyword].AsBool(false);
 			}
 		}
+		#endregion
 
-		#region OVER_RIDES
+		#region Specific_Behavior
 
 		public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
 		{
@@ -81,17 +83,20 @@ namespace ElementalTools
 
 		public virtual void Sharpness(ItemStack someStack, SharpnessState set)
 		{
-
+		someStack.Attributes.SetEnum<SharpnessState>(sharpnessKeyword, set);
 		}
 
 		public virtual HardnessState Hardness(ItemStack someStack)
 		{
-
+		if (someStack.Attributes != null && someStack.Attributes.HasAttribute(sharpnessKeyword)) {
+		return someStack.Attributes.GetEnum<HardnessState>(sharpnessKeyword, HardnessState.Soft);
+		}
+		return HardnessState.Soft;
 		}
 
 		public virtual void Hardness(ItemStack someStack, HardnessState set)
 		{
-
+		someStack.Attributes.SetEnum<HardnessState>(hardnessKeyword, set);
 		}
 
 		#endregion

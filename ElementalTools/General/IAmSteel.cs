@@ -47,12 +47,12 @@ namespace ElementalTools
 	/// </remarks>
 	public enum SharpnessState : byte
 	{
-		Rough = 0,//Unsharpened state *Default*
-		Dull,
-		Honed,
-		Keen,
-		Sharp,
-		Razor,
+		Rough	=	0,//Unsharpened state *Default*
+		Dull	=	1,
+		Honed	=	2,
+		Keen	=	3,
+		Sharp	=	4,
+		Razor	=	5,
 	}
 
 	/// <summary>
@@ -63,10 +63,10 @@ namespace ElementalTools
 	/// </remarks>
 	public enum HardnessState : byte
 	{
-		Soft = 0,
-		Medium,
-		Hard,
-		Brittle,
+		Soft	=	0,
+		Medium	=	1,
+		Hard	=	2,
+		Brittle	=	3,
 	}
 
 }

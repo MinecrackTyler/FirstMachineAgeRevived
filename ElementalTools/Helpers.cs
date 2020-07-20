@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 using Vintagestory.API.Common;
@@ -63,12 +64,83 @@ namespace ElementalTools
 		}
 
 		//Why C# 7.0 ? WHY?!?!
-		public static T GetEnum<T>(this ITreeAttribute treeAttr, string keyword, T defaultValue = default(T)) where T : System.Enum
+		public static T GetEnum<T>(this ITreeAttribute treeAttr, string keyword, T defaultValue = default(T)) where T : struct// enum
 		{
-			
-			return defaultValue;
+		var enumType = Enum.GetUnderlyingType(typeof(T));
+
+		if (enumType.IsEnum) 
+		{				
+			var eSize = Marshal.SizeOf(enumType);
+
+			byte[ ] buf = new byte[eSize];
+
+			treeAttr.GetBytes(keyword, buf);
+
+			switch(eSize)
+			{
+				case 1://byte
+				return ( T )Enum.ToObject(enumType, buf[0]);
+
+
+				case 2://short
+				var temp = BitConverter.ToInt16(buf, 0);
+				return ( T )Enum.ToObject(enumType, temp);
+
+				case 4://int - word
+				var temp2 = BitConverter.ToInt32(buf, 0);
+				return ( T )Enum.ToObject(enumType, temp2);
+
+				
+				case 8://long - d.word
+				var temp3 = BitConverter.ToInt64(buf, 0);
+				return ( T )Enum.ToObject(enumType, temp3);
+			}
+
+		return defaultValue;
 		}
 
+			    
+		return defaultValue;
+		}
+
+
+
+
+		public static void SetEnum<T>(this ITreeAttribute treeAttr, string keyword, T setValue) where T : struct// enum
+		{
+		var enumType = Enum.GetUnderlyingType(typeof(T));
+
+		if (enumType.IsEnum) {
+		var eSize = Marshal.SizeOf(enumType);
+
+		byte[ ] buf = new byte[eSize];
+
+		switch (eSize) {
+			case 1://byte
+			byte temp = ( byte )Convert.ChangeType(setValue, TypeCode.Byte);
+			buf[0] = temp;
+			break;
+
+			case 2://short
+			short temp2 = ( byte )Convert.ChangeType(setValue, TypeCode.Int16);
+			buf = BitConverter.GetBytes(temp2);
+			break;
+
+			case 4://int - word
+			int temp3 = ( byte )Convert.ChangeType(setValue, TypeCode.Int32);
+			buf = BitConverter.GetBytes(temp3);
+			break;
+
+			case 8://long - d.word
+			long temp4 = ( byte )Convert.ChangeType(setValue, TypeCode.Int64);
+			buf = BitConverter.GetBytes(temp4);			
+			break;
+		}
+
+		treeAttr.SetBytes(keyword, buf);
+		}
+
+		}
 	}
 }
 
