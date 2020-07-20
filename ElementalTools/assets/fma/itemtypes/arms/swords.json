@@ -1,0 +1,84 @@
+﻿{
+	code: "sword",
+	damagedby: ["blockbreaking", "attacking"],
+    class:"Steel_ItemSword",
+	tool: "sword",
+	variantgroups: [
+		{ code: "metal", states: ["blister_steel", "shear_steel"] },
+	],
+    attributesByType: {
+		"*-blister_steel": {
+			metalName:"Blister Steel",
+			sharpenable: true,
+			hardenable: false,
+		},
+		"*-shear_steel": {
+			metalName:"Shear Steel",
+			sharpenable: true,
+			hardenable: false,
+		},
+		"*": {
+			sharpenable: false,
+			hardenable: false,
+        toolrackTransform: {
+			rotation: { y: 180, z: 1 },
+			translation: { x: -0.3, y: 0.55 },
+			scale: 1.25
+		},
+		}
+    },   	
+	shape: { base: "item/arms/gladii" },
+	heldTpHitAnimation: "swordhit",
+	textures: {		
+        "metal": { base:"fma:metal/{metal}"},
+		"rivets": { base:"game:block/metal/ingot/iron" },
+		"handle": { base:"game:item/tool/material/handle"}
+	},
+	attackRange: 2.5,
+	tooltierbytype: {		
+		"*-blister_steel": 5,
+        "*-shear_steel": 5,
+	},
+	miningspeedbytype: {		
+		"sword-blister_steel": {
+			"wood": 3.5,
+			"leaves": 4
+		},
+        "sword-shear_steel": {
+			"wood": 3.5,
+			"leaves": 4
+		},
+	},
+	attackpowerbytype: {		
+		"sword-blister_steel": 4.00,
+        "sword-shear_steel": 4.25,
+	},
+	durabilitybytype: {		
+		"sword-blister_steel": 1400,
+        "sword-shear_steel": 1500,
+	},
+	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
+	guiTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: -89, y: 47, z: 44 },
+		origin: { x: 0.6, y: 0, z: 0.44 },
+		scale: 1.68
+	},
+	fpHandTransform: {
+		translation: { x: -0.2, y: -0.2, z: 0 },
+		rotation: { x: 15, y: 15, z: 90 },
+		scale: 2.45
+	},
+	groundTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 3.4
+	},
+	tpHandTransform: {
+		translation: { x: -1.03, y: -0.01, z: -0.56 },
+		rotation: { x: -81, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 0.8
+	}
+}

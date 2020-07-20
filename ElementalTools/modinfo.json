@@ -6,7 +6,7 @@
   "ModID":"elementaltools",
   "version": "0.1.1",
   "dependencies": { 
-	"game": "1.13.0-*",
+	"game": "1.13.0-pre.5",
 	"survival": ""
   },
   "website": "http://nowebsite.nope"

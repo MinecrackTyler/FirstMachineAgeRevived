@@ -22,7 +22,7 @@ namespace ElementalTools
 
 		/*
 		public virtual float GetAttackPower (IItemStack withItemStack)
-		public virtual float GetDurability (IItemStack itemstack)
+		public virtual float GetDurability (IItemStack itemstack) //Leave unchanged - it never increases...
 		public virtual float GetMiningSpeed (IItemStack itemstack, Block block)
 		public virtual void DamageItem (IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount = 1)
 		public virtual void OnConsumedByCrafting (ItemSlot[] allInputSlots, ItemSlot stackInSlot, GridRecipe gridRecipe, CraftingRecipeIngredient fromIngredient, IPlayer byPlayer, int quantity)
@@ -61,6 +61,8 @@ namespace ElementalTools
 
 		public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
 		{
+		base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+
 		dsc.AppendFormat("Metal: '{0}', ",Name);
 
 		if (Hardenable) {

@@ -7,9 +7,11 @@ namespace ElementalTools
 	public interface IAmSteel
 	{
 		//Static read-only properties from Item Def.
-		string Name { get; }//Blister, Shear, Cast, Damascus...mostly descriptive
+		string Name { get; }//Blister, Shear, Cast, Damascus, Wootz...mostly descriptive
 		bool Sharpenable { get; }
 		bool Hardenable { get; }
+
+		//Rust?
 
 		/// <summary>
 		/// Read Sharpness; Dynamic properties from ItemStack - attribs

@@ -93,6 +93,8 @@
     <Folder Include="assets\fma\blocktypes\metal\" />
     <Folder Include="assets\fma\recipes\grid\remapping\" />
     <Folder Include="General\" />
+    <Folder Include="assets\fma\itemtypes\arms\" />
+    <Folder Include="assets\fma\shapes\item\arms\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
@@ -140,6 +142,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="General\FactoryOfSteel.cs" />
+    <None Include="assets\fma\itemtypes\arms\swords.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\shapes\item\arms\gladii.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\textures\metal\shear_steel.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
