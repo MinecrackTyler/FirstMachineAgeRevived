@@ -75,6 +75,7 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="General\IAmSteel.cs" />
     <Compile Include="Items\SteelItem.cs" />
+    <Compile Include="Items\ItemSharpeningStone.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Items\" />
@@ -139,7 +140,6 @@
     <None Include="assets\fma\blocktypes\metal\blister_steel_slips.json" />
     <None Include="assets\fma\blocktypes\metal\shear_steel_ingot.json" />
     <None Include="assets\fma\recipes\grid\remapping\blister_steel_mappings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="General\FactoryOfSteel.cs" />
     <None Include="assets\fma\itemtypes\arms\swords.json">
@@ -151,6 +151,11 @@
     <None Include="assets\fma\textures\metal\shear_steel.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="assets\fma\shapes\item\tools\sharpening_stone.json" />
+    <None Include="assets\fma\itemtypes\tools\sharpening_stone.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\itemtypes\arms\sword_blades.json" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

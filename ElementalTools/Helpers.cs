@@ -34,6 +34,18 @@ namespace ElementalTools
 				 something.Variant.KeyValueMatch(ElementalToolsSystem.MaterialNameKey, ElementalToolsSystem.IronNameKey);
 		}
 
+		/// <summary>
+		/// Match against:Variant(s){   metal,	material  } == 'steel'
+		/// </summary>
+		/// <returns>The Steel metal. </returns>
+		/// <param name="something">Something collectable.</param>
+		public static bool IsSteelMetal(this CollectibleObject something)
+		{
+		return something.Variant.KeyValueMatch(ElementalToolsSystem.MetalNameKey, ElementalToolsSystem.SteelNameKey) ||
+				 something.Variant.KeyValueMatch(ElementalToolsSystem.MaterialNameKey, ElementalToolsSystem.SteelNameKey);
+		}
+
+
 		public static AssetLocation AppendPaths(this AssetLocation assetLoc, params string[ ] morePaths)
 		{
 		StringBuilder pathPile = new StringBuilder(assetLoc.Path);

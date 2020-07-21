@@ -17,6 +17,8 @@ namespace ElementalTools
 	public partial class ElementalToolsSystem : ModSystem
 	{
 		internal const string malletItemKey = @"ItemMallet";
+		internal const string sharpeningStoneItemKey = @"ItemSharpening_stone";
+		internal const string genericSteelItemKey = @"Steel_Item";//Only for tool heads / blades...
 		internal const string genericSteelSwordKey = @"Steel_ItemSword";
 		internal const string pack_carburizationBlockKey = @"pack_carburization";
 		internal const string pack_stateFired = @"fired";
@@ -41,8 +43,11 @@ namespace ElementalTools
 		private void RegisterItemClasses( )
 		{
 		CoreAPI.RegisterItemClass(malletItemKey, typeof(ItemMallet));
-
-		CoreAPI.RegisterItemClass(genericSteelSwordKey, typeof(SteelItem<ItemSword>) );
+		CoreAPI.RegisterItemClass(sharpeningStoneItemKey, typeof(ItemSharpeningStone));
+				
+		//Steel Wrapped ItemCores.
+		CoreAPI.RegisterItemClass(genericSteelItemKey, typeof(SteelWrap<Item>));
+		CoreAPI.RegisterItemClass(genericSteelSwordKey, typeof(SteelWrap<ItemSword>) );
 		
 		}
 

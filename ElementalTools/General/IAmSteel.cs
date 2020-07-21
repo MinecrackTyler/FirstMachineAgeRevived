@@ -17,27 +17,34 @@ namespace ElementalTools
 		/// Read Sharpness; Dynamic properties from ItemStack - attribs
 		/// </summary>
 		/// <param name="someStack">Source stack.</param>
-		SharpnessState Sharpness(ItemStack someStack);
+		SharpnessState Sharpness(IItemStack someStack);
 
 		/// <summary>
 		/// Set Sharpness
 		/// </summary>
 		/// <param name="someStack">Some stack.</param>
 		/// <param name="set">Value.</param>
-		void Sharpness(ItemStack someStack, SharpnessState set);//Apply sharpen - what unit if numerical?
+		void Sharpness(IItemStack someStack, SharpnessState set);//Apply sharpen - what unit if numerical?
+
+		/// <summary>
+		/// Incriments the sharpness.
+		/// </summary>
+		/// <returns>The sharpness.</returns>
+		/// <param name="someStack">Some stack.</param>
+		SharpnessState Sharpen(IItemStack someStack);
 
 		/// <summary>
 		/// Read Harness
 		/// </summary>
 		/// <param name="someStack">Some stack.</param>
-		HardnessState Hardness(ItemStack someStack);
+		HardnessState Hardness(IItemStack someStack);
 
 		/// <summary>
 		/// Set Hardness
 		/// </summary>
 		/// <param name="someStack">Some stack.</param>
 		/// <param name="set">Value.</param>
-		void Hardness(ItemStack someStack, HardnessState set);//Apply harden - Perhaps translate these to brinell units...
+		void Hardness(IItemStack someStack, HardnessState set);//Apply harden - Perhaps translate these to brinell units...
 
 	}
 

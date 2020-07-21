@@ -1,0 +1,50 @@
+﻿{	
+	code: "sharpening_stone",
+	class: "ItemSharpening_stone",
+	attributes: {		
+		handbook: {
+			include: true
+			},
+		toolrackTransform: {
+			rotation: { y: 1, z: -1 },
+			translation: { x: -0.2 },
+			scale: 1.5,
+		}
+	},	
+	tool: "?what?",
+	heldTpHitAnimation: "breaktool",
+	shape: { base: "item/tools/sharpening_stone" },
+	textures: {				
+		"rough-stone": { base:"game:block/stone/polishedrock/andesite-inside"},
+		"wood": { base:"game:block/wood/planks/oak1"},
+		"fine-stone": { base:"game:block/stone/polishedrock/sandstone-inside"}    	
+	},
+	tooltier: 2,		
+	durability: 350,		
+    damagedby: ["blockbreaking"],
+	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
+	fpHandTransform: {
+		translation: { x: 0.0468, y: -0.2, z: 0 },
+		rotation: { x: 15, y: 15, z: 90 },
+		scale: 2.5
+	},
+	guiTransform: {
+		rotate: false,
+		translation: { x: 6, y: 0, z: 0 },
+		rotation: { x: -122, y: -133, z: -173 },
+		origin: { x: 0.54, y: 0.5, z: 0.48 },
+		scale: 2.35
+	},
+	groundTransform: {
+		translation: { x: 0, y: 0.125, z: 0 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0.45, z: 0.5 },
+		scale: 4.51
+	},
+	tpHandTransform: {
+		translation: { x: -0.75, y: -0.48, z: -0.52 },
+		rotation: { x: 90, y: 1, z: 0 },
+		scale: 1
+	}
+}
+

@@ -9,7 +9,7 @@ namespace ElementalTools
 	/// <summary>
 	/// GENERIC Steel item. (Tool / Weapon / Armor...anything) [Possibly: Temperable and/or Hardenable ]
 	/// </summary>
-	public class SteelItem<T>: Item, IAmSteel where T : Item
+	public class SteelWrap<T>: Item, IAmSteel where T : Item
 	{
 		internal const string hardenableKeyword = @"hardenable";
 		internal const string sharpenableKeyword = @"sharpenable";
@@ -33,7 +33,7 @@ namespace ElementalTools
 		public virtual void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
 		 * */
 
-		#region Properties
+		#region Static Properties
 		public virtual bool Hardenable {
 			get
 			{
@@ -75,20 +75,20 @@ namespace ElementalTools
 
 		}
 
-		public virtual SharpnessState Sharpness(ItemStack someStack)
+		public virtual SharpnessState Sharpness(IItemStack someStack)
 		{
 		if (someStack.Attributes != null && someStack.Attributes.HasAttribute(sharpnessKeyword)) {
-		return someStack.Attributes.GetEnum<SharpnessState>(sharpnessKeyword, SharpnessState.Dull);
+		return someStack.Attributes.GetEnum<SharpnessState>(sharpnessKeyword, SharpnessState.Rough);
 		}
 		return SharpnessState.Dull;		
 		}
 
-		public virtual void Sharpness(ItemStack someStack, SharpnessState set)
+		public virtual void Sharpness(IItemStack someStack, SharpnessState set)
 		{
 		someStack.Attributes.SetEnum<SharpnessState>(sharpnessKeyword, set);
 		}
 
-		public virtual HardnessState Hardness(ItemStack someStack)
+		public virtual HardnessState Hardness(IItemStack someStack)
 		{
 		if (someStack.Attributes != null && someStack.Attributes.HasAttribute(sharpnessKeyword)) {
 		return someStack.Attributes.GetEnum<HardnessState>(sharpnessKeyword, HardnessState.Soft);
@@ -96,13 +96,70 @@ namespace ElementalTools
 		return HardnessState.Soft;
 		}
 
-		public virtual void Hardness(ItemStack someStack, HardnessState set)
+		public virtual void Hardness(IItemStack someStack, HardnessState set)
 		{
 		someStack.Attributes.SetEnum<HardnessState>(hardnessKeyword, set);
 		}
 
+		public virtual SharpnessState Sharpen(IItemStack someStack)
+		{			
+		if (someStack.Attributes != null && someStack.Attributes.HasAttribute(sharpnessKeyword)) {
+		var sharp = someStack.Attributes.GetEnum<SharpnessState>(sharpnessKeyword, SharpnessState.Rough);
+
+		if (sharp < SharpnessState.Razor) { someStack.Attributes.SetEnum<SharpnessState>(sharpnessKeyword, sharp++); }
+
+		#if DEBUG
+		api.World.Logger.VerboseDebug("{1} :: Sharpness increased to: {0}", sharp, this.Code);
+		#endif
+
+		return sharp;		
+		}
+
+		return SharpnessState.Rough;
+		}
+
 		#endregion
 
+
+		#region Steel Affects
+		public override float GetAttackPower(IItemStack withItemStack)
+		{
+		var defaultPower = base.GetAttackPower(withItemStack);
+
+		if (this.Sharpenable) {
+		var sharpness = Sharpness(withItemStack);
+		float pctBoost = 0;//CONSIDER: Perhaps make this external?
+		switch (sharpness) {
+		case SharpnessState.Rough:
+			pctBoost = -0.35f;
+			break;
+
+		case SharpnessState.Dull:
+			pctBoost = -0.20f;
+			break;
+
+		case SharpnessState.Honed:
+			pctBoost = 0.10f;
+			break;
+		case SharpnessState.Keen:
+			pctBoost = 0.20f;
+			break;
+		case SharpnessState.Sharp:
+			pctBoost = 0.25f;
+			break;
+		case SharpnessState.Razor:
+			pctBoost = 0.30f;
+			break;
+		}
+
+		return defaultPower + (pctBoost * defaultPower);
+		}
+		return defaultPower;
+		}
+
+		//TODO: OnCrafting - Translate properties from 'parent' steel item/block!
+
+		#endregion
 	}
 }
 
