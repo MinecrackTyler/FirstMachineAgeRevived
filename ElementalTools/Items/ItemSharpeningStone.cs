@@ -50,6 +50,7 @@ namespace ElementalTools
 		if (steelThingSlot.Itemstack.Class == EnumItemClass.Item && steelThingSlot.Itemstack.Item is IAmSteel) {
 
 		var fullMetalInterface = steelThingSlot.Itemstack.Item as IAmSteel;
+		
 		fullMetalInterface.Sharpen(steelThingSlot.Itemstack);
 
 		}

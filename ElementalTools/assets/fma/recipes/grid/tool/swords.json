@@ -1,0 +1,40 @@
+﻿[
+{
+	ingredientPattern: "BH	L_	S_",
+	ingredients: {
+		"B": { type: "item", code: "fma:swordblade-blister_steel", name: "metal" },
+		"S": { type: "item", code: "fma:sharpening_stone", isTool:true },
+		"L": { type: "item", code: "game:fat" },
+		"H": { type: "item", code: "game:stick" },		
+	},
+	width: 2,
+	height: 3,	
+	output: { type: "item", code: "fma:sword-blister_steel"  }
+},
+{
+	ingredientPattern: "B	L	S",
+	ingredients: {
+		"B": { type: "item", code: "fma:sword-blister_steel", name: "metal" },
+        "L": { type: "item", code: "game:fat" },
+		"S": { type: "item", code: "fma:sharpening_stone", isTool:true },				
+	},
+	width: 1,
+	height: 3,	
+	"__comment": "Purely for Sharpening a made sword",
+	output: { type: "item", code: "fma:sword-blister_steel"  }
+},
+{
+	ingredientPattern: "B	L	S",
+	ingredients: {
+		"B": { type: "item", code: "fma:swordblade-blister_steel", name: "metal" },
+	    "L": { type: "item", code: "game:fat" },
+		"S": { type: "item", code: "fma:sharpening_stone", isTool:true },				
+	},
+	width: 1,
+	height: 3,	
+	"__comment": "and for Pre-Sharpening just the blade",
+	output: { type: "item", code: "fma:sword-blister_steel"  }
+}
+
+]
+

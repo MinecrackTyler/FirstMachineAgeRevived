@@ -1,16 +1,1 @@
-﻿[
-{
-	ingredientPattern: "BH	L_	S_",
-	ingredients: {
-		"B": { type: "item", code: "fma:swordblade-blister_steel", name: "metal" },
-		"S": { type: "item", code: "fma:sharpening_stone", isTool:true },
-		"L": { type: "item", code: "game:fat" },
-		"H": { type: "item", code: "game:stick" },		
-	},
-	width: 3,
-	height: 2,
-	enabled:false,
-	output: { type: "item", code: "fma:sword-blister_steel"  }
-},
-
-]
+﻿

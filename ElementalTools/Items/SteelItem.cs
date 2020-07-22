@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Text;
+using System.Linq;
+
 
 using Vintagestory.API.Common;
 using Vintagestory.GameContent;
@@ -70,7 +72,7 @@ namespace ElementalTools
 		}
 
 		if (Sharpenable) {
-		dsc.AppendFormat("Wear: {0}\n", Sharpness(inSlot.Itemstack) );	
+		dsc.AppendFormat("Edge: {0}\n", Sharpness(inSlot.Itemstack) );	
 		}
 
 		}
@@ -118,6 +120,18 @@ namespace ElementalTools
 		return SharpnessState.Rough;
 		}
 
+		public void CopyAttributes(ItemStack donor, ItemStack recipient)
+		{
+		if (donor.Class == recipient.Class) {
+		var hI = (donor.Item as IAmSteel).Hardness(donor);
+		var sI = (donor.Item as IAmSteel).Sharpness(donor);
+
+		(recipient.Item as IAmSteel).Hardness(recipient, hI);
+		(recipient.Item as IAmSteel).Sharpness(recipient, sI);
+		}
+
+		}
+
 		#endregion
 
 
@@ -157,7 +171,54 @@ namespace ElementalTools
 		return defaultPower;
 		}
 
-		//TODO: OnCrafting - Translate properties from 'parent' steel item/block!
+		public override void DamageItem(IWorldAccessor world, Vintagestory.API.Common.Entities.Entity byEntity, ItemSlot itemslot, int amount = 1)
+		{
+		//TODO: Effects from Tempering and edge Wear...also too sharp edges...
+
+		base.DamageItem(world, byEntity, itemslot, amount);
+		}
+
+		//TODO: OnCreated ByCrafting - Copy properties from 'parent' to steel item/block!
+		public override void OnCreatedByCrafting(ItemSlot[ ] allInputslots, ItemSlot outputSlot, GridRecipe byRecipe)
+		{
+		//Failsafe[s]
+		if (byRecipe == null || byRecipe.Ingredients == null || byRecipe.IngredientPattern == null || byRecipe.Output == null) {
+		string name = "unset!";
+		name = byRecipe?.Name.ToString( );
+		api.World.Logger.Error("Invalid / Incomplete / Corrupt Recipe: {0}", name);
+		return;
+		}
+
+
+		var steelItemSlot = (from inputSlot in allInputslots
+							 where inputSlot.Empty == false
+							 where inputSlot.Itemstack.Class == EnumItemClass.Item
+							 where inputSlot.Itemstack.Collectible.IsSteelMetal( )
+							 select inputSlot).SingleOrDefault( );
+
+
+		if (steelItemSlot != null) {
+
+		if (steelItemSlot.Itemstack.Item is IAmSteel) {
+		var steelItem = steelItemSlot.Itemstack.Item;
+
+		api.World.Logger.VerboseDebug("Input (ingredient) Item {0} supports; Steel Interface ", steelItem.Code);
+
+		if (!outputSlot.Empty && outputSlot.Itemstack.Class == EnumItemClass.Item
+				&& outputSlot.Itemstack.Item is IAmSteel) {
+		var outputItem = outputSlot.Itemstack.Item;
+		var OutputSteelInterface = outputSlot.Itemstack.Item as IAmSteel;
+		api.World.Logger.VerboseDebug("Output Item {0} supports; Steel Interface ", steelItem.Code);
+
+		OutputSteelInterface.CopyAttributes(steelItemSlot.Itemstack, outputSlot.Itemstack);
+
+		api.World.Logger.VerboseDebug("Attributes perpetuated from {0} to {1} ", steelItem.Code, outputItem.Code);
+		}
+
+		}
+
+		}
+		}
 
 		#endregion
 	}

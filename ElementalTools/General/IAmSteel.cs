@@ -46,6 +46,12 @@ namespace ElementalTools
 		/// <param name="set">Value.</param>
 		void Hardness(IItemStack someStack, HardnessState set);//Apply harden - Perhaps translate these to brinell units...
 
+		/// <summary>
+		/// Perpetuate Steely attributes from donor to recipient
+		/// </summary>
+		/// <param name="donor">From here</param>
+		/// <param name="recipient">To here.</param>
+		void CopyAttributes(ItemStack donor, ItemStack recipient);
 	}
 
 	/// <summary>
