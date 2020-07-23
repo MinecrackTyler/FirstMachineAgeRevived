@@ -114,7 +114,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\fma\shapes\item\tools\bit_brace.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\fma\blocktypes\metallurgy\pack_carburization.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -151,12 +150,19 @@
     <None Include="assets\fma\textures\metal\shear_steel.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\shapes\item\tools\sharpening_stone.json" />
+    <None Include="assets\fma\shapes\item\tools\sharpening_stone.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="assets\fma\itemtypes\tools\sharpening_stone.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\arms\sword_blades.json" />
+    <None Include="assets\fma\itemtypes\arms\sword_blades.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="assets\fma\recipes\grid\tool\swords.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\recipes\grid\tool\sharpening_stone.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

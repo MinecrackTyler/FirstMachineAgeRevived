@@ -23,6 +23,16 @@ namespace ElementalTools
 		return false;
 		}
 
+		public static bool KeyValueEndingMatch(this IDictionary<string, string> stringyDict, string key, string value)
+		{
+		if (stringyDict.ContainsKey(key)) {
+		return stringyDict.Any(kvp => String.CompareOrdinal(kvp.Key, key) == 0
+							   && kvp.Value.EndsWith(value, StringComparison.Ordinal) );
+		}
+
+		return false;
+		}
+
 		/// <summary>
 		/// Match against:Variant(s){   metal,	material  } == 'iron'
 		/// </summary>
@@ -41,10 +51,19 @@ namespace ElementalTools
 		/// <param name="something">Something collectable.</param>
 		public static bool IsSteelMetal(this CollectibleObject something)
 		{
-		return something.Variant.KeyValueMatch(ElementalToolsSystem.MetalNameKey, ElementalToolsSystem.SteelNameKey) ||
-				 something.Variant.KeyValueMatch(ElementalToolsSystem.MaterialNameKey, ElementalToolsSystem.SteelNameKey);
+		return something.Variant.KeyValueEndingMatch(ElementalToolsSystem.MetalNameKey, ElementalToolsSystem.SteelNameKey) ||
+				 something.Variant.KeyValueEndingMatch(ElementalToolsSystem.MaterialNameKey, ElementalToolsSystem.SteelNameKey);
 		}
 
+		/// <summary>
+		/// Using ItemSharpener class....
+		/// </summary>
+		/// <returns>If a sharpener.</returns>
+		/// <param name="something">Something.</param>
+		public static bool IsSharpener(this CollectibleObject something)
+		{
+			return String.Equals(something.Class, ElementalToolsSystem.sharpeningStoneItemKey, StringComparison.Ordinal);
+		}
 
 		public static AssetLocation AppendPaths(this AssetLocation assetLoc, params string[ ] morePaths)
 		{
@@ -75,14 +94,15 @@ namespace ElementalTools
 		return originalAsset.Code;
 		}
 
+		#if DEFUNCT
 		//Why C# 7.0 ? WHY?!?!
 		public static T GetEnum<T>(this ITreeAttribute treeAttr, string keyword, T defaultValue = default(T)) where T : struct// enum
 		{
-		var enumType = Enum.GetUnderlyingType(typeof(T));
+		var enumType = typeof(T);
 
 		if (enumType.IsEnum) 
 		{				
-			var eSize = Marshal.SizeOf(enumType);
+			var eSize = Marshal.SizeOf(Enum.GetUnderlyingType(enumType));
 
 			byte[ ] buf = new byte[eSize];
 
@@ -93,7 +113,6 @@ namespace ElementalTools
 				case 1://byte
 				return ( T )Enum.ToObject(enumType, buf[0]);
 
-
 				case 2://short
 				var temp = BitConverter.ToInt16(buf, 0);
 				return ( T )Enum.ToObject(enumType, temp);
@@ -101,14 +120,15 @@ namespace ElementalTools
 				case 4://int - word
 				var temp2 = BitConverter.ToInt32(buf, 0);
 				return ( T )Enum.ToObject(enumType, temp2);
-
-				
+									
 				case 8://long - d.word
 				var temp3 = BitConverter.ToInt64(buf, 0);
 				return ( T )Enum.ToObject(enumType, temp3);
-			}
 
-		return defaultValue;
+				default:
+					throw new NotSupportedException("Not a supported size of Enumerator!");
+			}
+						
 		}
 
 			    
@@ -116,15 +136,13 @@ namespace ElementalTools
 		}
 
 
-
-
-		public static void SetEnum<T>(this ITreeAttribute treeAttr, string keyword, T setValue) where T : struct// enum
+		public static void SetEnum<T>(this ITreeAttribute treeAttr, string key, T setValue) where T : struct// enum
 		{
-		var enumType = Enum.GetUnderlyingType(typeof(T));
+		var enumType = typeof(T);
 
 		if (enumType.IsEnum) {
-		var eSize = Marshal.SizeOf(enumType);
-
+		var eSize = Marshal.SizeOf(Enum.GetUnderlyingType(enumType));
+					
 		byte[ ] buf = new byte[eSize];
 
 		switch (eSize) {
@@ -134,25 +152,29 @@ namespace ElementalTools
 			break;
 
 			case 2://short
-			short temp2 = ( byte )Convert.ChangeType(setValue, TypeCode.Int16);
+			short temp2 = ( short )Convert.ChangeType(setValue, TypeCode.Int16);
 			buf = BitConverter.GetBytes(temp2);
 			break;
 
 			case 4://int - word
-			int temp3 = ( byte )Convert.ChangeType(setValue, TypeCode.Int32);
+			int temp3 = ( int )Convert.ChangeType(setValue, TypeCode.Int32);
 			buf = BitConverter.GetBytes(temp3);
 			break;
 
 			case 8://long - d.word
-			long temp4 = ( byte )Convert.ChangeType(setValue, TypeCode.Int64);
+			long temp4 = ( long )Convert.ChangeType(setValue, TypeCode.Int64);
 			buf = BitConverter.GetBytes(temp4);			
 			break;
+
+		default:
+			throw new NotSupportedException("Not a supported size of Enumerator!");
 		}
 
-		treeAttr.SetBytes(keyword, buf);
+		treeAttr.SetBytes(key, buf);
 		}
 
 		}
+#endif
 	}
 }
 

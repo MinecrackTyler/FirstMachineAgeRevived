@@ -1,0 +1,11 @@
+﻿{
+	ingredientPattern: "A	B	C",
+	ingredients: {
+		"A": { type: "item", code: "game:stonebrick-sandstone" },
+		"B": { type: "item", code: "game:plank-*" },
+		"C": { type: "item", code: "game:stonebrick-*", allowedVariants: ["andesite", "granite", "basalt", "peridotite"] },			
+	},
+	width: 1,
+	height: 3,	
+	output: { type: "item", code: "fma:sharpening_stone"  }
+}

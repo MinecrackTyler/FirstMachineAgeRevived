@@ -4,13 +4,13 @@
 	variantgroups: [
 		{ code: "metal", states: [ "iron", "blister_steel", "shear_steel" ] },
 	],
-	shape: { base: "item/arms/gladii",SelectiveElements:["BladeCore", "BladeTip", "BladeEdge1","BladeEdge2","BladeEdge3","BladeEdge4",] },
+	shape: { base: "item/arms/gladii", SelectiveElements:["origin","Base","BladeCore", "BladeTip", "BladeEdge1","BladeEdge2","BladeEdge3","BladeEdge4"] },
 	textures: {		
         "metal": { base:"fma:metal/{metal}"},
 		"rivets": { base:"game:block/metal/ingot/iron" },
 		"handle": { base:"game:item/tool/material/handle"}
 	},
-	 attributesByType: {
+	attributesByType: {
 		"*-blister_steel": {
 			metalName:"Blister Steel",
 			sharpenable: true,
@@ -27,6 +27,7 @@
 			hardenable: false,        
 		}
     },   	
+	tooltier:5,
 	creativeinventory: { "general": ["*"], "items": ["*"] },
 	fpHandTransform: {
 		translation: { x: 0.4468, y: 0.1, z: 0 },

@@ -80,47 +80,64 @@ namespace ElementalTools
 		public virtual SharpnessState Sharpness(IItemStack someStack)
 		{
 		if (someStack.Attributes != null && someStack.Attributes.HasAttribute(sharpnessKeyword)) {
-		return someStack.Attributes.GetEnum<SharpnessState>(sharpnessKeyword, SharpnessState.Rough);
+		byte[ ] bytes = new byte[1];
+		bytes = someStack.Attributes.GetBytes(sharpnessKeyword, bytes);
+	 	return bytes == null ? SharpnessState.Rough : ( SharpnessState )bytes[0];
 		}
-		return SharpnessState.Dull;		
+
+		return SharpnessState.Rough;		
 		}
 
 		public virtual void Sharpness(IItemStack someStack, SharpnessState set)
 		{
-		someStack.Attributes.SetEnum<SharpnessState>(sharpnessKeyword, set);
+		byte[ ] bytes = new byte[1];
+		bytes[0] = (byte)set;
+		someStack.Attributes.SetBytes(sharpnessKeyword, bytes);
 		}
 
 		public virtual HardnessState Hardness(IItemStack someStack)
 		{
-		if (someStack.Attributes != null && someStack.Attributes.HasAttribute(sharpnessKeyword)) {
-		return someStack.Attributes.GetEnum<HardnessState>(sharpnessKeyword, HardnessState.Soft);
+		if (someStack.Attributes != null && someStack.Attributes.HasAttribute(hardnessKeyword)) {
+		byte[ ] bytes = new byte[1];
+		bytes = someStack.Attributes.GetBytes(hardnessKeyword, bytes);
+		return bytes == null ? HardnessState.Soft : ( HardnessState )bytes[0];
 		}
+
 		return HardnessState.Soft;
 		}
 
 		public virtual void Hardness(IItemStack someStack, HardnessState set)
 		{
-		someStack.Attributes.SetEnum<HardnessState>(hardnessKeyword, set);
+		byte[ ] bytes = new byte[1];
+		bytes[0] = ( byte )set;
+		someStack.Attributes.SetBytes(hardnessKeyword, bytes);
 		}
 
 		public virtual SharpnessState Sharpen(IItemStack someStack)
-		{			
-		if (someStack.Attributes != null && someStack.Attributes.HasAttribute(sharpnessKeyword)) {
-		var sharp = someStack.Attributes.GetEnum<SharpnessState>(sharpnessKeyword, SharpnessState.Rough);
+		{
+		if (this.Sharpenable == false) {
+		api.World.Logger.VerboseDebug("Can't sharpen! {0}", this.Code);
+		return this.Sharpness(someStack);;
+		}
 
-		if (sharp < SharpnessState.Razor) { someStack.Attributes.SetEnum<SharpnessState>(sharpnessKeyword, sharp++); }
+		SharpnessState sharp = Sharpness(someStack);
 
+		if (sharp < SharpnessState.Razor) { Sharpness(someStack, ++sharp); }
+		//TODO: Play sound effect
 		#if DEBUG
-		api.World.Logger.VerboseDebug("{1} :: Sharpness increased to: {0}", sharp, this.Code);
+		api.World.Logger.VerboseDebug("Sharpness of '{1}' increased to: {0}", sharp, this.Code);
 		#endif
 
-		return sharp;		
+		//TODO: If durability exists - decriment based on Hardnes Vs. Wear...
+		if (this.Durability > 1) {
+
+		var currentDur = GetDurability(someStack);		
 		}
 
-		return SharpnessState.Rough;
+		return sharp;				
 		}
 
-		public void CopyAttributes(ItemStack donor, ItemStack recipient)
+		public virtual void CopyAttributes(ItemStack donor, ItemStack recipient)
 		{
 		if (donor.Class == recipient.Class) {
 		var hI = (donor.Item as IAmSteel).Hardness(donor);
@@ -196,6 +213,11 @@ namespace ElementalTools
 							 where inputSlot.Itemstack.Collectible.IsSteelMetal( )
 							 select inputSlot).SingleOrDefault( );
 
+		var sharpenerItemSlot = (from inputSlot in allInputslots
+							 where inputSlot.Empty == false
+							 where inputSlot.Itemstack.Class == EnumItemClass.Item
+		                     where inputSlot.Itemstack.Collectible.IsSharpener()
+							 select inputSlot).SingleOrDefault( );
 
 		if (steelItemSlot != null) {
 
@@ -207,18 +229,25 @@ namespace ElementalTools
 		if (!outputSlot.Empty && outputSlot.Itemstack.Class == EnumItemClass.Item
 				&& outputSlot.Itemstack.Item is IAmSteel) {
 		var outputItem = outputSlot.Itemstack.Item;
-		var OutputSteelInterface = outputSlot.Itemstack.Item as IAmSteel;
+		var fullMetalInterface = outputSlot.Itemstack.Item as IAmSteel;
 		api.World.Logger.VerboseDebug("Output Item {0} supports; Steel Interface ", steelItem.Code);
 
-		OutputSteelInterface.CopyAttributes(steelItemSlot.Itemstack, outputSlot.Itemstack);
+		fullMetalInterface.CopyAttributes(steelItemSlot.Itemstack, outputSlot.Itemstack);
 
 		api.World.Logger.VerboseDebug("Attributes perpetuated from {0} to {1} ", steelItem.Code, outputItem.Code);
+
+		if(sharpenerItemSlot != null) fullMetalInterface.Sharpen(outputSlot.Itemstack);
+
+		//outputSlot.MarkDirty( );
+		}
 		}
 
 		}
 
 		}
-		}
+
+
+
 
 		#endregion
 	}

@@ -89,7 +89,7 @@ namespace ElementalTools
 		var results = SingleSwapinReplicas(nonCrushingHammerRecipies, hammerIngredient, malletIngredient);
 
 
-		Mod.Logger.VerboseDebug($"Added {results} Mallet recipies");
+		Mod.Logger.Event($"Added {results} Mallet recipies");
 
 
 		}
@@ -101,7 +101,7 @@ namespace ElementalTools
 		"axehead",
 		"hammerhead",
 		"arrowhead",
-		"swordblade",
+		//"swordblade",
 		"scythehead",
 		"sawblade",
 		"prospectingpickhead",

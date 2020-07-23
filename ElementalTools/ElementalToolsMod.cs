@@ -68,7 +68,7 @@ namespace ElementalTools
 		private void PrepareRecipeTweaks( )
 		{
 		Mod.Logger.Notification("Making a few changes to recipes...");
-		GenerateSteelPlaceholders( );
+		//GenerateSteelPlaceholders( );
 		ManipulateGridRecipies( );
 		//Re-activate crafting recipes for blister_steel stuff - to 'regular' steel;  Attributes later to denote: 'type'
 		//RemapPlaceholders( ); //Or have own Custom "Blister Steel" stuff......?

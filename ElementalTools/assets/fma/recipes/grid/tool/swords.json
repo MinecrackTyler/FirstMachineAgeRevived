@@ -33,7 +33,7 @@
 	width: 1,
 	height: 3,	
 	"__comment": "and for Pre-Sharpening just the blade",
-	output: { type: "item", code: "fma:sword-blister_steel"  }
+	output: { type: "item", code: "fma:swordblade-blister_steel"  }
 }
 
 ]

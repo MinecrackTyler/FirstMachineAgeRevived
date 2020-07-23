@@ -8,9 +8,9 @@
 	"textureSizes": {
 	},
 	"textures": {
-		"rough-stone": "block/stone/polishedrock/andesite-inside",
-		"wood": "block/wood/planks/oak1",
-		"fine-stone": "block/stone/polishedrock/sandstone-inside"
+		"rough-stone": "game:block/stone/polishedrock/andesite-inside",
+		"wood": "game:block/wood/planks/oak1",
+		"fine-stone": "game:block/stone/polishedrock/sandstone-inside"
 	},
 	"elements": [
 		{
