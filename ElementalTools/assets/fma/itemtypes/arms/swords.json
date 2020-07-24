@@ -60,8 +60,8 @@
 	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
 	guiTransform: {
 		translation: { x: 0, y: 0, z: 0 },
-		rotation: { x: -89, y: 47, z: 44 },
-		origin: { x: 0.6, y: 0, z: 0.44 },
+		rotation: { x: -102, y: 35, z: 44 },
+		origin: { x: 0.455, y: 0.01, z: 0.44 },
 		scale: 1.68
 	},
 	fpHandTransform: {

@@ -76,6 +76,7 @@
     <Compile Include="General\IAmSteel.cs" />
     <Compile Include="Items\SteelItem.cs" />
     <Compile Include="Items\ItemSharpeningStone.cs" />
+    <Compile Include="Items\VariableWearRateTool.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Items\" />
@@ -165,6 +166,7 @@
     <None Include="assets\fma\recipes\grid\tool\sharpening_stone.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="assets\fma\shapes\item\tools\files.json" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

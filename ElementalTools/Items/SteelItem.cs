@@ -5,6 +5,7 @@ using System.Linq;
 
 using Vintagestory.API.Common;
 using Vintagestory.GameContent;
+using Vintagestory.API.MathTools;
 
 namespace ElementalTools
 {
@@ -153,6 +154,7 @@ namespace ElementalTools
 
 
 		#region Steel Affects
+
 		public override float GetAttackPower(IItemStack withItemStack)
 		{
 		var defaultPower = base.GetAttackPower(withItemStack);
@@ -188,12 +190,95 @@ namespace ElementalTools
 		return defaultPower;
 		}
 
+
+
+
 		public override void DamageItem(IWorldAccessor world, Vintagestory.API.Common.Entities.Entity byEntity, ItemSlot itemslot, int amount = 1)
 		{
 		//TODO: Effects from Tempering and edge Wear...also too sharp edges...
 
+		//TODO:if (byEntity.IsSquooshy()) - blade makes cuts in thing - metal unharmed, phew!
+
+		if (!itemslot.Empty) 
+		{
+		var hardness = this.Hardness(itemslot.Itemstack);
+		switch (hardness) 
+				{
+				case HardnessState.Soft:
+
+					break;
+				case HardnessState.Medium:
+
+					break;
+				case HardnessState.Hard:
+
+					break;
+				case HardnessState.Brittle:
+
+					break;
+				default:
+					break;
+				}
+		}
+
 		base.DamageItem(world, byEntity, itemslot, amount);
 		}
+
+
+
+		/// <summary>
+		/// Advanced formula to calculate wear based on 'sharpness' and 'durability' inherint
+		/// </summary>
+		/// <returns>The consumed by crafting.</returns>
+		/// <param name="allInputSlots">All input slots.</param>
+		/// <param name="stackInSlot">Stack in slot.</param>
+		/// <param name="gridRecipe">Grid recipe.</param>
+		/// <param name="fromIngredient">From ingredient.</param>
+		/// <param name="byPlayer">By player.</param>
+		/// <param name="quantity">Quantity.</param>
+		public override void OnConsumedByCrafting(ItemSlot[ ] allInputSlots, ItemSlot stackInSlot, GridRecipe gridRecipe, CraftingRecipeIngredient fromIngredient, IPlayer byPlayer, int quantity)
+		{
+		if (fromIngredient.IsTool) {
+				
+		//Edged tool vs. non-edged tool
+		bool edgedTool = false;
+		if (this.Tool.HasValue && (
+				Tool == EnumTool.Axe ||
+				Tool == EnumTool.Chisel ||
+				Tool == EnumTool.Hoe ||
+				Tool == EnumTool.Knife ||
+				Tool == EnumTool.Pickaxe ||
+				Tool == EnumTool.Saw ||
+				Tool == EnumTool.Scythe ||
+				Tool == EnumTool.Shears ||
+				Tool == EnumTool.Sickle ||
+				Tool == EnumTool.Spear ||
+				Tool == EnumTool.Sword )
+			) {
+		edgedTool = true;		
+		}
+
+		float hardnessMult =((int)HardnessState.Brittle+1) / ((int)this.Hardness(stackInSlot.Itemstack)+1) * 0.25f;
+		float wearMax = 1;
+		if (edgedTool) {
+		wearMax = ( byte )SharpnessState.Razor / ( byte )this.Sharpness(stackInSlot.Itemstack);//5..1
+		}
+
+		int actualDmg = ( int )Math.Round(NatFloat.createTri(wearMax, hardnessMult).nextFloat( ), 1);
+
+		#if DEBUG
+		api.World.Logger.VerboseDebug($"[{this.Code}] --> Harndess effect: [ Hardness {hardnessMult} Vs. Rate: {wearMax} apply dmg: {actualDmg}, edged: {edgedTool} ]");
+		#endif
+
+		stackInSlot.Itemstack.Collectible.DamageItem(byPlayer.Entity.World, byPlayer.Entity, stackInSlot, actualDmg);
+		return;
+		}
+
+		base.OnConsumedByCrafting(allInputSlots, stackInSlot, gridRecipe, fromIngredient, byPlayer, quantity);
+		}
+
+
+
 
 		//TODO: OnCreated ByCrafting - Copy properties from 'parent' to steel item/block!
 		public override void OnCreatedByCrafting(ItemSlot[ ] allInputslots, ItemSlot outputSlot, GridRecipe byRecipe)

@@ -1,0 +1,134 @@
+{
+	"editor": {
+		"allAngles": true,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+	},
+	"textures": {
+	},
+	"elements": [
+		{
+			"name": "FileSurface",
+			"from": [ 3.5, 0.0, 4.2 ], 
+			"to": [ 11.3, 0.09, 5.4 ], 
+			"rotationOrigin": [ 2.4, 0.48, 4.2 ],
+			"rotationY": 5.0,
+			"faces": {
+				"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 7.5, 0.5 ] },
+				"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 0.5 ] },
+				"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 7.5, 0.5 ] },
+				"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 0.5 ] },
+				"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 7.5, 1.0 ] },
+				"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 7.5, 1.0 ] }
+			},
+			"children": [
+				{
+					"name": "FileTang",
+					"from": [ -1.8, 0.0, 0.48 ], 
+					"to": [ 0.0, 0.09, 0.78 ], 
+					"faces": {
+						"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.8, 0.3 ] },
+						"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.3, 0.3 ] },
+						"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.8, 0.3 ] },
+						"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.3, 0.3 ] },
+						"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.8, 0.3 ] },
+						"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.8, 0.3 ] }
+					}
+				}
+			]
+		},
+		{
+			"name": "FileSurface2",
+			"from": [ 2.4, -0.25, 8.2 ], 
+			"to": [ 10.2, 0.25, 8.85 ], 
+			"rotationOrigin": [ 2.4, 0.48, 8.2 ],
+			"rotationX": -45.0,
+			"rotationY": 1.0,
+			"faces": {
+				"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 7.5, 0.5 ] },
+				"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 7.5, 0.5 ] },
+				"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+				"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 7.5, 0.5 ] },
+				"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 7.5, 0.5 ] }
+			},
+			"children": [
+				{
+					"name": "FileTang2",
+					"from": [ -1.8, 0.25, 0.2 ], 
+					"to": [ 0.0, 0.34, 0.5 ], 
+					"faces": {
+						"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.5, 0.5 ] },
+						"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+						"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.5, 0.5 ] },
+						"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+						"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.5, 0.5 ] },
+						"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.5, 0.5 ] }
+					}
+				}
+			]
+		},
+		{
+			"name": "FileSurface3",
+			"from": [ 7.4, 0.0, 11.2 ], 
+			"to": [ 15.2, 0.09, 12.4 ], 
+			"rotationOrigin": [ 5.0, 0.48, -1.0 ],
+			"rotationY": -22.5,
+			"faces": {
+				"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 7.5, 0.5 ] },
+				"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 0.5 ] },
+				"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 7.5, 0.5 ] },
+				"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 0.5 ] },
+				"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 7.5, 1.0 ] },
+				"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 7.5, 1.0 ] }
+			},
+			"children": [
+				{
+					"name": "FileTang3",
+					"from": [ -1.8, 0.0, 0.5 ], 
+					"to": [ 0.0, 0.09, 0.8 ], 
+					"faces": {
+						"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.5, 0.5 ] },
+						"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+						"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.5, 0.5 ] },
+						"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 0.5 ] },
+						"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.5, 0.5 ] },
+						"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.5, 0.5 ] }
+					}
+				},
+				{
+					"name": "Angle1",
+					"from": [ 0.0, -0.05, -0.01 ], 
+					"to": [ 7.8, 0.04, 0.99 ], 
+					"rotationOrigin": [ 0.0, 0.0, -0.05 ],
+					"rotationX": -50.0,
+					"faces": {
+						"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 7.5, 0.5 ], "enabled": false },
+						"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 0.5 ], "enabled": false },
+						"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 7.5, 0.5 ], "enabled": false },
+						"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 0.5 ], "enabled": false },
+						"up": { "texture": "#metal", "uv": [ 2.5, 5.5, 10.0, 6.5 ] },
+						"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 7.5, 1.0 ], "enabled": false }
+					}
+				},
+				{
+					"name": "Angle2",
+					"from": [ 0.0, 1.2, 0.535 ], 
+					"to": [ 7.8, 1.29, 1.535 ], 
+					"rotationOrigin": [ 0.0, 1.0, 0.05 ],
+					"rotationX": 50.0,
+					"faces": {
+						"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 7.5, 0.5 ], "enabled": false },
+						"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 0.5 ], "enabled": false },
+						"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 7.5, 0.5 ], "enabled": false },
+						"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 0.5 ], "enabled": false },
+						"up": { "texture": "#metal", "uv": [ 2.5, 5.5, 10.0, 6.5 ] },
+						"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 7.5, 1.0 ], "enabled": false }
+					}
+				}
+			]
+		}
+	]}

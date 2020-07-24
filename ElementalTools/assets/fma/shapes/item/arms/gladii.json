@@ -8,9 +8,6 @@
 	"textureSizes": {
 	},
 	"textures": {
-		"metal": "game:block/metal/sheet/iron1",
-		"rivets": "game:block/metal/ingot/iron",
-		"handle": "game:item/tool/material/handle"
 	},
 	"elements": [
 		{
@@ -31,7 +28,6 @@
 					"name": "handle",
 					"from": [ -8.0, -0.5, -0.5 ], 
 					"to": [ -5.0, 1.0, 1.0 ], 
-					"renderInEditor": false,
 					"rotationOrigin": [ -9.5, -8.0, 0.0 ],
 					"faces": {
 						"north": { "texture": "#handle", "uv": [ 0.0, 5.5, 3.0, 7.0 ] },
@@ -155,7 +151,7 @@
 								"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 0.5 ], "enabled": false },
 								"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 13.0, 0.5 ], "enabled": false },
 								"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 0.5 ], "enabled": false },
-								"up": { "texture": "#metal", "uv": [ 1.5, 3.0, 14.5, 4.0 ] },
+								"up": { "texture": "#metal", "uv": [ 2.0, 3.5, 15.0, 4.5 ] },
 								"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 13.0, 1.0 ], "enabled": false }
 							}
 						},
@@ -171,7 +167,7 @@
 								"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 13.0, 0.5 ], "enabled": false },
 								"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 0.5 ], "enabled": false },
 								"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 13.0, 1.0 ], "enabled": false },
-								"down": { "texture": "#metal", "uv": [ 0.5, 12.0, 13.5, 13.0 ] }
+								"down": { "texture": "#metal", "uv": [ 1.5, 8.5, 14.5, 9.5 ] }
 							}
 						},
 						{
@@ -186,7 +182,7 @@
 								"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 13.0, 0.5 ], "enabled": false },
 								"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 0.5 ], "enabled": false },
 								"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 13.0, 1.0 ], "enabled": false },
-								"down": { "texture": "#metal", "uv": [ 0.5, 12.0, 13.5, 13.0 ] }
+								"down": { "texture": "#metal", "uv": [ 1.5, 11.0, 14.5, 12.0 ] }
 							}
 						},
 						{
