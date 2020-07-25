@@ -6,6 +6,7 @@ using System.Linq;
 using Vintagestory.API.Common;
 using Vintagestory.GameContent;
 using Vintagestory.API.MathTools;
+using Vintagestory.API.Common.Entities;
 
 namespace ElementalTools
 {
@@ -21,7 +22,7 @@ namespace ElementalTools
 		internal const string hardnessKeyword = @"hardness";
 		internal const string sharpnessKeyword = @"sharpness";
 
-
+		internal const string durabilityKeyword = @"durability";
 
 		/*
 		public virtual float GetAttackPower (IItemStack withItemStack)
@@ -32,6 +33,11 @@ namespace ElementalTools
 		public virtual void OnHeldDropped (IWorldAccessor world, IPlayer byPlayer, ItemSlot slot, int quantity, ref EnumHandling handling)
 
 		public int MiningTier  // public int ToolTier;
+		public virtual float GetMiningSpeed; MiningSpeed //Speed up for Edged Picks?
+
+		public override void OnAttackingWith
+		public virtual bool OnBlockBrokenWith (IWorldAccessor world, Entity byEntity, ItemSlot itemslot, BlockSelection blockSel)
+
 
 		public virtual void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
 		 * */
@@ -66,15 +72,11 @@ namespace ElementalTools
 		{
 		base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
 
-		dsc.AppendFormat("Metal: '{0}', ",Name);
-
-		if (Hardenable) {
+		dsc.AppendFormat("\nMetal: '{0}', ",Name);
+					
 		dsc.AppendFormat("Temper: {0}\n", Hardness(inSlot.Itemstack) );
-		}
-
-		if (Sharpenable) {
-		dsc.AppendFormat("Edge: {0}\n", Sharpness(inSlot.Itemstack) );	
-		}
+		
+		dsc.AppendFormat("Edge: {0}\n", Sharpness(inSlot.Itemstack) );	//Or surface?		
 
 		}
 
@@ -132,7 +134,8 @@ namespace ElementalTools
 		//TODO: If durability exists - decriment based on Hardnes Vs. Wear...
 		if (this.Durability > 1) {
 
-		var currentDur = GetDurability(someStack);		
+		var currentDur = GetDurability(someStack);
+		SetDurability(someStack,--currentDur);
 		}
 
 		return sharp;				
@@ -146,6 +149,9 @@ namespace ElementalTools
 
 		(recipient.Item as IAmSteel).Hardness(recipient, hI);
 		(recipient.Item as IAmSteel).Sharpness(recipient, sI);
+
+		var wear = GetDurability(donor);
+		SetDurability(recipient, wear);
 		}
 
 		}
@@ -191,13 +197,62 @@ namespace ElementalTools
 		}
 
 
-
-
-		public override void DamageItem(IWorldAccessor world, Vintagestory.API.Common.Entities.Entity byEntity, ItemSlot itemslot, int amount = 1)
+		public override void OnAttackingWith(IWorldAccessor world, Entity byEntity, Entity attackedEntity, ItemSlot itemslot)
 		{
-		//TODO: Effects from Tempering and edge Wear...also too sharp edges...
+		bool edged = this.Tool.EdgedImpliment( );
+		bool weapon = this.Tool.Weapons( ); 		
+		float targetArmorFactor = 0.0f;
 
-		//TODO:if (byEntity.IsSquooshy()) - blade makes cuts in thing - metal unharmed, phew!
+		/*DETERMINE: 
+		 * Usage - Edged weapon attack Vs. creature Sc.#1 [What about armored players?]
+		 * Non-edged weapon vs. creature Sc. #2 [What about armored players?]
+		 * [Improvised-arms] Edged-Tool (non-weapon) vs. Creature Sc.#3
+		 * [Improvised-arms] Blunt-Tool (non-weapon) vs. Creature Sc.#4
+		 * Tool Against Envrionment (Pickaxe / Axe / Propick / Saw / Shovel) Sc. #5
+		 * WEAPONS Vs. Envrionment (hiting dirt with a sword!) Sc. #6
+		 * Tools - don't really benefit from edges vs. envrionment...?
+		*/
+
+		//Only called for attacks on ENTITIES. Scen# 1 - 4 here.
+		api.World.Logger.VerboseDebug($"OnAttackingWith:: (Weap:{weapon},Edge:{edged}) {byEntity.Code} -> {attackedEntity.Code}");
+		
+		
+
+		/*			 
+		if (this.DamagedBy != null && this.DamagedBy.Contains (EnumItemDamageSource.Attacking) && attackedEntity != null && attackedEntity.Alive) {
+		this.DamageItem (world, byEntity, itemslot, 1);
+		}
+		*/
+
+		base.OnAttackingWith(world, byEntity, attackedEntity, itemslot);
+		}
+
+
+
+		public override bool OnBlockBrokenWith(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, BlockSelection blockSel)
+		{
+		bool edged = this.Tool.EdgedImpliment( );
+		bool weapon = this.Tool.Weapons( );
+		var targetBlock = api.World.BlockAccessor.GetBlock(blockSel.Position);
+		int targetTier = targetBlock.ToolTier;
+
+		//Only called for attacks on BLOCKS / Envrionment. Scen# 5 - 6 here.	
+		
+		//Weapon & Tool applicability: Is rate > 1 ? then - its sorta OK...ish.
+
+		api.World.Logger.VerboseDebug($"OnAttackingWith:: (Weap:{weapon},Edge:{edged}) {byEntity.Code} -> {targetBlock.Code}");
+
+
+
+		return base.OnBlockBrokenWith(world, byEntity, itemslot, blockSel);
+		}
+
+
+		public override void DamageItem(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount = 1)
+		{
+		//TODO: too sharp edges...wear down EDGE randomly (extra for 'abuse' )
+
+		//Tool Specific special damage reduction rate: e.g. scythe, hoe, knife, here?
 
 		if (!itemslot.Empty) 
 		{
@@ -239,24 +294,10 @@ namespace ElementalTools
 		public override void OnConsumedByCrafting(ItemSlot[ ] allInputSlots, ItemSlot stackInSlot, GridRecipe gridRecipe, CraftingRecipeIngredient fromIngredient, IPlayer byPlayer, int quantity)
 		{
 		if (fromIngredient.IsTool) {
-				
+
 		//Edged tool vs. non-edged tool
-		bool edgedTool = false;
-		if (this.Tool.HasValue && (
-				Tool == EnumTool.Axe ||
-				Tool == EnumTool.Chisel ||
-				Tool == EnumTool.Hoe ||
-				Tool == EnumTool.Knife ||
-				Tool == EnumTool.Pickaxe ||
-				Tool == EnumTool.Saw ||
-				Tool == EnumTool.Scythe ||
-				Tool == EnumTool.Shears ||
-				Tool == EnumTool.Sickle ||
-				Tool == EnumTool.Spear ||
-				Tool == EnumTool.Sword )
-			) {
-		edgedTool = true;		
-		}
+		bool edgedTool = this.Tool.EdgedImpliment( );
+		
 
 		float hardnessMult =((int)HardnessState.Brittle+1) / ((int)this.Hardness(stackInSlot.Itemstack)+1) * 0.25f;
 		float wearMax = 1;
@@ -335,6 +376,16 @@ namespace ElementalTools
 
 
 		#endregion
+
+		internal void SetDurability(IItemStack recipient, int wearLevel)
+		{
+		recipient.Attributes.SetInt(durabilityKeyword, wearLevel);
+		}
+
+		internal int GetDurability(IItemStack recipient)
+		{
+		return recipient.Attributes.GetInt(durabilityKeyword, recipient.Item.Durability);
+		}
 	}
 }
 

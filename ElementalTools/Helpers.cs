@@ -94,6 +94,51 @@ namespace ElementalTools
 		return originalAsset.Code;
 		}
 
+		/// <summary>
+		/// Has Edge that can wear down...
+		/// </summary>
+		/// <returns>The impliment.</returns>
+		/// <param name="what">What.</param>
+		public static bool EdgedImpliment(this EnumTool? what)
+		{			
+		if (what.HasValue && (
+				what == EnumTool.Axe ||
+				what == EnumTool.Chisel ||
+				what == EnumTool.Hoe ||
+				what == EnumTool.Knife ||
+				what == EnumTool.Pickaxe ||
+				what == EnumTool.Saw ||
+				what == EnumTool.Scythe ||
+				what == EnumTool.Shears ||
+				what == EnumTool.Sickle ||
+				what == EnumTool.Spear ||
+				what == EnumTool.Sword)
+			) {
+		return true;
+		}
+		return false;
+		}
+
+		/// <summary>
+		/// Consider this as Weaspon Vs. Tool..?
+		/// </summary>
+		/// <returns>The impliment.</returns>
+		/// <param name="what">What.</param>
+		public static bool Weapons(this EnumTool? what)
+		{
+		if (what.HasValue && (
+				what == EnumTool.Axe || //Arguable
+				what == EnumTool.Bow ||
+				what == EnumTool.Knife ||
+				what == EnumTool.Spear ||
+				what == EnumTool.Sword)
+			) {
+		return true;
+		}
+		return false;
+		}
+
+
 		#if DEFUNCT
 		//Why C# 7.0 ? WHY?!?!
 		public static T GetEnum<T>(this ITreeAttribute treeAttr, string keyword, T defaultValue = default(T)) where T : struct// enum
