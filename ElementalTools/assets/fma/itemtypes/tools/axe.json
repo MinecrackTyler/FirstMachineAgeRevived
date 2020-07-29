@@ -1,0 +1,85 @@
+﻿{
+	code: "axe",
+	class: "Steel_ItemAxe",
+	attributes: {
+		handbook: {
+			groupBy: ["axe-*"]
+		},
+		toolrackTransform: {
+			rotation: { y: 1, z: -1 },
+			translation: { x: -0.3, y: 0.6 },
+			scale: 1.25,
+		}
+	},
+	variantgroups: [
+		{ code: "material", states: ["blister_steel", "shear_steel" ] },
+	],
+	tool: "axe",
+	damagedby: ["blockbreaking", "attacking"],
+	shape: { base: "game:item/tool/axe-iron" },	
+	heldTpHitAnimation: "axechop",
+	textures: {
+			"material": { base: "metal/{material}" }
+		},	
+	attackRange: 2,
+	tooltierbytype: {
+		"*-blister_steel": 5,
+		"*-shear_steel": 5,
+	},
+	miningspeedbytype: {		
+		"axe-blister_steel": {
+			"wood": 10,
+			"plant": 6,
+			"leaves": 4
+		},
+    	"axe-shear_steel": {
+			"wood": 10,
+			"plant": 6,
+			"leaves": 4
+		},
+	},
+	durabilitybytype: {
+		"axe-blister_steel": 1100,
+    	"axe-shear_steel": 1200,		
+	},
+	attackpowerbytype: {		
+		"axe-blister_steel": 3.9,
+    	"axe-shear_steel": 4,
+	},
+    attributesByType: {
+		"*-blister_steel": {
+			metalName:"Blister Steel",
+			sharpenable: true,
+			hardenable: true,
+		},
+		"*-shear_steel": {
+			metalName:"Shear Steel",
+			sharpenable: true,
+			hardenable: true,
+		}		
+    },   	
+	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
+	
+	fpHandTransform: {
+		translation: { x: 0.046875, y: 0, z: 0 },
+		rotation: { x: 15, y: 15, z: 90 },
+		scale: 2.5
+	},
+	guiTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: -56, y: -127, z: -180 },
+		origin: { x: 0.6, y: 0, z: 0.55 },
+		scale: 1.64
+	},
+	groundTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 3.6
+	},
+	tpHandTransform: {
+		translation: { x: -0.89, y: -0.5, z: -0.1 },
+		rotation: { x: 90, y: 0, z: -10 },
+		scale: 0.95
+	}
+}

@@ -7,14 +7,16 @@ using Vintagestory.API.Common;
 using Vintagestory.GameContent;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Common.Entities;
+using Vintagestory.API.Client;
 
 namespace ElementalTools
 {
 	/// <summary>
 	/// GENERIC Steel item. (Tool / Weapon / Armor...anything) [Possibly: Temperable and/or Hardenable ]
 	/// </summary>
-	public class SteelWrap<T>: Item, IAmSteel where T : Item
+	public class SteelWrap<T>: Item, IAmSteel where T : Item, new()
 	{
+		private T WrappedItem;
 		internal const string hardenableKeyword = @"hardenable";
 		internal const string sharpenableKeyword = @"sharpenable";
 		internal const string metalNameKeyword = @"metalName";
@@ -42,6 +44,46 @@ namespace ElementalTools
 		public virtual void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
 		 * */
 
+		public SteelWrap( ) //Since It Invokes that for the new type of T anyways...
+		{
+		WrappedItem = new T();		
+		}
+
+		public SteelWrap(int itemId) : base(itemId)
+		{
+		WrappedItem = new T();
+		WrappedItem.ItemId = itemId;
+		WrappedItem.MaxStackSize = 1;
+		}
+
+		public override void OnLoaded(ICoreAPI api)
+		{
+		//Needs to fully populate equivalent <item>
+		PopulatePlaceholderItemFields();
+		WrappedItem.OnLoaded(api);
+		}
+
+		public override void OnUnloaded(ICoreAPI api)
+		{
+		WrappedItem.OnUnloaded(api);
+		}
+
+		private void PopulatePlaceholderItemFields()
+		{
+		if (api.Side.IsServer( )) {
+		//IDs, AssetLocation, Class
+		WrappedItem.ItemId = this.ItemId;
+		WrappedItem.Code = this.Code.Clone( );
+		WrappedItem.Class = this.Class.Split('_').Last( );// 'Steel_ItemAxe' -> ItemAxe
+		WrappedItem.Textures = this.Textures;		
+		}
+		else {
+		//ERROR: Client does not have all fields set at runtime ?!
+
+		}
+
+		}
+
 		#region Static Properties
 		public virtual bool Hardenable {
 			get
@@ -66,18 +108,31 @@ namespace ElementalTools
 		}
 		#endregion
 
+		/*
+		public override void OnLoaded(ICoreAPI api)
+		{
+		base.OnLoaded(api);
+
+		api.World.Logger.VerboseDebug("OnLoaded::{0}", this.GetType());
+		}
+		*/
+
 		#region Specific_Behavior
 
 		public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
 		{
-		base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+		if (inSlot == null || inSlot.Empty || inSlot.Inventory == null) {
+		api.World.Logger.Warning("GetHeldItemInfo -> Invetory / slot / stack: FUBAR!");
+		return;
+		}
+
+		WrappedItem?.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
 
 		dsc.AppendFormat("\nMetal: '{0}', ",Name);
 					
 		dsc.AppendFormat("Temper: {0}\n", Hardness(inSlot.Itemstack) );
 		
 		dsc.AppendFormat("Edge: {0}\n", Sharpness(inSlot.Itemstack) );	//Or surface?		
-
 		}
 
 		public virtual SharpnessState Sharpness(IItemStack someStack)
@@ -156,6 +211,37 @@ namespace ElementalTools
 
 		}
 
+
+		/// <summary>
+		/// Handle HARDENING / TEMPERING
+		/// </summary>
+		/// <returns>The attack power.</returns>
+		/// <param name="withItemStack">With item stack.</param>
+		public override void OnHeldDropped(IWorldAccessor world, IPlayer byPlayer, ItemSlot slot, int quantity, ref EnumHandling handling)
+		{
+			//If Temperature > 450C - Set Timestamp?
+
+
+		WrappedItem.OnHeldDropped(world, byPlayer, slot, quantity, ref handling);
+		}
+
+		/// <summary>
+		/// Handle HARDENING / TEMPERING
+		/// </summary>
+		/// <returns>The ground idle.</returns>
+		/// <param name="entityItem">Entity item.</param>
+		public override void OnGroundIdle(EntityItem entityItem)
+		{
+			//Tossed into (fluid) WATER - At >= 750C
+
+			//IF cooled down to < 450 C in 0.7 Seconds - HARDEN!
+
+			//less time or grabbed before 'complete' - partial harden...
+
+
+		WrappedItem.OnGroundIdle(entityItem);
+		}
+
 		#endregion
 
 
@@ -163,7 +249,7 @@ namespace ElementalTools
 
 		public override float GetAttackPower(IItemStack withItemStack)
 		{
-		var defaultPower = base.GetAttackPower(withItemStack);
+		var defaultPower = WrappedItem.GetAttackPower(withItemStack);
 
 		if (this.Sharpenable) {
 		var sharpness = Sharpness(withItemStack);
@@ -224,7 +310,7 @@ namespace ElementalTools
 		}
 		*/
 
-		base.OnAttackingWith(world, byEntity, attackedEntity, itemslot);
+		WrappedItem.OnAttackingWith(world, byEntity, attackedEntity, itemslot);
 		}
 
 
@@ -235,16 +321,19 @@ namespace ElementalTools
 		bool weapon = this.Tool.Weapons( );
 		var targetBlock = api.World.BlockAccessor.GetBlock(blockSel.Position);
 		int targetTier = targetBlock.ToolTier;
+		float targetResistance = targetBlock.Resistance;
 
 		//Only called for attacks on BLOCKS / Envrionment. Scen# 5 - 6 here.	
 		
 		//Weapon & Tool applicability: Is rate > 1 ? then - its sorta OK...ish.
 
-		api.World.Logger.VerboseDebug($"OnAttackingWith:: (Weap:{weapon},Edge:{edged}) {byEntity.Code} -> {targetBlock.Code}");
+		//Harndess Vs. Block-Resistance...
+
+		api.World.Logger.VerboseDebug($"OnBlockBrokenWith:: (Weap:{weapon},Edge:{edged}) {byEntity.Code} -> {targetBlock.Code}");
 
 
 
-		return base.OnBlockBrokenWith(world, byEntity, itemslot, blockSel);
+		return WrappedItem.OnBlockBrokenWith(world, byEntity, itemslot, blockSel);
 		}
 
 
@@ -252,8 +341,8 @@ namespace ElementalTools
 		{
 		//TODO: too sharp edges...wear down EDGE randomly (extra for 'abuse' )
 
-		//Tool Specific special damage reduction rate: e.g. scythe, hoe, knife, here?
-
+		//Tool Specific special damage reduction rate: e.g. scythe, hoe, knife, here...?
+		//By MiningSpeed ?
 		if (!itemslot.Empty) 
 		{
 		var hardness = this.Hardness(itemslot.Itemstack);
@@ -276,7 +365,7 @@ namespace ElementalTools
 				}
 		}
 
-		base.DamageItem(world, byEntity, itemslot, amount);
+		WrappedItem.DamageItem(world, byEntity, itemslot, amount);
 		}
 
 
@@ -315,7 +404,7 @@ namespace ElementalTools
 		return;
 		}
 
-		base.OnConsumedByCrafting(allInputSlots, stackInSlot, gridRecipe, fromIngredient, byPlayer, quantity);
+		WrappedItem.OnConsumedByCrafting(allInputSlots, stackInSlot, gridRecipe, fromIngredient, byPlayer, quantity);
 		}
 
 
@@ -376,6 +465,89 @@ namespace ElementalTools
 
 
 		#endregion
+
+
+		//Wire up all invokes >>> to NOT call Base - but (WrappedItem) T instead !
+		#region Wrapped_Calls
+
+		public override float OnBlockBreaking(IPlayer player, BlockSelection blockSel, ItemSlot itemslot, float remainingResistance, float dt, int counter)
+		{
+		return WrappedItem.OnBlockBreaking(player, blockSel, itemslot, remainingResistance, dt, counter);
+		}
+
+		public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
+		{
+		WrappedItem.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
+		}
+
+		public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
+		{
+		return WrappedItem.OnHeldInteractStep(secondsUsed, slot, byEntity, blockSel, entitySel);	
+		}
+
+		public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
+		{
+		WrappedItem.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
+		}
+
+		public override int GetToolMode(ItemSlot slot, IPlayer byPlayer, BlockSelection blockSelection)
+		{
+		return WrappedItem.GetToolMode(slot, byPlayer, blockSelection);
+		}
+
+		public override void SetToolMode(ItemSlot slot, IPlayer byPlayer, BlockSelection blockSelection, int toolMode)
+		{
+		WrappedItem.SetToolMode(slot, byPlayer, blockSelection, toolMode);
+		}
+
+		public override SkillItem[ ] GetToolModes(ItemSlot slot, IClientPlayer forPlayer, BlockSelection blockSel)
+		{
+		return WrappedItem.GetToolModes(slot, forPlayer, blockSel);
+		}
+
+		public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handling)
+		{
+		WrappedItem.OnHeldAttackStart(slot, byEntity, blockSel, entitySel, ref handling);
+		}
+
+		public override TransitionableProperties[ ] GetTransitionableProperties(IWorldAccessor world, ItemStack itemstack, Entity forEntity)
+		{
+		return WrappedItem.GetTransitionableProperties(world, itemstack, forEntity);
+		}
+
+		public override int GetItemDamageColor(ItemStack itemstack)
+		{
+		return WrappedItem.GetItemDamageColor(itemstack);
+		}
+
+		public override bool ShouldDisplayItemDamage(IItemStack itemstack)
+		{
+		return WrappedItem.ShouldDisplayItemDamage(itemstack);
+		}
+
+		public override FoodNutritionProperties GetNutritionProperties(IWorldAccessor world, ItemStack itemstack, Entity forEntity)
+		{
+		return WrappedItem.GetNutritionProperties(world, itemstack, forEntity);
+		}
+
+		public override TransitionState UpdateAndGetTransitionState(IWorldAccessor world, ItemSlot inslot, EnumTransitionType type)
+		{
+		return WrappedItem.UpdateAndGetTransitionState(world, inslot, type);
+		}
+
+		public override TransitionState[ ] UpdateAndGetTransitionStates(IWorldAccessor world, ItemSlot inslot)
+		{
+		return WrappedItem.UpdateAndGetTransitionStates(world, inslot);
+		}
+
+		public override float GetTransitionRateMul(IWorldAccessor world, ItemSlot inSlot, EnumTransitionType transType)
+		{
+		return WrappedItem.GetTransitionRateMul(world, inSlot, transType);
+		}
+
+
+		#endregion
+
 
 		internal void SetDurability(IItemStack recipient, int wearLevel)
 		{

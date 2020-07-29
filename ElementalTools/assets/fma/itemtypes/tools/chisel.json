@@ -1,0 +1,66 @@
+﻿{
+	code: "chisel",
+	class: "Steel_ItemChisel",
+	attributes: {
+		handbook: {
+			groupBy: ["chisel-*"]
+		},
+		toolrackTransform: {
+			translation: { x: 0, y: 0.61, z: 0 },
+			rotation: { x: 5, y: 180, z: -1 },
+			scale: 1.25
+		}
+	},
+	variantgroups: [
+		{ code: "metal", states: [ "blister_steel", "shear_steel"] },
+	],
+	shape: { base: "game:item/tool/chisel" },
+	tool: "Chisel",
+	enabled: true,
+	heldTpHitAnimation: "breaktool",
+    attributesByType: {
+		"*-blister_steel": {
+			metalName:"Blister Steel",
+			sharpenable: true,
+			hardenable: true,
+		},
+		"*-shear_steel": {
+			metalName:"Shear Steel",
+			sharpenable: true,
+			hardenable: true,
+		}		
+    },   	
+	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
+	textures: {
+		"metal": { base: "fma:metal/{metal}" },
+        "string": { base: "game:item/tool/material/string"},
+	},
+	guiTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 9, y: 137, z: -53 },
+		origin: { x: 0.44, y: 0, z: 0.38 },
+		scale: 2.92
+	},
+	fpHandTransform: {
+		translation: { x: -0.1, y: 0.2, z: 0 },
+		rotation: { x: 90, y: 99, z: -42 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 2.15
+	},
+	groundTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 4.31
+	},
+	tpHandTransform: {
+		translation: { x: -0.78, y: -0.09, z: -0.67 },
+		rotation: { x: 9, y: -1, z: -16 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 0.76
+	},
+	durabilitybytype: {		
+		"chisel-blister_steel": 2900,
+        "chisel-shear_steel": 3000,
+	}
+}

@@ -25,6 +25,9 @@
 	name: "pc_chisel",
 	width: 3,
 	height: 3,    
+    attributes: {
+		outputOverride: "chisel-blister_steel",       
+	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },
 {
