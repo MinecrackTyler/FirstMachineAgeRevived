@@ -59,8 +59,8 @@ namespace ElementalTools
 		public override void OnLoaded(ICoreAPI api)
 		{
 		//Needs to fully populate equivalent <item>
-		PopulatePlaceholderItemFields();
-		WrappedItem.OnLoaded(api);
+		WrappedItem.OnLoadedNative(api);//Hacky
+		PopulatePlaceholderItemFields();		
 		}
 
 		public override void OnUnloaded(ICoreAPI api)
@@ -74,11 +74,18 @@ namespace ElementalTools
 		//IDs, AssetLocation, Class
 		WrappedItem.ItemId = this.ItemId;
 		WrappedItem.Code = this.Code.Clone( );
-		WrappedItem.Class = this.Class.Split('_').Last( );// 'Steel_ItemAxe' -> ItemAxe
-		WrappedItem.Textures = this.Textures;		
+		WrappedItem.Class = this.Class.Split('_').Last();// 'Steel_ItemAxe' -> ItemAxe
+		WrappedItem.Textures = this.Textures;
+		WrappedItem.Variant = this.Variant;
+		WrappedItem.VariantStrict = this.VariantStrict;
+		WrappedItem.Tool = this.Tool;		
 		}
 		else {
 		//ERROR: Client does not have all fields set at runtime ?!
+		WrappedItem.ItemId = this.ItemId;
+		WrappedItem.Code = this.Code.Clone( );
+		WrappedItem.Class = String.Empty;
+		WrappedItem.Textures = this.Textures;
 
 		}
 
@@ -108,14 +115,7 @@ namespace ElementalTools
 		}
 		#endregion
 
-		/*
-		public override void OnLoaded(ICoreAPI api)
-		{
-		base.OnLoaded(api);
 
-		api.World.Logger.VerboseDebug("OnLoaded::{0}", this.GetType());
-		}
-		*/
 
 		#region Specific_Behavior
 
@@ -512,7 +512,7 @@ namespace ElementalTools
 
 		public override TransitionableProperties[ ] GetTransitionableProperties(IWorldAccessor world, ItemStack itemstack, Entity forEntity)
 		{
-		return WrappedItem.GetTransitionableProperties(world, itemstack, forEntity);
+		return null;//HACK: to stop missing variables from causing a fault
 		}
 
 		public override int GetItemDamageColor(ItemStack itemstack)
@@ -527,22 +527,28 @@ namespace ElementalTools
 
 		public override FoodNutritionProperties GetNutritionProperties(IWorldAccessor world, ItemStack itemstack, Entity forEntity)
 		{
-		return WrappedItem.GetNutritionProperties(world, itemstack, forEntity);
+		return null;//HACK: to stop missing variables from causing a fault
 		}
 
 		public override TransitionState UpdateAndGetTransitionState(IWorldAccessor world, ItemSlot inslot, EnumTransitionType type)
 		{
-		return WrappedItem.UpdateAndGetTransitionState(world, inslot, type);
+		return null;//HACK: to stop missing variables from causing a fault
 		}
 
 		public override TransitionState[ ] UpdateAndGetTransitionStates(IWorldAccessor world, ItemSlot inslot)
 		{
-		return WrappedItem.UpdateAndGetTransitionStates(world, inslot);
+		return null;//HACK: to stop missing variables from causing a fault
 		}
 
 		public override float GetTransitionRateMul(IWorldAccessor world, ItemSlot inSlot, EnumTransitionType transType)
 		{
-		return WrappedItem.GetTransitionRateMul(world, inSlot, transType);
+		return 0f;//HACK: to stop missing variables from causing a fault
+		}
+
+		public override float AppendPerishableInfoText(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world)
+		{
+		api.World.Logger.VerboseDebug("AppendPerishableInfoText - invoked");
+		return 0f;//HACK: to stop missing variables from causing a fault
 		}
 
 
