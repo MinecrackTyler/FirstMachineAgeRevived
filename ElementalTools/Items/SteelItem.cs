@@ -16,7 +16,7 @@ namespace ElementalTools
 	/// </summary>
 	public class SteelWrap<T>: Item, IAmSteel where T : Item, new()
 	{
-		private T WrappedItem;
+		private Item WrappedItem;//Special placeholder replica - for calling ancestor class
 		internal const string hardenableKeyword = @"hardenable";
 		internal const string sharpenableKeyword = @"sharpenable";
 		internal const string metalNameKeyword = @"metalName";
@@ -58,8 +58,7 @@ namespace ElementalTools
 
 		public override void OnLoaded(ICoreAPI api)
 		{
-		//Needs to fully populate equivalent <item>
-		WrappedItem.OnLoadedNative(api);//Hacky
+		//Needs to fully populate equivalent <item>		
 		PopulatePlaceholderItemFields();		
 		}
 
@@ -70,25 +69,29 @@ namespace ElementalTools
 
 		private void PopulatePlaceholderItemFields()
 		{
-		if (api.Side.IsServer( )) {
-		//IDs, AssetLocation, Class
-		WrappedItem.ItemId = this.ItemId;
-		WrappedItem.Code = this.Code.Clone( );
-		WrappedItem.Class = this.Class.Split('_').Last();// 'Steel_ItemAxe' -> ItemAxe
-		WrappedItem.Textures = this.Textures;
-		WrappedItem.Variant = this.Variant;
-		WrappedItem.VariantStrict = this.VariantStrict;
-		WrappedItem.Tool = this.Tool;		
-		}
-		else {
-		//ERROR: Client does not have all fields set at runtime ?!
-		WrappedItem.ItemId = this.ItemId;
-		WrappedItem.Code = this.Code.Clone( );
-		WrappedItem.Class = String.Empty;
-		WrappedItem.Textures = this.Textures;
+		string trueClassName = string.Empty;
+		if (!string.IsNullOrEmpty(this.Class)) {
+		trueClassName = this.Class.Split('_').Last( );// 'Steel_ItemAxe' -> ItemAxe
+		}	
 
-		}
-
+		WrappedItem = new Item(this.ItemId) 
+		{
+		ItemId = this.ItemId,
+		Code = this.Code.Clone( ),
+		Class = trueClassName,
+		Textures = this.Textures,
+		Variant = this.Variant,
+		VariantStrict = this.VariantStrict,
+		Tool = this.Tool,
+		Attributes = this.Attributes,
+		MiningSpeed = this.MiningSpeed,
+		Shape = this.Shape,
+		StorageFlags = this.StorageFlags,
+		DamagedBy = this.DamagedBy,
+		ToolTier = this.ToolTier,		
+		MaterialDensity = this.MaterialDensity,		
+		};
+		WrappedItem.OnLoadedNative(api);//Hacky - but needed
 		}
 
 		#region Static Properties
@@ -510,19 +513,21 @@ namespace ElementalTools
 		WrappedItem.OnHeldAttackStart(slot, byEntity, blockSel, entitySel, ref handling);
 		}
 
+		/*
 		public override TransitionableProperties[ ] GetTransitionableProperties(IWorldAccessor world, ItemStack itemstack, Entity forEntity)
 		{
 		return null;//HACK: to stop missing variables from causing a fault
 		}
+		*/
 
 		public override int GetItemDamageColor(ItemStack itemstack)
 		{
-		return WrappedItem.GetItemDamageColor(itemstack);
+		return WrappedItem.GetItemDamageColor(itemstack);//Do something cooler here?
 		}
 
 		public override bool ShouldDisplayItemDamage(IItemStack itemstack)
 		{
-		return WrappedItem.ShouldDisplayItemDamage(itemstack);
+		return true;
 		}
 
 		public override FoodNutritionProperties GetNutritionProperties(IWorldAccessor world, ItemStack itemstack, Entity forEntity)
@@ -537,7 +542,7 @@ namespace ElementalTools
 
 		public override TransitionState[ ] UpdateAndGetTransitionStates(IWorldAccessor world, ItemSlot inslot)
 		{
-		return null;//HACK: to stop missing variables from causing a fault
+		return  new TransitionState[0];//HACK: to stop missing variables from causing a fault
 		}
 
 		public override float GetTransitionRateMul(IWorldAccessor world, ItemSlot inSlot, EnumTransitionType transType)
