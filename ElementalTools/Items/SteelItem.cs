@@ -72,26 +72,36 @@ namespace ElementalTools
 		string trueClassName = string.Empty;
 		if (!string.IsNullOrEmpty(this.Class)) {
 		trueClassName = this.Class.Split('_').Last( );// 'Steel_ItemAxe' -> ItemAxe
-		}	
+		}
+		else {
+		api.World.Logger.Error("Class (name) for ItemID# {0} - null!", this.ItemId);		
+		trueClassName = WrappedItem.GetType( ).Name;
+		api.World.Logger.Error("Substituting class name from wrapped Item '{0}'", trueClassName);
+		}
 
-		WrappedItem = new Item(this.ItemId) 
-		{
-		ItemId = this.ItemId,
-		Code = this.Code.Clone( ),
-		Class = trueClassName,
-		Textures = this.Textures,
-		Variant = this.Variant,
-		VariantStrict = this.VariantStrict,
-		Tool = this.Tool,
-		Attributes = this.Attributes,
-		MiningSpeed = this.MiningSpeed,
-		Shape = this.Shape,
-		StorageFlags = this.StorageFlags,
-		DamagedBy = this.DamagedBy,
-		ToolTier = this.ToolTier,		
-		MaterialDensity = this.MaterialDensity,		
-		};
-		WrappedItem.OnLoadedNative(api);//Hacky - but needed
+
+
+		WrappedItem = api.ClassRegistry.CreateItem(trueClassName);
+					
+		WrappedItem.ItemId = this.ItemId;
+		WrappedItem.Code = this.Code.Clone( );
+		WrappedItem.Class = trueClassName;
+		WrappedItem.Textures = this.Textures;
+		WrappedItem.Variant = this.Variant;
+		WrappedItem.VariantStrict = this.VariantStrict;
+		WrappedItem.Tool = this.Tool;
+		WrappedItem.Attributes = this.Attributes;
+		WrappedItem.MiningSpeed = this.MiningSpeed;
+		WrappedItem.Shape = this.Shape;
+		WrappedItem.StorageFlags = this.StorageFlags;
+		WrappedItem.DamagedBy = this.DamagedBy;
+		WrappedItem.Durability = this.Durability;
+		WrappedItem.AttackPower = this.AttackPower;
+		WrappedItem.AttackRange = this.AttackRange;
+		WrappedItem.ToolTier = this.ToolTier;
+		WrappedItem.MaterialDensity = this.MaterialDensity;		
+		
+		WrappedItem.OnLoadedNative(api);//Hacky - but needed?
 		}
 
 		#region Static Properties
@@ -522,12 +532,29 @@ namespace ElementalTools
 
 		public override int GetItemDamageColor(ItemStack itemstack)
 		{
-		return WrappedItem.GetItemDamageColor(itemstack);//Do something cooler here?
+		SharpnessState edge = Sharpness(itemstack);
+
+		switch (edge) {
+		case SharpnessState.Rough:
+			return ColorUtil.ColorFromRgba(0xFF, 0x66, 0, 0);			
+
+		case SharpnessState.Dull:
+			return ColorUtil.ColorFromRgba(0xFF, 0xBE, 0, 0);
+
+		case SharpnessState.Honed:
+			return ColorUtil.ColorFromRgba(0xE8, 0xFF, 0, 0);			
+
+		case SharpnessState.Keen:
+			return ColorUtil.ColorFromRgba(0x7D, 0xFF, 0, 0);			
+
+		case SharpnessState.Sharp:
+			return ColorUtil.ColorFromRgba(0, 0xFF, 0x12, 0);			
+
+		case SharpnessState.Razor:
+			return ColorUtil.ColorFromRgba(0, 0xFF, 0xD7, 0);			
 		}
 
-		public override bool ShouldDisplayItemDamage(IItemStack itemstack)
-		{
-		return true;
+		return ColorUtil.ColorFromRgba(0xFF, 0, 0, 0);
 		}
 
 		public override FoodNutritionProperties GetNutritionProperties(IWorldAccessor world, ItemStack itemstack, Entity forEntity)

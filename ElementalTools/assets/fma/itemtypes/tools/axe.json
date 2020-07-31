@@ -22,11 +22,11 @@
 			"material": { base: "metal/{material}" }
 		},	
 	attackRange: 2,
-	tooltierbytype: {
+	tooltierByType: {
 		"*-blister_steel": 5,
 		"*-shear_steel": 5,
 	},
-	miningspeedbytype: {		
+	miningspeedByType: {		
 		"axe-blister_steel": {
 			"wood": 10,
 			"plant": 6,
@@ -38,11 +38,11 @@
 			"leaves": 4
 		},
 	},
-	durabilitybytype: {
+	durabilityByType: {
 		"axe-blister_steel": 1100,
     	"axe-shear_steel": 1200,		
 	},
-	attackpowerbytype: {		
+	attackpowerByType: {		
 		"axe-blister_steel": 3.9,
     	"axe-shear_steel": 4,
 	},

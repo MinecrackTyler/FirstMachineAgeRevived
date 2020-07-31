@@ -29,7 +29,11 @@
 			sharpenable: true,
 			hardenable: true,
 		}		
-    },   	
+    },   
+    durabilityByType: {		
+		"*-blister_steel": 2900,
+        "*-shear_steel": 3000,
+	},
 	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
 	textures: {
 		"metal": { base: "fma:metal/{metal}" },
@@ -58,9 +62,5 @@
 		rotation: { x: 9, y: -1, z: -16 },
 		origin: { x: 0.5, y: 0, z: 0.5 },
 		scale: 0.76
-	},
-	durabilitybytype: {		
-		"chisel-blister_steel": 2900,
-        "chisel-shear_steel": 3000,
-	}
+	}	
 }
