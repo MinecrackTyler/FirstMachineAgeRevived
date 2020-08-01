@@ -16,6 +16,9 @@ namespace ElementalTools
 	/// </summary>
 	public class SteelWrap<T>: Item, IAmSteel where T : Item, new()
 	{
+		private const float eutectoid_transition_temperature = 727f;//Celcius
+		private const float quench_min_temperature = 450f;//Celcius
+
 		private Item WrappedItem;//Special placeholder replica - for calling ancestor class
 		internal const string hardenableKeyword = @"hardenable";
 		internal const string sharpenableKeyword = @"sharpenable";
@@ -226,7 +229,7 @@ namespace ElementalTools
 
 
 		/// <summary>
-		/// Handle HARDENING / TEMPERING
+		/// ???
 		/// </summary>
 		/// <returns>The attack power.</returns>
 		/// <param name="withItemStack">With item stack.</param>
@@ -239,20 +242,37 @@ namespace ElementalTools
 		}
 
 		/// <summary>
-		/// Handle HARDENING / TEMPERING
+		///  Quench-hardening
 		/// </summary>
 		/// <returns>The ground idle.</returns>
 		/// <param name="entityItem">Entity item.</param>
 		public override void OnGroundIdle(EntityItem entityItem)
 		{
-			//Tossed into (fluid) WATER - At >= 750C
+		/*
+		 * Time to transform this 'pearlite' into martensite
+		 */
 
-			//IF cooled down to < 450 C in 0.7 Seconds - HARDEN!
+		//var occupiedBlock = api.World.BlockAccessor.GetBlock(entityItem.Pos.AsBlockPos);
+		if (entityItem.Swimming || entityItem.FeetInLiquid) {
+		float temperature = entityItem.Itemstack.Collectible.GetTemperature(api.World, entityItem.Itemstack);
+		//Above 900C  - Deleteroius, What should happen in this range?
+		if (temperature <= eutectoid_transition_temperature || temperature >= quench_min_temperature) //Hmmmmmmmmm
+		{
+		//TODO: Thermal capacity & Transfer values for NON-Water fluids...
 
-			//less time or grabbed before 'complete' - partial harden...
+		byte quant = ( byte )Math.Round(entityItem.itemSpawnedMilliseconds / 175f, 0);  //Been "around"...for...
 
+		if (quant < ( byte )HardnessState.Brittle) {
+		this.Hardness(entityItem.Itemstack, ( HardnessState )quant);
+		}
+		else {
+		this.Hardness(entityItem.Itemstack, HardnessState.Brittle);
+		}
+		}
 
 		WrappedItem.OnGroundIdle(entityItem);
+		}
+
 		}
 
 		#endregion
