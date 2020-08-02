@@ -9,9 +9,10 @@
 	"item-axe-*":"Steel Axe",
 	"item-chisel-*":"Steel Chisel",
 	"item-sword-*":"Steel Sword",
-	"itemdesc-sword":"A Steel sword blade in the anchient style of 'Gladii'... ",
+	"itemdesc-sword-*":"A Steel sword blade in the anchient style of 'Gladii'... ",
 	"item-swordblade-*":"Steel Sword-blade",
 	"item-sharpening_stone":"Sharpening Whetstones",
-
-
+	"itemdesc-sharpening_stone":"Use in combination with _DULL_ steel items and grease to sharpen",
+    "craftinginfo-primitive_steelmaking-title":"Pack Carburization process (Steel making)",
+	"craftinginfo-primitive_steelmaking-text": "So, you want to make steel?\nYou must have Lots and Lots of Charcoal!\nMore Iron than you know what to do with!\nFirst step: combine Charcoal, Bonemeal and crush by hammering - makes <a href='handbook://item-carburization_powder'>Carburization Powder</a>!\n Next make a Coffin or 'Pack' of blue-clay with lots of the previous steps powder packed around an iron object (tool-head, blade, ect...nothing too big). Then Fire it in a furnace or firepit for quite a long time - until it glows RED-HOT! Take out the 'pack' after its finished heating... when its cooled off - your 'steel' awaits you, place the pakc and break it open. Easy right?",
 }

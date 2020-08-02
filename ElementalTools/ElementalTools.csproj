@@ -98,6 +98,8 @@
     <Folder Include="assets\fma\itemtypes\arms\" />
     <Folder Include="assets\fma\shapes\item\arms\" />
     <Folder Include="assets\fma\shapes\item\material\" />
+    <Folder Include="assets\fma\config\" />
+    <Folder Include="assets\fma\config\handbook\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
@@ -178,6 +180,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\fma\shapes\item\tools\striker.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\config\handbook\primitive_steelmaking.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
