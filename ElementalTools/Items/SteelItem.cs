@@ -8,6 +8,7 @@ using Vintagestory.GameContent;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Client;
+using Vintagestory.API.Config;
 
 namespace ElementalTools
 {
@@ -222,7 +223,14 @@ namespace ElementalTools
 		(recipient.Item as IAmSteel).Sharpness(recipient, sI);
 
 		var wear = GetDurability(donor);
-		SetDurability(recipient, wear);
+		
+		if (donor.Item.IsFerricMetal( ) && recipient.Item.IsSteelMetal( )) 
+		{
+		var percentWear = (wear / donor.Item.Durability);
+		SetDurability(recipient, recipient.Item.Durability * percentWear);
+		}
+		else SetDurability(recipient, wear);
+
 		}
 
 		}
@@ -494,8 +502,67 @@ namespace ElementalTools
 
 		}
 
+		public override float GetMiningSpeed(IItemStack itemstack, Block block)
+		{
+		var baseSpeed = 1f;
+		//Boost for Edged tools / weapons?
+		if (MiningSpeed != null && MiningSpeed.ContainsKey(block.BlockMaterial) && this.Tool.EdgedImpliment()) {
+				
+		baseSpeed = MiningSpeed[block.BlockMaterial] * GlobalConstants.ToolMiningSpeedModifier;
+		float pctBoost = 0f;		
+		switch (Sharpness(itemstack)) {
+		case SharpnessState.Rough:
+			pctBoost = -0.35f;
+			break;
+		case SharpnessState.Dull:
+			pctBoost = -0.20f;
+			break;
+		case SharpnessState.Honed:
+			pctBoost = 0.10f;
+			break;
+		case SharpnessState.Keen:
+			pctBoost = 0.20f;
+			break;
+		case SharpnessState.Sharp:
+			pctBoost = 0.25f;
+			break;
+		case SharpnessState.Razor:
+			pctBoost = 0.30f;
+			break;
+		}
 
+		return baseSpeed + (pctBoost * baseSpeed);
+		}
 
+		return baseSpeed;
+		}
+
+		public override int GetItemDamageColor(ItemStack itemstack)
+		{
+		SharpnessState edge = Sharpness(itemstack);
+
+		switch (edge) {
+		case SharpnessState.Rough:
+			return ColorUtil.ColorFromRgba(0xFF, 0x66, 0, 0);
+
+		case SharpnessState.Dull:
+			return ColorUtil.ColorFromRgba(0xFF, 0xBE, 0, 0);
+
+		case SharpnessState.Honed:
+			return ColorUtil.ColorFromRgba(0xE8, 0xFF, 0, 0);
+
+		case SharpnessState.Keen:
+			return ColorUtil.ColorFromRgba(0x7D, 0xFF, 0, 0);
+
+		case SharpnessState.Sharp:
+			return ColorUtil.ColorFromRgba(0, 0xFF, 0x12, 0);
+
+		case SharpnessState.Razor:
+			return ColorUtil.ColorFromRgba(0, 0xFF, 0xD7, 0);
+		}
+
+		return ColorUtil.ColorFromRgba(0xFF, 0, 0, 0);
+		}
 
 		#endregion
 
@@ -550,32 +617,7 @@ namespace ElementalTools
 		}
 		*/
 
-		public override int GetItemDamageColor(ItemStack itemstack)
-		{
-		SharpnessState edge = Sharpness(itemstack);
 
-		switch (edge) {
-		case SharpnessState.Rough:
-			return ColorUtil.ColorFromRgba(0xFF, 0x66, 0, 0);			
-
-		case SharpnessState.Dull:
-			return ColorUtil.ColorFromRgba(0xFF, 0xBE, 0, 0);
-
-		case SharpnessState.Honed:
-			return ColorUtil.ColorFromRgba(0xE8, 0xFF, 0, 0);			
-
-		case SharpnessState.Keen:
-			return ColorUtil.ColorFromRgba(0x7D, 0xFF, 0, 0);			
-
-		case SharpnessState.Sharp:
-			return ColorUtil.ColorFromRgba(0, 0xFF, 0x12, 0);			
-
-		case SharpnessState.Razor:
-			return ColorUtil.ColorFromRgba(0, 0xFF, 0xD7, 0);			
-		}
-
-		return ColorUtil.ColorFromRgba(0xFF, 0, 0, 0);
-		}
 
 		public override FoodNutritionProperties GetNutritionProperties(IWorldAccessor world, ItemStack itemstack, Entity forEntity)
 		{

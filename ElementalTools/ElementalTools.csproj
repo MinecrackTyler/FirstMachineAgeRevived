@@ -97,6 +97,7 @@
     <Folder Include="General\" />
     <Folder Include="assets\fma\itemtypes\arms\" />
     <Folder Include="assets\fma\shapes\item\arms\" />
+    <Folder Include="assets\fma\shapes\item\material\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
@@ -171,6 +172,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\fma\itemtypes\tools\axe.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\shapes\item\material\cards.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\shapes\item\tools\striker.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

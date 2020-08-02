@@ -6,4 +6,12 @@
 	"fma:block-pack_carburization-*":"Carburization Pack",
     "fma:blockdesc-pack_carburization-unfired":"Heat to transition temperature for a while.",
 	"fma:blockdesc-pack_carburization-fired":"Break open to remove contents.",
+	"item-axe-*":"Steel Axe",
+	"item-chisel-*":"Steel Chisel",
+	"item-sword-*":"Steel Sword",
+	"itemdesc-sword":"A Steel sword blade in the anchient style of 'Gladii'... ",
+	"item-swordblade-*":"Steel Sword-blade",
+	"item-sharpening_stone":"Sharpening Whetstones",
+
+
 }

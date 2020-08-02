@@ -16,7 +16,7 @@ namespace ElementalTools
 
 
 		private ServerCoreAPI ServerCore { get; set; }
-		//private RecipeLoader LoaderOfRecipies { get; set;}
+		private RecipeLoader LoaderOfRecipies { get; set;}
 
 		public override bool AllowRuntimeReload {
 			get { return false; }
@@ -50,7 +50,7 @@ namespace ElementalTools
 		public override void StartServerSide(ICoreServerAPI api)
 		{
 		this.ServerAPI = api;
-		//LoaderOfRecipies = ServerAPI.ModLoader.GetModSystem<RecipeLoader>( );
+		LoaderOfRecipies = ServerAPI.ModLoader.GetModSystem<RecipeLoader>( );
 
 		if (api is ServerCoreAPI) {
 		ServerCore = api as ServerCoreAPI;

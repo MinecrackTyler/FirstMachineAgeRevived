@@ -1,0 +1,118 @@
+{
+	"editor": {
+		"allAngles": true,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+	},
+	"textures": {
+		"blister_steel": "fma:metal/blister_steel"
+	},
+	"elements": [
+		{
+			"name": "card1",
+			"from": [ 6.5, 0.0, 4.0 ], 
+			"to": [ 9.5, 2.0, 5.0 ], 
+			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
+			"faces": {
+				"north": { "texture": "#blister_steel", "uv": [ 7.0, 6.0, 10.0, 8.0 ] },
+				"east": { "texture": "#blister_steel", "uv": [ 5.5, 2.0, 6.5, 4.0 ] },
+				"south": { "texture": "#blister_steel", "uv": [ 8.0, 11.0, 11.0, 13.0 ] },
+				"west": { "texture": "#blister_steel", "uv": [ 10.0, 8.0, 11.0, 10.0 ] },
+				"up": { "texture": "#blister_steel", "uv": [ 5.5, 5.0, 8.5, 6.0 ] },
+				"down": { "texture": "#blister_steel", "uv": [ 9.5, 2.0, 12.5, 3.0 ] }
+			}
+		},
+		{
+			"name": "card2",
+			"from": [ 7.0, 0.0, 5.25 ], 
+			"to": [ 10.0, 2.0, 6.25 ], 
+			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
+			"rotationY": -8.0,
+			"faces": {
+				"north": { "texture": "#blister_steel", "uv": [ 7.0, 6.0, 10.0, 8.0 ] },
+				"east": { "texture": "#blister_steel", "uv": [ 5.0, 2.0, 6.0, 4.0 ] },
+				"south": { "texture": "#blister_steel", "uv": [ 8.0, 11.0, 11.0, 13.0 ] },
+				"west": { "texture": "#blister_steel", "uv": [ 9.5, 8.0, 10.5, 10.0 ] },
+				"up": { "texture": "#blister_steel", "uv": [ 7.5, 7.0, 10.5, 8.0 ] },
+				"down": { "texture": "#blister_steel", "uv": [ 9.5, 2.0, 12.5, 3.0 ] }
+			}
+		},
+		{
+			"name": "card3",
+			"from": [ 6.5, 0.0, 6.5 ], 
+			"to": [ 9.5, 2.0, 7.5 ], 
+			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
+			"rotationX": -5.0,
+			"faces": {
+				"north": { "texture": "#blister_steel", "uv": [ 7.0, 6.0, 10.0, 8.0 ] },
+				"east": { "texture": "#blister_steel", "uv": [ 6.0, 2.0, 7.0, 4.0 ] },
+				"south": { "texture": "#blister_steel", "uv": [ 8.0, 11.0, 11.0, 13.0 ] },
+				"west": { "texture": "#blister_steel", "uv": [ 2.0, 8.5, 3.0, 10.5 ] },
+				"up": { "texture": "#blister_steel", "uv": [ 7.5, 7.5, 10.5, 8.5 ] },
+				"down": { "texture": "#blister_steel", "uv": [ 9.5, 2.0, 12.5, 3.0 ] }
+			}
+		},
+		{
+			"name": "card4",
+			"from": [ 5.5, 0.0, 7.5 ], 
+			"to": [ 8.5, 2.0, 8.5 ], 
+			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
+			"rotationY": 1.0,
+			"faces": {
+				"north": { "texture": "#blister_steel", "uv": [ 7.0, 6.0, 10.0, 8.0 ] },
+				"east": { "texture": "#blister_steel", "uv": [ 13.5, 2.0, 14.5, 4.0 ] },
+				"south": { "texture": "#blister_steel", "uv": [ 8.0, 11.0, 11.0, 13.0 ] },
+				"west": { "texture": "#blister_steel", "uv": [ 11.0, 8.0, 12.0, 10.0 ] },
+				"up": { "texture": "#blister_steel", "uv": [ 7.5, 8.5, 10.5, 9.5 ] },
+				"down": { "texture": "#blister_steel", "uv": [ 9.5, 2.0, 12.5, 3.0 ] }
+			}
+		},
+		{
+			"name": "card5",
+			"from": [ 6.5, 0.0, 8.75 ], 
+			"to": [ 9.5, 2.0, 9.75 ], 
+			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
+			"rotationX": -7.0,
+			"faces": {
+				"north": { "texture": "#blister_steel", "uv": [ 7.0, 6.0, 10.0, 8.0 ] },
+				"east": { "texture": "#blister_steel", "uv": [ 8.5, 3.0, 9.5, 5.0 ] },
+				"south": { "texture": "#blister_steel", "uv": [ 8.0, 11.0, 11.0, 13.0 ] },
+				"west": { "texture": "#blister_steel", "uv": [ 13.0, 8.0, 14.0, 10.0 ] },
+				"up": { "texture": "#blister_steel", "uv": [ 7.5, 9.5, 10.5, 10.5 ] },
+				"down": { "texture": "#blister_steel", "uv": [ 9.5, 2.0, 12.5, 3.0 ] }
+			}
+		},
+		{
+			"name": "card6",
+			"from": [ 6.5, 0.0, 10.0 ], 
+			"to": [ 9.5, 1.0, 12.0 ], 
+			"rotationOrigin": [ 8.0, 0.0, 7.0 ],
+			"rotationY": -3.0,
+			"faces": {
+				"north": { "texture": "#blister_steel", "uv": [ 7.0, 6.0, 10.0, 7.0 ] },
+				"east": { "texture": "#blister_steel", "uv": [ 6.5, 2.0, 8.5, 3.0 ] },
+				"south": { "texture": "#blister_steel", "uv": [ 8.0, 11.0, 11.0, 12.0 ] },
+				"west": { "texture": "#blister_steel", "uv": [ 12.5, 8.0, 14.5, 9.0 ] },
+				"up": { "texture": "#blister_steel", "uv": [ 7.5, 10.5, 10.5, 12.5 ] },
+				"down": { "texture": "#blister_steel", "uv": [ 9.5, 2.0, 12.5, 4.0 ] }
+			}
+		},
+		{
+			"name": "card7",
+			"from": [ 6.5, -2.5, 13.0 ], 
+			"to": [ 9.5, -0.5, 14.0 ], 
+			"rotationOrigin": [ 8.0, -2.0, 8.0 ],
+			"rotationX": -28.0,
+			"faces": {
+				"north": { "texture": "#blister_steel", "uv": [ 7.0, 6.0, 10.0, 8.0 ] },
+				"east": { "texture": "#blister_steel", "uv": [ 5.5, 4.0, 6.5, 6.0 ] },
+				"south": { "texture": "#blister_steel", "uv": [ 6.5, 11.0, 9.5, 13.0 ] },
+				"west": { "texture": "#blister_steel", "uv": [ 14.5, 8.0, 15.5, 10.0 ] },
+				"up": { "texture": "#blister_steel", "uv": [ 9.5, 11.0, 12.5, 12.0 ] },
+				"down": { "texture": "#blister_steel", "uv": [ 9.5, 2.0, 12.5, 3.0 ] }
+			}
+		}
+	]}

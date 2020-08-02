@@ -29,6 +29,7 @@ namespace ElementalTools
 		internal const string malletAssetKey = @"mallet";
 		internal const string hammerAssetKey = @"hammer";
 		internal const string fmaKey = @"fma";
+		internal const string sharpeningStoneAssetKey = @"sharpening_stone";
 
 		internal const string pack_carburizationClassKey = @"PackCarburization";
 		internal const string PackCarburizationEntityNameKey = @"PackCarburizationEntity";
@@ -63,19 +64,27 @@ namespace ElementalTools
 		{
 		CoreAPI.RegisterBlockClass(pack_carburizationClassKey, typeof(PackCarburization));
 		CoreAPI.RegisterBlockEntityClass(PackCarburizationEntityNameKey, typeof(PackCarburizationEntity));
+
 		}
 
 		private void ManipulateGridRecipies( )
 		{
 		Mod.Logger.VerboseDebug($"Total GridRecipies: {CoreAPI.World.GridRecipes.Count}");
 
+		MalletInsertion( );
+		GenerateSharpeningGridRecipies( );
 
+
+		}
+
+		private void MalletInsertion( )
+		{
 		var nonCrushingHammerRecipies = from gridRecipie in CoreAPI.World.GridRecipes
-							 where gridRecipie.Ingredients.Any(gi => gi.Value.IsTool && gi.Value.Code.BeginsWith(GlobalConstants.DefaultDomain, hammerAssetKey))
-							 where gridRecipie.Output.Code.BeginsWith(GlobalConstants.DefaultDomain, @"nugget") == false
-							 where gridRecipie.Output.Code.BeginsWith(GlobalConstants.DefaultDomain, @"lime") == false
-							 select gridRecipie;
-
+											where gridRecipie.Ingredients.Any(gi => gi.Value.IsTool && gi.Value.Code.BeginsWith(GlobalConstants.DefaultDomain, hammerAssetKey))
+											where gridRecipie.Output.Code.BeginsWith(GlobalConstants.DefaultDomain, @"nugget") == false
+											where gridRecipie.Output.Code.BeginsWith(GlobalConstants.DefaultDomain, @"lime") == false
+											select gridRecipie;
+			
 		CraftingRecipeIngredient hammerIngredient = new CraftingRecipeIngredient {
 			Type = EnumItemClass.Item,
 			//Name = "hammer",
@@ -95,47 +104,127 @@ namespace ElementalTools
 		};
 
 		var results = SingleSwapinReplicas(nonCrushingHammerRecipies, hammerIngredient, malletIngredient);
-
-
 		Mod.Logger.Event($"Added {results} Mallet recipies");
-
-
 		}
 
-		private void GenerateSteelPlaceholders( )
+
+		private void GenerateSharpeningGridRecipies( )
 		{
-		//For  "blister_steel" Tier 4 steel tools & tool-heads ...ect...made from iron templates
-		var toolsEquivalentList = new string[]{
-		"axehead",
-		"hammerhead",
-		"arrowhead",
-		//"swordblade",
-		"scythehead",
-		"sawblade",
-		"prospectingpickhead",
-		"shovelhead",
-		"pickaxehead",
-		"knifeblade",
-		"hoehead",		
-		"chisel"
+		var sharpenableThings = new string[ ]{
+		//"axehead",
+		"axe-*",
+		//"hammerhead",
+		//"arrowhead",
+		"swordblade-*",
+		"sword-*",
+		//"scythehead",
+		//"sawblade",
+		//"prospectingpickhead",
+		//"shovelhead",
+		//"pickaxehead",
+		//"knifeblade",
+		//"hoehead",
+		"chisel-*"
 		};
 
-		var ironThingsList = from collectee in CoreAPI.World.Collectibles	                                          
-							 			where toolsEquivalentList.Any(toolEqv => collectee.Code.BeginsWith(GlobalConstants.DefaultDomain, toolEqv))
-                                      	where collectee.IsFerricMetal()						                                        
-										select collectee.Code;
+		var variants = new string[ ]
+		{
+		BlisterSteelNameKey,
+		ShearSteelNameKey,
+		};
 
-		#if DEBUG
-		Mod.Logger.VerboseDebug("Found {0} Iron things to clone into '{1}' equivalents", ironThingsList.Count( ), BlisterSteelNameKey);
-		#endif
+		GridRecipe sharpeningPattern = new GridRecipe( ) {
+			Enabled = true,
+			Height = 3,
+			Width = 1,
+			Shapeless = false,
+			Name = new AssetLocation(fmaKey, "Steel_sharpening_"),//Automatic ## appended...
+			IngredientPattern = "H\tL\tS",
+				Ingredients = new Dictionary<string, CraftingRecipeIngredient>( )
+				{
+					{"H", new CraftingRecipeIngredient()
+						{
+							Type = EnumItemClass.Item,
+							Code = new AssetLocation(fmaKey,"#"),
+							IsWildCard = true,
+							AllowedVariants = variants,
+							Name = MetalNameKey,
+							Quantity = 1,
+						}
+					},
+					{
+					"L",  new CraftingRecipeIngredient()
+						{
+							Type = EnumItemClass.Item,
+							Code = new AssetLocation(GlobalConstants.DefaultDomain,"fat"),//Consider: Lubricants of the Future?
+							Quantity = 1,
+						}
+					},
+					{
+					"S", new CraftingRecipeIngredient()
+						{
+							Type = EnumItemClass.Item,
+							IsTool = true,
+							Code = new AssetLocation(fmaKey,sharpeningStoneAssetKey),
+							Quantity = 1,
+						}
+					}
+				},
+				Output = new CraftingRecipeIngredient( ) 
+				{
+					Type = EnumItemClass.Item,
+					Quantity = 1,
+					Code = new AssetLocation(fmaKey, @"#"),//Code//Cloned from 'H' - with Wildcard ending {metal}
+					//IsWildCard = true,
 
-		var result = MetalSwapCloning(ironThingsList, BlisterSteelNameKey);
-					
-		Mod.Logger.Event("Made {0} patterns of '{1}' (placeholders)", result, BlisterSteelNameKey);		
+				},
+
+		};
+
+		var results = SingleVariableToolRecipies(sharpenableThings, sharpeningPattern,'H', "metal");
+		Mod.Logger.Event($"Added {results} Sharpening recipes");
 
 		}
 
-		private uint SingleSwapinReplicas(IEnumerable<GridRecipe> sourceRecipies, CraftingRecipeIngredient target, CraftingRecipeIngredient replacement)
+		/// <summary>
+		/// Permutate the variant tool recipies.
+		/// </summary>
+		/// <returns>Count created </returns>
+		/// <param name="targetsNames">Targets names. (variants preset!)</param>
+		/// <param name="generalPattern">General pattern (tool predefined!).</param>
+		/// <param name="outputCloneKey">Clone key (ouput)</param>
+		internal uint SingleVariableToolRecipies(IEnumerable<string> targetsNames, GridRecipe generalPattern, char outputCloneKey, string remapName = "" )
+		{
+		uint recipieCount = 0;
+					
+		foreach (var name in targetsNames) 
+		{
+		var editRecipe = generalPattern.Clone( );
+		editRecipe.Name = editRecipe.Name.WithPathAppendix(recipieCount.ToString("D"));
+		CraftingRecipeIngredient thingToClone;
+		if (editRecipe.Ingredients.TryGetValue(outputCloneKey.ToString(), out thingToClone))
+		{
+		string remapedOutput = name.Replace("*", "{"+remapName+"}");// "-{remapName}" instead of "*"
+		thingToClone.Code = new AssetLocation(fmaKey, name);
+		editRecipe.Output = new CraftingRecipeIngredient( ) {
+			Type = thingToClone.Type,
+			Quantity = thingToClone.Quantity,
+			Code = new AssetLocation(fmaKey, remapedOutput),
+			//IsWildCard = true,	//No...
+		};
+
+		//editRecipe.ResolveIngredients(ServerCore.World);
+		LoaderOfRecipies.LoadRecipe(new AssetLocation(fmaKey, "singletoolvar_"+recipieCount.ToString("D")), editRecipe);
+		recipieCount++;
+		}
+
+		}
+
+
+		return recipieCount;
+		}
+
+		internal uint SingleSwapinReplicas(IEnumerable<GridRecipe> sourceRecipies, CraftingRecipeIngredient target, CraftingRecipeIngredient replacement)
 		{
 		uint replicaCount = 0;
 
@@ -165,86 +254,6 @@ namespace ElementalTools
 		return replicaCount;
 		}
 
-		//before server runphase LoadGame
-		private uint MetalSwapCloning(IEnumerable<AssetLocation> sourceAssets, string materialReplacement)
-		{
-		uint counter = 0;
-
-		var metalTexture = new CompositeTexture(new AssetLocation(fmaKey, MetalNameKey+"/" +materialReplacement));
-
-		foreach (var asset in sourceAssets) {
-		var collectable = CoreAPI.World.Collectibles.Find(ci => ci.Code.Equals(asset));
-		if (collectable != null) {
-		if (collectable.ItemClass == EnumItemClass.Item) {
-		var Clonee = CoreAPI.World.GetItem(asset);
-
-		var transmutedAssetLocation = Clonee.TransmuteByVariants(new string[ ] { MaterialNameKey, MetalNameKey }, materialReplacement);
-		Clonee.Code = transmutedAssetLocation;
-		Clonee.Code.Domain = fmaKey;
-		Clonee.ToolTier = 4;
-		Clonee.ItemId = 0;
-		//SET: Textures, shape, other properties....		
-		Clonee.Textures[MaterialNameKey] = metalTexture;
-		Clonee.Textures[MetalNameKey] = metalTexture;
-
-		Mod.Logger.VerboseDebug("Adding placeholder: {0} from {1}", Clonee.Code, asset);
-		ServerCore.RegisterItem(Clonee.Clone());
-		counter++;
-		}
-		else {
-		var Clonee = CoreAPI.World.GetBlock(asset);
-		var transmutedAssetLocation = Clonee.TransmuteByVariants(new string[ ] { MaterialNameKey, MetalNameKey }, materialReplacement);
-		Clonee.Code = transmutedAssetLocation;
-		Clonee.Code.Domain = fmaKey;
-		Clonee.ToolTier = 4;		
-		Clonee.BlockId = 0;
-		//SET: Textures, shape, other properties....
-		Clonee.Textures[MaterialNameKey] = metalTexture;
-		Clonee.Textures[MetalNameKey] = metalTexture;
-
-		Mod.Logger.VerboseDebug("Adding placeholder: {0} from {1}", Clonee.Code, asset);
-		ServerCore.RegisterBlock(Clonee.Clone());
-		counter++;
-		}
-		}
-		else Mod.Logger.Warning("Cannot locate asset for cloning: {0}", asset);
-					
-		}
-
-		return counter;
-		}
-
-		//TODO: Recycling assignment of Smeltable properties from all smith/grid/recipe forms...
-
-
-		private void RemapPlaceholders( )
-		{
-		var RecipieLoader = CoreAPI.ModLoader.GetModSystem<RecipeLoader>( );
-
-		Dictionary<AssetLocation, JToken> fmaGridRecipieFiles = CoreAPI.Assets.GetMany<JToken>(Mod.Logger, "recipes/grid/remapping",fmaKey);
-		uint recipeQuantity = 0;
-
-		foreach (var val in fmaGridRecipieFiles) {
-		Mod.Logger.VerboseDebug("G.R: {0} Processing...", val.Key.ToString());
-		if (val.Value is JObject) {
-		var gridRecipe = val.Value.ToObject<GridRecipe>(val.Key.Domain);
-		gridRecipe.Enabled = true;
-		RecipieLoader.LoadRecipe(val.Key, gridRecipe );
-		recipeQuantity++;
-		}
-		if (val.Value is JArray) {
-		foreach (var token in (val.Value as JArray)) {
-		var gridRecipe = token.ToObject<GridRecipe>(val.Key.Domain);
-
-		RecipieLoader.LoadRecipe(val.Key, gridRecipe);
-		gridRecipe.Enabled = true;
-		recipeQuantity++;
-		}
-		}
-		}
-
-		Mod.Logger.Event("{0} grid recipes re-loaded from {1} files", recipeQuantity, fmaGridRecipieFiles.Count);		
-		}
 	}
 }
 

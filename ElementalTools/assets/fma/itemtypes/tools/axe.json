@@ -12,14 +12,14 @@
 		}
 	},
 	variantgroups: [
-		{ code: "material", states: ["blister_steel", "shear_steel" ] },
+		{ code: "metal", states: ["blister_steel", "shear_steel" ] },
 	],
 	tool: "axe",
 	damagedby: ["blockbreaking", "attacking"],
 	shape: { base: "game:item/tool/axe-iron" },	
 	heldTpHitAnimation: "axechop",
 	textures: {
-			"material": { base: "metal/{material}" }
+			"material": { base: "metal/{metal}" }
 		},	
 	attackRange: 2,
 	tooltierByType: {
