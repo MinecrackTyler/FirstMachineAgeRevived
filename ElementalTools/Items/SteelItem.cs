@@ -290,7 +290,7 @@ namespace ElementalTools
 
 		public override float GetAttackPower(IItemStack withItemStack)
 		{
-		var defaultPower = WrappedItem.GetAttackPower(withItemStack);
+		var defaultPower = base.GetAttackPower(withItemStack);
 
 		if (this.Sharpenable) {
 		var sharpness = Sharpness(withItemStack);
@@ -609,6 +609,22 @@ namespace ElementalTools
 		{
 		WrappedItem.OnHeldAttackStart(slot, byEntity, blockSel, entitySel, ref handling);
 		}
+
+		public override bool OnHeldAttackStep(float secondsPassed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSelection, EntitySelection entitySel)
+		{
+		return WrappedItem.OnHeldAttackStep(secondsPassed, slot, byEntity, blockSelection, entitySel);
+		}
+
+		public override void OnHeldAttackStop(float secondsPassed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSelection, EntitySelection entitySel)
+		{
+		WrappedItem.OnHeldAttackStop(secondsPassed, slot, byEntity, blockSelection, entitySel);
+		}
+
+		public override bool OnHeldAttackCancel(float secondsPassed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSelection, EntitySelection entitySel, EnumItemUseCancelReason cancelReason)
+		{
+		return WrappedItem.OnHeldAttackCancel(secondsPassed, slot, byEntity, blockSelection, entitySel, cancelReason);
+		}
+
 
 		/*
 		public override TransitionableProperties[ ] GetTransitionableProperties(IWorldAccessor world, ItemStack itemstack, Entity forEntity)

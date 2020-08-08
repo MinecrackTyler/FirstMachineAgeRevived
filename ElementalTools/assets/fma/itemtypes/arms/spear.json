@@ -1,0 +1,88 @@
+﻿{
+	code: "spear",
+	class: "Steel_ItemSpear",
+	damagedby: ["attacking"],
+	tool: "spear",
+	variantgroups: [
+		{ code: "metal", states: ["blister_steel", "shear_steel"] },
+	],
+	shape: { base: "item/arms/dory" },
+	heldTpHitAnimation: "spearhit",
+	textures: {
+		"nails": { base : "game:block/metal/sheet/iron1"},
+		"metal": { base : "fma:metal/{metal}"},
+		"string": { base : "game:item/tool/material/string"},
+		"redwood": { base :"game:block/wood/debarked/redwood"}
+	},
+	attackRange: 3.5,
+	attackpowerbytype: {		
+		"spear-blister_steel": 3.9,
+        "spear-shear_steel": 4.1,
+	},
+    tooltierbytype: {		
+		"*-blister_steel": 5,
+        "*-shear_steel": 5,
+	},
+	"__comment": "Thrown damage",
+	attributes: {
+		damageByType: {			
+			"*-blister_steel": 8.5,
+            "*-shear_steel": 9,
+		},
+		spearEntityCode: "spear-{metal}",
+		handbook: {
+			groupBy: ["spear-*"]
+		},
+		toolrackTransform:  
+        {
+			rotation: { y: 1, z: -1 },
+			translation: { x: -0.35, y: 0.5 },
+			scale: 1
+		},		
+	},
+    attributesByType: {
+		"*-blister_steel": {
+			metalName:"Blister Steel",
+			sharpenable: true,
+			hardenable: false,
+		},
+		"*-shear_steel": {
+			metalName:"Shear Steel",
+			sharpenable: true,
+			hardenable: false,
+		},
+		"*": {
+			sharpenable: true,
+			hardenable: false,        
+		}
+    },   	
+	durabilitybytype: {		
+		"spear-blister_steel": 900,
+		"spear-shear_steel": 1000
+	},
+	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
+	guiTransform: {
+		translation: { x: 1, y: 2, z: 0 },
+		rotation: { x: -31, y: 57, z: -1 },
+		origin: { x: 0.4, y: 0.1, z: 0.4 },
+		scale: 0.85
+	},			
+	fpHandTransform: {
+		translation: { x: 0.3, y: 0.5, z: 0.16 },
+		rotation: { x: -86, y: -90, z: 90 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 2.45
+	},
+	groundTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 3.4
+	},
+	tpHandTransformByType: {				
+		translation: { x: -1.24, y: -0.01, z: -0.56 },
+		rotation: { x: -81, y: 0, z: 0 },
+		origin: { x: 0.6, y: 0, z: 0.5 },
+		scale: 0.8		
+	},
+}

@@ -1,0 +1,41 @@
+﻿{
+	code: "spear",
+	class: "EntityProjectile",
+	hitboxSize: { x: 0.125, y: 0.125 },
+	variantgroups: [
+		{ code: "metal", states: ["blister_steel", "shear_steel"] },
+	],
+	client: {
+		renderer: "Shape",
+		shapeByType: {			
+			"spear-blister_steel": { base: "item/arms/dory" , offsetX: -0.8125 },
+			"spear-shear_steel": { base: "item/arms/dory" , offsetX: -0.8125 },
+		},
+		textures: {
+		"nails": { base : "game:block/metal/sheet/nails"},
+		"metal": { base : "fma:metal/{metal}"},
+		"string": { base : "game:item/tool/material/string"},
+		"redwood": { base :"game:block/wood/debarked/redwood"}
+		},
+		behaviors: [
+			{ 
+				code: "passivephysics", 
+				groundDragFactor: 1,
+				airDragFallingFactor: 0.25
+			}, 
+			{ code: "interpolateposition" }
+		],
+	},
+	server: {
+		behaviors: [
+			{ 
+				code: "passivephysics", 
+				groundDragFactor: 1,
+				airDragFallingFactor: 0.25
+			}, 
+			{ code: "despawn", minSeconds: 300 }
+		]
+	},
+	sounds: {
+	},
+}

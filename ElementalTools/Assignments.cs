@@ -23,6 +23,7 @@ namespace ElementalTools
 		internal const string genericSteelSwordKey = @"Steel_ItemSword";
 		internal const string genericSteelChiselKey = @"Steel_ItemChisel";
 		internal const string genericSteelAxeKey = @"Steel_ItemAxe";
+		internal const string genericSteelSpearKey = @"Steel_ItemSpear";
 
 		internal const string pack_carburizationBlockKey = @"pack_carburization";
 		internal const string pack_stateFired = @"fired";
@@ -55,7 +56,18 @@ namespace ElementalTools
 		CoreAPI.RegisterItemClass(genericSteelSwordKey, typeof(SteelWrap<ItemSword>) );
 		CoreAPI.RegisterItemClass(genericSteelChiselKey, typeof(SteelWrap<ItemChisel>));
 		CoreAPI.RegisterItemClass(genericSteelAxeKey, typeof(SteelWrap<ItemAxe>));
+		CoreAPI.RegisterItemClass(genericSteelSpearKey, typeof(SteelWrap<ItemSpear>));
 
+
+		}
+
+		private void RegisterEntityClasses( )
+		{
+		//spearEntityCode: "spear-{metal}",
+		//CoreAPI.RegisterEntity("spear-" + BlisterSteelNameKey, typeof(EntityProjectile));
+		//CoreAPI.RegisterEntity("spear-" + ShearSteelNameKey, typeof(EntityProjectile));
+
+		
 
 
 		}
@@ -67,15 +79,7 @@ namespace ElementalTools
 
 		}
 
-		private void ManipulateGridRecipies( )
-		{
-		Mod.Logger.VerboseDebug($"Total GridRecipies: {CoreAPI.World.GridRecipes.Count}");
 
-		MalletInsertion( );
-		GenerateSharpeningGridRecipies( );
-
-
-		}
 
 		private void MalletInsertion( )
 		{
@@ -252,6 +256,24 @@ namespace ElementalTools
 		}				
 		}		
 		return replicaCount;
+		}
+
+		internal uint CloneEntityClasses( )
+		{
+		uint counter = 0;
+		//BUG DODGER: Duplicate FMA:spear-blah projectiles into domain: 'game'...
+		var fmaThings = CoreAPI.World.EntityTypes.Where(thg => thg.Code.Domain.Equals(fmaKey, StringComparison.Ordinal));
+		foreach (var thing in fmaThings) {
+		Mod.Logger.VerboseDebug("found EntityType; Code[{0}] ", thing.Code);
+		var clone = thing.Clone( );
+		clone.Code.Domain = GlobalConstants.DefaultDomain;
+		CoreAPI.World.EntityTypes.Add(clone);
+		Mod.Logger.VerboseDebug("Registering clone of EntityProperties; Code[{0}]:[{1}]", clone.Code, clone.Class);
+		//RegisterEntityClass
+		CoreAPI.RegisterEntityClass(clone.Class, clone);
+		counter++;
+		}
+		return counter;
 		}
 
 	}
