@@ -30,6 +30,16 @@ namespace ElementalTools
 
 		internal const string durabilityKeyword = @"durability";
 
+		internal readonly BGRAColor_Int32 color_Rough = new BGRAColor_Int32(0xFF, 0x66, 0x00);
+		internal readonly BGRAColor_Int32 color_Dull = new BGRAColor_Int32(0xFF, 0xBE, 0x00);
+		internal readonly BGRAColor_Int32 color_Honed = new BGRAColor_Int32(0xE8, 0xFF, 0x00);
+		internal readonly BGRAColor_Int32 color_Keen = new BGRAColor_Int32(0x7D, 0xFF, 0x00);
+		internal readonly BGRAColor_Int32 color_Sharp = new BGRAColor_Int32(0x00, 0xFF, 0x12);
+		internal readonly BGRAColor_Int32 color_Razor = new BGRAColor_Int32(0x00, 0xFF, 0xD7);
+		internal readonly BGRAColor_Int32 color_Default = new BGRAColor_Int32(0xFF, 0x00, 0x00);
+
+
+
 		/*
 		public virtual float GetAttackPower (IItemStack withItemStack)
 		public virtual float GetDurability (IItemStack itemstack) //Leave unchanged - it never increases...
@@ -544,25 +554,25 @@ namespace ElementalTools
 
 		switch (edge) {
 		case SharpnessState.Rough:
-			return ColorUtil.ColorFromRgba(0xFF, 0x66, 0, 0);
+			return this.color_Rough.IntegerValue;
 
 		case SharpnessState.Dull:
-			return ColorUtil.ColorFromRgba(0xFF, 0xBE, 0, 0);
+			return this.color_Dull.IntegerValue;
 
 		case SharpnessState.Honed:
-			return ColorUtil.ColorFromRgba(0xE8, 0xFF, 0, 0);
+			return this.color_Honed.IntegerValue;
 
 		case SharpnessState.Keen:
-			return ColorUtil.ColorFromRgba(0x7D, 0xFF, 0, 0);
+			return this.color_Keen.IntegerValue;
 
 		case SharpnessState.Sharp:
-			return ColorUtil.ColorFromRgba(0, 0xFF, 0x12, 0);
+			return this.color_Sharp.IntegerValue;
 
 		case SharpnessState.Razor:
-			return ColorUtil.ColorFromRgba(0, 0xFF, 0xD7, 0);
+			return this.color_Razor.IntegerValue;
 		}
 
-		return ColorUtil.ColorFromRgba(0xFF, 0, 0, 0);
+		return this.color_Default.IntegerValue;
 		}
 
 		#endregion
