@@ -94,7 +94,7 @@ namespace ElementalTools
 		WrappedItem.Variant = this.Variant;
 		WrappedItem.VariantStrict = this.VariantStrict;
 		WrappedItem.Tool = this.Tool;
-		WrappedItem.Attributes = this.Attributes;
+		WrappedItem.Attributes = this.Attributes.Clone();
 		WrappedItem.MiningSpeed = this.MiningSpeed;
 		WrappedItem.Shape = this.Shape;
 		WrappedItem.StorageFlags = this.StorageFlags;
@@ -103,6 +103,7 @@ namespace ElementalTools
 		WrappedItem.AttackPower = this.AttackPower;
 		WrappedItem.AttackRange = this.AttackRange;
 		WrappedItem.ToolTier = this.ToolTier;
+		WrappedItem.MaxStackSize = this.MaxStackSize;
 		WrappedItem.MaterialDensity = this.MaterialDensity;		
 		
 		WrappedItem.OnLoadedNative(api);//Hacky - but needed?

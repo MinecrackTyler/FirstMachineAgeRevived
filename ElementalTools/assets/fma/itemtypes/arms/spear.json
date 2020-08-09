@@ -2,7 +2,7 @@
 	code: "spear",
 	class: "Steel_ItemSpear",
 	damagedby: ["attacking"],
-	tool: "spear",
+	tool: "Spear",
 	variantgroups: [
 		{ code: "metal", states: ["blister_steel", "shear_steel"] },
 	],
@@ -23,37 +23,35 @@
 		"*-blister_steel": 5,
         "*-shear_steel": 5,
 	},
-	"__comment": "Thrown damage",
-	attributes: {
-		damageByType: {			
-			"*-blister_steel": 8.5,
-            "*-shear_steel": 9,
-		},
-		spearEntityCode: "spear-{metal}",
-		handbook: {
-			groupBy: ["spear-*"]
-		},
-		toolrackTransform:  
-        {
-			rotation: { y: 1, z: -1 },
-			translation: { x: -0.35, y: 0.5 },
-			scale: 1
-		},		
-	},
+    maxstacksize:1,
+	"__comment": "Thrown damage",	
     attributesByType: {
 		"*-blister_steel": {
 			metalName:"Blister Steel",
 			sharpenable: true,
 			hardenable: false,
+            spearEntityCode: "spear-{metal}",
+            damage: 8.5,
 		},
 		"*-shear_steel": {
 			metalName:"Shear Steel",
 			sharpenable: true,
 			hardenable: false,
+            spearEntityCode: "spear-{metal}",
+            damage: 9.0,
 		},
 		"*": {
 			sharpenable: true,
 			hardenable: false,        
+            toolrackTransform:  
+       	 	{
+			rotation: { y: 1, z: -1 },
+			translation: { x: -0.35, y: 0.5 },
+			scale: 1
+			},		
+            handbook: {
+			groupBy: ["spear-*"]
+			},
 		}
     },   	
 	durabilitybytype: {		
@@ -69,20 +67,17 @@
 	},			
 	fpHandTransform: {
 		translation: { x: 0.3, y: 0.5, z: 0.16 },
-		rotation: { x: -86, y: -90, z: 90 },
-		origin: { x: 0.5, y: 0, z: 0.5 },
+		rotation: { x: -86, y: -90, z: 90 },		
 		scale: 2.45
 	},
 	groundTransform: {
 		translation: { x: 0, y: 0, z: 0 },
-		rotation: { x: 0, y: 0, z: 0 },
-		origin: { x: 0.5, y: 0, z: 0.5 },
+		rotation: { x: 0, y: 0, z: 0 },		
 		scale: 3.4
 	},
 	tpHandTransformByType: {				
 		translation: { x: -1.24, y: -0.01, z: -0.56 },
-		rotation: { x: -81, y: 0, z: 0 },
-		origin: { x: 0.6, y: 0, z: 0.5 },
+		rotation: { x: -81, y: 0, z: 0 },		
 		scale: 0.8		
 	},
 }
