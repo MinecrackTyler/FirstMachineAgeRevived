@@ -554,25 +554,25 @@ namespace ElementalTools
 
 		switch (edge) {
 		case SharpnessState.Rough:
-			return this.color_Rough.IntegerValue;
+			return this.color_Rough;
 
 		case SharpnessState.Dull:
-			return this.color_Dull.IntegerValue;
+			return this.color_Dull;
 
 		case SharpnessState.Honed:
-			return this.color_Honed.IntegerValue;
+			return this.color_Honed;
 
 		case SharpnessState.Keen:
-			return this.color_Keen.IntegerValue;
+			return this.color_Keen;
 
 		case SharpnessState.Sharp:
-			return this.color_Sharp.IntegerValue;
+			return this.color_Sharp;
 
 		case SharpnessState.Razor:
-			return this.color_Razor.IntegerValue;
+			return this.color_Razor;
 		}
 
-		return this.color_Default.IntegerValue;
+		return this.color_Default;
 		}
 
 		#endregion

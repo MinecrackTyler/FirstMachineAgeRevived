@@ -46,7 +46,10 @@ namespace ElementalTools
 		Alpha = a;
 		}
 
-
+		public static implicit operator int(RGBAColor_Int32 input)
+		{
+		return input.IntegerValue;
+		}
 	}
 
 	[StructLayout(LayoutKind.Explicit, Size = 4, Pack = 1)]
@@ -85,7 +88,10 @@ namespace ElementalTools
 		Alpha = a;
 		}
 
-
+		public static implicit operator int(BGRAColor_Int32 input)
+		{
+		return input.IntegerValue;
+		}
 	}
 
 
