@@ -102,6 +102,7 @@
     <Folder Include="assets\fma\config\" />
     <Folder Include="assets\fma\config\handbook\" />
     <Folder Include="assets\fma\entities\" />
+    <Folder Include="assets\fma\itemtypes\tools\heads\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
@@ -193,8 +194,12 @@
     <None Include="assets\fma\itemtypes\tools\prospectingpick.json" />
     <None Include="assets\fma\itemtypes\tools\scythe.json" />
     <None Include="assets\fma\itemtypes\tools\saw.json" />
-    <None Include="assets\fma\itemtypes\tools\cleaver.json" />
-    <None Include="assets\fma\itemtypes\tools\hammer.json" />
+    <None Include="assets\fma\itemtypes\tools\cleaver.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\itemtypes\tools\hammer.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="assets\fma\itemtypes\tools\shears.json" />
     <None Include="assets\fma\itemtypes\tools\hoe.json" />
     <None Include="assets\fma\itemtypes\arms\spear.json">
@@ -206,6 +211,7 @@
     <None Include="assets\fma\entities\spears.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="assets\fma\itemtypes\tools\heads\hammer_head.json" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,1 +1,71 @@
-﻿
+﻿{
+	code: "cleaver",
+	damagedby: ["blockbreaking", "attacking"],
+	class: "Steel_ItemCleaver",	
+	variantgroups: [
+		{ code: "metal", states: ["blister_steel", "shear_steel" ] },
+	],
+	shape: { base: "game:item/tool/cleaver" },
+	heldTpHitAnimation: "breaktool",
+	textures: {
+		"metal": { base:"fma:metal/{metal}"},
+		"toolhandle": {
+			base: "fma:metal/{metal}",
+			overlays: [ "game:item/tool/cleaver-overlay" ]
+		}
+	},
+	durabilitybytype: {		
+		"*-blister_steel": 1100,
+        "*-shear_steel": 1200,
+	},
+	attackpowerbytype: {
+		"*-blister_steel": 2.75,
+        "*-shear_steel": 3.0,
+	},
+    attributesByType: {
+		"*-blister_steel": {
+			metalName:"Blister Steel",
+			sharpenable: true,
+			hardenable: true,
+		},
+		"*-shear_steel": {
+			metalName:"Shear Steel",
+			sharpenable: true,
+			hardenable: true,
+		},
+        "*": {
+          handbook: {
+			groupBy: ["cleaver-*"]
+		},
+		rackable: true,
+		toolrackTransform: {
+			rotation: { x: 90 },
+			translation: { x: -0.35 },
+			scale: 1.25,
+			},
+        }
+    },   	
+	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
+	fpHandTransform: {
+		translation: { x: -0.34, y: 0, z: 0.4 },
+		rotation: { x: -17, y: -93, z: -75 },
+		scale: 2.5
+	},
+	guiTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 0, y: 26, z: 140 },
+		origin: { x: 0.55, y: 0.52, z: 0.5 },
+		scale: 2.53
+	},
+	groundTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: -90, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0.5, z: 0.45 },
+		scale: 3.6
+	},
+	tpHandTransform: {
+		translation: { x: -0.78, y: -0.44, z: -0.5 },
+		rotation: { x: 0, y: 180, z: -10 },
+		scale: 1
+	}
+}

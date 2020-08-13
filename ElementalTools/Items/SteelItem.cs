@@ -21,6 +21,7 @@ namespace ElementalTools
 		private const float quench_min_temperature = 450f;//Celcius
 
 		private Item WrappedItem;//Special placeholder replica - for calling ancestor class
+
 		internal const string hardenableKeyword = @"hardenable";
 		internal const string sharpenableKeyword = @"sharpenable";
 		internal const string metalNameKeyword = @"metalName";
@@ -181,6 +182,23 @@ namespace ElementalTools
 		someStack.Attributes.SetBytes(sharpnessKeyword, bytes);
 		}
 
+		public virtual SharpnessState Dull(IItemStack someStack)
+		{
+		if (someStack.Attributes != null && someStack.Attributes.HasAttribute(sharpnessKeyword)) {
+		byte[ ] bytes = new byte[1];
+		bytes = someStack.Attributes.GetBytes(sharpnessKeyword, bytes);
+		var state = ( SharpnessState )bytes[0];
+
+		if (state > SharpnessState.Rough) state--;
+
+		bytes[0] = ( byte )state;
+		someStack.Attributes.SetBytes(sharpnessKeyword, bytes);
+
+		return state;
+		}
+		return SharpnessState.Rough;
+		}
+
 		public virtual HardnessState Hardness(IItemStack someStack)
 		{
 		if (someStack.Attributes != null && someStack.Attributes.HasAttribute(hardnessKeyword)) {
@@ -338,9 +356,9 @@ namespace ElementalTools
 		public override void OnAttackingWith(IWorldAccessor world, Entity byEntity, Entity attackedEntity, ItemSlot itemslot)
 		{
 		bool edged = this.Tool.EdgedImpliment( );
-		bool weapon = this.Tool.Weapons( ); 		
+		bool weapon = this.Tool.Weapons( );		
 		float targetArmorFactor = 0.0f;
-
+					
 		/*DETERMINE: 
 		 * Usage - Edged weapon attack Vs. creature Sc.#1 [What about armored players?]
 		 * Non-edged weapon vs. creature Sc. #2 [What about armored players?]
@@ -362,7 +380,7 @@ namespace ElementalTools
 		}
 		*/
 
-		WrappedItem.OnAttackingWith(world, byEntity, attackedEntity, itemslot);
+		//WrappedItem.OnAttackingWith(world, byEntity, attackedEntity, itemslot);
 		}
 
 
@@ -374,50 +392,72 @@ namespace ElementalTools
 		var targetBlock = api.World.BlockAccessor.GetBlock(blockSel.Position);
 		int targetTier = targetBlock.ToolTier;
 		float targetResistance = targetBlock.Resistance;
+		bool recomendedUsage = this.MiningSpeed.ContainsKey(targetBlock.BlockMaterial);
 
 		//Only called for attacks on BLOCKS / Envrionment. Scen# 5 - 6 here.	
-		
+
 		//Weapon & Tool applicability: Is rate > 1 ? then - its sorta OK...ish.
 
 		//Harndess Vs. Block-Resistance...
+		//Tool Specific special damage reduction rate: e.g. scythe, hoe, knife, here...
+		//By MiningSpeed 
+
 
 		api.World.Logger.VerboseDebug($"OnBlockBrokenWith:: (Weap:{weapon},Edge:{edged}) {byEntity.Code} -> {targetBlock.Code}");
 
 
 
 		return WrappedItem.OnBlockBrokenWith(world, byEntity, itemslot, blockSel);
+		//Post Damage reduction? or Increase??
+		
 		}
 
-
+		//This Method signature leaves _ALOT_ to be ascertained about the _ACUTAL_ Scenario / REASON of damage...
+		//Tool/Weapon Vs. What?
 		public override void DamageItem(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, int amount = 1)
 		{
-		//TODO: too sharp edges...wear down EDGE randomly (extra for 'abuse' )
+		//ItemAxe: just repeatedly calls DamageItem....instead of accrued count...lame.
 
-		//Tool Specific special damage reduction rate: e.g. scythe, hoe, knife, here...?
-		//By MiningSpeed ?
+		bool byPlayer = byEntity is EntityPlayer;
+		bool catasptrophicFailure = false, edgeBlunting = false;
+
+		float resistance = 0.0f;
+
 		if (!itemslot.Empty) 
 		{
 		var hardness = this.Hardness(itemslot.Itemstack);
 		switch (hardness) 
 				{
 				case HardnessState.Soft:
-
+					resistance = 0.3f;
+					edgeBlunting = world.Rand.Next(1, 100) >= 99;
 					break;
 				case HardnessState.Medium:
-
+					resistance = -0.1f;
+					edgeBlunting = world.Rand.Next(1, 200) >= 199;
 					break;
 				case HardnessState.Hard:
-
+					resistance = -0.25f;
+					edgeBlunting = world.Rand.Next(1, 300) >= 299;
 					break;
 				case HardnessState.Brittle:
-
-					break;
-				default:
+					resistance = -0.3f;
+					edgeBlunting = world.Rand.Next(1, 400) >= 399;
+					catasptrophicFailure = world.Rand.Next(1, 1000) >= 999; 
 					break;
 				}
 		}
 
-		WrappedItem.DamageItem(world, byEntity, itemslot, amount);
+		amount = amount < 1 ? 1 : amount;//Zero or negative damange, possible but WHY?
+
+		float amountFractional =  (resistance * amount);
+		var dmgRandomizer = NatFloat.createUniform(amount, amountFractional);
+		var actualAmount = ( int )dmgRandomizer.nextFloat( );
+		
+		if (edgeBlunting) this.Dull(itemslot.Itemstack);
+		if (catasptrophicFailure) actualAmount += 1200;
+
+		base.DamageItem(world, byEntity, itemslot, actualAmount);
 		}
 
 
@@ -685,6 +725,8 @@ namespace ElementalTools
 		{
 		return recipient.Attributes.GetInt(durabilityKeyword, recipient.Item.Durability);
 		}
+
+
 	}
 }
 

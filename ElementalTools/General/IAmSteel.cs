@@ -34,7 +34,13 @@ namespace ElementalTools
 		SharpnessState Sharpen(IItemStack someStack);
 
 		/// <summary>
-		/// Read Harness
+		/// Reduce the sharpness.
+		/// </summary>
+		/// <param name="someStack">Some stack.</param>
+		SharpnessState Dull(IItemStack someStack);
+
+		/// <summary>
+		/// Read Hardness
 		/// </summary>
 		/// <param name="someStack">Some stack.</param>
 		HardnessState Hardness(IItemStack someStack);
@@ -45,6 +51,7 @@ namespace ElementalTools
 		/// <param name="someStack">Some stack.</param>
 		/// <param name="set">Value.</param>
 		void Hardness(IItemStack someStack, HardnessState set);//Apply harden - Perhaps translate these to brinell units...
+
 
 		/// <summary>
 		/// Perpetuate Steely attributes from donor to recipient

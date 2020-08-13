@@ -1,1 +1,73 @@
-﻿
+﻿{
+	code: "hammer",
+	class: "Steel_ItemHammer",	
+	variantgroups: [
+		{ code: "metal", states: ["blister_steel", "shear_steel" ] },
+	],
+	tool: "hammer",
+	heldTpHitAnimation: "smithing",
+	shape: { base: "game:item/tool/hammer" },
+	textures: {
+		 "metal": { base:"fma:metal/{metal}"},
+		"wood": { base: "game:item/tool/material/wood" } 
+	},
+	tooltierbytype: {
+		"*-blister_steel": 5,
+		"*-shear_steel": 5,
+	},
+	durabilitybytype: {
+		"*-blister_steel": 2500,
+		"*-shear_steel": 2600,
+	},
+	attackpowerbytype: {
+		"*-blister_steel": 2.5,
+		"*-shear_steel": 2.5,
+	},
+    attributesByType: {
+		"*-blister_steel": {
+			metalName:"Blister Steel",
+			sharpenable: false,
+			hardenable: true,
+		},
+		"*-shear_steel": {
+			metalName:"Shear Steel",
+			sharpenable: false,
+			hardenable: true,
+		},
+        "*": 
+        {
+         handbook: {
+			groupBy: ["hammer-*"]
+		},
+		toolrackTransform: {
+			rotation: { y: 1, z: -1 },
+			translation: { x: -0.2 },
+			scale: 1.5,
+		}
+        }
+    },   	
+	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
+	fpHandTransform: {
+		translation: { x: 0.0468, y: -0.2, z: 0 },
+		rotation: { x: 15, y: 15, z: 90 },
+		scale: 2.5
+	},
+	guiTransform: {
+		rotate: false,
+		translation: { x: 0, y: 5, z: 0 },
+		rotation: { x: -77, y: -135, z: 160 },
+		origin: { x: 0.54, y: 0.5, z: 0.48 },
+		scale: 2.6
+	},
+	groundTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0.45, z: 0.5 },
+		scale: 4.5
+	},
+	tpHandTransform: {
+		translation: { x: -0.75, y: -0.48, z: -0.52 },
+		rotation: { x: 90, y: 1, z: 0 },
+		scale: 1
+	}
+}

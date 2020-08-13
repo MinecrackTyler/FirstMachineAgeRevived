@@ -19,11 +19,14 @@ namespace ElementalTools
 		internal const string malletItemKey = @"ItemMallet";
 		internal const string sharpeningStoneItemKey = @"ItemSharpening_stone";
 
-		internal const string genericSteelItemKey = @"Steel_Item";//Only for tool heads / blades...
-		internal const string genericSteelSwordKey = @"Steel_ItemSword";
-		internal const string genericSteelChiselKey = @"Steel_ItemChisel";
-		internal const string genericSteelAxeKey = @"Steel_ItemAxe";
-		internal const string genericSteelSpearKey = @"Steel_ItemSpear";
+		internal const string genericSteelItemKey = 	@"Steel_Item";//Only for tool heads / blades...
+		internal const string genericSteelSwordKey = 	@"Steel_ItemSword";
+		internal const string genericSteelChiselKey = 	@"Steel_ItemChisel";
+		internal const string genericSteelAxeKey = 		@"Steel_ItemAxe";
+		internal const string genericSteelSpearKey = 	@"Steel_ItemSpear";
+		internal const string genericSteelCleaverKey = 	@"Steel_ItemCleaver";
+		internal const string genericSteelHammerKey= 	@"Steel_ItemHammer";
+
 
 		internal const string pack_carburizationBlockKey = @"pack_carburization";
 		internal const string pack_stateFired = @"fired";
@@ -57,7 +60,10 @@ namespace ElementalTools
 		CoreAPI.RegisterItemClass(genericSteelChiselKey, typeof(SteelWrap<ItemChisel>));
 		CoreAPI.RegisterItemClass(genericSteelAxeKey, typeof(SteelWrap<ItemAxe>));
 		CoreAPI.RegisterItemClass(genericSteelSpearKey, typeof(SteelWrap<ItemSpear>));
-
+		CoreAPI.RegisterItemClass(genericSteelCleaverKey, typeof(SteelWrap<ItemCleaver>));
+		CoreAPI.RegisterItemClass(genericSteelHammerKey, typeof(SteelWrap<ItemHammer>));
+		
+	
 
 		}
 

@@ -1,16 +1,6 @@
 ﻿{
 	code: "axe",
-	class: "Steel_ItemAxe",
-	attributes: {
-		handbook: {
-			groupBy: ["axe-*"]
-		},
-		toolrackTransform: {
-			rotation: { y: 1, z: -1 },
-			translation: { x: -0.3, y: 0.6 },
-			scale: 1.25,
-		}
-	},
+	class: "Steel_ItemAxe",	
 	variantgroups: [
 		{ code: "metal", states: ["blister_steel", "shear_steel" ] },
 	],
@@ -56,7 +46,17 @@
 			metalName:"Shear Steel",
 			sharpenable: true,
 			hardenable: true,
-		}		
+		},
+        "*": {
+            handbook: {
+			groupBy: ["axe-*"]
+			},
+		toolrackTransform: {
+				rotation: { y: 1, z: -1 },
+				translation: { x: -0.3, y: 0.6 },
+				scale: 1.25,
+				}
+            },
     },   	
 	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
 	
