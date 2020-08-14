@@ -1,0 +1,35 @@
+﻿{
+	code: "arrow",
+	class: "EntityProjectile",
+	variantgroups: [
+		{ code: "metal", states: ["blister_steel", "shear_steel"] },
+	],
+	hitboxSize: { x: 0.125, y: 0.125 },
+	client: {
+		renderer: "Shape",
+		shape: { base: "item/tool/arrow-copper" },
+		textures: 
+        	{			
+				"material": { base: "fma:metal/{metal}" }
+			}
+		},
+		behaviors: [
+			{ code: "passivephysics" }, 
+			{ code: "interpolateposition" }
+		],
+	},
+	server: {
+		behaviors: [
+			{ code: "passivephysics" }, 
+			{ code: "despawn", minSeconds: 300 }
+		],
+	},
+	sounds: {
+	},
+	attributes: {
+		physics: {
+			groundDragFactor: 1,
+			airDragFallingFactor: 0.25
+		}
+	}
+}

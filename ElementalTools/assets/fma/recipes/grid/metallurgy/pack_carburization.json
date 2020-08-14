@@ -41,6 +41,7 @@
 	width: 3,
 	height: 3,
     attributes: {		
+        outputOverride: "cleaver-blister_steel",
         extraCookTime:10,
 	},
 	output: { type: "block", code: "pack_carburization-unfired"  }

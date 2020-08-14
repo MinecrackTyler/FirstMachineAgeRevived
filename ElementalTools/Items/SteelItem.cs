@@ -57,6 +57,8 @@ namespace ElementalTools
 
 
 		public virtual void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+
+		public virtual bool MatchesForCrafting -- //Refect if trying to oversharpen
 		 * */
 
 		public SteelWrap( ) //Since It Invokes that for the new type of T anyways...

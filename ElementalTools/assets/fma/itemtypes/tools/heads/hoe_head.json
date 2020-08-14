@@ -1,0 +1,36 @@
+﻿{
+	code: "hoehead",
+	variantgroups: [
+			{ code: "metal", states: [ "blister_steel", "shear_steel" ] },
+	],
+	shape: { "base": "game:item/tool/hoe-copper" },			
+	textures: {	
+		"material": { base:"fma:metal/{metal}"},
+		"string": { base: "game:block/transparent" },
+		"handle": { base: "game:block/transparent" }		
+	},
+	creativeinventory: { "general": ["*"], "items": ["*"] },
+	fpHandTransform: {
+		translation: { x: -0.3, y: -0.6, z: -0.3 },
+		rotation: { x: 37, y: 0, z: 92 },
+		scale: 2.5
+	},
+	guiTransform: {				
+			rotate: false,
+			translation: { x: 0, y: 0, z: 0 },
+			rotation: { x: -52, y: -131, z: -180 },
+			origin: { x: 0.93, y: 0, z: 0.5 },
+			scale: 3.76				
+	},
+	groundTransform: {
+		translation: { x: 0, y: -0.28, z: 0 },
+		rotation: { x: 0, y: 0, z: 180 },
+		origin: { x: 0.9, y: 0.43, z: 0.37 },
+		scale: 4
+	},
+	tpHandTransform: {
+		translation: { x: -0.4, y: -1, z: -0.02 },
+		rotation: { x: 96, y: -85, z: -8 },
+		scale: 1
+	}
+}

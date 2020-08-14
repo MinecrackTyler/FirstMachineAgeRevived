@@ -98,12 +98,12 @@ namespace ElementalTools
 
 		MalletInsertion( );
 		GenerateSharpeningGridRecipies( );
-		CloneEntityClasses( );
+		//CloneEntityClasses( );//If not needed ... REMOVE?
 		}
 
 		private void ClientSideTweaks( )
 		{
-		CloneEntityClasses( );
+		//CloneEntityClasses( );//If not needed ... REMOVE?
 		}
 
 	}

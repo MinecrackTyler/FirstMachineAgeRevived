@@ -8,8 +8,8 @@
 	"textureSizes": {
 	},
 	"textures": {
-		"nails": "game:block/metal/sheet/nails",
-		"metal": "game:/metal/metal/blister_steel",
+		"nails": "game:block/metal/sheet/iron1",
+		"metal": "fma:metal/blister_steel",
 		"string": "game:item/tool/material/string",
 		"redwood": "game:block/wood/debarked/redwood"
 	},
