@@ -385,6 +385,11 @@ namespace ElementalTools
 		base.OnBlockBroken(world, pos, byPlayer, dropQuantityMultiplier);
 		}
 
+		public override string GetPlacedBlockName(IWorldAccessor world, BlockPos pos)
+		{
+			return Lang.Get(this.Code.Domain +":block-"+this.Code.Path);//Domain needed...
+		}
+
 		private void SetOutputOverride(ItemStack containerStack, string overrideCode)
 		{
 		if (!string.IsNullOrEmpty(overrideCode)) {

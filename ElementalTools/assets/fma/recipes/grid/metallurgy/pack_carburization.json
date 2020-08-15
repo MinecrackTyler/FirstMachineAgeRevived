@@ -191,6 +191,7 @@
 	width: 3,
 	height: 3,
     attributes: {
+        outputOverride: "swordblade-blister_steel",
         extraCookTime:30,
 	},
 	output: { type: "block", code: "pack_carburization-unfired"  }

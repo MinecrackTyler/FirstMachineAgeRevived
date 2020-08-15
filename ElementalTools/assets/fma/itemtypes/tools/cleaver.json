@@ -22,6 +22,10 @@
 		"*-blister_steel": 2.75,
         "*-shear_steel": 3.0,
 	},
+	tooltierByType: {
+		"*-blister_steel": 5,
+		"*-shear_steel": 5,
+	},
     attributesByType: {
 		"*-blister_steel": {
 			metalName:"Blister Steel",
