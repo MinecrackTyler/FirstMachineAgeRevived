@@ -91,15 +91,15 @@ namespace ElementalTools
 		trueClassName = this.Class.Split('_').Last( );// 'Steel_ItemAxe' -> ItemAxe
 		}
 		else {
-		api.World.Logger.Error("Class (name) for ItemID# {0} - null!", this.ItemId);		
+		api.World.Logger.Error("Class (name) for ItemID# {0} - null!", this.ItemId);
+		if (WrappedItem == null) api.Logger.Error("Failed to resolve Wrapped Item Class! Code:[{0}]", this.Code);
 		trueClassName = WrappedItem.GetType( ).Name;
 		api.World.Logger.Error("Substituting class name from wrapped Item '{0}'", trueClassName);
 		}
 
 
-
 		WrappedItem = api.ClassRegistry.CreateItem(trueClassName);
-					
+
 		WrappedItem.ItemId = this.ItemId;
 		WrappedItem.Code = this.Code.Clone( );
 		WrappedItem.Class = trueClassName;

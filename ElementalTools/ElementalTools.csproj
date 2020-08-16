@@ -104,6 +104,7 @@
     <Folder Include="assets\fma\entities\" />
     <Folder Include="assets\fma\itemtypes\tools\heads\" />
     <Folder Include="assets\fma\itemtypes\arms\heads\" />
+    <Folder Include="assets\fma\recipes\smithing\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
@@ -199,7 +200,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\fma\itemtypes\tools\shears.json" />
-    <None Include="assets\fma\itemtypes\tools\hoe.json" />
+    <None Include="assets\fma\itemtypes\tools\hoe.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="assets\fma\itemtypes\arms\spear.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -224,13 +227,28 @@
     <None Include="assets\fma\itemtypes\arms\heads\arrow_heads.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\heads\pickaxe_head.json" />
-    <None Include="assets\fma\itemtypes\tools\heads\shovel_head.json" />
-    <None Include="assets\fma\itemtypes\tools\heads\propick_head.json" />
-    <None Include="assets\fma\itemtypes\tools\heads\saw_blade.json" />
-    <None Include="assets\fma\itemtypes\tools\heads\scythe_head.json" />
-    <None Include="assets\fma\itemtypes\tools\heads\axe_head.json" />
+    <None Include="assets\fma\itemtypes\tools\heads\pickaxe_head.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\itemtypes\tools\heads\shovel_head.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\itemtypes\tools\heads\propick_head.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\itemtypes\tools\heads\saw_blade.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\itemtypes\tools\heads\scythe_head.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\itemtypes\tools\heads\axe_head.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="assets\fma\entities\arrows.json" />
+    <None Include="assets\fma\recipes\smithing\gladii_swordblade.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

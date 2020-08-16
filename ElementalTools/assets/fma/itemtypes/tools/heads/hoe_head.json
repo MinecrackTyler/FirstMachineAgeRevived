@@ -1,5 +1,6 @@
 ﻿{
 	code: "hoehead",
+    class:"Steel_Item",
 	variantgroups: [
 			{ code: "metal", states: [ "blister_steel", "shear_steel" ] },
 	],

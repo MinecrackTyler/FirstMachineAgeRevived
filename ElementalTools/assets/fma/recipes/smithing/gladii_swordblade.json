@@ -1,0 +1,10 @@
+﻿{
+	ingredient: { type: "item", code: "game:ingot-iron", name: "metal" },
+	pattern: [[
+		"____#########_",
+		"##############",
+		"____#########_",
+	]],
+	name: "Gladii Blade",
+	output: { type: "item", code: "swordblade-iron"  }
+}

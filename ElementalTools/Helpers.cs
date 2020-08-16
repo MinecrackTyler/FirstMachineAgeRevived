@@ -139,6 +139,14 @@ namespace ElementalTools
 		}
 
 
+		public static void NamePrefixed_RegisterItemClass(this ICoreAPICommon commonApi, Type itemType, string prefix)
+		{
+		//CoreAPI.RegisterItemClass(genericSteelItemKey, typeof(SteelWrap<Item>));
+		string className = string.Format(prefix + "_" + itemType.GetGenericArguments( ).First( ).Name);
+		
+		commonApi.RegisterItemClass(className, itemType);
+		}
+
 		#if DEFUNCT
 		//Why C# 7.0 ? WHY?!?!
 		public static T GetEnum<T>(this ITreeAttribute treeAttr, string keyword, T defaultValue = default(T)) where T : struct// enum

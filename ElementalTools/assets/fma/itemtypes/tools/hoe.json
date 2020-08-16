@@ -1,1 +1,73 @@
-﻿
+﻿{
+	code: "hoe",	
+    class: "Steel_ItemHoe",	
+    variantgroups: [
+		{ code: "metal", states: ["blister_steel", "shear_steel" ] },
+	],
+	heldTpUseAnimation: "hoe",
+	 attributesByType: {
+		"*-blister_steel": {
+			metalName:"Blister Steel",
+			sharpenable: true,
+			hardenable: true,
+		},
+		"*-shear_steel": {
+			metalName:"Shear Steel",
+			sharpenable: true,
+			hardenable: true,
+		},
+        "*": 
+        {
+			handbook: {
+				groupBy: ["hoe-*"]
+			},
+			toolrackTransform: {			
+			rotation: { y: 1, z: -1 },
+			translation: { x: -0.25, y: 0.6 },
+			scale: 1.25,			
+			}
+        }
+	},	
+	damagedby: ["blockbreaking", "attacking"],
+	shape: { base: "game:item/tool/hoe-copper" },	
+	heldTpHitAnimation: "breaktool",
+	textures: {		
+		"material": { base:"fma:metal/{metal}" }	
+	},
+	tool: "hoe",
+	miningspeed: {				
+		"soil": 4.4		
+	},
+	durabilitybytype: {		
+		"*-blister_steel": 850,
+		"*-shear_steel": 900,
+	},
+	attackpowerbytype: {		
+		"*-blister_steel": 2.25,
+		"*-shear_steel": 2.5,
+	},
+	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
+	fpHandTransform: {
+		translation: { x: 0.046875, y: 0, z: 0 },
+		rotation: { x: 15, y: 15, z: 90 },
+		scale: 2.5
+	},
+	guiTransform: {		
+		rotate: false,
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: -56, y: -127, z: -180 },
+		origin: { x: 0.35, y: 0, z: 0.55 },
+		scale: 1.43		
+	},
+	groundTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 3.6
+	},
+	tpHandTransform: {		
+		translation: { x: -1, y: -0.5, z: -0.08 },
+		rotation: { x: 90, y: 0, z: -5 },
+		scale: 1		
+	}
+}

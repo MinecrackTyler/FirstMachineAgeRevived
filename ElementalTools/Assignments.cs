@@ -18,15 +18,7 @@ namespace ElementalTools
 	{
 		internal const string malletItemKey = @"ItemMallet";
 		internal const string sharpeningStoneItemKey = @"ItemSharpening_stone";
-
-		internal const string genericSteelItemKey = 	@"Steel_Item";//Only for tool heads / blades...
-		internal const string genericSteelSwordKey = 	@"Steel_ItemSword";
-		internal const string genericSteelChiselKey = 	@"Steel_ItemChisel";
-		internal const string genericSteelAxeKey = 		@"Steel_ItemAxe";
-		internal const string genericSteelSpearKey = 	@"Steel_ItemSpear";
-		internal const string genericSteelCleaverKey = 	@"Steel_ItemCleaver";
-		internal const string genericSteelHammerKey= 	@"Steel_ItemHammer";
-
+		internal const string SteelPrefix = @"Steel";//Generic 'steel' of Unknown province...
 
 		internal const string pack_carburizationBlockKey = @"pack_carburization";
 		internal const string pack_stateFired = @"fired";
@@ -40,6 +32,7 @@ namespace ElementalTools
 
 		internal const string IronNameKey = @"iron";
 		internal const string SteelNameKey = @"steel";//Generic 'steel' of Unknown province...
+
 		internal const string BlisterSteelNameKey = @"blister_steel";//a Crude 'Steel' (layer) made by Carburization - mixed material props
 		internal const string ShearSteelNameKey = @"shear_steel";//forge-welded blister steel 
 		internal const string MaterialNameKey = @"material";
@@ -55,15 +48,16 @@ namespace ElementalTools
 		CoreAPI.RegisterItemClass(sharpeningStoneItemKey, typeof(ItemSharpeningStone));
 				
 		//Steel Wrapped ItemCores.
-		CoreAPI.RegisterItemClass(genericSteelItemKey, typeof(SteelWrap<Item>));
-		CoreAPI.RegisterItemClass(genericSteelSwordKey, typeof(SteelWrap<ItemSword>) );
-		CoreAPI.RegisterItemClass(genericSteelChiselKey, typeof(SteelWrap<ItemChisel>));
-		CoreAPI.RegisterItemClass(genericSteelAxeKey, typeof(SteelWrap<ItemAxe>));
-		CoreAPI.RegisterItemClass(genericSteelSpearKey, typeof(SteelWrap<ItemSpear>));
-		CoreAPI.RegisterItemClass(genericSteelCleaverKey, typeof(SteelWrap<ItemCleaver>));
-		CoreAPI.RegisterItemClass(genericSteelHammerKey, typeof(SteelWrap<ItemHammer>));
-		
-	
+		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<Item>), SteelPrefix);
+		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemSword>), SteelPrefix );
+		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemChisel>), SteelPrefix);
+		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemAxe>), SteelPrefix);
+		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemSpear>), SteelPrefix);
+		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemCleaver>), SteelPrefix);
+		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemHammer>), SteelPrefix);
+		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemHoe>), SteelPrefix);
+		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemKnife>), SteelPrefix);
+		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemProspectingPick>), SteelPrefix);
 
 		}
 

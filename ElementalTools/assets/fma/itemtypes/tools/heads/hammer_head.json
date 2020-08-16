@@ -1,11 +1,12 @@
 ﻿{
 	code: "hammerhead",
+    class:"Steel_Item",
 	variantgroups: [
 		{ code: "metal", states: ["blister_steel", "shear_steel" ] },
 	],
 	shape: { base: "game:item/tool/hammer" },
 	textures: {
-		"metal": { base:"fma:metal/{metal}"},
+		"material": { base:"fma:metal/{metal}"},
 		"wood": { base: "game:block/transparent" },
 	},
 	creativeinventory: { "general": ["*"], "items": ["*"] },
