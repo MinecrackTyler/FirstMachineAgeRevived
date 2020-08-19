@@ -1,0 +1,11 @@
+﻿{
+	ingredientPattern: "B	H",
+	ingredients: {
+		"B": { type: "item", code: "fma:swordblade-*", name: "metal", allowedVariants: ["blister_steel", "shear_steel"] },
+		"H": { type: "item", code: "game:stick" },		
+	},
+	width: 1,
+	height: 2,	
+	output: { type: "item", code: "fma:sword-{metal}"  }
+}
+

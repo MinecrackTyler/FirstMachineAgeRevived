@@ -58,19 +58,14 @@ namespace ElementalTools
 		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemHoe>), SteelPrefix);
 		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemKnife>), SteelPrefix);
 		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemProspectingPick>), SteelPrefix);
+		CoreAPI.NamePrefixed_RegisterItemClass(typeof(SteelWrap<ItemScythe>), SteelPrefix);
+		//CoreAPI.NamePrefixed_RegisterItemClass(typeof(SteelWrap<ItemSaw>), SteelPrefix);
+		//CoreAPI.NamePrefixed_RegisterItemClass(typeof(SteelWrap<ItemShovel>), SteelPrefix);
+		//CoreAPI.NamePrefixed_RegisterItemClass(typeof(SteelWrap<ItemArrow>), SteelPrefix);//Merging of Steel ammo - TODO!
 
 		}
 
-		private void RegisterEntityClasses( )
-		{
-		//spearEntityCode: "spear-{metal}",
-		//CoreAPI.RegisterEntity("spear-" + BlisterSteelNameKey, typeof(EntityProjectile));
-		//CoreAPI.RegisterEntity("spear-" + ShearSteelNameKey, typeof(EntityProjectile));
 
-		
-
-
-		}
 
 		private void RegisterBlockClasses( )
 		{
@@ -189,6 +184,9 @@ namespace ElementalTools
 		Mod.Logger.Event($"Added {results} Sharpening recipes, for {sharpenableThings.Count()} items");
 
 		}
+
+
+
 
 		/// <summary>
 		/// Permutate the variant tool recipies.

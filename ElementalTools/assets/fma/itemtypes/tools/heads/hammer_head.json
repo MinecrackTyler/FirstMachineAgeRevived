@@ -6,7 +6,7 @@
 	],
 	shape: { base: "game:item/tool/hammer" },
 	textures: {
-		"material": { base:"fma:metal/{metal}"},
+		"metal": { base:"fma:metal/{metal}"},
 		"wood": { base: "game:block/transparent" },
 	},
     attributesByType: {

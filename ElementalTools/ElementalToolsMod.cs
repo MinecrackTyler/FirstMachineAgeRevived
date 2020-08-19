@@ -43,7 +43,7 @@ namespace ElementalTools
 					
 		RegisterItemClasses( );
 		RegisterBlockClasses( );
-		RegisterEntityClasses( );
+		
 		Mod.Logger.Notification("Registered classes for toolin' & steely stuff...");
 				
 
@@ -88,6 +88,10 @@ namespace ElementalTools
 		Mod.Logger.VerboseDebug("Elemental Tools - should be installed...");
 		}
 
+		/// <summary>
+		/// Special Work-arounds and Dynamic Recipies
+		/// </summary>
+		/// <returns>The load tweaks.</returns>
 		private void PostLoadTweaks( )
 		{
 		Mod.Logger.Notification("Making a few changes to recipes...");
@@ -99,6 +103,7 @@ namespace ElementalTools
 		MalletInsertion( );
 		GenerateSharpeningGridRecipies( );
 		CloneEntityClasses( );//If not needed ... REMOVE?
+		
 		}
 
 		private void ClientSideTweaks( )

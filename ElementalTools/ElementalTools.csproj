@@ -74,7 +74,7 @@
     <Compile Include="BlockEntities\PackCarburizationEntity.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="General\IAmSteel.cs" />
-    <Compile Include="Items\SteelItem.cs" />
+    <Compile Include="Items\SteeIWrapItem.cs" />
     <Compile Include="Items\ItemSharpeningStone.cs" />
     <Compile Include="Items\VariableWearRateTool.cs" />
     <Compile Include="ColorHelper.cs" />
@@ -105,6 +105,7 @@
     <Folder Include="assets\fma\itemtypes\tools\heads\" />
     <Folder Include="assets\fma\itemtypes\arms\heads\" />
     <Folder Include="assets\fma\recipes\smithing\" />
+    <Folder Include="assets\fma\recipes\grid\weapon\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
@@ -149,7 +150,6 @@
     <None Include="assets\fma\blocktypes\metal\shear_steel_ingot.json" />
     <None Include="assets\fma\recipes\grid\remapping\blister_steel_mappings.json">
     </None>
-    <None Include="General\FactoryOfSteel.cs" />
     <None Include="assets\fma\itemtypes\arms\swords.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -163,9 +163,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\fma\itemtypes\tools\sharpening_stone.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\fma\recipes\grid\tool\swords.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\fma\recipes\grid\tool\sharpening_stone.json">
@@ -247,6 +244,40 @@
     </None>
     <None Include="assets\fma\entities\arrows.json" />
     <None Include="assets\fma\recipes\smithing\gladii_swordblade.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\itemtypes\arms\arrows.json" />
+    <None Include="assets\fma\recipes\grid\weapon\swords.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\recipes\grid\weapon\spears.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\recipes\grid\tool\hoes.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\recipes\grid\tool\hammers.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\recipes\grid\tool\axes.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\recipes\grid\tool\saws.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\recipes\grid\tool\scythes.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\recipes\grid\tool\knives.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\recipes\grid\tool\shovels.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\recipes\grid\tool\pickaxes.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\recipes\grid\tool\propicks.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
