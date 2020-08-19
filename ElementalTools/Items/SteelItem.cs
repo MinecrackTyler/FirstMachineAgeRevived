@@ -107,8 +107,8 @@ namespace ElementalTools
 		WrappedItem.Variant = this.Variant;
 		WrappedItem.VariantStrict = this.VariantStrict;
 		WrappedItem.Tool = this.Tool;
-		WrappedItem.Attributes = this.Attributes.Clone();
-		WrappedItem.MiningSpeed = this.MiningSpeed;
+		WrappedItem.Attributes = this?.Attributes?.Clone();
+		WrappedItem.MiningSpeed = this?.MiningSpeed;
 		WrappedItem.Shape = this.Shape;
 		WrappedItem.StorageFlags = this.StorageFlags;
 		WrappedItem.DamagedBy = this.DamagedBy;
@@ -558,7 +558,7 @@ namespace ElementalTools
 		public override float GetMiningSpeed(IItemStack itemstack, Block block)
 		{
 		var baseSpeed = 1f;
-		//Boost for Edged tools / weapons?
+		//Boost for Edged tools / weapons
 		if (MiningSpeed != null && MiningSpeed.ContainsKey(block.BlockMaterial) && this.Tool.EdgedImpliment()) {
 				
 		baseSpeed = MiningSpeed[block.BlockMaterial] * GlobalConstants.ToolMiningSpeedModifier;

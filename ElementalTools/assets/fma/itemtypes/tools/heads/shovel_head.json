@@ -10,6 +10,22 @@
 		"string": { base: "game:block/transparent" },
 		"handle": { base: "game:block/transparent" }		
 	},
+    attributesByType: {
+		"*-blister_steel": {
+			metalName:"Blister Steel",
+			sharpenable: true,
+			hardenable: true,
+		},
+		"*-shear_steel": {
+			metalName:"Shear Steel",
+			sharpenable: true,
+			hardenable: true,
+		},
+		"*": {
+			sharpenable: true,
+			hardenable: true,        
+		}
+    },   	
 	creativeinventory: { "general": ["*"], "items": ["*"] },
 	fpHandTransform: {		
 		translation: { x: -0.25, y: -0.1, z: 0 },

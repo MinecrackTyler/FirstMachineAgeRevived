@@ -9,6 +9,22 @@
 		"material": { base:"fma:metal/{metal}"},
 		"wood": { base: "game:block/transparent" },
 	},
+    attributesByType: {
+		"*-blister_steel": {
+			metalName:"Blister Steel",
+			sharpenable: false,
+			hardenable: true,
+		},
+		"*-shear_steel": {
+			metalName:"Shear Steel",
+			sharpenable: false,
+			hardenable: true,
+		},
+		"*": {
+			sharpenable: false,
+			hardenable: true,        
+		}
+    },   	
 	creativeinventory: { "general": ["*"], "items": ["*"] },
 	fpHandTransform: {
 		translation: { x: 0.3, y: -0.4, z: 0 },

@@ -3,11 +3,25 @@
     class:"Steel_Item",
 	variantgroups: [
 		{ code: "metal", states: [ "blister_steel", "shear_steel" ] },
-	],
-	attributes: {
-		displaycaseable: true, 
-		shelvable: true,
-	},
+	],	
+    attributesByType: {
+		"*-blister_steel": {
+			metalName:"Blister Steel",
+			sharpenable: true,
+			hardenable: true,
+		},
+		"*-shear_steel": {
+			metalName:"Shear Steel",
+			sharpenable: true,
+			hardenable: true,
+		},
+		"*": {
+			sharpenable: true,
+			hardenable: true,   
+            displaycaseable: true, 
+			shelvable: true,
+		}
+    },   	
 	maxstacksize: 64,
 	shape:  { "base": "game:item/tool/arrowhead-copper" },	
 	textures: {			

@@ -115,19 +115,19 @@ namespace ElementalTools
 		private void GenerateSharpeningGridRecipies( )
 		{
 		var sharpenableThings = new string[ ]{
-		//"axehead",
+		"axehead-*",
 		"axe-*",
-		//"hammerhead",
-		//"arrowhead",
+		"hammerhead-*",
+		"arrowhead-*",
 		"swordblade-*",
 		"sword-*",
-		//"scythehead",
-		//"sawblade",
-		//"prospectingpickhead",
-		//"shovelhead",
-		//"pickaxehead",
-		//"knifeblade",
-		//"hoehead",
+		"scythehead-*",
+		"sawblade-*",
+		"prospectingpickhead-*",
+		"shovelhead-*",
+		"pickaxehead-*",
+		"knifeblade-*",
+		"hoehead-*",
 		"chisel-*"
 		};
 
@@ -186,7 +186,7 @@ namespace ElementalTools
 		};
 
 		var results = SingleVariableToolRecipies(sharpenableThings, sharpeningPattern,'H', "metal");
-		Mod.Logger.Event($"Added {results} Sharpening recipes");
+		Mod.Logger.Event($"Added {results} Sharpening recipes, for {sharpenableThings.Count()} items");
 
 		}
 
