@@ -7,8 +7,8 @@
 	shape: { base: "game:item/tool/saw" },
 	textures: {
 		"metal": { base: "fma:metal/{metal}" },
-		"wood": { base: "block/transparent" },
-		"linen": { base: "block/transparent" },
+		"wood": { base: "game:block/transparent" },
+		"linen": { base: "game:block/transparent" },
 	},
     attributesByType: {
 		"*-blister_steel": {

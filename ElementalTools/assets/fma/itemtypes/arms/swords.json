@@ -1,7 +1,7 @@
 ﻿{
 	code: "sword",
 	damagedby: ["blockbreaking", "attacking"],
-    class:"Steel_ItemSword",
+    class:"Steel_Item",
 	tool: "sword",
 	variantgroups: [
 		{ code: "metal", states: ["blister_steel", "shear_steel"] },
@@ -50,12 +50,12 @@
 		},
 	},
 	attackpowerbytype: {		
-		"sword-blister_steel": 4.00,
-        "sword-shear_steel": 4.25,
+		"*-blister_steel": 4.00,
+        "*-shear_steel": 4.25,
 	},
 	durabilitybytype: {		
-		"sword-blister_steel": 1400,
-        "sword-shear_steel": 1500,
+		"*-blister_steel": 1400,
+        "*-shear_steel": 1500,
 	},
 	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
 	guiTransform: {

@@ -1,10 +1,10 @@
 ﻿{
 	ingredientPattern: "T	S",
 	ingredients: {
-		"T": { type: "item", code: "fma:axehead-*", name: "material" , allowedVariants: ["blister_steel", "shear_steel"] },
+		"T": { type: "item", code: "fma:axehead-*", name: "metal" , allowedVariants: ["blister_steel", "shear_steel"] },
 		"S": { type: "item", code: "game:stick" }
 	},
 	width: 1,
 	height: 2,
-	output: { type: "item", code: "fma:axe-{material}", quantity: 1  }
+	output: { type: "item", code: "fma:axe-{metal}", quantity: 1  }
 }

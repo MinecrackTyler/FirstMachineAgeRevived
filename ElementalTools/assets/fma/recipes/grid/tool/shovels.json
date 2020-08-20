@@ -1,10 +1,10 @@
 ﻿{
 	ingredientPattern: "T	S",
 	ingredients: {
-		"T": { type: "item", code: "fma:shovelhead-*", name: "material" , allowedVariants: ["blister_steel", "shear_steel"] },
+		"T": { type: "item", code: "fma:shovelhead-*", name: "metal" , allowedVariants: ["blister_steel", "shear_steel"] },
 		"S": { type: "item", code: "game:stick" }
 	},
 	width: 1,
 	height: 2,
-	output: { type: "item", code: "fma:shovel-{material}", quantity: 1  }
+	output: { type: "item", code: "fma:shovel-{metal}", quantity: 1  }
 }

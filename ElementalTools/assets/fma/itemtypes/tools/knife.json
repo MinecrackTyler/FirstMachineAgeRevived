@@ -1,1 +1,87 @@
-﻿
+﻿{
+	code: "knife",
+	"__comment": "ItemKnife contains code for harvesting animal carcasses",
+	class: "Steel_ItemKnife",
+	damagedby: ["blockbreaking", "attacking"],
+	tool: "knife",
+    attributesByType: {
+		"*-blister_steel": {
+			metalName:"Blister Steel",
+			sharpenable: true,
+			hardenable: false,
+		},
+		"*-shear_steel": {
+			metalName:"Shear Steel",
+			sharpenable: true,
+			hardenable: false,
+		},
+		"*": {
+			sharpenable: true,
+			hardenable: false,
+       handbook: {
+			groupBy: ["knife-*"]
+		},
+		toolrackTransform: {
+			translation: { x: -0.3, y: 0.6, z: -0.1 },
+			rotation: { x: 97, y: 180, z: 3 },
+			origin: { x: 0.5, y: 0, z: 0.5 },
+			scale: 1.25
+		}
+		}
+    },   		
+	variantgroups: [
+		{ code: "metal", states: ["blister_steel", "shear_steel"] },
+	],
+	shape: { base: "game:item/tool/knife-copper" },	
+	heldTpHitAnimation: "breaktool",
+	heldTpUseAnimation: "knap",
+	textures: {		
+		"handle": { base: "game:item/tool/material/handle"},
+		"material":  { base:"fma:metal/{metal}"},	
+	},
+	durabilitybytype: {
+		"*-blister_steel": 1400,
+		"*-shear_steel": 1500,
+	},
+	miningspeedbytype: {		
+		"*-blister_steel": {
+			"plant": 2.4,
+		},
+       "*-shear_steel": {
+			"plant": 2.4,
+		},
+	},	
+    tooltierbytype: {		
+		"*-blister_steel": 1,
+        "*-shear_steel": 1,
+	},
+    attackpowerbytype: {		
+		"*-blister_steel": 4.00,
+        "*-shear_steel": 4.10,
+	},
+	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
+	fpHandTransform: {
+		translation: { x: 0.2, y: 0.1, z: 0.5 },
+		rotation: { x: 140, y: 93, z: -75 },
+		scale: 2.5
+		
+	},
+	guiTransform: {
+		rotate: false,
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: -158, y: 0, z: 48 },
+		origin: { x: 0.48, y: 0.1, z: 0.5 },
+		scale: 2.41
+	},
+	groundTransform: {
+			translation: { x: 0, y: 0, z: 0 },
+			rotation: { x: -90, y: 0, z: 0 },
+			origin: { x: 0.5, y: 0.5, z: 0.45 },
+			scale: 3.6
+	},
+	tpHandTransform: {
+		translation: { x: -0.85, y: -0.2, z: -0.48 },
+		rotation: { x: 0, y: 0, z: -30 },
+		scale: 1		
+	}
+}

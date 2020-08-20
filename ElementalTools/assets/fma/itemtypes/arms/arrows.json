@@ -7,8 +7,10 @@
 	maxstacksize: 64,
 	storageFlags: 513,
 	shape: { base: "item/tool/arrow-copper" }.	
-	textures:  {
-		"material": { base : "fma:metal/{metal}" }		
+	textures:  {		
+    	"string": { base: "game:block/transparent" },
+		"material": { base : "fma:metal/{metal}" },
+		"handle": { base: "game:block/transparent" }	
 	},
     attributesByType: {
 		"*-blister_steel": {
