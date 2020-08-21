@@ -27,12 +27,12 @@
 		"*-blister_steel": {
 			metalName:"Blister Steel",
 			sharpenable: false,
-			hardenable: true,
+			hardenable: false,
 		},
 		"*-shear_steel": {
 			metalName:"Shear Steel",
 			sharpenable: false,
-			hardenable: true,
+			hardenable: false,
 		},
         "*": 
         {

@@ -1,1 +1,87 @@
-﻿
+﻿{	
+	code: "pickaxe",
+    class: "Steel_Item",	
+	storageFlags: 5,	
+	variantgroups: [
+		{ code: "metal", states: ["blister_steel", "shear_steel" ] },
+	],
+	tool: "pickaxe",
+    attributesByType: {
+		"*-blister_steel": {
+			metalName:"Blister Steel",
+			sharpenable: true,
+			hardenable: false,
+		},
+		"*-shear_steel": {
+			metalName:"Shear Steel",
+			sharpenable: true,
+			hardenable: false,
+		},
+        "*": {
+            handbook: {
+			groupBy: ["pickaxe-*"]
+			},	
+			toolrackTransform: {
+			rotation: { y: 2.5, z: -1 },
+			translation: { x: -0.1, y: 0.59 },
+			scale: 1.25,
+			}
+        },
+    },   	
+	damagedby: ["blockbreaking", "attacking"],
+	shape: { base: "game:item/tool/pickaxe" },
+	heldTpHitAnimation: "smithing",
+	textures: {
+		"metal": { base: "fma:metal/{metal}" }
+	},
+	tooltierbytype: {
+		"*-blister_steel": 5,
+		"*-shear_steel": 5,
+	},
+	miningspeedbytype: {		
+		"*-blister_steel": {
+			"stone": 8.4,
+			"ore": 8.4,
+			"metal": 8.4,
+			"ice": 3.9
+		},
+        "*-shear_steel": {
+			"stone": 8.5,
+			"ore": 8.5,
+			"metal": 8.5,
+			"ice": 4
+		},
+	},
+	attackpowerbytype: {
+		"*-blister_steel": 2.49,
+		"*-shear_steel": 2.5,
+	},
+	durabilitybytype: {
+		"*-blister_steel": 1500,
+		"*-shear_steel": 1600,
+	},
+	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
+	guiTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: -89, y: 47, z: 33 },
+		origin: { x: 0.59, y: 0, z: 0.44 },
+		scale: 1.75
+	},
+	fpHandTransform: {
+		translation: { x: -0.2, y: -0.2, z: 0 },
+		rotation: { x: 15, y: 15, z: 90 },
+		scale: 2.45
+	},
+	groundTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 3.4
+	},
+	tpHandTransform: {
+		translation: { x: -0.87, y: -0.01, z: -0.56 },
+		rotation: { x: -81, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 0.8
+	}
+}

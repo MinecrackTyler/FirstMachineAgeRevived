@@ -184,7 +184,9 @@
     <None Include="assets\fma\config\handbook\primitive_steelmaking.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\pickaxe.json" />
+    <None Include="assets\fma\itemtypes\tools\pickaxe.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="assets\fma\itemtypes\tools\shovel.json" />
     <None Include="assets\fma\itemtypes\tools\knife.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -4,7 +4,7 @@
 	variantgroups: [
 		{ code: "metal", states: ["blister_steel", "shear_steel" ] },
 	],
-	shape: {"base": "item/tool/shovelhead-copper" },			
+	shape: {"base": "game:item/tool/shovelhead-copper" },			
 	textures: {			
 		"material": { base: "fma:metal/{metal}" },
 		"string": { base: "game:block/transparent" },

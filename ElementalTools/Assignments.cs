@@ -57,7 +57,7 @@ namespace ElementalTools
 		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemHammer>), SteelPrefix);
 		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemHoe>), SteelPrefix);
 		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemKnife>), SteelPrefix);
-		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemProspectingPick>), SteelPrefix);
+		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemProspectingPick>), SteelPrefix);		
 		CoreAPI.NamePrefixed_RegisterItemClass(typeof(SteelWrap<ItemScythe>), SteelPrefix);
 		//CoreAPI.NamePrefixed_RegisterItemClass(typeof(SteelWrap<ItemSaw>), SteelPrefix);
 		//CoreAPI.NamePrefixed_RegisterItemClass(typeof(SteelWrap<ItemShovel>), SteelPrefix);

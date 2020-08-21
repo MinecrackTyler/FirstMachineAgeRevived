@@ -159,11 +159,19 @@ namespace ElementalTools
 
 		WrappedItem?.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
 
+		var hardness = Hardness(inSlot.Itemstack);
+		var sharpness = Sharpness(inSlot.Itemstack);
+
 		dsc.AppendFormat("\nMetal: '{0}', ",Name);
-					
-		dsc.AppendFormat("Temper: {0}\n", Hardness(inSlot.Itemstack) );
-		
-		dsc.AppendFormat("Edge: {0}\n", Sharpness(inSlot.Itemstack) );	//Or surface?		
+
+		if (this.Hardenable && hardness != HardnessState.Soft) {
+		dsc.AppendFormat("Temper: {0}\n", hardness);
+		}
+
+		if (this.Sharpenable && sharpness != SharpnessState.Rough) {
+		dsc.AppendFormat("Edge: {0}\n",  sharpness); 
+		}
+
 		}
 
 		public virtual SharpnessState Sharpness(IItemStack someStack)

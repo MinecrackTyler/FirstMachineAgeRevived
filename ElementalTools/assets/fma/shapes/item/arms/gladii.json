@@ -8,6 +8,9 @@
 	"textureSizes": {
 	},
 	"textures": {
+        "metal":  "fma:metal/blister_steel" ,
+		"rivets":  "game:block/metal/ingot/iron" ,
+		"handle":  "game:item/tool/material/handle" 
 	},
 	"elements": [
 		{

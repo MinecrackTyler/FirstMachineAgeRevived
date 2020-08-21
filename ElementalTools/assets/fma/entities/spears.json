@@ -12,7 +12,7 @@
 			"spear-shear_steel": { base: "item/arms/dory" , offsetX: -0.8125 },
 		},
 		textures: {
-		"nails": { base : "game:block/metal/sheet/nails"},
+		"nails": { base : "game:block/metal/sheet/iron1"},
 		"metal": { base : "fma:metal/{metal}"},
 		"string": { base : "game:item/tool/material/string"},
 		"redwood": { base :"game:block/wood/debarked/redwood"}

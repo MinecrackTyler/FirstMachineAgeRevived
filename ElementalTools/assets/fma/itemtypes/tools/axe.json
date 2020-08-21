@@ -40,12 +40,12 @@
 		"*-blister_steel": {
 			metalName:"Blister Steel",
 			sharpenable: true,
-			hardenable: true,
+			hardenable: false,
 		},
 		"*-shear_steel": {
 			metalName:"Shear Steel",
 			sharpenable: true,
-			hardenable: true,
+			hardenable: false,
 		},
         "*": {
             handbook: {
