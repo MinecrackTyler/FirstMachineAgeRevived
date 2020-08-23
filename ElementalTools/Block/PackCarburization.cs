@@ -23,6 +23,8 @@ namespace ElementalTools
 		internal const string maxQuantityKey = @"maxQuantity";
 		internal const string extraCookTimeKey = @"extraCookTime";
 
+		internal const float maxInnerTemperature = 1000f;
+
 		//Recipie Options #1: Charcoal & Bonemeal & Blue-clay
 		//Recipie Options #2: Leather & Fat & Blue-clay
 
@@ -181,7 +183,7 @@ namespace ElementalTools
 		 * 
 		 */
 		public override float GetMeltingDuration(IWorldAccessor world, ISlotProvider cookingSlotsProvider, ItemSlot inputSlot)
-		{
+		{//TimeSpan - would have been far better a return type
 		var extraCookTime = GetExtraCookTime(inputSlot.Itemstack);
 
 		return SteelTransitionTime + extraCookTime;
@@ -284,6 +286,8 @@ namespace ElementalTools
 		//outputStack.Attributes = contentStack.Attributes.Clone( );
 		//outputStack.TempAttributes = contentStack.TempAttributes.Clone( );
 		outputSlot.Itemstack = outputStack.Clone();
+
+		temperature = Math.Min(temperature, maxInnerTemperature);
 		outputSlot.Itemstack.Collectible.SetTemperature(world, outputStack, temperature);				
 		ItemStack[ ] transmutedItems = new ItemStack[ ] { contentStack.Clone( ) };
 		transmutedItems.First( ).StackSize = 1;//There can be only 1, per pack

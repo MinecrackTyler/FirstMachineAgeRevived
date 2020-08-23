@@ -19,6 +19,7 @@ namespace ElementalTools
 	{
 		private const float eutectoid_transition_temperature = 727f;//Celcius
 		private const float quench_min_temperature = 450f;//Celcius
+		private const string _timestampKey = @"timestamp";
 
 		private Item WrappedItem;//Special placeholder replica - for calling ancestor class
 
@@ -38,7 +39,6 @@ namespace ElementalTools
 		internal readonly BGRAColor_Int32 color_Sharp = new BGRAColor_Int32(0x00, 0xFF, 0x12);
 		internal readonly BGRAColor_Int32 color_Razor = new BGRAColor_Int32(0x00, 0xFF, 0xD7);
 		internal readonly BGRAColor_Int32 color_Default = new BGRAColor_Int32(0xFF, 0x00, 0x00);
-
 
 
 		/*
@@ -162,14 +162,14 @@ namespace ElementalTools
 		var hardness = Hardness(inSlot.Itemstack);
 		var sharpness = Sharpness(inSlot.Itemstack);
 
-		dsc.AppendFormat("\nMetal: '{0}', ",Name);
+		dsc.AppendFormat("\nMetal: '{0}' ",Name);
 
 		if (this.Hardenable && hardness != HardnessState.Soft) {
-		dsc.AppendFormat("Temper: {0}\n", hardness);
+		dsc.AppendFormat(", Temper: {0}\n", hardness);
 		}
 
-		if (this.Sharpenable && sharpness != SharpnessState.Rough) {
-		dsc.AppendFormat("Edge: {0}\n",  sharpness); 
+		if (this.Sharpenable) {
+		dsc.AppendFormat(", Edge: {0}\n",  sharpness); 
 		}
 
 		}
@@ -289,37 +289,47 @@ namespace ElementalTools
 		}
 
 		/// <summary>
-		///  Quench-hardening
+		/// Does Quench-hardening
 		/// </summary>
 		/// <returns>The ground idle.</returns>
 		/// <param name="entityItem">Entity item.</param>
 		public override void OnGroundIdle(EntityItem entityItem)
 		{
-		/*
-		 * Time to transform this 'pearlite' into martensite
-		 */
 
-		//var occupiedBlock = api.World.BlockAccessor.GetBlock(entityItem.Pos.AsBlockPos);
 		if (entityItem.Swimming || entityItem.FeetInLiquid) {
+		if (!this.Hardenable) return;
+
 		float temperature = entityItem.Itemstack.Collectible.GetTemperature(api.World, entityItem.Itemstack);
-		//Above 900C  - Deleteroius, What should happen in this range?
-		if (temperature <= eutectoid_transition_temperature || temperature >= quench_min_temperature) //Hmmmmmmmmm
+		//Track first moment in liquid;
+		this.SetTimestamp(entityItem);
+
+		//Above 900C  - What should happen in this range; different phase of iron?
+
+		//temperature <= eutectoid_transition_temperature ||
+		if ( temperature >= quench_min_temperature ) 
 		{
-		//TODO: Thermal capacity & Transfer values for NON-Water fluids...
+		//TODO: Thermal capacity & Transfer values for NON-Water fluids...and surfaces too!
+		var elapsedTime = this.GetTimestampElapsed(entityItem);
+		
+		uint quenchUnits = ( uint )Math.Round(elapsedTime.TotalMilliseconds / 175f, 0);  
 
-		byte quant = ( byte )Math.Round(entityItem.itemSpawnedMilliseconds / 175f, 0);  //Been "around"...for...
-
-		if (quant < ( byte )HardnessState.Brittle) {
-		this.Hardness(entityItem.Itemstack, ( HardnessState )quant);
+		if (quenchUnits < (uint)HardnessState.Brittle) {
+		this.Hardness(entityItem.Itemstack, ( HardnessState )quenchUnits);
 		}
 		else {
 		this.Hardness(entityItem.Itemstack, HardnessState.Brittle);
 		}
+
+		//Being that water conducts heat well - reduce Temperature _FASTER_
+		entityItem.Itemstack.Collectible.SetTemperature(api.World, entityItem.Itemstack, temperature - 17, false);
+
+		#if DEBUG
+		api.World.Logger.VerboseDebug("Quench process: {0}S elapsed @{1}C", elapsedTime.TotalSeconds, temperature);
+		#endif
+		}
 		}
 
 		WrappedItem.OnGroundIdle(entityItem);
-		}
-
 		}
 
 		#endregion
@@ -366,9 +376,10 @@ namespace ElementalTools
 		public override void OnAttackingWith(IWorldAccessor world, Entity byEntity, Entity attackedEntity, ItemSlot itemslot)
 		{
 		bool edged = this.Tool.EdgedImpliment( );
-		bool weapon = this.Tool.Weapons( );		
+		bool weapon = this.Tool.Weapons( );
 		float targetArmorFactor = 0.0f;
-					
+		
+
 		/*DETERMINE: 
 		 * Usage - Edged weapon attack Vs. creature Sc.#1 [What about armored players?]
 		 * Non-edged weapon vs. creature Sc. #2 [What about armored players?]
@@ -381,8 +392,8 @@ namespace ElementalTools
 
 		//Only called for attacks on ENTITIES. Scen# 1 - 4 here.
 		api.World.Logger.VerboseDebug($"OnAttackingWith:: (Weap:{weapon},Edge:{edged}) {byEntity.Code} -> {attackedEntity.Code}");
-		
-		
+
+
 
 		/*			 
 		if (this.DamagedBy != null && this.DamagedBy.Contains (EnumItemDamageSource.Attacking) && attackedEntity != null && attackedEntity.Alive) {
@@ -390,7 +401,20 @@ namespace ElementalTools
 		}
 		*/
 
+		if (this.Hardness(itemslot.Itemstack) > HardnessState.Hard) {
+		bool catasptrophicFailure = world.Rand.Next(1, 1000) >= 999;
+		if (catasptrophicFailure) {
+		world.Logger.VerboseDebug("Catastrophic brittle fracture of {0} !", this.Code);
+		this.SetDurability(itemslot.Itemstack, 0);
+		this.DamageItem(world, byEntity, itemslot, 9999);
+		return;
+		}
+
+		}
+
 		//WrappedItem.OnAttackingWith(world, byEntity, attackedEntity, itemslot);
+
+
 		}
 
 
@@ -403,6 +427,8 @@ namespace ElementalTools
 		int targetTier = targetBlock.ToolTier;
 		float targetResistance = targetBlock.Resistance;
 		bool recomendedUsage = this.MiningSpeed.ContainsKey(targetBlock.BlockMaterial);
+		
+		
 
 		//Only called for attacks on BLOCKS / Envrionment. Scen# 5 - 6 here.	
 
@@ -415,7 +441,15 @@ namespace ElementalTools
 
 		api.World.Logger.VerboseDebug($"OnBlockBrokenWith:: (Weap:{weapon},Edge:{edged}) {byEntity.Code} -> {targetBlock.Code}");
 
-
+		if (recomendedUsage == false && this.Hardness(itemslot.Itemstack) > HardnessState.Hard) {
+		bool catasptrophicFailure = world.Rand.Next(1, 1000) >= 999;
+		if (catasptrophicFailure) {
+		world.Logger.VerboseDebug("Catastrophic brittle fracture of {0} !", this.Code);
+		this.SetDurability(itemslot.Itemstack, 0);
+		this.DamageItem(world, byEntity, itemslot, 9999);
+		return true;
+		}
+		}
 
 		return WrappedItem.OnBlockBrokenWith(world, byEntity, itemslot, blockSel);
 		//Post Damage reduction? or Increase??
@@ -429,7 +463,7 @@ namespace ElementalTools
 		//ItemAxe: just repeatedly calls DamageItem....instead of accrued count...lame.
 
 		bool byPlayer = byEntity is EntityPlayer;
-		bool catasptrophicFailure = false, edgeBlunting = false;
+		bool edgeBlunting = false;
 
 		float resistance = 0.0f;
 
@@ -453,7 +487,7 @@ namespace ElementalTools
 				case HardnessState.Brittle:
 					resistance = -0.3f;
 					edgeBlunting = world.Rand.Next(1, 400) >= 399;
-					catasptrophicFailure = world.Rand.Next(1, 1000) >= 999; 
+
 					break;
 				}
 		}
@@ -462,10 +496,10 @@ namespace ElementalTools
 
 		float amountFractional =  (resistance * amount);
 		var dmgRandomizer = NatFloat.createUniform(amount, amountFractional);
-		var actualAmount = ( int )dmgRandomizer.nextFloat( );
+		var actualAmount = Math.Abs( (int)dmgRandomizer.nextFloat( ));
 		
 		if (edgeBlunting) this.Dull(itemslot.Itemstack);
-		if (catasptrophicFailure) actualAmount += 1200;
+		
 
 		base.DamageItem(world, byEntity, itemslot, actualAmount);
 		}
@@ -548,15 +582,13 @@ namespace ElementalTools
 		var outputItem = outputSlot.Itemstack.Item;
 		var fullMetalInterface = outputSlot.Itemstack.Item as IAmSteel;
 		api.World.Logger.VerboseDebug("Output Item {0} supports; Steel Interface ", steelItem.Code);
-
-		fullMetalInterface.CopyAttributes(steelItemSlot.Itemstack, outputSlot.Itemstack);
-
-		api.World.Logger.VerboseDebug("Attributes perpetuated from {0} to {1} ", steelItem.Code, outputItem.Code);
-
+								
 		if(sharpenerItemSlot != null) fullMetalInterface.Sharpen(outputSlot.Itemstack);
-
-		//outputSlot.MarkDirty( );
+		fullMetalInterface.CopyAttributes(steelItemSlot.Itemstack, outputSlot.Itemstack);
+		api.World.Logger.VerboseDebug("Attributes perpetuated from {0} to {1} ", steelItem.Code, outputItem.Code);
 		}
+
+
 		}
 
 		}
@@ -736,7 +768,21 @@ namespace ElementalTools
 		return recipient.Attributes.GetInt(durabilityKeyword, recipient.Item.Durability);
 		}
 
+		internal void SetTimestamp(EntityItem entityItem)
+		{
+		if (!entityItem.Itemstack.Attributes.HasAttribute(_timestampKey)) {
+		entityItem.Itemstack.Attributes.SetDouble(_timestampKey, entityItem.itemSpawnedMilliseconds);
+		}
+		}
 
+		internal TimeSpan GetTimestampElapsed(EntityItem entityItem)
+		{
+		if (entityItem.Itemstack.Attributes.HasAttribute(_timestampKey)) {
+		var ts = TimeSpan.FromMilliseconds(entityItem.Itemstack.Attributes.GetDouble(_timestampKey));
+		return ts.Subtract(TimeSpan.FromMilliseconds(entityItem.itemSpawnedMilliseconds)).Negate();
+		}
+		return TimeSpan.Zero;
+		}
 	}
 }
 

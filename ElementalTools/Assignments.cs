@@ -110,12 +110,11 @@ namespace ElementalTools
 		private void GenerateSharpeningGridRecipies( )
 		{
 		var sharpenableThings = new string[ ]{
-		"axehead-*",
-		"axe-*",
+		//Tool-heads
+		"axehead-*",		
 		"hammerhead-*",
 		"arrowhead-*",
-		"swordblade-*",
-		"sword-*",
+		"swordblade-*",		
 		"scythehead-*",
 		"sawblade-*",
 		"prospectingpickhead-*",
@@ -123,7 +122,14 @@ namespace ElementalTools
 		"pickaxehead-*",
 		"knifeblade-*",
 		"hoehead-*",
-		"chisel-*"
+		
+		//Finished Tools
+		"axe-*",
+		"sword-*",
+		"knife-*",
+		"spear-*",
+
+		"chisel-*",
 		};
 
 		var variants = new string[ ]

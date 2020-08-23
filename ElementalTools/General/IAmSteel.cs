@@ -12,6 +12,7 @@ namespace ElementalTools
 		bool Hardenable { get; }
 
 		//Rust?
+		//Fracture rate?
 
 		/// <summary>
 		/// Read Sharpness; Dynamic properties from ItemStack - attribs

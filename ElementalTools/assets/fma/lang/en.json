@@ -2,7 +2,7 @@
     "itemdesc-mallet": "Basicaly LOG on a stick\n the ORGANIC Alternative to Hammers.",
     "item-mallet":"Mallet",
     "item-carburization_powder":"Carburization Powder",
-    "itemdesc-carburization_powder":"A 'magical' dark grey dust...ask the metal sages how its used...😁",    
+    "itemdesc-carburization_powder":"A 'magical' dark grey dust...ask the metal sages how its used...",    
 	"block-pack_carburization-unfired":"Carburization Pack (unfired)",
     "block-pack_carburization-fired":"Carburization Pack (fired)",
     "blockdesc-pack_carburization-unfired":"Heat to transition temperature for a while.",
@@ -18,6 +18,6 @@
     "itemdesc-spear-*":"A Spear with the 'Dory' style pattern.",
 	"item-sharpening_stone":"Sharpening Whetstones",
 	"itemdesc-sharpening_stone":"Use in combination with _DULL_ steel items and grease to sharpen",
-    "craftinginfo-primitive_steelmaking-title":"Pack Carburization process (Steel making)",
-	"craftinginfo-primitive_steelmaking-text": "So, you want to make steel?\nYou need Lots and Lots of Charcoal!\nMore Iron than you know what to do with!\nFirst step: combine Charcoal, Bonemeal and crush by hammering - makes <a href='handbook://item-carburization_powder'>Carburization Powder</a>!\n Next make a Coffin or 'Pack' of blue-clay with lots of the previous steps powder packed around an iron object (tool-head, blade, ect...nothing too big). Then Fire it in a furnace or firepit for quite a long time - until it glows RED-HOT! Take out the 'pack' after its finished heating... when its cooled off - your 'steel' awaits you, place the pakc and break it open. Easy right?",
+    "craftinginfo-primitive_steelmaking-title":"Steel making: (Pack Carburization process)",
+	"craftinginfo-primitive_steelmaking-text": "So, you want to make steel?\n\nYou'll need Lots and Lots of Charcoal!\nMore Iron than you know what to do with!\n\nFirst step: combine Charcoal, Bonemeal and crush by hammering - makes <a href='handbook://fma:item-carburization_powder'>Carburization Powder</a>!\n Next make a Coffin or 'Pack' of blue-clay with lots of the previous steps powder packed around an iron object (tool-head, blade, ect...nothing too big). Then Fire it in a furnace or firepit for quite a long time - until it glows RED-HOT! Take out the 'pack' after its finished heating... when its cooled off - your 'steel' awaits you, place the pakc and break it open. Easy right?",
 }
