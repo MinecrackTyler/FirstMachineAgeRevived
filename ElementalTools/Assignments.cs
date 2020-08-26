@@ -111,14 +111,12 @@ namespace ElementalTools
 		{
 		var sharpenableThings = new string[ ]{
 		//Tool-heads
-		"axehead-*",		
-		"hammerhead-*",
+		"axehead-*",				
 		"arrowhead-*",
 		"swordblade-*",		
 		"scythehead-*",
 		"sawblade-*",
-		"prospectingpickhead-*",
-		"shovelhead-*",
+		"prospectingpickhead-*",		
 		"pickaxehead-*",
 		"knifeblade-*",
 		"hoehead-*",
@@ -128,7 +126,8 @@ namespace ElementalTools
 		"sword-*",
 		"knife-*",
 		"spear-*",
-
+		//"scythe-*",
+		//"hoe-*",
 		"chisel-*",
 		};
 

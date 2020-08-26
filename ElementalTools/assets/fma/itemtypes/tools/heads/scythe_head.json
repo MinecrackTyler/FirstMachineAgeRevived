@@ -25,7 +25,8 @@
 			sharpenable: true,
 			hardenable: true,        
 		}
-    },   	
+    },   
+    tooltier: 5,
 	creativeinventory: { "general": ["*"], "items": ["*"] },
 	guiTransform: {
 		translation: { x: 0, y: 0, z: 0 },

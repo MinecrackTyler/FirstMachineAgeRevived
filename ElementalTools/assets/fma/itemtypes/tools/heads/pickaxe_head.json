@@ -25,7 +25,8 @@
 			sharpenable: true,
 			hardenable: true,        
 		}
-    },   	
+    },   
+    tooltier: 5,
 	creativeinventory: { "general": ["*"], "items": ["*"] },
 	fpHandTransform: {
 		translation: { x: 0.2, y: -0.2, z: 0 },

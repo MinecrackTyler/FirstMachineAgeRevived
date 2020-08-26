@@ -89,7 +89,7 @@
 	height: 3,
 	attributes: {
 		outputOverride: "pickaxehead-blister_steel",
-        extraCookTime:20,
+        extraCookTime:25,
 	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },
@@ -144,7 +144,8 @@
 	width: 3,
 	height: 3,
 	attributes: {
-		outputOverride: "prospectingpickhead-blister_steel"
+		outputOverride: "prospectingpickhead-blister_steel",
+        extraCookTime:15,
 	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },

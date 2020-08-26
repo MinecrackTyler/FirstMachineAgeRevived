@@ -26,6 +26,7 @@
 			hardenable: true,        
 		}
     },   	
+    tooltier: 5,
 	creativeinventory: { "general": ["*"], "items": ["*"] },
 	fpHandTransform: {
 		translation: { x: -0.3, y: -0.6, z: -0.3 },

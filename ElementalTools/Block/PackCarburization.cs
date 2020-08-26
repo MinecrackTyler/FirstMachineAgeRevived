@@ -50,7 +50,7 @@ namespace ElementalTools
 			if (this.Attributes[steelTransitionTempKey].Exists) 
 				{ return this.Attributes[steelTransitionTempKey].AsFloat(); }
 
-			return 750f;
+			return 750f;// Or 900C?
 			}
 		}
 
@@ -60,7 +60,7 @@ namespace ElementalTools
 			{
 			if (this.Attributes[steelTransitionTempKey].Exists) { return this.Attributes[steelTransitionTempKey].AsFloat( ); }
 
-			return 300f;
+			return 38f;
 			}
 		}
 
@@ -205,9 +205,9 @@ namespace ElementalTools
 		if (stuffedInside != null && stuffedInside.Length > 0) {
 		var firstThing = stuffedInside.First( );
 		var isIron = firstThing.Collectible.IsFerricMetal( );
-		#if DEBUG
-		world.Logger.VerboseDebug("Iron contents to smelt? {0} -> {1}", isIron, firstThing.GetName());
-		#endif
+		//#if DEBUG
+		//world.Logger.VerboseDebug("Iron contents to smelt? {0} -> {1}", isIron, firstThing.GetName());
+		//#endif
 		
 		return isIron;		
 		}
@@ -220,8 +220,7 @@ namespace ElementalTools
 		#if DEBUG
 			world.Logger.VerboseDebug("Invoked: 'DoSmelt' CookSlots#{1} In.stk: {0} ", (inputSlot.Empty ? "empty" : inputSlot.Itemstack.Collectible.Code.ToShortString()),cookingSlotsProvider.Slots.Length);
 		#endif
-
-		//base.DoSmelt(world, cookingSlotsProvider, inputSlot, outputSlot);
+					
 		//Remap metal type of contained item...Iron beccomes Austentic 'steel' - Quenching is ITEM SPECIFIC!
 		//Change own 'type' to "fired"...
 		ItemStack[ ] stuffInside = GetContents(world, inputSlot.Itemstack);
@@ -281,24 +280,16 @@ namespace ElementalTools
 		world.Logger.VerboseDebug("Transmuting (Item): {0} >>> {1}", oldThing, transumtedThing);		
 		#endif
 		}
-
-
-		//outputStack.Attributes = contentStack.Attributes.Clone( );
-		//outputStack.TempAttributes = contentStack.TempAttributes.Clone( );
 		outputSlot.Itemstack = outputStack.Clone();
 
 		temperature = Math.Min(temperature, maxInnerTemperature);
-		outputSlot.Itemstack.Collectible.SetTemperature(world, outputStack, temperature);				
+		contentStack.Collectible.SetTemperature(world, contentStack, temperature);//TODO: Temperature clamping inside contents of stack...
+
 		ItemStack[ ] transmutedItems = new ItemStack[ ] { contentStack.Clone( ) };
 		transmutedItems.First( ).StackSize = 1;//There can be only 1, per pack
 		SetContents(outputSlot.Itemstack, transmutedItems);
-
-
-		//outputSlot.Itemstack.Attributes = contentStack.Attributes.Clone( );
-		inputSlot.Itemstack = null;
-		//inputSlot.MarkDirty( );
-		//outputSlot.MarkDirty(); //?
-
+		
+		inputSlot.Itemstack = null;		
 
 		#if DEBUG
 		world.Logger.VerboseDebug("Contents of pack: {0}", contentStack);

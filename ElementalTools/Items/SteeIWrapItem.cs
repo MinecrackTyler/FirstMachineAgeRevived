@@ -164,7 +164,7 @@ namespace ElementalTools
 
 		dsc.AppendFormat("\nMetal: '{0}' ",Name);
 
-		if (this.Hardenable && hardness != HardnessState.Soft) {
+		if (this.Hardenable || hardness != HardnessState.Soft) {
 		dsc.AppendFormat(", Temper: {0}\n", hardness);
 		}
 
@@ -254,6 +254,7 @@ namespace ElementalTools
 
 		public virtual void CopyAttributes(ItemStack donor, ItemStack recipient)
 		{
+			
 		if (donor.Class == recipient.Class) {
 		var hI = (donor.Item as IAmSteel).Hardness(donor);
 		var sI = (donor.Item as IAmSteel).Sharpness(donor);
@@ -261,17 +262,18 @@ namespace ElementalTools
 		(recipient.Item as IAmSteel).Hardness(recipient, hI);
 		(recipient.Item as IAmSteel).Sharpness(recipient, sI);
 
-		var wear = GetDurability(donor);
-		
-		if (donor.Item.IsFerricMetal( ) && recipient.Item.IsSteelMetal( )) 
-		{
-		var percentWear = (wear / donor.Item.Durability);
-		SetDurability(recipient, recipient.Item.Durability * percentWear);
-		}
-		else SetDurability(recipient, wear);
+		if (donor.Item.Durability > 0) 
+			{
+			var wear = GetDurability(donor);
+
+			if (donor.Item.IsFerricMetal( ) && recipient.Item.IsSteelMetal( )) {
+			var percentWear = (wear / donor.Item.Durability);
+			SetDurability(recipient, recipient.Item.Durability * percentWear);
+			}
+			else SetDurability(recipient, wear);
+			}
 
 		}
-
 		}
 
 
@@ -301,7 +303,7 @@ namespace ElementalTools
 
 		float temperature = entityItem.Itemstack.Collectible.GetTemperature(api.World, entityItem.Itemstack);
 		//Track first moment in liquid;
-		this.SetTimestamp(entityItem);
+		this.SetTimestamp(entityItem);//BUG: NOT WORKING!?
 
 		//Above 900C  - What should happen in this range; different phase of iron?
 
@@ -582,9 +584,10 @@ namespace ElementalTools
 		var outputItem = outputSlot.Itemstack.Item;
 		var fullMetalInterface = outputSlot.Itemstack.Item as IAmSteel;
 		api.World.Logger.VerboseDebug("Output Item {0} supports; Steel Interface ", steelItem.Code);
-								
-		if(sharpenerItemSlot != null) fullMetalInterface.Sharpen(outputSlot.Itemstack);
+
 		fullMetalInterface.CopyAttributes(steelItemSlot.Itemstack, outputSlot.Itemstack);
+
+		if (sharpenerItemSlot != null) fullMetalInterface.Sharpen(outputSlot.Itemstack);
 		api.World.Logger.VerboseDebug("Attributes perpetuated from {0} to {1} ", steelItem.Code, outputItem.Code);
 		}
 
@@ -770,15 +773,15 @@ namespace ElementalTools
 
 		internal void SetTimestamp(EntityItem entityItem)
 		{
-		if (!entityItem.Itemstack.Attributes.HasAttribute(_timestampKey)) {
-		entityItem.Itemstack.Attributes.SetDouble(_timestampKey, entityItem.itemSpawnedMilliseconds);
+		if (!entityItem.Itemstack.TempAttributes.HasAttribute(_timestampKey)) {
+		entityItem.Itemstack.TempAttributes.SetLong(_timestampKey, entityItem.itemSpawnedMilliseconds);
 		}
 		}
 
 		internal TimeSpan GetTimestampElapsed(EntityItem entityItem)
 		{
-		if (entityItem.Itemstack.Attributes.HasAttribute(_timestampKey)) {
-		var ts = TimeSpan.FromMilliseconds(entityItem.Itemstack.Attributes.GetDouble(_timestampKey));
+		if (entityItem.Itemstack.TempAttributes.HasAttribute(_timestampKey)) {
+		var ts = TimeSpan.FromMilliseconds(entityItem.Itemstack.TempAttributes.GetLong(_timestampKey));
 		return ts.Subtract(TimeSpan.FromMilliseconds(entityItem.itemSpawnedMilliseconds)).Negate();
 		}
 		return TimeSpan.Zero;
