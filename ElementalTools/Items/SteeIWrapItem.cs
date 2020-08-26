@@ -297,13 +297,13 @@ namespace ElementalTools
 		/// <param name="entityItem">Entity item.</param>
 		public override void OnGroundIdle(EntityItem entityItem)
 		{
-
-		if (entityItem.Swimming || entityItem.FeetInLiquid) {
+		if (api.Side.IsServer() && (entityItem.Swimming || entityItem.FeetInLiquid)) {
+				
 		if (!this.Hardenable) return;
 
 		float temperature = entityItem.Itemstack.Collectible.GetTemperature(api.World, entityItem.Itemstack);
 		//Track first moment in liquid;
-		this.SetTimestamp(entityItem);//BUG: NOT WORKING!?
+		this.SetTimestamp(entityItem);//Clear on pickup or...?
 
 		//Above 900C  - What should happen in this range; different phase of iron?
 
@@ -326,7 +326,7 @@ namespace ElementalTools
 		entityItem.Itemstack.Collectible.SetTemperature(api.World, entityItem.Itemstack, temperature - 17, false);
 
 		#if DEBUG
-		api.World.Logger.VerboseDebug("Quench process: {0}S elapsed @{1}C", elapsedTime.TotalSeconds, temperature);
+		api.World.Logger.VerboseDebug("Quench process: {0}S elapsed @{1}C H:{2} ~ QU#{3}", elapsedTime.TotalSeconds, temperature, this.Hardness(entityItem.Itemstack), quenchUnits );
 		#endif
 		}
 		}
@@ -773,16 +773,17 @@ namespace ElementalTools
 
 		internal void SetTimestamp(EntityItem entityItem)
 		{
-		if (!entityItem.Itemstack.TempAttributes.HasAttribute(_timestampKey)) {
-		entityItem.Itemstack.TempAttributes.SetLong(_timestampKey, entityItem.itemSpawnedMilliseconds);
+			
+		if (!entityItem.Attributes.HasAttribute(_timestampKey)) {
+			entityItem.Attributes.SetLong(_timestampKey, DateTime.Now.Ticks);
 		}
 		}
 
 		internal TimeSpan GetTimestampElapsed(EntityItem entityItem)
 		{
-		if (entityItem.Itemstack.TempAttributes.HasAttribute(_timestampKey)) {
-		var ts = TimeSpan.FromMilliseconds(entityItem.Itemstack.TempAttributes.GetLong(_timestampKey));
-		return ts.Subtract(TimeSpan.FromMilliseconds(entityItem.itemSpawnedMilliseconds)).Negate();
+		if (entityItem.Attributes.HasAttribute(_timestampKey)) {
+		var ts = TimeSpan.FromTicks(entityItem.Attributes.GetLong(_timestampKey));
+		return ts.Subtract(TimeSpan.FromTicks(DateTime.Now.Ticks)).Negate();
 		}
 		return TimeSpan.Zero;
 		}

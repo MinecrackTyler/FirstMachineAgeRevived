@@ -42,7 +42,7 @@
 	height: 3,
     attributes: {		
         outputOverride: "cleaver-blister_steel",
-        extraCookTime:10,
+        extraCookTime:1,
 	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },
@@ -89,7 +89,7 @@
 	height: 3,
 	attributes: {
 		outputOverride: "pickaxehead-blister_steel",
-        extraCookTime:25,
+        extraCookTime:2,
 	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },
@@ -145,7 +145,7 @@
 	height: 3,
 	attributes: {
 		outputOverride: "prospectingpickhead-blister_steel",
-        extraCookTime:15,
+        extraCookTime:10,
 	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },
@@ -161,7 +161,7 @@
 	height: 3,
     attributes: {
 		outputOverride: "sawblade-blister_steel",
-        extraCookTime:25,
+        extraCookTime:20,
 	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },
@@ -177,7 +177,7 @@
 	height: 3,
     attributes: {
 		outputOverride: "scythehead-blister_steel",
-        extraCookTime:20,
+        extraCookTime:25,
 	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 },
@@ -225,7 +225,7 @@ ingredientPattern: "CCC	KXK	CCC",
 	height: 3,
 	attributes: {
 		outputOverride: "axehead-blister_steel",
-	    extraCookTime:25,
+	    extraCookTime:20,
 	},
 	output: { type: "block", code: "pack_carburization-unfired"  }
 }

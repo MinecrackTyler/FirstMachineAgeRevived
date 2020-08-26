@@ -79,17 +79,18 @@ namespace ElementalTools
 	}
 
 	/// <summary>
-	/// The metals crystal state; changed only by tempering/quenching/annealing
+	/// The metals crystal state; changed only by normalizing/quenching/annealing
 	/// </summary>
 	/// <remarks>
-	/// Reduces wear - with a penalty of random catastrophic failure...
+	/// Reduces wear - with a penalty of random catastrophic failure...Metal's "Temper'
 	/// </remarks>
 	public enum HardnessState : byte
 	{
 		Soft	=	0,
-		Medium	=	1,
-		Hard	=	2,
-		Brittle	=	3,
+		Mild 	= 	1,
+		Medium	=	2,
+		Hard	=	3,
+		Brittle	=	4,
 	}
 
 }

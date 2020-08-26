@@ -58,7 +58,7 @@ namespace ElementalTools
 			//Seconds
 			get
 			{
-			if (this.Attributes[steelTransitionTempKey].Exists) { return this.Attributes[steelTransitionTempKey].AsFloat( ); }
+			if (this.Attributes[steelTransitionTimeKey].Exists) { return this.Attributes[steelTransitionTimeKey].AsFloat( ); }
 
 			return 38f;
 			}
@@ -185,7 +185,9 @@ namespace ElementalTools
 		public override float GetMeltingDuration(IWorldAccessor world, ISlotProvider cookingSlotsProvider, ItemSlot inputSlot)
 		{//TimeSpan - would have been far better a return type
 		var extraCookTime = GetExtraCookTime(inputSlot.Itemstack);
-
+		#if DEBUG
+		api.World.Logger.VerboseDebug("GetMeltingDuration::{0}", (SteelTransitionTime + extraCookTime));
+		#endif
 		return SteelTransitionTime + extraCookTime;
 		}
 
@@ -283,16 +285,17 @@ namespace ElementalTools
 		outputSlot.Itemstack = outputStack.Clone();
 
 		temperature = Math.Min(temperature, maxInnerTemperature);
-		contentStack.Collectible.SetTemperature(world, contentStack, temperature);//TODO: Temperature clamping inside contents of stack...
+		contentStack.Collectible.SetTemperature(world, contentStack, temperature);
 
 		ItemStack[ ] transmutedItems = new ItemStack[ ] { contentStack.Clone( ) };
 		transmutedItems.First( ).StackSize = 1;//There can be only 1, per pack
 		SetContents(outputSlot.Itemstack, transmutedItems);
-		
+		outputSlot.Itemstack.Collectible.SetTemperature(world, outputSlot.Itemstack, temperature);
+
 		inputSlot.Itemstack = null;		
 
 		#if DEBUG
-		world.Logger.VerboseDebug("Contents of pack: {0}", contentStack);
+		world.Logger.VerboseDebug("Contents of pack: {0} @{1}C", contentStack,temperature);
 		world.Logger.VerboseDebug("Finished: 'DoSmelt' " );
 		#endif	
 		}
