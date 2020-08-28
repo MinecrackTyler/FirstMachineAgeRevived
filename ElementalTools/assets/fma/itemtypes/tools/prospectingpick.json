@@ -1,1 +1,74 @@
-﻿
+﻿{
+	code: "prospectingpick",
+	storageFlags: 5,
+	class: "Steel_ItemProspectingPick",
+    attributesByType: {
+		"*-blister_steel": {
+			metalName:"Blister Steel",
+			sharpenable: true,
+			hardenable: false,
+		},
+		"*-shear_steel": {
+			metalName:"Shear Steel",
+			sharpenable: true,
+			hardenable: false,
+		},
+        "*": {
+            handbook: {
+			groupBy: ["prospectingpick-*"]
+			},
+			toolrackTransform: {
+			rotation: { y: 1, z: -1 },
+			translation: { x: -0.3, y: 0.6 },
+			scale: 1.25,
+			},
+			}
+    },    	
+	variantgroups: [
+		{ code: "metal", states: ["blister_steel", "shear_steel" ] },
+	],
+	tool: "pickaxe",
+	damagedby: ["blockbreaking", "attacking"],
+	shape: { base: "game:item/tool/prospectingpick" },
+	heldTpHitAnimation: "breaktool",
+	textures: {
+        "metal": { base: "metal/{metal}" },		
+		"wood": { base: "game:item/tool/material/wood" } 
+	},
+	tooltier: 5,	
+	miningspeed: {				
+		"stone": 5.5,
+		"ore": 5.5		
+	},
+	attackpowerbytype: {
+		"*-blister_steel": 2.4,
+		"*-shear_steel": 2.5,
+	},
+	durabilitybytype: {
+		"*-blister_steel": 850,
+		"*-shear_steel": 900,
+	},
+	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
+	fpHandTransform: {
+		translation: { x: 0.046875, y: 0, z: 0 },
+		rotation: { x: 15, y: 15, z: 90 },
+		scale: 2.5
+	},
+	guiTransform: {
+		translation: { x: 1, y: 1, z: 0 },
+		rotation: { x: 107, y: -50, z: -16 },
+		origin: { x: 0.44, y: 0.3, z: 0.43 },
+		scale: 1.68
+	},
+	groundTransform: {
+		translation: { x: 0.3, y: 0.4, z: -0.2 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0.45, z: 0.5 },
+		scale: 3.6
+	},
+	tpHandTransform: {
+		translation: { x: -0.77, y: -0.5, z: -0.08 },
+		rotation: { x: 90, y: 0, z: -10 },
+		scale: 1
+	}
+}

@@ -187,20 +187,30 @@
     <None Include="assets\fma\itemtypes\tools\pickaxe.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\shovel.json" />
+    <None Include="assets\fma\itemtypes\tools\shovel.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="assets\fma\itemtypes\tools\knife.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\prospectingpick.json" />
-    <None Include="assets\fma\itemtypes\tools\scythe.json" />
-    <None Include="assets\fma\itemtypes\tools\saw.json" />
+    <None Include="assets\fma\itemtypes\tools\prospectingpick.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\itemtypes\tools\scythe.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\itemtypes\tools\saw.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="assets\fma\itemtypes\tools\cleaver.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\fma\itemtypes\tools\hammer.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\shears.json" />
+    <None Include="assets\fma\itemtypes\tools\shears.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="assets\fma\itemtypes\tools\hoe.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

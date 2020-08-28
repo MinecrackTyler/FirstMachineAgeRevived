@@ -1,1 +1,71 @@
-﻿
+﻿{
+	code: "saw",
+	tool: "saw",
+    class: "Steel_Item",	
+ 	attributesByType: {
+	"*-blister_steel": {
+		metalName:"Blister Steel",
+		sharpenable: true,
+		hardenable: false,
+	},
+	"*-shear_steel": {
+		metalName:"Shear Steel",
+		sharpenable: true,
+		hardenable: false,
+	},
+	"*": {
+	   	handbook: {
+			groupBy: ["saw-*"]
+		},
+		toolrackTransform: {
+			rotation: { y: 1, z: -1 },
+			translation: { x: -0.35, y: 0.05 },
+			scale: 1.25,
+		},
+		}
+	},    	
+	variantgroups: [
+		{ code: "metal", states: ["blister_steel", "shear_steel" ] },
+	],
+	damagedby: ["blockbreaking", "attacking"],
+	shape: { base: "game:item/tool/saw" },
+	heldTpHitAnimation: "breaktool",
+	textures: {
+		"metal": { base: "metal/{metal}" },
+		"wood": { base: "game:item/tool/material/wood" },
+		"linen": { base: "game:item/tool/material/linen" }
+	},
+	tooltier: 5,	
+	miningspeed: {			
+		"wood": 6,
+		"leaves": 4		
+	},
+	durabilitybytype: {
+		"*-blister_steel": 1450,
+		"*-shear_steel": 1500
+	},
+	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
+	fpHandTransform: {
+		translation: { x: 0.0468, y: 0, z: 0 },
+		rotation: { x: -161, y: 20, z: 90 },
+		scale: 2.5
+	},
+	guiTransform: {
+		rotate: false,
+		translation: { x: 1, y: 0, z: 0 },
+		rotation: { x: -77, y: 47, z: -151 },
+		origin: { x: 0.5, y: 0.5, z: 0.38 },
+		scale: 1.9
+	},
+	groundTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0.45, z: 0.5 },
+		scale: 3.6
+	},
+	tpHandTransform: {
+		translation: { x: -0.65, y: -0.62, z: -0.45 },
+		rotation: { x: 90, y: -174, z: 0 },
+		scale: 1
+	}
+}

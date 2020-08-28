@@ -1,1 +1,111 @@
-﻿
+﻿{
+	code: "shovel",	
+    class: "Steel_Item",
+	variantgroups: [
+		{ code: "metal", states: ["blister_steel", "shear_steel" ] },
+	],
+    attributesByType: {
+	"*-blister_steel": {
+		metalName:"Blister Steel",
+		sharpenable: true,
+		hardenable: false,
+	},
+	"*-shear_steel": {
+		metalName:"Shear Steel",
+		sharpenable: true,
+		hardenable: false,
+	},
+	"*": {
+		   handbook: {
+			groupBy: ["shovel-*"]
+		},
+		toolrackTransform: {
+			rotation: { y: 1, z: -1 },
+			translation: { x: -0.47, y: 0.6 },
+			scale: 1.25,
+		},
+		}
+	},    	
+	tool: "shovel",
+	damagedby: ["blockbreaking", "attacking"],
+	shape: { base: "game:item/tool/shovel-copper" },	
+	heldTpHitAnimation: "shoveldig",
+	textures: {	
+			"material": { base: "metal/{metal}" },
+		},	
+	miningspeed: {
+		"soil": 7,
+		"sand": 7,
+		"gravel": 4.4,
+		"snow": 4.4		
+	},
+	attackpower:  2.5,	
+	durability:  1500,	
+	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
+	fpHandTransform: {
+		translation: { x: 0.046875, y: -0.2, z: 0 },
+		rotation: { x: -15, y: 15, z: 100 },
+		scale: 2
+	},
+	guiTransformByType: {
+		"shovel-copper": {
+			translation: { x: 7, y: 0, z: 1 },
+			rotation: { x: -112, y: -147, z: 139 },
+			origin: { x: 0.4, y: 0.7, z: 0.7 },
+			scale: 1.05
+		},
+		"shovel-tinbronze": {
+			translation: { x: 7, y: 0, z: 1 },
+			rotation: { x: -112, y: -147, z: 139 },
+			origin: { x: 0.4, y: 0.7, z: 0.7 },
+			scale: 1.05
+		},
+		"shovel-bismuthbronze": {
+			translation: { x: 7, y: 0, z: 1 },
+			rotation: { x: -112, y: -147, z: 139 },
+			origin: { x: 0.4, y: 0.7, z: 0.7 },
+			scale: 1.05
+		},
+		"shovel-blackbronze": {
+			translation: { x: 7, y: 0, z: 1 },
+			rotation: { x: -112, y: -147, z: 139 },
+			origin: { x: 0.4, y: 0.7, z: 0.7 },
+			scale: 1.05
+		},
+		"shovel-iron": {
+			translation: { x: 7, y: 0, z: 1 },
+			rotation: { x: -112, y: -147, z: 139 },
+			origin: { x: 0.4, y: 0.7, z: 0.7 },
+			scale: 1.05
+		},
+		"shovel-silver": {
+			translation: { x: 7, y: 0, z: 1 },
+			rotation: { x: -112, y: -147, z: 139 },
+			origin: { x: 0.4, y: 0.7, z: 0.7 },
+			scale: 1.05
+		},
+		"shovel-gold": {
+			translation: { x: 7, y: 0, z: 1 },
+			rotation: { x: -112, y: -147, z: 139 },
+			origin: { x: 0.4, y: 0.7, z: 0.7 },
+			scale: 1.05
+		},
+		"*": {
+		translation: { x: 7, y: 0, z: 1 },
+		rotation: { x: -112, y: -147, z: 139 },
+		origin: { x: 0.3, y: 0.7, z: 0.7 },
+		scale: 1.18
+		}
+	},
+	groundTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 3.6
+	},
+	tpHandTransform: {
+		translation: { x: -1.04, y: -0.24, z: -0.61 },
+		rotation: { x: 0, y: 0, z: -10 },
+		scale: 0.8
+	}
+}

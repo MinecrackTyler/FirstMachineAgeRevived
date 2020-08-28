@@ -1,1 +1,62 @@
-﻿
+﻿{
+	code: "shears",
+	class: "Steel_ItemShears",
+	damagedby: ["blockbreaking", "attacking"],
+	tool: "shears",
+	variantgroups: [
+		{ code: "metal", states: ["blister_steel", "shear_steel" ] },
+	],
+    attributesByType: {
+	"*-blister_steel": {
+		metalName:"Blister Steel",
+		sharpenable: true,
+		hardenable: false,
+	},
+	"*-shear_steel": {
+		metalName:"Shear Steel",
+		sharpenable: true,
+		hardenable: false,
+	},
+	"*": {
+		handbook: {
+			groupBy: ["shears-*"]
+		},
+		toolrackTransform: {
+			translation: { y: 0.7 },
+			rotation: { y: 180 },
+			scale: 1.5
+		},
+		}
+	},  	
+	shape: { base: "game:item/tool/shears" },
+	heldTpHitAnimation: "shears",
+	textures: {
+		"metal": { base: "metal/{metal}" }
+	},
+	attackpower:3.5,	
+	durability:  4800,	
+	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
+	guiTransform: {
+		translation: { x: 0.5, y: 0, z: 0 },
+		rotation: { x: -89, y: 41, z: 33 },
+		origin: { x: 0.8, y: 0.4, z: 0.48 },
+		scale: 2.4
+	},
+	fpHandTransform: {
+		translation: { x: -0.24, y: 0.1, z: 0.1 },
+		rotation: { x: -35, y: 15, z: 90 },
+		scale: 2.45
+	},
+	groundTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 3.6
+	},
+	tpHandTransform: {
+		translation: { x: -0.9, y: -0.11, z: -0.35 },
+		rotation: { x: -10, y: 0, z: -25 },
+		origin: { x: 0.68, y: 0, z: 0.42 },
+		scale: 1
+	}
+}

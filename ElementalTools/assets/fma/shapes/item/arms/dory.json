@@ -7,10 +7,7 @@
 	"textureHeight": 16,
 	"textureSizes": {
 	},
-	"textures": {       
-		"redwood": "game:block/wood/debarked/redwood",
-        "nails": "game:block/metal/ingot/iron",
-		"metal": "fma:metal/blister_steel"
+	"textures": {
 	},
 	"elements": [
 		{
@@ -144,36 +141,36 @@
 				{
 					"name": "Blade_support",
 					"from": [ 10.0, -0.5, -0.5 ], 
-					"to": [ 12.0, 1.0, 1.0 ], 
-					"rotationOrigin": [ 8.5, 0.0, 0.0 ],
+					"to": [ 13.5, 1.0, 1.0 ], 
+					"rotationOrigin": [ 7.5, 0.0, 0.0 ],
 					"faces": {
-						"north": { "texture": "#metal", "uv": [ 0.0, 5.5, 2.0, 7.0 ] },
+						"north": { "texture": "#metal", "uv": [ 0.0, 5.5, 3.5, 7.0 ] },
 						"east": { "texture": "#metal", "uv": [ 7.0, 0.5, 8.5, 2.0 ] },
-						"south": { "texture": "#metal", "uv": [ 0.0, 10.5, 2.0, 12.0 ] },
+						"south": { "texture": "#metal", "uv": [ 0.0, 10.5, 3.5, 12.0 ] },
 						"west": { "texture": "#metal", "uv": [ 14.0, 10.0, 15.5, 11.5 ] },
-						"up": { "texture": "#metal", "uv": [ 0.0, 4.5, 2.0, 6.0 ] },
-						"down": { "texture": "#metal", "uv": [ 0.0, 5.0, 2.0, 6.5 ] }
+						"up": { "texture": "#metal", "uv": [ 0.0, 4.5, 3.5, 6.0 ] },
+						"down": { "texture": "#metal", "uv": [ 0.0, 5.0, 3.5, 6.5 ] }
 					},
 					"children": [
 						{
 							"name": "Blade_Core",
-							"from": [ 2.0, 0.25, 0.25 ], 
-							"to": [ 6.0, 1.25, 1.25 ], 
-							"rotationOrigin": [ 2.0, 0.0, 0.0 ],
+							"from": [ 3.5, 0.25, 0.25 ], 
+							"to": [ 7.0, 1.25, 1.25 ], 
+							"rotationOrigin": [ 4.0, 0.0, 0.0 ],
 							"faces": {
-								"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 4.0, 1.0 ] },
+								"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 3.5, 1.0 ] },
 								"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
-								"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 4.0, 1.0 ] },
+								"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 3.5, 1.0 ] },
 								"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
-								"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 4.0, 1.0 ] },
-								"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 4.0, 1.0 ] }
+								"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 3.5, 1.0 ] },
+								"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 3.5, 1.0 ] }
 							}
 						},
 						{
 							"name": "Blade1",
-							"from": [ 2.0, -0.75, 0.5 ], 
-							"to": [ 8.0, 2.25, 1.0 ], 
-							"rotationOrigin": [ 0.0, -3.25, 0.75 ],
+							"from": [ 5.0, -0.75, 0.5 ], 
+							"to": [ 11.0, 2.25, 1.0 ], 
+							"rotationOrigin": [ 3.0, -3.25, 0.75 ],
 							"faces": {
 								"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 6.0, 3.0 ] },
 								"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 3.0 ] },
@@ -247,9 +244,9 @@
 						},
 						{
 							"name": "BladeTip_N",
-							"from": [ 6.5, -0.4, 0.51 ], 
-							"to": [ 9.2, 2.3, 1.01 ], 
-							"rotationOrigin": [ 8.0, 1.0, 1.0 ],
+							"from": [ 9.5, -0.4, 0.51 ], 
+							"to": [ 12.2, 2.3, 1.01 ], 
+							"rotationOrigin": [ 11.0, 1.0, 1.0 ],
 							"rotationY": -8.0,
 							"rotationZ": 45.0,
 							"faces": {
@@ -263,10 +260,42 @@
 						},
 						{
 							"name": "BladeTip_S",
-							"from": [ 6.5, -0.4, 0.51 ], 
-							"to": [ 9.2, 2.3, 1.01 ], 
-							"rotationOrigin": [ 8.0, 1.0, 1.0 ],
+							"from": [ 9.5, -0.4, 0.51 ], 
+							"to": [ 12.2, 2.3, 1.01 ], 
+							"rotationOrigin": [ 11.0, 1.0, 1.0 ],
 							"rotationY": 8.0,
+							"rotationZ": 45.0,
+							"faces": {
+								"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.5, 2.5 ], "enabled": false },
+								"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 2.5 ], "enabled": false },
+								"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.5, 2.5 ] },
+								"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 2.5 ], "enabled": false },
+								"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.5, 0.5 ], "enabled": false },
+								"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.5, 0.5 ], "enabled": false }
+							}
+						},
+						{
+							"name": "BladeTip_N2",
+							"from": [ 3.51, -0.51, 0.55 ], 
+							"to": [ 6.21, 2.19, 1.05 ], 
+							"rotationOrigin": [ 5.0, 1.0, 1.0 ],
+							"rotationY": 8.0,
+							"rotationZ": 45.0,
+							"faces": {
+								"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.5, 2.5 ] },
+								"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 2.5 ], "enabled": false },
+								"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.5, 2.5 ], "enabled": false },
+								"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 2.5 ], "enabled": false },
+								"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.5, 0.5 ], "enabled": false },
+								"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.5, 0.5 ], "enabled": false }
+							}
+						},
+						{
+							"name": "BladeTip_S2",
+							"from": [ 3.5, -0.4, 0.475 ], 
+							"to": [ 6.2, 2.3, 0.975 ], 
+							"rotationOrigin": [ 5.0, 1.0, 1.0 ],
+							"rotationY": -8.0,
 							"rotationZ": 45.0,
 							"faces": {
 								"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.5, 2.5 ], "enabled": false },

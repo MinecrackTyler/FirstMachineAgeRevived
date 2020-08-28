@@ -59,6 +59,7 @@ namespace ElementalTools
 		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemKnife>), SteelPrefix);
 		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemProspectingPick>), SteelPrefix);		
 		CoreAPI.NamePrefixed_RegisterItemClass(typeof(SteelWrap<ItemScythe>), SteelPrefix);
+		CoreAPI.NamePrefixed_RegisterItemClass(typeof(SteelWrap<ItemShears>), SteelPrefix);
 		//CoreAPI.NamePrefixed_RegisterItemClass(typeof(SteelWrap<ItemSaw>), SteelPrefix);
 		//CoreAPI.NamePrefixed_RegisterItemClass(typeof(SteelWrap<ItemShovel>), SteelPrefix);
 		//CoreAPI.NamePrefixed_RegisterItemClass(typeof(SteelWrap<ItemArrow>), SteelPrefix);//Merging of Steel ammo - TODO!
@@ -123,11 +124,14 @@ namespace ElementalTools
 		
 		//Finished Tools
 		"axe-*",
+		"saw-*",
+		"pickaxe-*",
+		"prospectingpick-*",
 		"sword-*",
 		"knife-*",
 		"spear-*",
-		//"scythe-*",
-		//"hoe-*",
+		"scythe-*",
+		"hoe-*",
 		"chisel-*",
 		};
 
