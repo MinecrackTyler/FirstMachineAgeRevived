@@ -138,6 +138,22 @@ namespace ElementalTools
 		return false;
 		}
 
+		/// <summary>
+		/// Checks of Root term is match for Asset.
+		/// </summary>
+		/// <returns>If is a Derivative OF.</returns>
+		/// <param name="parent">Parent.</param>
+		/// <param name="possibleChild">Possible child.</param>
+		/// <remarks>Does *NOT* check Domain!</remarks>
+		public static bool IsDerivedFrom(this AssetLocation parent, AssetLocation possibleChild)
+		{
+		string parentTerm = parent.Path.Split('-').First( );
+		string childTerm = possibleChild.Path.Split('-').First( );
+
+		if (String.Equals(parentTerm,childTerm, StringComparison.Ordinal)) return true;
+
+		return false;
+		}
 
 		public static void NamePrefixed_RegisterItemClass(this ICoreAPICommon commonApi, Type itemType, string prefix)
 		{

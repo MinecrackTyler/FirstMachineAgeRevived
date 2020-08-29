@@ -65,7 +65,7 @@ namespace ElementalTools
 		
 		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, PostLoadTweaks);				
 
-		Mod.Logger.VerboseDebug("Elemental Tools - should be installed...");		
+		Mod.Logger.VerboseDebug("The ERA of STEEL Begins!");		
 		}
 
 		public override void StartClientSide(ICoreClientAPI api)
@@ -85,7 +85,7 @@ namespace ElementalTools
 		ClientCore.Event.LevelFinalize += ClientSideTweaks;
 
 
-		Mod.Logger.VerboseDebug("Elemental Tools - should be installed...");
+		Mod.Logger.VerboseDebug("The ERA of STEEL Begins!");
 		}
 
 		/// <summary>
@@ -103,7 +103,8 @@ namespace ElementalTools
 		MalletInsertion( );
 		GenerateSharpeningGridRecipies( );
 		CloneEntityClasses( );//If not needed ... REMOVE?
-		
+		GenerateSteelToolEquivalentGridRecipies( );
+
 		}
 
 		private void ClientSideTweaks( )

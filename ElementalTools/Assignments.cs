@@ -194,8 +194,55 @@ namespace ElementalTools
 
 		}
 
+		private void GenerateSteelToolEquivalentGridRecipies( )
+		{
+		uint results = 0;
+		var ironTools = new string[ ]{
+		//Finished Tools
+		"axe",
+		"saw",
+		"knife",
+		"chisel",
+		"hammer",
+		};
 
+		var variants = new string[ ]
+		{
+		BlisterSteelNameKey,
+		ShearSteelNameKey,
+		};
 
+		foreach (var toolName in ironTools) {
+		var ironToolRecipieSet = from gridRecipie in CoreAPI.World.GridRecipes
+                                where gridRecipie.Ingredients.Any(gi => gi.Value.IsTool && gi.Value.Code.BeginsWith(GlobalConstants.DefaultDomain, toolName))								 
+								 where gridRecipie.Output.IsTool == false
+								 select gridRecipie;
+
+		CraftingRecipeIngredient ironToolIngredient = new CraftingRecipeIngredient {
+			Type = EnumItemClass.Item,
+			//Name = "hammer",
+			IsTool = true,
+			Code = new AssetLocation(GlobalConstants.DefaultDomain, toolName).WithPathAppendix("-"+IronNameKey),// game:knife-iron
+			Quantity = 1,
+			//IsWildCard = false,			
+		};
+
+		CraftingRecipeIngredient steelToolIngredient = new CraftingRecipeIngredient {
+			Type = EnumItemClass.Item,
+			Name = toolName,
+			IsTool = true,
+			Code = new AssetLocation(fmaKey, toolName+"-*"),
+			Quantity = 1,
+			AllowedVariants = variants,
+			IsWildCard = true, //?
+		};
+
+		results += SingleSwapinReplicas(ironToolRecipieSet, ironToolIngredient, steelToolIngredient);
+		}
+
+		
+		Mod.Logger.Event($"Added {results} (steely) grid recipes, from {ironTools.Count( )} Steel tools");
+		}
 
 		/// <summary>
 		/// Permutate the variant tool recipies.
@@ -248,7 +295,7 @@ namespace ElementalTools
 
 		var targetTag = cloneRecipie.Ingredients.FirstOrDefault(gi => gi.Value.Type == target.Type &&
 															gi.Value.IsTool == target.IsTool &&
-															target.Code.IsChild(gi.Value.Code) &&
+															target.Code.IsDerivedFrom(gi.Value.Code) &&
 															gi.Value.Quantity == target.Quantity
 															 );
 		if (targetTag.Key != null && targetTag.Value != null) {

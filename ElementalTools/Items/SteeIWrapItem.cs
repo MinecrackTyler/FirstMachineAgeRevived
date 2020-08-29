@@ -429,7 +429,7 @@ namespace ElementalTools
 		int targetTier = targetBlock.ToolTier;
 		float targetResistance = targetBlock.Resistance;
 		bool recomendedUsage = this.MiningSpeed.ContainsKey(targetBlock.BlockMaterial);
-		
+		var hardness = this.Hardness(itemslot.Itemstack);
 		
 
 		//Only called for attacks on BLOCKS / Envrionment. Scen# 5 - 6 here.	
@@ -441,16 +441,19 @@ namespace ElementalTools
 		//By MiningSpeed 
 
 
-		api.World.Logger.VerboseDebug($"OnBlockBrokenWith:: (Weap:{weapon},Edge:{edged}) {byEntity.Code} -> {targetBlock.Code}");
+		api.World.Logger.VerboseDebug($"OnBlockBrokenWith:: (Weap:{weapon},Edge:{edged},OK: {recomendedUsage},T.T#{targetTier}) {byEntity.Code} -> {targetBlock.Code}");
 
-		if (recomendedUsage == false && this.Hardness(itemslot.Itemstack) > HardnessState.Hard) {
-		bool catasptrophicFailure = world.Rand.Next(1, 1000) >= 999;
+		if (recomendedUsage == false &&  hardness > HardnessState.Hard) {
+		bool catasptrophicFailure = world.Rand.Next(1, 1000) >= (999 - (targetTier * 5));
+		
 		if (catasptrophicFailure) {
 		world.Logger.VerboseDebug("Catastrophic brittle fracture of {0} !", this.Code);
 		this.SetDurability(itemslot.Itemstack, 0);
 		this.DamageItem(world, byEntity, itemslot, 9999);
 		return true;
 		}
+
+
 		}
 
 		return WrappedItem.OnBlockBrokenWith(world, byEntity, itemslot, blockSel);

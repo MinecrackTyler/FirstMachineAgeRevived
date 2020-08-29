@@ -20,7 +20,7 @@
     <ConsolePause>false</ConsolePause>
     <CustomCommands>
       <CustomCommands>
-        <Command type="AfterBuild" command="7z -tzip a ${ProjectName}_${ProjectConfig}.zip" workingdir="${TargetDir}" />
+        <Command type="AfterBuild" command="7z -tzip a EraOfSteel_${ProjectConfig}.zip" workingdir="${TargetDir}" />
         <Command type="AfterClean" command="rm -f *.zip" workingdir="${TargetDir}" />
       </CustomCommands>
     </CustomCommands>
