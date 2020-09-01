@@ -1,0 +1,13 @@
+﻿{
+	ingredient: { type: "item", code: "game:ingot-iron", name: "metal" },
+	pattern: [[
+        "_______###____",
+		"_____#######__",
+		"_#############",
+		"_____#######__",
+        "_______###____",
+	]],
+	name: "Dory spear tip",
+	output: { type: "item", code: "speartip-iron"  }
+}
+

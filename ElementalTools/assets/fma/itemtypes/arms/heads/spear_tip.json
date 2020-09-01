@@ -1,0 +1,70 @@
+﻿{
+	code: "speartip",
+	class:"Steel_Item",
+	variantgroups: [
+		{ code: "metal", states: [ "iron", "blister_steel", "shear_steel" ] },
+	],
+	shape: { base: "item/arms/dory", SelectiveElements:["origin", "Blade_support", "Blade_Core", "Blade1", "UpperEdge1", "UpperEdge2", "LowerEdge1", "LowerEdge2", "BladeTip_N", "BladeTip_S", "BladeTip_N2", "BladeTip_S2" ] },
+    texturesByType: {
+			"*-iron": {
+            "nails": { base : "game:block/metal/sheet/iron1"},		
+			"metal": { base:"game:block/metal/sheet/iron1"},			
+			"string": { base : "game:item/tool/material/string"},
+			"wood": { base :"game:block/wood/debarked/redwood"}
+			},
+       	 "*": {
+			"nails": { base : "game:block/metal/sheet/iron1"},
+			"metal": { base : "fma:metal/{metal}"},
+			"string": { base : "game:item/tool/material/string"},
+			"wood": { base :"game:block/wood/debarked/redwood"}
+			}
+        },
+	attributesByType: {
+		"*-blister_steel": {
+			metalName:"Blister Steel",
+			sharpenable: true,
+			hardenable: true,
+		},
+		"*-shear_steel": {
+			metalName:"Shear Steel",
+			sharpenable: true,
+			hardenable: true,
+		},
+		"*": {
+			metalName:"soft Iron",
+			sharpenable: false,
+			hardenable: false,        
+		}
+    },   	
+	tooltier:5,
+	creativeinventory: { "general": ["*"], "items": ["*"] },
+	fpHandTransform: {
+		translation: { x: 0.35, y: 0.0, z: -0.56 },
+		rotation: { x: -180, y: 0, z: 1 },
+		scale: 0.8
+	},
+	guiTransform: {
+		translation: { x: -26, y: 28, z: 0 },
+		rotation: { x: -152, y: -15, z: 48 },
+		origin: { x: 0.86, y: 0, z: 0.45 },
+		scale: 1.85
+	},
+	fpHandTransform: {
+		translation: { x: -0.2, y: -0.2, z: 0 },
+		rotation: { x: 15, y: 15, z: 90 },
+		scale: 2.45
+	},
+	groundTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 3.4
+	},
+	tpHandTransform: {
+		translation: { x: 1.5, y: -0.05, z: 0.45 },
+		rotation: { x: 0, y: 0, z: 0 },
+		origin: { x: 0, y: 0, z: 0 },
+		scale: 0.8
+	}
+}
+
