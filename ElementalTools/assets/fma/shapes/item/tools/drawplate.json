@@ -1,0 +1,205 @@
+{
+	"editor": {
+		"allAngles": false,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+	},
+	"textures": {
+		"metal": "/textures/metal/blister_steel"
+	},
+	"elements": [
+		{
+			"name": "Drawplate_Upper",
+			"from": [ 12.5, 0.0, 3.5 ], 
+			"to": [ 13.5, 1.0, 12.5 ], 
+			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
+			"faces": {
+				"north": { "texture": "#metal", "uv": [ 0.0, 7.0, 1.0, 8.0 ] },
+				"east": { "texture": "#metal", "uv": [ 6.0, 7.0, 15.0, 8.0 ] },
+				"south": { "texture": "#metal", "uv": [ 1.0, 9.0, 2.0, 10.0 ] },
+				"west": { "texture": "#metal", "uv": [ 2.0, 9.0, 11.0, 10.0 ] },
+				"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 9.0 ] },
+				"down": { "texture": "#metal", "uv": [ 4.0, 0.0, 5.0, 9.0 ] }
+			},
+			"children": [
+				{
+					"name": "Hole1",
+					"from": [ -2.0, 0.0, 1.5 ], 
+					"to": [ 0.0, 1.0, 2.5 ], 
+					"faces": {
+						"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.0, 1.0 ] },
+						"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+						"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.0, 1.0 ] },
+						"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+						"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.0, 1.0 ] },
+						"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.0, 1.0 ] }
+					}
+				},
+				{
+					"name": "Hole2",
+					"from": [ -2.0, 0.0, 1.0 ], 
+					"to": [ -0.5, 1.0, 1.5 ], 
+					"faces": {
+						"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.5, 1.0 ] },
+						"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 1.0 ] },
+						"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.5, 1.0 ] },
+						"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 1.0 ] },
+						"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.5, 0.5 ] },
+						"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.5, 0.5 ] }
+					}
+				},
+				{
+					"name": "Hole3",
+					"from": [ -0.75, 0.0, 3.25 ], 
+					"to": [ 0.0, 1.0, 4.5 ], 
+					"faces": {
+						"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 1.0 ] },
+						"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+						"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 1.0 ] },
+						"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+						"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 1.0 ] },
+						"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 1.0 ] }
+					}
+				},
+				{
+					"name": "Hole4",
+					"from": [ -2.0, 0.0, 2.5 ], 
+					"to": [ -0.75, 1.0, 4.5 ], 
+					"faces": {
+						"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+						"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.0, 1.0 ] },
+						"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+						"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.0, 1.0 ] },
+						"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 2.0 ] },
+						"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 2.0 ] }
+					}
+				},
+				{
+					"name": "Hole6",
+					"from": [ -2.0, 0.0, 4.5 ], 
+					"to": [ -1.0, 1.0, 6.5 ], 
+					"faces": {
+						"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+						"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.0, 1.0 ] },
+						"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+						"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.0, 1.0 ] },
+						"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 2.0 ] },
+						"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 2.0 ] }
+					}
+				},
+				{
+					"name": "Hole5",
+					"from": [ -1.0, 0.0, 5.5 ], 
+					"to": [ 0.0, 1.0, 6.5 ], 
+					"faces": {
+						"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+						"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+						"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+						"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+						"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+						"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] }
+					}
+				},
+				{
+					"name": "Hole7",
+					"from": [ -4.5, 0.0, 1.0 ], 
+					"to": [ -3.5, 1.0, 2.5 ], 
+					"faces": {
+						"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+						"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.5, 1.0 ] },
+						"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+						"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.5, 1.0 ] },
+						"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.5 ] },
+						"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.5 ] }
+					}
+				},
+				{
+					"name": "Hole8",
+					"from": [ -4.5, 0.0, 2.5 ], 
+					"to": [ -2.0, 1.0, 3.5 ], 
+					"rotationOrigin": [ -1.0, 0.0, 2.0 ],
+					"faces": {
+						"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.5, 1.0 ] },
+						"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+						"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.5, 1.0 ] },
+						"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+						"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.5, 1.0 ] },
+						"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.5, 1.0 ] }
+					}
+				},
+				{
+					"name": "Hole9",
+					"from": [ -4.5, 0.0, 3.5 ], 
+					"to": [ -3.75, 1.0, 5.4 ], 
+					"rotationOrigin": [ 0.0, 0.0, -1.0 ],
+					"faces": {
+						"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 1.0 ] },
+						"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.5, 1.0 ] },
+						"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 1.0 ] },
+						"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.5, 1.0 ] },
+						"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 1.5 ] },
+						"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 0.5, 1.5 ] }
+					}
+				},
+				{
+					"name": "Hole10",
+					"from": [ -4.5, 0.0, 5.375 ], 
+					"to": [ -2.0, 1.0, 6.5 ], 
+					"rotationOrigin": [ 0.0, 0.0, 1.0 ],
+					"faces": {
+						"north": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.5, 1.0 ] },
+						"east": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+						"south": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.5, 1.0 ] },
+						"west": { "texture": "#metal", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+						"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.5, 1.0 ] },
+						"down": { "texture": "#metal", "uv": [ 0.0, 0.0, 2.5, 1.0 ] }
+					}
+				}
+			]
+		},
+		{
+			"name": "Drawplate_Lower",
+			"from": [ 3.5, 0.0, 3.5 ], 
+			"to": [ 8.0, 1.0, 12.5 ], 
+			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
+			"faces": {
+				"north": { "texture": "#metal", "uv": [ 0.0, 7.0, 4.5, 8.0 ] },
+				"east": { "texture": "#metal", "uv": [ 6.0, 7.0, 15.0, 8.0 ] },
+				"south": { "texture": "#metal", "uv": [ 1.0, 9.0, 5.5, 10.0 ] },
+				"west": { "texture": "#metal", "uv": [ 2.0, 9.0, 11.0, 10.0 ] },
+				"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 4.5, 9.0 ] },
+				"down": { "texture": "#metal", "uv": [ 4.0, 0.0, 8.5, 9.0 ] }
+			}
+		},
+		{
+			"name": "Drawplate_North",
+			"from": [ 8.0, 0.0, 3.5 ], 
+			"to": [ 12.5, 1.0, 4.5 ], 
+			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
+			"faces": {
+				"north": { "texture": "#metal", "uv": [ 0.0, 7.0, 4.5, 8.0 ] },
+				"east": { "texture": "#metal", "uv": [ 6.0, 7.0, 7.0, 8.0 ] },
+				"south": { "texture": "#metal", "uv": [ 1.0, 9.0, 5.5, 10.0 ] },
+				"west": { "texture": "#metal", "uv": [ 2.0, 9.0, 3.0, 10.0 ] },
+				"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 4.5, 1.0 ] },
+				"down": { "texture": "#metal", "uv": [ 4.0, 0.0, 8.5, 1.0 ] }
+			}
+		},
+		{
+			"name": "Drawplate_South",
+			"from": [ 8.0, 0.0, 10.0 ], 
+			"to": [ 12.5, 1.0, 12.5 ], 
+			"rotationOrigin": [ 9.0, 0.0, 8.0 ],
+			"faces": {
+				"north": { "texture": "#metal", "uv": [ 0.0, 7.0, 4.5, 8.0 ] },
+				"east": { "texture": "#metal", "uv": [ 6.0, 7.0, 8.5, 8.0 ] },
+				"south": { "texture": "#metal", "uv": [ 1.0, 9.0, 5.5, 10.0 ] },
+				"west": { "texture": "#metal", "uv": [ 2.0, 9.0, 4.5, 10.0 ] },
+				"up": { "texture": "#metal", "uv": [ 0.0, 0.0, 4.5, 2.5 ] },
+				"down": { "texture": "#metal", "uv": [ 4.0, 0.0, 8.5, 2.5 ] }
+			}
+		}
+	]}

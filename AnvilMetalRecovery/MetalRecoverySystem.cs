@@ -11,6 +11,8 @@ namespace AnvilMetalRecovery
 {
 	public partial class MetalRecoverySystem : ModSystem
 	{		
+		internal const string anvilKey = @"Anvil";
+
 		private ICoreAPI CoreAPI;
 		private ICoreServerAPI ServerAPI;
 		private ServerCoreAPI ServerCore { get; set; }
@@ -34,7 +36,7 @@ namespace AnvilMetalRecovery
 		{
 		this.CoreAPI = api;
 
-		RegisterItemClasses();
+		
 		
 
 		base.Start(api);
@@ -43,7 +45,7 @@ namespace AnvilMetalRecovery
 		public override void StartServerSide(ICoreServerAPI api)
 		{
 		this.ServerAPI = api;
-		//LoaderOfRecipies = ServerAPI.ModLoader.GetModSystem<RecipeLoader>( );
+		
 
 		if (api is ServerCoreAPI) {
 		ServerCore = api as ServerCoreAPI;
@@ -52,8 +54,7 @@ namespace AnvilMetalRecovery
 		Mod.Logger.Error("Cannot access 'ServerCoreAPI' class:  API (implimentation) has changed, Contact Developer!");
 		return;
 		}
-
-		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.LoadGame, OnServerLoadGame);
+					
 		//ServerAPI.ClassRegistry.GetBlockEntityClass
 		//ServerAPI.RegisterBlockEntityClass(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));
 
@@ -62,11 +63,28 @@ namespace AnvilMetalRecovery
 		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
 		}
 
-		private void OnServerLoadGame( )
+		/*
+		internal void GenerateMetalShavingsItems( )
 		{
-			ManipulateGridRecipies( );
+		//TODO: Automatic Generation of Item 'metal_shaving' by metal & alloy list at RUNTIME
+		var genericShaving = ServerAPI.World.ClassRegistry.CreateItem("metal_shaving");
+		//genericShaving.CombustibleProps.
+
+		var metalProperties = new Dictionary<AssetLocation, MetalProperty>( );
+
+		foreach (var entry in ServerAPI.Assets.GetMany<MetalProperty>(Mod.Logger, "worldproperties/")) {
+		AssetLocation loc = entry.Key.Clone( );
+		loc.Path = loc.Path.Replace("worldproperties/", "");
+		loc.RemoveEnding( );
+
+		entry.Value.Code.Domain = entry.Key.Domain;
+
+		metalProperties.Add(loc, entry.Value);
+
 		}
-}
+		}
+		*/
+	}
 
 
 }
