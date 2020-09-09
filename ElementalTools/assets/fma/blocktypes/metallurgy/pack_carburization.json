@@ -13,7 +13,7 @@
 			}
 		},
 		SteelTransitionTemp:750,
-		SteelTransitionTime:38,
+		SteelTransitionTime:60,
 	},
 	variantgroups: [
 		{ code: "type", states: ["unfired","fired"] },
@@ -32,7 +32,7 @@
 	combustiblePropsByType: {
 		"pack_carbirization-unfired": {
 			meltingPoint: 750,
-			meltingDuration: 38,
+			meltingDuration: 60,
 			smeltedRatio: 1,
 			smeltingType: "convert",
 			smeltedStack: { type: "block", code: "pack_carbirization-fired" },

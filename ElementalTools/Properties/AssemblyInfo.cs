@@ -4,12 +4,16 @@ using System.Runtime.CompilerServices;
 // Information about this assembly is defined by the following attributes. 
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle("ElementalTools")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyTitle("Era_Of_Steel")]
+[assembly: AssemblyDescription("Mod plugin for V.S.")]
+#if DEBUG
+[assembly: AssemblyConfiguration("DEBUG")]
+#else
+[assembly: AssemblyConfiguration("RELEASE")]
+#endif
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("librarian")]
+[assembly: AssemblyProduct("First_Machine_Age_component")]
+[assembly: AssemblyCopyright("Melchior")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -117,7 +117,12 @@ namespace ElementalTools
 		WrappedItem.AttackRange = this.AttackRange;
 		WrappedItem.ToolTier = this.ToolTier;
 		WrappedItem.MaxStackSize = this.MaxStackSize;
-		WrappedItem.MaterialDensity = this.MaterialDensity;		
+		WrappedItem.MaterialDensity = this.MaterialDensity;
+		WrappedItem.GuiTransform = this.GuiTransform;
+		WrappedItem.FpHandTransform = this.FpHandTransform;
+		WrappedItem.TpHandTransform = this.TpHandTransform;
+		WrappedItem.GroundTransform = this.GroundTransform;
+		
 		
 		WrappedItem.OnLoadedNative(api);//Hacky - but needed?
 		}

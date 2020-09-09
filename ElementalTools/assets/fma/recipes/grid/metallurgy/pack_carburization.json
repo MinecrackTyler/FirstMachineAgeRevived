@@ -240,7 +240,7 @@ ingredientPattern: "CCC	KXK	CCC",
 	width: 3,
 	height: 3,
 	attributes: {
-		outputOverride: "spear-blister_steel",
+		outputOverride: "speartip-blister_steel",
 	    extraCookTime:20,
 	},
 	output: { type: "block", code: "pack_carburization-unfired"  }

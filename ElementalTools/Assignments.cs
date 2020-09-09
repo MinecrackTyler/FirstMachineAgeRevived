@@ -350,7 +350,7 @@ attributes: {
 	outputOverride: "fma:zzzzzzz"
 },	
 
-
-
+* Item: Sickle - 2x2 hand-held harvest tool (works on reeds, crops, grass, any plants)
+* Sort out how Arrow's work with item merging...
 
  ******************************/

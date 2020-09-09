@@ -60,10 +60,10 @@
 	},
 	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
 	guiTransform: {
-		translation: { x: 0, y: 0, z: 0 },
-		rotation: { x: -77, y: 53, z: 25 },
+		translation: { x: 0.5, y: 0.5, z: 0.5 },
+		rotation: { x: -2, y: -38, z: -38 },
 		origin: { x: 0.4, y: 0.1, z: 0.4 },
-		scale: 0.9
+		scale: 0.65
 	},			
 	fpHandTransform: {
 		translation: { x: 0.3, y: 0.5, z: 0.16 },
@@ -77,10 +77,10 @@
 		origin: { x: 0.5, y: 0, z: 0.5 },
 		scale: 3.4
 	},
-	tpHandTransformByType: {				
-		translation: { x: -1.24, y: -0.01, z: -0.56 },
-		rotation: { x: -81, y: 0, z: 0 },
-		origin: { x: 0.6, y: 0, z: 0.5 },
-		scale: 0.8	
+	tpHandTransform: {
+		translation: { x: -1.35, y: -0.5, z: -1.21 },
+		rotation: { x: -34, y: 4, z: -1 },
+		origin: { x: 0.495, y: 0.485, z: 0.5 },
+		scale: 0.5
 	},
 }
