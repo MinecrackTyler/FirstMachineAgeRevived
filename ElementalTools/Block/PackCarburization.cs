@@ -159,7 +159,7 @@ namespace ElementalTools
 		}
 
 		var stuffedInside = GetContents(world, inSlot.Itemstack);
-		if (stuffedInside != null) 
+		if (stuffedInside != null && stuffedInside.Length > 0) 
 		{
 		dsc.Append("Contents: \n");
 		foreach (var thing in stuffedInside) {

@@ -18,6 +18,7 @@ namespace ElementalTools
 	public class SteelWrap<T>: Item, IAmSteel where T : Item, new()
 	{
 		private const float eutectoid_transition_temperature = 727f;//Celcius
+		private const float quenchTimeConstant = 180f;
 		private const float quench_min_temperature = 450f;//Celcius
 		private const string _timestampKey = @"timestamp";
 
@@ -308,7 +309,7 @@ namespace ElementalTools
 
 		float temperature = entityItem.Itemstack.Collectible.GetTemperature(api.World, entityItem.Itemstack);
 		//Track first moment in liquid;
-		this.SetTimestamp(entityItem);//Clear on pickup or...?
+		this.SetTimestamp(entityItem);//Need to clear when NORMALIZING.
 
 		//Above 900C  - What should happen in this range; different phase of iron?
 
@@ -318,7 +319,7 @@ namespace ElementalTools
 		//TODO: Thermal capacity & Transfer values for NON-Water fluids...and surfaces too!
 		var elapsedTime = this.GetTimestampElapsed(entityItem);
 		
-		uint quenchUnits = ( uint )Math.Round(elapsedTime.TotalMilliseconds / 175f, 0);  
+		uint quenchUnits = ( uint )Math.Round(elapsedTime.TotalMilliseconds / quenchTimeConstant, 0);  
 
 		if (quenchUnits < (uint)HardnessState.Brittle) {
 		this.Hardness(entityItem.Itemstack, ( HardnessState )quenchUnits);
@@ -328,7 +329,7 @@ namespace ElementalTools
 		}
 
 		//Being that water conducts heat well - reduce Temperature _FASTER_
-		entityItem.Itemstack.Collectible.SetTemperature(api.World, entityItem.Itemstack, temperature - 17, false);
+		entityItem.Itemstack.Collectible.SetTemperature(api.World, entityItem.Itemstack, temperature - 15, false);
 
 		#if DEBUG
 		api.World.Logger.VerboseDebug("Quench process: {0}S elapsed @{1}C H:{2} ~ QU#{3}", elapsedTime.TotalSeconds, temperature, this.Hardness(entityItem.Itemstack), quenchUnits );
