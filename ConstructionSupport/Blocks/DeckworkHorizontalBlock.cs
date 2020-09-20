@@ -96,7 +96,7 @@ namespace ConstructionSupport
 		/// <param name="block">Block.</param>
 		/// <param name="pos">Position.</param>
 		/// <param name="blockFace">Block face.</param>
-		public override bool CanAttachBlockAt(IBlockAccessor world, Block block, BlockPos pos, BlockFacing blockFace)
+		public override bool CanAttachBlockAt(IBlockAccessor world, Block block, BlockPos pos, BlockFacing blockFace, Cuboidi attachmentArea)
 		{
 
 		if (block.HasBehavior<BlockBehaviorLadder>()) return true;
@@ -109,7 +109,7 @@ namespace ConstructionSupport
 		}
 
 		//If above block is unsupported/interfereing material; BREAK OFF!
-		public override void OnNeighourBlockChange(IWorldAccessor world, BlockPos pos, BlockPos neibpos)
+		public override void OnNeighbourBlockChange(IWorldAccessor world, BlockPos pos, BlockPos neibpos)
 		{
 		//Above: Dropping blocks cause breakage!
 		if (pos.Above(neibpos)) {
