@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
+using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
 
@@ -24,7 +25,7 @@ namespace FirstMachineAge
 		public TextureAtlasPosition this[string textureCode] {
 			get
 			{
-			if (camoTextureSource == null ) camoTextureSource = ClientAPI.Tesselator.GetTexSource(this);
+			if (camoTextureSource == null ) camoTextureSource = ClientAPI.Tesselator.GetTexSource(this);//How to PRESET??
 			if (woodTextureSource == null)  woodTextureSource = ClientAPI.Tesselator.GetTexSource(this);
 			if (defaultTextureSource == null)  defaultTextureSource = ClientAPI.Tesselator.GetTexSource(this);
 
@@ -69,6 +70,8 @@ namespace FirstMachineAge
 		}
 
 
+		//TODO: Fall apart if player tries to 'Hoe' 'Dig' or mess with block in any way, or even place things on top of it...
+
 		public override void OnEntityInside(IWorldAccessor world, Entity entity, BlockPos pos)
 		{
 		//Get Ready to CRUMBLE!
@@ -82,12 +85,56 @@ namespace FirstMachineAge
 		//Check 'Volumne' of Bounding box; large ones - cause collapse...
 
 		}
+
+		public override string GetPlacedBlockName(IWorldAccessor world, BlockPos pos)
+		{
+		if (this.AltCover == @"soil") {		
+		return Lang.Get(GlobalConstants.DefaultDomain + ":block-soil-verylow-none");
+		}
+
+		if (!String.IsNullOrEmpty(this.Cover) && !String.IsNullOrEmpty(this.Material)) {
+		return Lang.Get(GlobalConstants.DefaultDomain + $":block-{this.Cover}-{this.Material}" );
+		}
+
+		return @"Error?";
+		}
+
+
+		private string Material
+		{
+		/*
+	    { code: "cover",  states: [ "sand","gravel" ] },
+    	{ code: "material", loadFromProperties: "block/rock", combine: "SelectiveMultiply", onVariant: "cover" },
+    	{ code: "alt_cover", states: [ "soil" ], combine: "Add" },
+    	*/
+			get
+			{
+			return this.Variant[@"material"];			 
+			}
+		}
+
+		private string Cover {
+			/*
+			{ code: "cover",  states: [ "sand","gravel" ] },
+			{ code: "material", loadFromProperties: "block/rock", combine: "SelectiveMultiply", onVariant: "cover" },
+			{ code: "alt_cover", states: [ "soil" ], combine: "Add" },
+			*/
+			get
+			{
+			return this.Variant[@"cover"];
+			}
+		}
+
+		private string AltCover {
+			/*
+			{ code: "cover",  states: [ "sand","gravel" ] },
+			{ code: "material", loadFromProperties: "block/rock", combine: "SelectiveMultiply", onVariant: "cover" },
+			{ code: "alt_cover", states: [ "soil" ], combine: "Add" },
+			*/
+			get
+			{
+			return this.Variant[@"alt_cover"];
+			}
+		}
 	}
 }
-
-/*
-Recipie: attributes: {camo: "{camo}" }
-As 'Item' -> Attribute  
-public override bool DoPlaceBlock -> BlockEntity settings string material = byItemStack.Attributes.GetString("material");
-public override ItemStack OnPickBlock { stack.Attributes.SetString("camo", be.camo); }
-*/

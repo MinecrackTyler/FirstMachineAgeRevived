@@ -8,8 +8,8 @@
 	"textureSizes": {
 	},
 	"textures": {
-		"granite1": "block/stone/brick/granite1",
-		"granite-inside": "block/stone/polishedrock/granite-inside"
+		"smoothstone": "block/stone/polishedrock/granite",
+		"brick": "block/stone/brick/granite1"
 	},
 	"elements": [
 		{
@@ -17,68 +17,54 @@
 			"from": [ 0.0, 0.0, 0.0 ], 
 			"to": [ 16.0, 16.0, 8.0 ], 
 			"faces": {
-				"north": { "texture": "#granite1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-				"east": { "texture": "#granite1", "uv": [ 0.0, 0.0, 8.0, 16.0 ] },
-				"south": { "texture": "#granite1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
-				"west": { "texture": "#granite1", "uv": [ 0.0, 0.0, 8.0, 16.0 ] },
-				"up": { "texture": "#granite1", "uv": [ 0.0, 0.0, 16.0, 8.0 ] },
-				"down": { "texture": "#granite1", "uv": [ 0.0, 0.0, 16.0, 8.0 ] }
+				"north": { "texture": "#brick", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+				"east": { "texture": "#brick", "uv": [ 0.0, 0.0, 8.0, 16.0 ] },
+				"south": { "texture": "#brick", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+				"west": { "texture": "#brick", "uv": [ 0.0, 0.0, 8.0, 16.0 ] },
+				"up": { "texture": "#brick", "uv": [ 0.0, 0.0, 16.0, 8.0 ] },
+				"down": { "texture": "#brick", "uv": [ 0.0, 0.0, 16.0, 8.0 ] }
 			},
 			"children": [
 				{
 					"name": "Foothold1",
-					"from": [ 1.0, 1.0, 8.0 ], 
-					"to": [ 7.0, 3.0, 11.0 ], 
-					"rotationOrigin": [ 1.0, 1.0, 8.0 ],
+					"from": [ 2.0, 1.0, 8.0 ], 
+					"to": [ 8.0, 3.0, 12.0 ], 
+					"rotationOrigin": [ 2.0, 1.0, 8.0 ],
 					"faces": {
-						"north": { "texture": "#granite-inside", "uv": [ 4.5, 5.5, 10.5, 7.5 ] },
-						"east": { "texture": "#granite-inside", "uv": [ 4.0, 7.0, 7.0, 9.0 ] },
-						"south": { "texture": "#granite-inside", "uv": [ 5.0, 7.5, 11.0, 9.5 ] },
-						"west": { "texture": "#granite-inside", "uv": [ 3.0, 4.0, 6.0, 6.0 ] },
-						"up": { "texture": "#granite-inside", "uv": [ 1.5, 5.0, 7.5, 8.0 ] },
-						"down": { "texture": "#granite-inside", "uv": [ 5.0, 6.5, 11.0, 9.5 ] }
+						"north": { "texture": "#smoothstone", "uv": [ 5.0, 6.5, 7.0, 12.5 ], "rotation": 90 },
+						"east": { "texture": "#smoothstone", "uv": [ 8.0, 7.5, 10.0, 11.5 ], "rotation": 90 },
+						"south": { "texture": "#smoothstone", "uv": [ 12.5, 1.5, 14.5, 7.5 ], "rotation": 90 },
+						"west": { "texture": "#smoothstone", "uv": [ 4.0, 7.5, 6.0, 11.5 ], "rotation": 90 },
+						"up": { "texture": "#smoothstone", "uv": [ 5.5, 2.0, 9.5, 8.0 ], "rotation": 90 },
+						"down": { "texture": "#smoothstone", "uv": [ 4.5, 6.5, 8.5, 12.5 ], "rotation": 90 }
 					}
 				},
 				{
 					"name": "Foothold2",
-					"from": [ 9.0, 4.0, 8.0 ], 
-					"to": [ 15.0, 6.0, 11.0 ], 
-					"rotationOrigin": [ 9.0, 4.0, 8.0 ],
+					"from": [ 7.0, 6.0, 8.0 ], 
+					"to": [ 13.0, 8.0, 12.0 ], 
+					"rotationOrigin": [ 7.0, 5.0, 8.0 ],
 					"faces": {
-						"north": { "texture": "#granite-inside", "uv": [ 8.0, 8.0, 14.0, 10.0 ] },
-						"east": { "texture": "#granite-inside", "uv": [ 4.0, 3.5, 7.0, 5.5 ] },
-						"south": { "texture": "#granite-inside", "uv": [ 2.0, 5.5, 8.0, 7.5 ] },
-						"west": { "texture": "#granite-inside", "uv": [ 5.0, 7.0, 8.0, 9.0 ] },
-						"up": { "texture": "#granite-inside", "uv": [ 3.0, 0.5, 9.0, 3.5 ] },
-						"down": { "texture": "#granite-inside", "uv": [ 7.0, 6.5, 13.0, 9.5 ] }
+						"north": { "texture": "#smoothstone", "uv": [ 1.5, 7.5, 7.5, 9.5 ] },
+						"east": { "texture": "#smoothstone", "uv": [ 10.5, 2.5, 14.5, 4.5 ] },
+						"south": { "texture": "#smoothstone", "uv": [ 6.0, 3.0, 12.0, 5.0 ] },
+						"west": { "texture": "#smoothstone", "uv": [ 7.5, 4.5, 11.5, 6.5 ] },
+						"up": { "texture": "#smoothstone", "uv": [ 4.5, 8.5, 10.5, 12.5 ] },
+						"down": { "texture": "#smoothstone", "uv": [ 3.5, 5.0, 9.5, 9.0 ] }
 					}
 				},
 				{
 					"name": "Foothold3",
-					"from": [ 1.0, 8.0, 8.0 ], 
-					"to": [ 7.0, 10.0, 11.0 ], 
-					"rotationOrigin": [ 1.0, 8.0, 8.0 ],
+					"from": [ 2.0, 11.0, 8.0 ], 
+					"to": [ 8.0, 13.0, 12.0 ], 
+					"rotationOrigin": [ 2.0, 9.0, 8.0 ],
 					"faces": {
-						"north": { "texture": "#granite-inside", "uv": [ 8.0, 8.0, 14.0, 10.0 ] },
-						"east": { "texture": "#granite-inside", "uv": [ 4.0, 3.5, 7.0, 5.5 ] },
-						"south": { "texture": "#granite-inside", "uv": [ 2.0, 5.5, 8.0, 7.5 ] },
-						"west": { "texture": "#granite-inside", "uv": [ 5.0, 7.0, 8.0, 9.0 ] },
-						"up": { "texture": "#granite-inside", "uv": [ 3.0, 0.5, 9.0, 3.5 ] },
-						"down": { "texture": "#granite-inside", "uv": [ 7.0, 6.5, 13.0, 9.5 ] }
-					}
-				},
-				{
-					"name": "Foothold4",
-					"from": [ 9.0, 12.0, 8.0 ], 
-					"to": [ 15.0, 14.0, 11.0 ], 
-					"rotationOrigin": [ 9.0, 12.0, 8.0 ],
-					"faces": {
-						"north": { "texture": "#granite-inside", "uv": [ 8.0, 8.0, 14.0, 10.0 ] },
-						"east": { "texture": "#granite-inside", "uv": [ 4.0, 3.5, 7.0, 5.5 ] },
-						"south": { "texture": "#granite-inside", "uv": [ 2.0, 5.5, 8.0, 7.5 ] },
-						"west": { "texture": "#granite-inside", "uv": [ 5.0, 7.0, 8.0, 9.0 ] },
-						"up": { "texture": "#granite-inside", "uv": [ 3.0, 0.5, 9.0, 3.5 ] },
-						"down": { "texture": "#granite-inside", "uv": [ 7.0, 6.5, 13.0, 9.5 ] }
+						"north": { "texture": "#smoothstone", "uv": [ 5.0, 10.5, 11.0, 12.5 ] },
+						"east": { "texture": "#smoothstone", "uv": [ 5.5, 6.5, 9.5, 8.5 ] },
+						"south": { "texture": "#smoothstone", "uv": [ 2.0, 9.5, 8.0, 11.5 ] },
+						"west": { "texture": "#smoothstone", "uv": [ 5.0, 10.0, 9.0, 12.0 ] },
+						"up": { "texture": "#smoothstone", "uv": [ 2.0, 3.0, 8.0, 7.0 ] },
+						"down": { "texture": "#smoothstone", "uv": [ 5.0, 7.0, 11.0, 11.0 ] }
 					}
 				}
 			]

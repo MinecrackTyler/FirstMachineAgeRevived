@@ -1,1 +1,53 @@
-﻿
+﻿{
+	code: "sconse_brick",				
+	shapebytype: {		
+		"*-north": { base: "block/stone/brick_w_candle", rotateY: 0 },
+		"*-east": { base: "block/stone/brick_w_candle" , rotateY: 270 },
+		"*-south": { base: "block/stone/brick_w_candle" , rotateY: 180 },
+		"*-west": { base: "block/stone/brick_w_candle", rotateY: 90 },		
+	},
+	variantgroups: [
+		{ loadFromProperties: "block/rock" },
+		{ code: "rot", states: ["north", "east", "south", "west"] }
+	],
+	textures: {				
+        "candle": { base: "game:block/candle"},
+		"stonebrick1": { base: "game:block/stone/brick/{rock}1"},
+		"stonebrick2": { base: "game:block/stone/brick/{rock}2"},
+		"stonebrick3": { base: "game:block/stone/brick/{rock}3"}
+	},	
+	blockmaterial: "Stone",
+	sidesolidByType: {	
+		"*-north": { all: true, east: false, south: false, west: false },
+		"*-east": { all: true, south: false, west: false, north: false },
+		"*-south": { all: true, east: false, north: false, west: false },
+		"*-west": { all: true, north: false, east: false, south: false },
+	},
+	sideopaqueByType: {		
+		"*-north": { all: true, south: false },
+		"*-east": { all: true, west: false },
+		"*-south": { all: true, north: false },
+		"*-west": { all: true, east: false },
+	},
+	behaviors: [
+		{name: "HorizontalOrientable", properties: {  dropBlockFace: "north" }}		
+	],
+	creativeinventory: { "general": ["sconse_brick-*"], "construction": ["sconse_brick-*"] },	
+	replaceable: 200,
+	resistance: 4,	
+	rainPermeable: false,
+	lightAbsorption: 99,		
+    lightHsv: [7, 7, 9],
+	sounds: {
+		"walk": "walk/stone",
+		byTool: {
+			"Pickaxe": { hit: "block/rock-hit-pickaxe", break: "block/rock-break-pickaxe" }
+		}
+	},
+    heldTpIdleAnimation: "holdbothhandslarge", heldTpUseAnimation: "twohandplaceblock",
+	tpHandTransform: {
+		translation: { x: -1.2, y: -1.1, z: -0.8 },
+		rotation: { x: -2, y: 25, z: -78 },
+		scale: 0.37
+	}
+}

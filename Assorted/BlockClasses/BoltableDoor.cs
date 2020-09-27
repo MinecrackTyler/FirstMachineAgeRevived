@@ -158,6 +158,11 @@ namespace FirstMachineAge
 			get { return this.Variant["state"] == "opened"; }//state: ["closed", "opened"]
 		}
 
+		public override bool IsOpened()
+		{
+			 return this.Variant["state"] == "opened"; //state: ["closed", "opened"]
+		}
+
 		public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref string failureCode)
 		{
 		BlockPos upperPos = blockSel.Position.AddCopy(0, 1, 0);

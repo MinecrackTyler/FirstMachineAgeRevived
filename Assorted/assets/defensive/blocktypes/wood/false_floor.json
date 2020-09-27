@@ -1,0 +1,55 @@
+﻿{
+	code: "false_floor",
+	class: "CollapsingBlock",
+	variantgroups: [
+    { code: "cover",  states: [ "sand","gravel" ] },
+    { code: "material", combine: "SelectiveMultiply", onVariant: "cover", states: ["andesite", "chalk", "chert", "conglomerate", "limestone", "claystone", "granite", "sandstone", "shale", "basalt", "peridotite", "phyllite", "slate"] },
+    { code: "alt_cover", states: [ "soil" ], combine: "Add" },
+    ],
+	creativeinventory: { "general": ["*"], "terrain": ["*"] },
+	shape: { base: "block/wood/false_floor" },		
+    blockmaterialByType: {
+		"*-soil": "Soil",
+        "*-sand-*": "Sand",
+        "*-gravel-*": "Gravel",		
+	},
+	texturesByType: {
+    	"*-soil": {
+			"wood": { base: "game:block/plant/bamboo/stem-brown" },
+			"camo": { base: "game:block/soil/fertverylow" }
+        },
+        "*-sand-*": {
+			"wood": { base: "game:block/plant/bamboo/stem-brown" },
+			"camo": { base: "game:block/stone/sand/{material}" }
+        },
+        "*-gravel-*": {
+			"wood": { base: "game:block/plant/bamboo/stem-brown" },
+			"camo": { base: "game:block/stone/gravel/{material}" }
+        },
+	},
+	attributes: {
+		preventsDecay: true,
+		allowUnstablePlacement: true
+	},    
+    sidesolid: {
+		all: false , top: true 
+	},
+	sideopaque: {
+		all: false , top: true 
+	},
+	replaceable: 600,
+	fertility: 1,
+	resistance: 2.0,
+	sounds: {
+		place: "block/sand",
+		break: "block/sand",
+		hit: "block/sand",
+		walk: "walk/sand"
+	},
+	heldTpIdleAnimation: "holdbothhandslarge", heldTpUseAnimation: "twohandplaceblock",
+	tpHandTransform: {
+		translation: { x: -1.2, y: -1.1, z: -0.8 },
+		rotation: { x: -2, y: 25, z: -78 },
+		scale: 0.37
+	}
+}

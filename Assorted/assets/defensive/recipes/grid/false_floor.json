@@ -1,0 +1,32 @@
+﻿[
+	{
+	ingredientPattern: "_S_	BBB",
+	ingredients: {
+        "S": { type: "block", code: "game:sand-*", quantity: 1, name: "sand", allowedVariants: ["andesite", "chalk", "chert", "conglomerate", "limestone", "claystone", "granite", "sandstone", "shale", "basalt", "peridotite", "phyllite", "slate"] },
+		"B": { type: "item", code: "game:bamboostakes" },		
+	},
+	width: 3,
+	height: 2,
+	output: { type: "block", code: "false_floor-sand-{sand}", quantity: 1 }
+	},
+	{
+	ingredientPattern: "_G_	BBB",
+	ingredients: {
+	    "G": { type: "block", code: "game:gravel-*", quantity: 1, name: "gravel", allowedVariants: ["andesite", "chalk", "chert", "conglomerate", "limestone", "claystone", "granite", "sandstone", "shale", "basalt", "peridotite", "phyllite", "slate"] },
+		"B": { type: "item", code: "game:bamboostakes" },		
+	},
+	width: 3,
+	height: 2,
+	output: { type: "block", code: "false_floor-gravel-{gravel}", quantity: 1 }
+	},
+	{
+	ingredientPattern: "_D_	BBB",
+	ingredients: {
+	    "D": { type: "block", code: "game:soil-low-*", quantity: 1 },
+		"B": { type: "item", code: "game:bamboostakes" },		
+	},
+	width: 3,
+	height: 2,
+	output: { type: "block", code: "false_floor-soil", quantity: 1 }
+	}
+]
