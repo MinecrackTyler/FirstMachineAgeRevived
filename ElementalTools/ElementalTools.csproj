@@ -78,6 +78,7 @@
     <Compile Include="Items\ItemSharpeningStone.cs" />
     <Compile Include="Items\VariableWearRateTool.cs" />
     <Compile Include="ColorHelper.cs" />
+    <Compile Include="General\SteelAssist.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Items\" />

@@ -4,9 +4,9 @@
   "description" : "Anchient techniques for making STEEL, in your very own forge - today!",
   "authors": ["Melchior"],
   "ModID":"eraofsteel",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "dependencies": { 
-	"game": "1.13.0",
+	"game": "1.13.4",
 	"survival": ""
   },
   "website": "http://nowebsite.nope"

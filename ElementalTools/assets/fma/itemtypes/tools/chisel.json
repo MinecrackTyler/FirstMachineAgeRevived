@@ -15,7 +15,7 @@
 		{ code: "metal", states: [ "blister_steel", "shear_steel"] },
 	],
 	shape: { base: "game:item/tool/chisel" },
-	tool: "Chisel",
+	tool: "chisel",
 	enabled: true,
 	heldTpHitAnimation: "breaktool",
     attributesByType: {

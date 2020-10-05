@@ -26,6 +26,7 @@ namespace ElementalTools
 		internal const string hammerAssetKey = @"hammer";
 		internal const string fmaKey = @"fma";
 		internal const string sharpeningStoneAssetKey = @"sharpening_stone";
+		internal const string sharpeningRecipiePrefix = @"steel_sharpening_";
 
 		internal const string pack_carburizationClassKey = @"PackCarburization";
 		internal const string PackCarburizationEntityNameKey = @"PackCarburizationEntity";
@@ -146,7 +147,7 @@ namespace ElementalTools
 			Height = 3,
 			Width = 1,
 			Shapeless = false,
-			Name = new AssetLocation(fmaKey, "Steel_sharpening_"),//Automatic ## appended...
+			Name = new AssetLocation(fmaKey, sharpeningRecipiePrefix),//Automatic ## appended...
 			IngredientPattern = "H\tL\tS",
 				Ingredients = new Dictionary<string, CraftingRecipeIngredient>( )
 				{
@@ -164,7 +165,7 @@ namespace ElementalTools
 					"L",  new CraftingRecipeIngredient()
 						{
 							Type = EnumItemClass.Item,
-							Code = new AssetLocation(GlobalConstants.DefaultDomain,"fat"),//Consider: Lubricants of the Future?
+							Code = new AssetLocation(GlobalConstants.DefaultDomain,"fat"),//Consider; Alternate-Lubricants: Grease, Veg-Oils
 							Quantity = 1,
 						}
 					},
@@ -189,7 +190,7 @@ namespace ElementalTools
 
 		};
 
-		var results = SingleVariableToolRecipies(sharpenableThings, sharpeningPattern,'H', "metal");
+		var results = SingleVariableToolRecipies(sharpenableThings, sharpeningPattern,'H', MetalNameKey);
 		Mod.Logger.Event($"Added {results} Sharpening recipes, for {sharpenableThings.Count()} items");
 
 		}

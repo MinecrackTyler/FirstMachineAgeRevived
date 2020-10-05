@@ -15,7 +15,7 @@ namespace ElementalTools
 	/// <summary>
 	/// GENERIC Steel item. (Tool / Weapon / Armor...anything) [Possibly: Temperable and/or Hardenable ]
 	/// </summary>
-	public class SteelWrap<T>: Item, IAmSteel where T : Item, new()
+	public class SteelWrap<T>: SteelAssistItem, IAmSteel where T : Item, new()
 	{
 		private const float eutectoid_transition_temperature = 727f;//Celcius
 		private const float quenchTimeConstant = 180f;
@@ -107,7 +107,7 @@ namespace ElementalTools
 		WrappedItem.Textures = this.Textures;
 		WrappedItem.Variant = this.Variant;
 		WrappedItem.VariantStrict = this.VariantStrict;
-		WrappedItem.Tool = this.Tool;
+		WrappedItem.Tool = this?.Tool;
 		WrappedItem.Attributes = this?.Attributes?.Clone();
 		WrappedItem.MiningSpeed = this?.MiningSpeed;
 		WrappedItem.Shape = this.Shape;
@@ -126,6 +126,7 @@ namespace ElementalTools
 		
 		
 		WrappedItem.OnLoadedNative(api);//Hacky - but needed?
+		//WrappedItem.OnLoaded(api); // ItemScythe : ItemShears Needs this!
 		}
 
 		#region Static Properties
@@ -383,8 +384,8 @@ namespace ElementalTools
 
 		public override void OnAttackingWith(IWorldAccessor world, Entity byEntity, Entity attackedEntity, ItemSlot itemslot)
 		{
-		bool edged = this.Tool.EdgedImpliment( );
-		bool weapon = this.Tool.Weapons( );
+		bool edged = this.Edged;
+		bool weapon = this.Weapon;
 		float targetArmorFactor = 0.0f;
 		
 
@@ -429,14 +430,17 @@ namespace ElementalTools
 
 		public override bool OnBlockBrokenWith(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, BlockSelection blockSel)
 		{
-		bool edged = this.Tool.EdgedImpliment( );
-		bool weapon = this.Tool.Weapons( );
+		if (api.Side.IsClient()) return true;
+
+		bool edged = this.Edged;
+		bool weapon = this.Weapon;
 		var targetBlock = api.World.BlockAccessor.GetBlock(blockSel.Position);
 		int targetTier = targetBlock.ToolTier;
 		float targetResistance = targetBlock.Resistance;
-		bool recomendedUsage = this.MiningSpeed.ContainsKey(targetBlock.BlockMaterial);
+		bool recomendedUsage = this.RecomendedUsage(targetBlock.BlockMaterial);
 		var hardness = this.Hardness(itemslot.Itemstack);
-		
+
+		//ERROR: NullReferenceException !
 
 		//Only called for attacks on BLOCKS / Envrionment. Scen# 5 - 6 here.	
 
@@ -529,22 +533,22 @@ namespace ElementalTools
 		/// <param name="quantity">Quantity.</param>
 		public override void OnConsumedByCrafting(ItemSlot[ ] allInputSlots, ItemSlot stackInSlot, GridRecipe gridRecipe, CraftingRecipeIngredient fromIngredient, IPlayer byPlayer, int quantity)
 		{
-		if (fromIngredient.IsTool) {
+
+		if (fromIngredient.IsTool) {		
 
 		//Edged tool vs. non-edged tool
-		bool edgedTool = this.Tool.EdgedImpliment( );
+		bool edgedTool = this.Edged;
 		
-
 		float hardnessMult =((int)HardnessState.Brittle+1) / ((int)this.Hardness(stackInSlot.Itemstack)+1) * 0.25f;
 		float wearMax = 1;
 		if (edgedTool) {
-		wearMax = ( byte )SharpnessState.Razor / ( byte )this.Sharpness(stackInSlot.Itemstack);//5..1
+		wearMax = ( byte )SharpnessState.Razor - ( byte )this.Sharpness(stackInSlot.Itemstack);
 		}
 
 		int actualDmg = ( int )Math.Round(NatFloat.createTri(wearMax, hardnessMult).nextFloat( ), 1);
 
 		#if DEBUG
-		api.World.Logger.VerboseDebug($"[{this.Code}] --> Harndess effect: [ Hardness {hardnessMult} Vs. Rate: {wearMax} apply dmg: {actualDmg}, edged: {edgedTool} ]");
+		api.World.Logger.VerboseDebug($"tooluse [{this.Code}] --> Harndess effect: [ Hardness {hardnessMult} Vs. Rate: {wearMax} apply dmg: {actualDmg}, edged: {edgedTool} ]");
 		#endif
 
 		stackInSlot.Itemstack.Collectible.DamageItem(byPlayer.Entity.World, byPlayer.Entity, stackInSlot, actualDmg);

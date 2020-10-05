@@ -2,7 +2,7 @@
 	code: "scythe",
 	damagedby: ["blockbreaking"],
     class: "Steel_ItemScythe",		
-	tool: "Scythe",
+	tool: "scythe",
 	variantgroups: [
 		{ code: "metal", states: ["blister_steel", "shear_steel" ] },
 	],
@@ -11,15 +11,9 @@
 		metalName:"Blister Steel",
 		sharpenable: true,
 		hardenable: false,
-	},
-	"*-shear_steel": {
-		metalName:"Shear Steel",
-		sharpenable: true,
-		hardenable: false,
-	},
-	"*": {
-		   codePrefixes: ["crop", "tallgrass", "frostedtallgrass"],
-		handbook: {
+		AltTool:13,
+        codePrefixes: ["crop", "tallgrass", "frostedtallgrass"],
+            handbook: {
 			groupBy: ["scythe-*"]
 		},
 		toolrackTransform: {
@@ -27,7 +21,22 @@
 			translation: { x: -0.35, y: 0.5 },
 			scale: 1,
 		},
-		}
+	},
+	"*-shear_steel": {
+		metalName:"Shear Steel",
+		sharpenable: true,
+		hardenable: false,
+		AltTool:13,
+        codePrefixes: ["crop", "tallgrass", "frostedtallgrass"],
+            handbook: {
+			groupBy: ["scythe-*"]
+		},
+		toolrackTransform: {
+			rotation: { y: 3, z: -1 },
+			translation: { x: -0.35, y: 0.5 },
+			scale: 1,
+		},
+	},	
 	},    	
 	shape: { base: "game:item/tool/scythe" },
 	heldTpHitAnimation: "scythe",
@@ -37,6 +46,11 @@
 	durabilitybytype: {
 		"*-blister_steel": 1900,
 		"*-shear_steel": 2000,
+	},
+    miningspeed: 
+	{				
+	"plant": 6,
+	"leaves": 4
 	},
 	creativeinventory: { "general": ["*"], "items": ["*"], "tools": ["*"] },
 	guiTransform: {

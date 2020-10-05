@@ -101,7 +101,7 @@ namespace ElementalTools
 		/// <param name="what">What.</param>
 		public static bool EdgedImpliment(this EnumTool? what)
 		{			
-		if (what.HasValue && (
+		if (what != null || what.HasValue && (
 				what == EnumTool.Axe ||
 				what == EnumTool.Chisel ||
 				what == EnumTool.Hoe ||
@@ -126,7 +126,7 @@ namespace ElementalTools
 		/// <param name="what">What.</param>
 		public static bool Weapons(this EnumTool? what)
 		{
-		if (what.HasValue && (
+		if (what != null || what.HasValue && (
 				what == EnumTool.Axe || //Arguable
 				what == EnumTool.Bow ||
 				what == EnumTool.Knife ||

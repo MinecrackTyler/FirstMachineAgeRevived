@@ -9,7 +9,7 @@
 	},
 	"textures": {
 	  	"nails": "game:block/metal/sheet/iron1",
-		"metal": "fma:metal/{metal}",
+		"metal": "fma:metal/blister_steel",
 		"string": "game:item/tool/material/string",
 		"wood": "game:block/wood/debarked/redwood"
 	},
