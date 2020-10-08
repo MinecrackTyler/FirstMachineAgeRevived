@@ -40,7 +40,7 @@ namespace AnvilMetalRecovery
 
 		public override void OnSplit(Vec3i voxelPos)
 		{
-		if (Voxels[voxelPos.X, voxelPos.Y, voxelPos.Z] == ( byte )EnumVoxelMaterial.Metal) {
+		if (!this.IsIronBloom && Voxels[voxelPos.X, voxelPos.Y, voxelPos.Z] == ( byte )EnumVoxelMaterial.Metal) {
 		#if DEBUG
 		Logger.VerboseDebug("Split some {0} @{1}, Total:{2}", this.BaseMaterial.Collectible.LastCodePart( ), voxelPos, SplitCount);
 		#endif
@@ -48,7 +48,6 @@ namespace AnvilMetalRecovery
 		}
 
 		base.OnSplit(voxelPos);
-
 		}
 
 		//Would be great if this returned a bool!
@@ -75,6 +74,8 @@ namespace AnvilMetalRecovery
 			#endif
 
 			Item metalShavingsItem = Api.World.GetItem(MetalShavingsCode.WithPathAppendix("-" + this.BaseMaterial.Collectible.LastCodePart( )));
+
+			if (metalShavingsItem == null) return;
 			ItemStack metalShavingsStack = new ItemStack(metalShavingsItem, metalShavings);
 
 				if (byPlayer != null) {
@@ -83,8 +84,6 @@ namespace AnvilMetalRecovery
 				}
 			}
 		}
-
-
 		}
 	}
 }
