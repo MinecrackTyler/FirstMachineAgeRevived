@@ -77,6 +77,7 @@
     <Compile Include="BlockBehaviors\BlockBehaviorVerticalOrientation.cs" />
     <Compile Include="BlockClasses\CollapsingBlock.cs" />
     <Compile Include="BlockEntityClasses\CollapsingBlockEntity.cs" />
+    <Compile Include="BlockClasses\FalseWall.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BlockClasses\" />
@@ -169,6 +170,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\defensive\recipes\grid\false_floor.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\shapes\block\stone\false_wall_lower.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\blocktypes\stone\false_wall.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\shapes\block\stone\false_wall_upper.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

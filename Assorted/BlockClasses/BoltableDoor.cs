@@ -12,6 +12,8 @@ namespace FirstMachineAge
 {
 	public class BoltableDoor : BlockBaseDoor
 	{
+		private const string HideTooltipKey = @"HideTooltip";//Only, When closed!
+
 		public BoltableDoor( )
 		{
 			
@@ -155,7 +157,12 @@ namespace FirstMachineAge
 		}
 
 		public bool IsOpen {
-			get { return this.Variant["state"] == "opened"; }//state: ["closed", "opened"]
+			get { return IsOpened( ); }//state: ["closed", "opened"]
+		}
+
+		public bool HideTooltip {
+			get
+			{ return this.Attributes[HideTooltipKey].AsBool( );}
 		}
 
 		public override bool IsOpened()

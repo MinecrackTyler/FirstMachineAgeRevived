@@ -22,7 +22,9 @@ namespace FirstMachineAge
 		
 		}
 
-
+		public BoltableDoor DoorBlock {
+			get { return this.Block as BoltableDoor; }
+		}
 
 		public override void FromTreeAtributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
 		{
@@ -41,8 +43,15 @@ namespace FirstMachineAge
 		public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
 		{
 		base.GetBlockInfo(forPlayer, dsc);
-		BoltableDoorBlockEntity realEntity = (this.Block as BoltableDoor).Entity(this.Pos.Copy( ));
-		if (realEntity != null) dsc.AppendLine($"Bolted: {(realEntity.Bolted?"<font color='red'>Yes</font>":"No")}");		
+
+		if (DoorBlock.IsOpen == false ) 
+		{
+			if (forPlayer.CurrentBlockSelection.Face != DoorBlock.GetDirection( ) ) 
+			{
+			//BoltableDoorBlockEntity realEntity = DoorBlock.Entity(this.Pos.Copy( ));
+			dsc.AppendLine($"Bolted: {(this.Bolted ? "<font color='red'>Yes</font>" : "No")}");
+			}
+		}
 		}
 	}
 }
