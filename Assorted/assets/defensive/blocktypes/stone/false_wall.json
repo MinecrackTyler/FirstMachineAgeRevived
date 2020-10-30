@@ -32,8 +32,8 @@
 		
 		"*-east-down-closed-*": { base:"block/stone/false_wall_lower", rotateY: 90 },
 		"*-east-up-closed-*": { base: "block/stone/false_wall_upper", rotateY: 90 },
-		"*-east-down-opened-*": { base: "block/stone/false_wall_lower", rotateY: 180, offsetX: -0.80 },
-		"*-east-up-opened-*": { base: "block/stone/false_wall_upper",  rotateY: 180, offsetX: -0.80 },
+		"*-east-down-opened-*": { base: "block/stone/false_wall_lower", rotateY: 180, offsetX: -0.20 },
+		"*-east-up-opened-*": { base: "block/stone/false_wall_upper",  rotateY: 180, offsetX: -0.20 },
 		
 		"*-south-down-closed-*": { base: "block/stone/false_wall_lower", rotateY: 180 },
 		"*-south-up-closed-*": { base: "block/stone/false_wall_upper", rotateY:180 },
@@ -42,8 +42,8 @@
 		
 		"*-west-down-closed-*": { base: "block/stone/false_wall_lower", rotateY: 270 },
 		"*-west-up-closed-*": { base: "block/stone/false_wall_upper", rotateY: 270 },
-		"*-west-down-opened-*": { base: "block/stone/false_wall_lower", rotateY: 0, offsetX: -0.80 },
-		"*-west-up-opened-*": { base: "block/stone/false_wall_upper", rotateY: 0, offsetX: -0.80 },				
+		"*-west-down-opened-*": { base: "block/stone/false_wall_lower", rotateY: 0, offsetX: -0.20 },
+		"*-west-up-opened-*": { base: "block/stone/false_wall_upper", rotateY: 0, offsetX: -0.20 },				
 	},
 	blockmaterial: "Stone",
 	replaceable: 500,
@@ -80,47 +80,47 @@
 		],		
 		"*-north-up-closed-*": [		
 		{ x1: 0, y1: 0, z1: 0, x2: 1, y2: 1, z2: 0.25 },				
-		{ x1: 0.4, y1: 0.5, z1: 0, x2: 0.9, y2: 0.65, z2: 0.25 }
+		{ x1: 0.45, y1: 0.5, z1: 0.15, x2: 0.95, y2: 0.65, z2: 0.25 }
 		],		
 		"*-west-down-closed-*": [	
-		{ x1: 0, y1: 0, z1: 0.875, x2: 1, y2: 1, z2: 1 , rotateY: 90},		
+		{ x1: 0, y1: 0, z1: 0, x2: 1, y2: 1, z2: 0.25, rotateY: 270 },		
 		],		
 		"*-west-up-closed-*": [		
-		{ x1: 0, y1: 0, z1: 0.875, x2: 1, y2: 1, z2: 1 , rotateY: 90},
-		{ x1: 0.05, y1: 0.225, z1: 0.67, x2: 0.4125, y2: 0.55, z2: 0.875 , rotateY: 90}				
+		{ x1: 0, y1: 0, z1: 0, x2: 1, y2: 1, z2: 0.25 , rotateY: 270},				
+		{ x1: 0.45, y1: 0.5, z1: 0.15, x2: 0.95, y2: 0.65, z2: 0.25, rotateY: 270 }
 		],		
 		"*-east-down-closed-*": [	
-		{ x1: 0, y1: 0, z1: 0.875, x2: 1, y2: 1, z2: 1 , rotateY: 270},		
+		{ x1: 0, y1: 0, z1: 0, x2: 1, y2: 1, z2: 0.25, rotateY: 90 },		
 		],		
 		"*-east-up-closed-*": [		
-		{ x1: 0, y1: 0, z1: 0.875, x2: 1, y2: 1, z2: 1 , rotateY: 270},
-		{ x1: 0.05, y1: 0.225, z1: 0.67, x2: 0.4125, y2: 0.55, z2: 0.875, rotateY: 270}				
+		{ x1: 0, y1: 0, z1: 0, x2: 1, y2: 1, z2: 0.25, rotateY: 90 },				
+		{ x1: 0.45, y1: 0.5, z1: 0.15, x2: 0.95, y2: 0.65, z2: 0.25, rotateY: 90 }
 		],		
 		"*-south-down-closed-*": [	
-		{ x1: 0, y1: 0, z1: 0.875, x2: 1, y2: 1, z2: 1 , rotateY: 180},		
+		{ x1: 0, y1: 0, z1: 0, x2: 1, y2: 1, z2: 0.25, rotateY: 180 },		
 		],		
 		"*-south-up-closed-*": [		
-		{ x1: 0, y1: 0, z1: 0.875, x2: 1, y2: 1, z2: 1 , rotateY: 180},
-		{ x1: 0.05, y1: 0.225, z1: 0.67, x2: 0.4125, y2: 0.55, z2: 0.875 , rotateY: 180}				
+		{ x1: 0, y1: 0, z1: 0, x2: 1, y2: 1, z2: 0.25, rotateY:180 },				
+		{ x1: 0.45, y1: 0.5, z1: 0.15, x2: 0.95, y2: 0.65, z2: 0.25, rotateY:180 }
 		],		
 	},	
-	collisionbox: { x1: 0, y1: 0, z1: 0.875, x2: 1, y2: 1, z2: 1,
+	collisionbox: { x1: 0, y1: 0, z1: 0, x2: 1, y2: 1, z2: 0.25,
 		rotateYByType: {
-			"*-north-*-opened-*": -90,
+			"*-north-*-opened-*": 90,
 			"*-north-*-closed-*": 0,
-			"*-west-*-opened-*": 0,
-			"*-west-*-closed-*": 270,
+			"*-west-*-opened-*": -180,
+			"*-west-*-closed-*": -90,
 			"*-east-*-opened-*": 180,
 			"*-east-*-closed-*": 90,
-			"*-south-*-opened-*": 270,
-			"*-south-*-closed-*": 180,
+			"*-south-*-opened-*": 180,
+			"*-south-*-closed-*": -90,
 		}
 	},	
-	sounds: {
-		"place": "game:block/planks",
-		"hit": "game:block/planks",
-		"break": "game:block/planks",
-		"walk": "game:walk/wood"
+	sounds: {		
+		"walk": "game:walk/stone",
+        byTool: {
+			"Pickaxe": { hit: "game:block/rock-hit-pickaxe", break: "game:block/rock-break-pickaxe" }
+		}
 	},
 	materialDensity: 5000
 }
