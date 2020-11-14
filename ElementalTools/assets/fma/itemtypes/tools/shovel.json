@@ -9,11 +9,13 @@
 		metalName:"Blister Steel",
 		sharpenable: true,
 		hardenable: false,
+        AltTool:4,
 	},
 	"*-shear_steel": {
 		metalName:"Shear Steel",
 		sharpenable: true,
 		hardenable: false,
+        AltTool:4,
 	},
 	"*": {
 		   handbook: {

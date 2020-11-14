@@ -23,11 +23,13 @@
 			metalName:"Blister Steel",
 			sharpenable: true,
 			hardenable: true,
+            AltTool:12,
 		},
 		"*-shear_steel": {
 			metalName:"Shear Steel",
 			sharpenable: true,
 			hardenable: true,
+            AltTool:12,
 		}		
     },   
     durabilityByType: {		
