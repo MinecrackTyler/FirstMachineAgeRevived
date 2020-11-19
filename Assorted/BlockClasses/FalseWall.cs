@@ -17,7 +17,7 @@ namespace FirstMachineAge
 		{
 		if (this.IsOpen) {
 			if (!String.IsNullOrEmpty(this.Material)) {
-				return Lang.Get("FMA:block-false_wall-open");
+				return Lang.Get("defensive:block-false_wall-open");
 			}
 		}
 		else {

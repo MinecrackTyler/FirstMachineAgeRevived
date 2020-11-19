@@ -112,8 +112,8 @@
 			"*-west-*-closed-*": -90,
 			"*-east-*-opened-*": 180,
 			"*-east-*-closed-*": 90,
-			"*-south-*-opened-*": 180,
-			"*-south-*-closed-*": -90,
+			"*-south-*-opened-*": -90,
+			"*-south-*-closed-*": 90,
 		}
 	},	
 	sounds: {		

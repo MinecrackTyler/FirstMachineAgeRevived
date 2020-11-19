@@ -8,4 +8,7 @@
 	"defensive:blockdesc-grille_horizontal-*": "A horizontal grille of latticed wrought iron bars.",
     "defensive:block-slot_hole-*": "Stone hole",
     "defensive:block-slot_vertical-*": "Stone slit",
+    "defensive:block-false_wall-open": "Open false wall (door).",
+    "defensive:bolted_shut": "<font color='red'>Bolted Shut!</font>",
+    "defensive:bolted_open": "Its Open.",
 }

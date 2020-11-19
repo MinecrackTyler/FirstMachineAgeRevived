@@ -3,6 +3,7 @@ using System.Text;
 
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Util;
@@ -46,10 +47,10 @@ namespace FirstMachineAge
 
 		if (DoorBlock.IsOpen == false ) 
 		{
-			if (forPlayer.CurrentBlockSelection.Face != DoorBlock.GetDirection( ) ) 
+			if (forPlayer?.CurrentBlockSelection.SelectionBoxIndex == 1 ) 
 			{
 			//BoltableDoorBlockEntity realEntity = DoorBlock.Entity(this.Pos.Copy( ));
-			dsc.AppendLine($"Bolted: {(this.Bolted ? "<font color='red'>Yes</font>" : "No")}");
+			dsc.AppendLine(this.Bolted ? Lang.Get("defensive:bolted_shut") : Lang.Get("defensive:bolted_open"));
 			}
 		}
 		}
