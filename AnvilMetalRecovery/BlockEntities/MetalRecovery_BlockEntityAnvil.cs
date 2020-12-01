@@ -40,9 +40,10 @@ namespace AnvilMetalRecovery
 
 		public override void OnSplit(Vec3i voxelPos)
 		{
-		if (!this.IsIronBloom && Voxels[voxelPos.X, voxelPos.Y, voxelPos.Z] == ( byte )EnumVoxelMaterial.Metal) {
+
+		if (this.IsShavable && Voxels[voxelPos.X, voxelPos.Y, voxelPos.Z] == ( byte )EnumVoxelMaterial.Metal) {
 		#if DEBUG
-		Logger.VerboseDebug("Split some {0} @{1}, Total:{2}", this.BaseMaterial.Collectible.LastCodePart( ), voxelPos, SplitCount);
+				Logger.VerboseDebug("Split some {0} @{1}, Total:{2}", this.BaseMaterial.Collectible.LastCodePart( ), voxelPos, SplitCount);
 		#endif
 		SplitCount++;
 		}
@@ -55,7 +56,7 @@ namespace AnvilMetalRecovery
 		{
 		int splitTemp = SplitCount;
 		base.CheckIfFinished(byPlayer);
-		// base.MatchesRecipe( ) -- Private; argh
+		// base.MatchesRecipe( ) -- Private; still in V1.14.... :\
 		/*
 		 this.Voxels = new byte[16, 6, 16];
 		this.workItemStack = null;
@@ -84,6 +85,31 @@ namespace AnvilMetalRecovery
 				}
 			}
 		}
+		}
+
+		protected bool IsShavable {
+			get { 
+				//this.SelectedRecipe <-- things that are recoverable?
+				return this.WorkItemStack?.Collectible?.FirstCodePart( ).Equals("ironbloom") == false; 
+			}
+		}
+
+		protected IAnvilWorkable AnvilWorkpiece {
+			get
+			{
+			if (this.WorkItemStack != null && this.WorkItemStack.Collectible is IAnvilWorkable) 
+			{ return this.WorkItemStack.Collectible as IAnvilWorkable; }
+
+			return null;
+			}
+		}
+
+		protected ItemStack BaseMaterial 
+		{
+			get
+			{
+			return AnvilWorkpiece.GetBaseMaterial(this.WorkItemStack);//Right??
+			}
 		}
 	}
 }

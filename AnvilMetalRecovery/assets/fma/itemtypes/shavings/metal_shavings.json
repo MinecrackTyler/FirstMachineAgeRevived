@@ -5,12 +5,12 @@
 	attributes: {		
 		handbook: {
 			excludeByType: {
-				"*-chromium": true,
-				"*-platinum": true,
-				"*-titanium": true,
-				"*-rhodium": true,
-				"*-stainlessteel": true,
-				"*-uranium": true
+			"*-chromium": true,
+			"*-platinum": true,
+			"*-titanium": true,
+			"*-rhodium": true,
+			"*-stainlessteel": true,
+			"*-uranium": true
 			}
 		}		
 	},
@@ -31,6 +31,9 @@
 		"*-bismuthbronze": 7900,
 		"*-blackbronze": 9000,
 		"*-iron": 7870,
+		"*-meteoriciron": 7800,
+		"*-steel": 7820,
+		"*-blistersteel": 7720,
 		"*-gold": 19300,
 		"*-lead": 11300,
 		"*-tin": 7260,
@@ -78,6 +81,24 @@
 			meltingDuration: 30,
 			smeltedRatio: 20,
 			smeltedStack: { type: "item", code: "game:ingot-iron" }
+		},
+		"*-meteoriciron": {
+			meltingPoint: 1476,
+			meltingDuration: 30,
+			smeltedRatio: 20,
+			smeltedStack: { type: "item", code: "game:ingot-meteoriciron" }
+		},
+		"*-steel": {
+			meltingPoint: 1502,
+			meltingDuration: 30,
+			smeltedRatio: 20,
+			smeltedStack: { type: "item", code: "game:ingot-steel" }
+		},
+		"*-blistersteel": {
+			meltingPoint: 1602,
+			meltingDuration: 30,
+			smeltedRatio: 20,
+			smeltedStack: { type: "item", code: "game:ingot-blistersteel" }
 		},
 		"*-gold": {
 			meltingPoint: 1063,
