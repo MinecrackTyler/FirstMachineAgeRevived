@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
@@ -11,7 +12,8 @@ namespace AnvilMetalRecovery
 {
 	public class MetalRecovery_BlockEntityAnvil : BlockEntityAnvil
 	{
-		private const string splitCountKey = @"splitCount";	
+		private const string splitCountKey = @"splitCount";
+		private const uint splitValue = 5;
 
 		private ILogger Logger { 
 			get
@@ -55,6 +57,7 @@ namespace AnvilMetalRecovery
 		public override void CheckIfFinished(IPlayer byPlayer)
 		{
 		int splitTemp = SplitCount;
+		string baseMaterial = this.BaseMaterial?.Collectible.LastCodePart( );
 		base.CheckIfFinished(byPlayer);
 		// base.MatchesRecipe( ) -- Private; still in V1.14.... :\
 		/*
@@ -65,26 +68,40 @@ namespace AnvilMetalRecovery
 		base.MarkDirty (false);	
 		 */
 
-		if (splitTemp > 0 && this.WorkItemStack == null && this.SelectedRecipe == null) {
-			int metalShavings = ( int )(splitTemp / 5);
+		if (splitTemp > 0 && this.WorkItemStack == null && this.SelectedRecipe == null) 
+		{
+		int shavingsCount = ( int )(splitTemp / splitValue);
 
-			if (metalShavings > 0) 
+		if (shavingsCount > 0) 
+		{
+		#if DEBUG
+		Logger.VerboseDebug("RecoveryAnvil: Smithing done - recover: {0} shavings of {1}", shavingsCount, baseMaterial);
+		#endif
+
+		Item metalShavingsItem = Api.World.GetItem(MetalShavingsCode.WithPathAppendix("-" + baseMaterial));
+
+		if (metalShavingsItem != null) 
 			{
-			#if DEBUG
-			Logger.VerboseDebug("RecoveryAnvil: Smithing done - recover: {0} shavings of {1}", metalShavings, this.BaseMaterial.Collectible.LastCodePart( ));
-			#endif
+			ItemStack metalShavingsStack = new ItemStack(metalShavingsItem, shavingsCount);
 
-			Item metalShavingsItem = Api.World.GetItem(MetalShavingsCode.WithPathAppendix("-" + this.BaseMaterial.Collectible.LastCodePart( )));
-
-			if (metalShavingsItem == null) return;
-			ItemStack metalShavingsStack = new ItemStack(metalShavingsItem, metalShavings);
-
-				if (byPlayer != null) {
-				byPlayer.InventoryManager.TryGiveItemstack(metalShavingsStack, false);
-				//Api.World.SpawnItemEntity(metalShavingsStack, Pos.ToVec3d( ).Add(0.5, 0.5, 0.5));
-				}
+			if (byPlayer != null) { byPlayer.InventoryManager.TryGiveItemstack(metalShavingsStack, false); }
+			}
+		else 
+			{	
+			Logger.Warning("Missing or Invalid Item: {0} ", MetalShavingsCode.WithPathAppendix("-" + baseMaterial));
 			}
 		}
+		}
+		}
+
+		public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
+		{
+		base.GetBlockInfo(forPlayer, dsc);
+
+		if (this.IsShavable && this.SplitCount > 0 && this.BaseMaterial != null ) {
+		dsc.AppendFormat("[ {0} ÷ {1} ] | {2}",this.SplitCount, splitValue, this.BaseMaterial.GetName());
+		}
+
 		}
 
 		protected bool IsShavable {
@@ -108,7 +125,8 @@ namespace AnvilMetalRecovery
 		{
 			get
 			{
-			return AnvilWorkpiece.GetBaseMaterial(this.WorkItemStack);//Right??
+			if (this.WorkItemStack != null)	return AnvilWorkpiece.GetBaseMaterial(this.WorkItemStack);//Right??
+			return null;
 			}
 		}
 	}
