@@ -45,7 +45,7 @@ namespace AnvilMetalRecovery
 
 		if (this.IsShavable && Voxels[voxelPos.X, voxelPos.Y, voxelPos.Z] == ( byte )EnumVoxelMaterial.Metal) {
 		#if DEBUG
-				Logger.VerboseDebug("Split some {0} @{1}, Total:{2}", this.BaseMaterial.Collectible.LastCodePart( ), voxelPos, SplitCount);
+			Logger.VerboseDebug("Split some {0} @{1}, Total:{2}", this.BaseMetal, voxelPos, SplitCount);
 		#endif
 		SplitCount++;
 		}
@@ -57,7 +57,7 @@ namespace AnvilMetalRecovery
 		public override void CheckIfFinished(IPlayer byPlayer)
 		{
 		int splitTemp = SplitCount;
-		string baseMaterial = this.BaseMaterial?.Collectible.LastCodePart( );
+		string baseMaterial = this.BaseMetal;
 		base.CheckIfFinished(byPlayer);
 		// base.MatchesRecipe( ) -- Private; still in V1.14.... :\
 		/*
@@ -99,7 +99,7 @@ namespace AnvilMetalRecovery
 		base.GetBlockInfo(forPlayer, dsc);
 
 		if (this.IsShavable && this.SplitCount > 0 && this.BaseMaterial != null ) {
-		dsc.AppendFormat("[ {0} ÷ {1} ] | {2}",this.SplitCount, splitValue, this.BaseMaterial.GetName());
+		dsc.AppendFormat("[ {0} ÷ {1} ] | {2}",this.SplitCount, splitValue, Lang.GetUnformatted($"item-workitem-{this.BaseMetal}"));
 		}
 
 		}
@@ -127,6 +127,14 @@ namespace AnvilMetalRecovery
 			{
 			if (this.WorkItemStack != null)	return AnvilWorkpiece.GetBaseMaterial(this.WorkItemStack);//Right??
 			return null;
+			}
+		}
+
+		protected string BaseMetal 
+		{
+			get
+			{
+			return this?.BaseMaterial?.Collectible.LastCodePart( );
 			}
 		}
 	}
