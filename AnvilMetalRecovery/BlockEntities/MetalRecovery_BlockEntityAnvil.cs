@@ -99,7 +99,7 @@ namespace AnvilMetalRecovery
 		base.GetBlockInfo(forPlayer, dsc);
 
 		if (this.IsShavable && this.SplitCount > 0 && this.BaseMaterial != null ) {
-		dsc.AppendFormat("[ {0} ÷ {1} ] | {2}",this.SplitCount, splitValue, Lang.GetUnformatted($"item-workitem-{this.BaseMetal}"));
+		dsc.AppendFormat("[ {0} ÷ {1} ] | {2}",this.SplitCount, splitValue, Lang.GetUnformatted($"fma:item-metal_shaving-{this.BaseMetal}"));
 		}
 
 		}
