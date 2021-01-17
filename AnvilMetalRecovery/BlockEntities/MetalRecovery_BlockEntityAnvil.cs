@@ -84,7 +84,11 @@ namespace AnvilMetalRecovery
 			{
 			ItemStack metalShavingsStack = new ItemStack(metalShavingsItem, shavingsCount);
 
-			if (byPlayer != null) { byPlayer.InventoryManager.TryGiveItemstack(metalShavingsStack, false); }
+			if (byPlayer != null) 
+					{
+					if (byPlayer.InventoryManager.TryGiveItemstack(metalShavingsStack, false) == false) 
+					{byPlayer.Entity.World.SpawnItemEntity(metalShavingsStack,byPlayer.Entity.Pos.XYZ); }
+					}
 			}
 		else 
 			{	
