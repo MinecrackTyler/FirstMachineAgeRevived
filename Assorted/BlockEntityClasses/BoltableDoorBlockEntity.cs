@@ -27,9 +27,9 @@ namespace FirstMachineAge
 			get { return this.Block as BoltableDoor; }
 		}
 
-		public override void FromTreeAtributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
+		public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
 		{
-		base.FromTreeAtributes(tree, worldAccessForResolve);
+		base.FromTreeAttributes(tree, worldAccessForResolve);
 		this.Bolted = tree.GetBool(_boltedKey, false);		
 		}
 

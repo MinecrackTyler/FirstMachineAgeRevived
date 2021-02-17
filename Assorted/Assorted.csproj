@@ -76,7 +76,6 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="BlockBehaviors\BlockBehaviorVerticalOrientation.cs" />
     <Compile Include="BlockClasses\CollapsingBlock.cs" />
-    <Compile Include="BlockEntityClasses\CollapsingBlockEntity.cs" />
     <Compile Include="BlockClasses\FalseWall.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +84,8 @@
     <Folder Include="BlockEntityClasses\" />
     <Folder Include="BlockBehaviors\" />
     <Folder Include="assets\defensive\recipes\grid\" />
+    <Folder Include="assets\defensive\textures\ceramic\" />
+    <Folder Include="assets\defensive\shapes\block\ceramic\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\defensive\blocktypes\iron\grille_horizontal.json">
@@ -179,6 +180,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\defensive\shapes\block\stone\false_wall_upper.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\shapes\block\ceramic\Candle_wall-holder.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\textures\ceramic\semi_t_cera.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

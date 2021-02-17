@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Vintagestory.API;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
@@ -19,16 +20,21 @@ namespace FirstMachineAge
 
 		private ModSystemBlockReinforcement ReinforcementSystem;
 
-		private uint Howmuch 
+		public uint Howmuch 
 		{
-			get
-			{
-			return properties[_howmuchKey].AsType<uint>(1u);
-			}
+			get; private set;			
 		}
 		 
+		public override void Initialize(JsonObject properties)
+		{
+		base.Initialize(properties);
+
+		Howmuch = properties[_howmuchKey].AsType<uint>(1u);
+		}
+
 		public BlockBehaviorFreeReinforcement(Block block) : base(block)
         {
+			
 		}
 
 		public override void OnLoaded(ICoreAPI api)
@@ -47,7 +53,7 @@ namespace FirstMachineAge
 		{
 		handling = EnumHandling.PassThrough;
 		if (world.Api.Side.IsServer( )) {
-		world.Api.Event.RegisterCallback((elapse) => { PostPlacementReinforce(elapse, blockSel.Position.Copy( ), byPlayer, this.Howmuch); }, 64);
+		world.Api.Event.RegisterCallback((elapse) => { PostPlacementReinforce(elapse, blockSel.Position.Copy( ), byPlayer, this.Howmuch); }, 256);
 		}
 		return true;
 		}

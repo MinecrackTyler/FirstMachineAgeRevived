@@ -2,29 +2,20 @@
 	code: "false_floor",
 	class: "CollapsingBlock",
 	variantgroups: [
-    { code: "cover",  states: [ "sand","gravel" ] },
-    { code: "material", combine: "SelectiveMultiply", onVariant: "cover", states: ["andesite", "chalk", "chert", "conglomerate", "limestone", "claystone", "granite", "sandstone", "shale", "basalt", "peridotite", "phyllite", "slate"] },
-    { code: "alt_cover", states: [ "soil" ], combine: "Add" },
+    { code: "cover",  states: [ "cobblestone","stonebricks" ] },
+    { code: "material", loadFromProperties: "block/rock" },    
     ],
 	creativeinventory: { "general": ["*"], "terrain": ["*"] },
 	shape: { base: "block/wood/false_floor" },		
-    blockmaterialByType: {
-		"*-soil": "Soil",
-        "*-sand-*": "Sand",
-        "*-gravel-*": "Gravel",		
-	},
-	texturesByType: {
-    	"*-soil": {
+    blockmaterial: "Stone",
+	texturesByType: {    	
+        "*-cobblestone-*": {
 			"wood": { base: "game:block/plant/bamboo/stem-brown" },
-			"camo": { base: "game:block/soil/fertverylow" }
+			"camo": { base: "game:block/stone/cobblestone/{material}1" }
         },
-        "*-sand-*": {
+        "*-stonebricks-*": {
 			"wood": { base: "game:block/plant/bamboo/stem-brown" },
-			"camo": { base: "game:block/stone/sand/{material}" }
-        },
-        "*-gravel-*": {
-			"wood": { base: "game:block/plant/bamboo/stem-brown" },
-			"camo": { base: "game:block/stone/gravel/{material}" }
+			"camo": { base: "game:block/stone/brick/{material}1" }
         },
 	},
 	attributes: {
@@ -38,13 +29,12 @@
 		all: false , top: true 
 	},
 	replaceable: 600,
-	fertility: 1,
 	resistance: 2.0,
 	sounds: {
-		place: "block/sand",
-		break: "block/sand",
-		hit: "block/sand",
-		walk: "walk/sand"
+		"walk": "walk/stone",
+		byTool: {
+			"Pickaxe": { hit: "block/rock-hit-pickaxe", break: "block/rock-break-pickaxe" }
+		}
 	},
 	heldTpIdleAnimation: "holdbothhandslarge", heldTpUseAnimation: "twohandplaceblock",
 	tpHandTransform: {
