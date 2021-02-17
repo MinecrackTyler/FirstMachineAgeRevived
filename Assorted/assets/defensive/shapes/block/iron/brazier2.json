@@ -9,25 +9,23 @@
 	},
 	"textures": {
 		"nailtexture": "block/nailtexture",
-		"ember": "block/ember",
 		"aged": "block/metal/torchholder/aged",
-		"coal": "block/coal",
 		"rusty-iron": "block/currency/rusty-iron"
 	},
 	"elements": [
 		{
 			"name": "Base",
-			"from": [ 0.0, 6.5, 6.5 ], 
-			"to": [ 16.0, 9.5, 9.5 ], 
+			"from": [ 0.5, 6.5, 6.5 ], 
+			"to": [ 15.5, 9.5, 9.5 ], 
 			"rotationOrigin": [ 8.0, 8.0, 8.0 ],
 			"rotationX": 45.0,
 			"faces": {
-				"north": { "texture": "#rusty-iron", "uv": [ 0.0, 10.5, 16.0, 13.5 ], "enabled": false },
+				"north": { "texture": "#rusty-iron", "uv": [ 0.0, 10.5, 15.0, 13.5 ], "enabled": false },
 				"east": { "texture": "#rusty-iron", "uv": [ 10.0, 10.5, 13.0, 13.5 ] },
-				"south": { "texture": "#rusty-iron", "uv": [ 9.0, 0.0, 12.0, 16.0 ], "rotation": 90 },
+				"south": { "texture": "#rusty-iron", "uv": [ 9.0, 0.0, 12.0, 15.0 ], "rotation": 90 },
 				"west": { "texture": "#rusty-iron", "uv": [ 10.5, 11.5, 13.5, 14.5 ] },
-				"up": { "texture": "#rusty-iron", "uv": [ 0.0, 10.5, 16.0, 13.5 ], "enabled": false },
-				"down": { "texture": "#rusty-iron", "uv": [ 8.0, 0.0, 11.0, 16.0 ], "rotation": 90 }
+				"up": { "texture": "#rusty-iron", "uv": [ 0.0, 10.5, 15.0, 13.5 ], "enabled": false },
+				"down": { "texture": "#rusty-iron", "uv": [ 8.0, 0.0, 11.0, 15.0 ], "rotation": 90 }
 			},
 			"children": [
 				{
@@ -60,9 +58,9 @@
 				},
 				{
 					"name": "Leg3",
-					"from": [ 14.0, 0.0, 3.0 ], 
-					"to": [ 16.0, 1.0, 12.0 ], 
-					"rotationOrigin": [ 14.0, 0.0, 3.0 ],
+					"from": [ 13.0, 0.0, 3.0 ], 
+					"to": [ 15.0, 1.0, 12.0 ], 
+					"rotationOrigin": [ 0.0, 0.0, 3.0 ],
 					"faces": {
 						"north": { "texture": "#rusty-iron", "uv": [ 6.5, 12.0, 8.5, 13.0 ], "enabled": false },
 						"east": { "texture": "#rusty-iron", "uv": [ 8.0, 0.0, 9.0, 9.0 ], "rotation": 90 },
@@ -74,9 +72,9 @@
 				},
 				{
 					"name": "Leg4",
-					"from": [ 14.0, -9.0, 2.0 ], 
-					"to": [ 16.0, 0.0, 3.0 ], 
-					"rotationOrigin": [ 14.0, -9.0, 2.0 ],
+					"from": [ 13.0, -9.0, 2.0 ], 
+					"to": [ 15.0, 0.0, 3.0 ], 
+					"rotationOrigin": [ 0.0, -9.0, 2.0 ],
 					"faces": {
 						"north": { "texture": "#rusty-iron", "uv": [ 9.0, 0.0, 11.0, 9.0 ] },
 						"east": { "texture": "#rusty-iron", "uv": [ 7.5, 0.0, 8.5, 9.0 ] },
@@ -89,33 +87,32 @@
 				{
 					"name": "Grille1",
 					"from": [ -0.01, -2.0, -4.0 ], 
-					"to": [ 16.09, 6.0, 0.0 ], 
+					"to": [ 15.09, 6.0, 0.0 ], 
 					"renderPass": 1,
 					"rotationOrigin": [ 0.0, 0.0, 0.0 ],
 					"rotationX": 45.0,
 					"faces": {
-						"north": { "texture": "#rusty-iron", "uv": [ 0.0, 0.0, 16.0, 8.0 ], "enabled": false },
+						"north": { "texture": "#rusty-iron", "uv": [ 0.0, 0.0, 15.0, 8.0 ], "enabled": false },
 						"east": { "texture": "#aged", "uv": [ 0.0, 0.0, 8.0, 4.0 ], "rotation": 90 },
 						"south": { "texture": "#aged", "uv": [ 0.0, 5.0, 16.0, 13.0 ], "autoUv": false, "snapUv": false },
 						"west": { "texture": "#aged", "uv": [ 1.5, 0.0, 9.5, 4.0 ], "rotation": 270 },
-						"up": { "texture": "#aged", "uv": [ 0.0, 0.0, 16.0, 4.0 ] },
+						"up": { "texture": "#aged", "uv": [ 0.0, 0.0, 15.0, 4.0 ] },
 						"down": { "texture": "#aged", "uv": [ 0.0, 0.0, 16.0, 4.0 ], "autoUv": false, "snapUv": false }
 					}
 				},
 				{
 					"name": "Fuel",
 					"from": [ 0.75, 0.03, 0.0 ], 
-					"to": [ 15.0, 3.53, 7.0 ], 
-					"renderInEditor": false,
+					"to": [ 14.0, 3.53, 7.0 ], 
 					"rotationOrigin": [ 8.0, -1.75, 0.75 ],
 					"rotationX": -45.0,
 					"faces": {
-						"north": { "texture": "#coal", "uv": [ 1.0, 10.5, 15.0, 14.0 ] },
+						"north": { "texture": "#coal", "uv": [ 1.0, 10.5, 14.0, 14.0 ] },
 						"east": { "texture": "#coal", "uv": [ 6.0, 4.5, 13.0, 8.0 ] },
-						"south": { "texture": "#coal", "uv": [ 1.0, 5.5, 15.0, 9.0 ] },
+						"south": { "texture": "#coal", "uv": [ 1.0, 5.5, 14.0, 9.0 ] },
 						"west": { "texture": "#coal", "uv": [ 5.5, 4.5, 12.5, 8.0 ] },
-						"up": { "texture": "#coal", "uv": [ 1.0, 4.5, 15.0, 11.5 ] },
-						"down": { "texture": "#coal", "uv": [ 0.5, 4.0, 14.5, 11.0 ] }
+						"up": { "texture": "#coal", "uv": [ 1.0, 4.5, 14.0, 11.5 ] },
+						"down": { "texture": "#coal", "uv": [ 0.5, 4.0, 13.5, 11.0 ] }
 					},
 					"children": [
 						{
@@ -173,32 +170,31 @@
 				{
 					"name": "Embers",
 					"from": [ 0.75, 0.03, 0.0 ], 
-					"to": [ 15.0, 2.53, 7.0 ], 
+					"to": [ 14.0, 2.53, 7.0 ], 
 					"rotationOrigin": [ 8.0, -1.75, 0.75 ],
 					"rotationX": -45.0,
 					"faces": {
-						"north": { "texture": "#ember", "uv": [ 1.0, 10.5, 15.0, 13.0 ], "glow": 128 },
+						"north": { "texture": "#ember", "uv": [ 1.0, 10.5, 14.0, 13.0 ], "glow": 128 },
 						"east": { "texture": "#ember", "uv": [ 6.0, 4.5, 13.0, 7.0 ], "glow": 128 },
-						"south": { "texture": "#ember", "uv": [ 1.0, 5.5, 15.0, 8.0 ], "glow": 128 },
+						"south": { "texture": "#ember", "uv": [ 1.0, 5.5, 14.0, 8.0 ], "glow": 128 },
 						"west": { "texture": "#ember", "uv": [ 5.5, 4.5, 12.5, 7.0 ], "glow": 128 },
-						"up": { "texture": "#ember", "uv": [ 1.0, 4.5, 15.0, 11.5 ], "glow": 128 },
-						"down": { "texture": "#ember", "uv": [ 0.5, 4.0, 14.5, 11.0 ], "enabled": false }
+						"up": { "texture": "#ember", "uv": [ 1.0, 4.5, 14.0, 11.5 ], "glow": 128 },
+						"down": { "texture": "#ember", "uv": [ 0.5, 4.0, 13.5, 11.0 ], "enabled": false }
 					}
 				},
 				{
 					"name": "Ash",
 					"from": [ 0.75, 0.03, 0.0 ], 
-					"to": [ 15.0, 1.03, 7.0 ], 
-					"renderInEditor": false,
+					"to": [ 14.0, 1.03, 7.0 ], 
 					"rotationOrigin": [ 8.0, -1.75, 0.75 ],
 					"rotationX": -45.0,
 					"faces": {
-						"north": { "texture": "#nailtexture", "uv": [ 1.0, 10.5, 15.0, 11.5 ] },
+						"north": { "texture": "#nailtexture", "uv": [ 1.0, 10.5, 14.0, 11.5 ] },
 						"east": { "texture": "#nailtexture", "uv": [ 6.0, 4.5, 13.0, 5.5 ] },
-						"south": { "texture": "#nailtexture", "uv": [ 1.0, 5.5, 15.0, 6.5 ] },
+						"south": { "texture": "#nailtexture", "uv": [ 1.0, 5.5, 14.0, 6.5 ] },
 						"west": { "texture": "#nailtexture", "uv": [ 5.5, 4.5, 12.5, 5.5 ] },
-						"up": { "texture": "#nailtexture", "uv": [ 1.0, 4.5, 15.0, 11.5 ] },
-						"down": { "texture": "#nailtexture", "uv": [ 0.5, 4.0, 14.5, 11.0 ] }
+						"up": { "texture": "#nailtexture", "uv": [ 1.0, 4.5, 14.0, 11.5 ] },
+						"down": { "texture": "#nailtexture", "uv": [ 0.5, 4.0, 13.5, 11.0 ] }
 					},
 					"children": [
 						{

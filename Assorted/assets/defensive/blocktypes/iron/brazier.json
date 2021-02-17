@@ -23,9 +23,9 @@
 	},
     textures: {
         "nailtexture": { base: "game:block/nailtexture"},
-		"ember": { base: "game:block/ember"},
+		"ember": { base: "game:block/coal/ember"},
 		"aged": { base:  "game:block/metal/torchholder/aged"},
-		"coal": { base:  "game:block/coal"},
+		"coal": { base:  "game:block/coal/charcoal"},
 		"rusty-iron": { base: "game:block/currency/rusty-iron"},		
     },
 	creativeinventory: { "general": ["*"], "decorative": ["*"] },

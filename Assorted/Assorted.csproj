@@ -188,6 +188,9 @@
     <None Include="assets\defensive\textures\ceramic\semi_t_cera.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="assets\defensive\shapes\block\stone\false_wall_inv.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -23,7 +23,7 @@
 		"stone": { base: "game:block/stone/brick/{material}1" },    							
 		"wood": { base: "game:block/wood/planks/oak1" },		
 	},   
-    shapeinventory: { base: "block/wood/heavydoor_inv" },
+    shapeinventory: { base: "block/stone/false_wall_inv" },
 	shapebytype: {
 		"*-north-down-closed-*": { base: "block/stone/false_wall_lower", rotateY: 0 },
 		"*-north-up-closed-*": { base: "block/stone/false_wall_upper", rotateY: 0 },
@@ -65,8 +65,9 @@
 		scale: 1.11
 	},
 	tpHandTransform: {
-		translation: { x: -1.1, y: -0.7, z: -0.6 },
+		translation: { x: -0.7, y: -0.7, z: -0.6 },
 		rotation: { x: 14, y: 0, z: 59 },
+		origin: { x: 0.45, y: 0.45, z: 0.3 },
 		scale: 0.6
 	},
 	groundTransform: {
