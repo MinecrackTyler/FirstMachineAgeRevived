@@ -1,14 +1,16 @@
 ﻿{
 	code: "enclosed_candle",	
-	storageFlags: 257,
+	storageFlags: 1,
     behaviors: [{name: "HorizontalOrientable"}],
 	variantgroups: [		
 		{ code:"wall", loadFromProperties: "abstract/horizontalorientation" }
 	],   
+    collisionbox: null,
+    renderpass: "OpaqueNoCull",
 	shapebytype: {		
 		"*-north": { base: "block/ceramic/candle_wall-holder", rotateY: 0 },
-		"*-east": { base: "block/ceramic/candle_wall-holder", rotateY: 270 },
-		"*-south": { base: "block/ceramic/candle_wall-holder", rotateY: 180 },
+        "*-south": { base: "block/ceramic/candle_wall-holder", rotateY: 180 },
+		"*-east": { base: "block/ceramic/candle_wall-holder", rotateY: 270 },		
 		"*-west": { base: "block/ceramic/candle_wall-holder", rotateY: 90 }
 	},
 	sidesolid: {
@@ -17,9 +19,10 @@
 	sideopaque: {
 		all: false
 	},
-      textures: {
+  	textures: {
     	"candle": { base: "game:block/candle" },
-		"semi_t_cera": { base: "fma:ceramic/semi_t_cera" },
+        "smoky": { base: "game:block/glass/smoky" },
+		"semi_t_cera": { base: "ceramic/semi_t_cera" },
 		"brown1": { base: "game:block/clay/hardened/brown1"}       
     },
 	creativeinventory: { "general": ["*-north"], "decorative": ["*-north"] },
@@ -27,34 +30,32 @@
 	resistance: 0.25,
 	maxStackSize: 4,
 	lightAbsorption: 0,
-	lightHsv: [11, 2, 10],
-	textures: {
-		"candle": { base: "game:block/candle" },
-		"semi_t_cera": { base: "fma:ceramic/semi_t_cera" },
-		"brown1": { base: "game:block/clay/hardened/brown1" }
-	},	
-	collisionbox: null,
+	lightHsv: [6, 5, 9],		
 	selectionboxbytype: {		
-		"*-east": { x1: 0.3125, y1: 0.3125, z1: 0.5625, x2: 0.6875, y2: 0.5, z2: 1, rotateY: 270 },
-		"*-south": { x1: 0.3125, y1: 0.3125, z1: 0.5625, x2: 0.6875, y2: 0.5, z2: 1, rotateY: 180 },
-		"*-west": { x1: 0.3125, y1: 0.3125, z1: 0.5625, x2: 0.6875, y2: 0.5, z2: 1, rotateY: 90 },
-		"*-north": { x1: 0.3125, y1: 0.3125, z1: 0.5625, x2: 0.6875, y2: 0.5, z2: 1, rotateY: 0 }
+        "*-north": { x1: 0.36, y1: 0.54, z1: 0.745, x2: 0.63, y2: 0.97, z2: 0.999, rotateY: 180 },
+        "*-south": { x1: 0.36, y1: 0.54, z1: 0.745, x2: 0.63, y2: 0.97, z2: 0.999 , rotateY: 0 },
+		"*-east": { x1: 0.36, y1: 0.54, z1: 0.745, x2: 0.63, y2: 0.97, z2: 0.999, rotateY: 90 },		
+		"*-west": { x1: 0.36, y1: 0.54, z1: 0.745, x2: 0.63, y2: 0.97, z2: 0.999, rotateY: 270 },		
 	},
 	blockmaterial: "Ceramic",
 	fpHandTransform: {
-		translation: { x: 0.29, y: -0.1, z: 0 },
+		translation: { x: -4.85, y: -0.12, z: 0.3 },
+		rotation: { x: 1, y: -18, z: 0 },
+		origin: { x: 0.5, y: 0.45, z: 0.5 },
 		scale: 2
 	},
 	guiTransform: {
-		translation: { x: 0, y: 4, z: 0 },
-		origin: { x: 0.5, y: 0.0625, z: 0.5 },
-		scale: 3
+		translation: { x: 8, y: 47.5, z: 0 },
+		rotation: { x: -20, y: -179, z: 0 },
+		origin: { x: 0.4, y: 0, z: 0 },
+		scale: 2.75,
+        rotate: false
 	},
 	groundTransform: {
 		scale: 2.5
 	},
 	tpHandTransform: {
-		translation: { x: -0.83, y: -0.13, z: -0.73 },
+		translation: { x: -0.7, y: 0, z: -0.9 },
 		rotation: { x: -43, y: 0, z: -89 },
 		origin: { x: 0.5, y: 0.1, z: 0.5 },
 		scale: 0.66

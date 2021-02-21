@@ -11,4 +11,5 @@
     "defensive:block-false_wall-open": "Open false wall (door).",
     "defensive:bolted_shut": "<font color='red'>Bolted Shut!</font>",
     "defensive:bolted_open": "Its Open.",
+    "defensive:block-enclosed_candle-*":"Enclosed candle holder",
 }
