@@ -86,12 +86,13 @@
     <Folder Include="assets\defensive\recipes\grid\" />
     <Folder Include="assets\defensive\textures\ceramic\" />
     <Folder Include="assets\defensive\shapes\block\ceramic\" />
+    <Folder Include="assets\defensive\blocktypes\ceramic\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\defensive\blocktypes\iron\grille_horizontal.json">
+    <None Include="assets\defensive\blocktypes\metal\grille_horizontal.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\blocktypes\iron\grille_vertical.json">
+    <None Include="assets\defensive\blocktypes\metal\grille_vertical.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\defensive\blocktypes\stone\slot_vert.json">
@@ -106,13 +107,13 @@
     <None Include="assets\defensive\recipes\smithing\grille_v.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\iron\grille_horizontal.json">
+    <None Include="assets\defensive\shapes\block\metal\grille_horizontal.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\iron\grille_vertical.json">
+    <None Include="assets\defensive\shapes\block\metal\grille_vertical.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\iron\strut_vert.json" />
+    <None Include="assets\defensive\shapes\block\metal\strut_vert.json" />
     <None Include="assets\defensive\shapes\block\stone\slot_vert.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -149,10 +150,10 @@
     <None Include="assets\defensive\blocktypes\stone\slot_hole.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\iron\brazier2.json">
+    <None Include="assets\defensive\shapes\block\metal\brazier2.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\blocktypes\iron\brazier.json">
+    <None Include="assets\defensive\blocktypes\metal\brazier.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\defensive\shapes\block\stone\brick_w_candle.json">
@@ -182,13 +183,16 @@
     <None Include="assets\defensive\shapes\block\stone\false_wall_upper.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\ceramic\Candle_wall-holder.json">
+    <None Include="assets\defensive\shapes\block\ceramic\candle_wall-holder.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\defensive\textures\ceramic\semi_t_cera.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\defensive\shapes\block\stone\false_wall_inv.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\blocktypes\ceramic\enclosed_candle.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

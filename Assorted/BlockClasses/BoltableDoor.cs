@@ -164,6 +164,15 @@ namespace FirstMachineAge
 			 return this.Variant["state"] == "opened"; //state: ["closed", "opened"]
 		}
 
+		public override int GetHeatRetention(BlockPos pos, BlockFacing facing)
+		{
+		if (!this.IsOpen) {
+			return 3;
+		}
+
+		return 1;
+		}
+
 		public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref string failureCode)
 		{
 		BlockPos upperPos = blockSel.Position.AddCopy(0, 1, 0);

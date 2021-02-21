@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
+using Vintagestory.API.Server;
 using Vintagestory.GameContent;
 
 namespace FirstMachineAge
@@ -27,12 +27,9 @@ namespace FirstMachineAge
 
 		}
 
-		public ICoreClientAPI ClientAPI 
-		{
-			get { return this.api as ICoreClientAPI; }
+		public ICoreServerAPI ServerAPI {
+			get { return this.api as ICoreServerAPI; }
 		}
-
-
 
 
 		//TODO: Fall apart if player tries to 'Hoe' 'Dig' or mess with block in any way, or even place things on top of it...
@@ -40,16 +37,16 @@ namespace FirstMachineAge
 		public override void OnEntityInside(IWorldAccessor world, Entity entity, BlockPos pos)
 		{
 		//Get Ready to CRUMBLE!
-		api.World.Logger.VerboseDebug($"OnEntityInside ({entity.Code}) of [{entity.GetType( ).Name}] @ {pos}");
+		ServerAPI.Logger.VerboseDebug($"OnEntityInside ({entity.Code}) of [{entity.GetType( ).Name}] @ {pos}");
 		}
 
 		public override void OnEntityCollide(IWorldAccessor world, Entity entity, BlockPos pos, BlockFacing facing, Vec3d collideSpeed, bool isImpact)
 		{
 		//Start to shake...with particles , dust, creaking sounds
-		api.World.Logger.VerboseDebug($"OnEntityCollide ({entity.Code}) of [{entity.GetType( ).Name}] @ {pos} impact: {isImpact}");
+		ServerAPI.Logger.VerboseDebug($"OnEntityCollide ({entity.Code}) of [{entity.GetType( ).Name}] @ {pos} impact: {isImpact}");
 
 		//Tick Callback; in 200ms...
-		api.Event.RegisterCallback(CheckOwnVolume, pos ,200);		
+		world.RegisterCallbackUnique(MabeyCollapse, pos ,200);		
 		}
 
 		public override string GetPlacedBlockName(IWorldAccessor world, BlockPos pos)
@@ -62,10 +59,30 @@ namespace FirstMachineAge
 		return @"Error?";
 		}
 
-		private void CheckOwnVolume(IWorldAccessor localAcc, BlockPos here, float delay)
+		private void MabeyCollapse(IWorldAccessor localAcc, BlockPos here, float delay)
 		{
 		//Check 'Volumne' of Bounding box; any 'large' entity still standing here is going to be surprised!
+		//hitboxSize: { x: 0.6, y: 1.85 } > Seraph
+		//hitboxSize: { x: 0.85, y: 0.5 }> Pup
+		//hitboxSize: { x: 0.4, y: 0.3 } > lil'Bunny
+
+		bool enough = false;
+		var victems = localAcc.GetEntitiesInsideCuboid(here, here.UpCopy( ));
+
+			foreach (var entity in victems) {
+			if (entity is EntityAgent &&
+				entity.Properties.HitBoxSize.X >= 0.5 &&
+				entity.Properties.HitBoxSize.Y >= 0.5  )
+				{
+				ServerAPI.Logger.VerboseDebug($"MabeyCollapse:  ({entity.Code}) is large enough to trigger COLLAPSE!");
+				enough = true;
+				break;
+				}
+		}
 		
+		if (enough) {		
+		localAcc.BlockAccessor.BreakBlock(here, null, 0);
+		}
 
 		}
 

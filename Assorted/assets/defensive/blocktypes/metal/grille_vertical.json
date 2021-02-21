@@ -4,8 +4,8 @@
 		{ code: "orient", states: ["up", "down"] },
 	],	
 	shapebytype: {		
-		"*-up": { base: "block/iron/grille_vertical" },
-		"*-down": { base: "block/iron/grille_vertical" , rotateX: 180 },	
+		"*-up": { base: "block/metal/grille_vertical" },
+		"*-down": { base: "block/metal/grille_vertical" , rotateX: 180 },	
 	},	
 	textures: {
 		rivets: { base: "game:block/metal/sheet/iron1" },

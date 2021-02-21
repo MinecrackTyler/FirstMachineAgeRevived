@@ -4,10 +4,10 @@
 		{ code: "side", loadFromProperties: "abstract/horizontalorientation" }
 	],		
 	shapebytype: {		
-		"*-north": { base: "block/iron/grille_horizontal", rotateY: 0 },
-		"*-east": { base: "block/iron/grille_horizontal" , rotateY: 270 },
-		"*-south": { base: "block/iron/grille_horizontal" , rotateY: 180 },
-		"*-west": { base: "block/iron/grille_horizontal", rotateY: 90 },		
+		"*-north": { base: "block/metal/grille_horizontal", rotateY: 0 },
+		"*-east": { base: "block/metal/grille_horizontal" , rotateY: 270 },
+		"*-south": { base: "block/metal/grille_horizontal" , rotateY: 180 },
+		"*-west": { base: "block/metal/grille_horizontal", rotateY: 90 },		
 	},	
 	textures: {
 		rivets: { base: "game:block/metal/sheet/iron1" },

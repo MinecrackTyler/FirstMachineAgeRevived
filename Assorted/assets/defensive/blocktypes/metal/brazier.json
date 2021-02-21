@@ -1,23 +1,25 @@
 ﻿{
-	code: "brazier",	
-	
+	code: "brazier",		
 	maxstacksize: 1,
 	variantgroups: [
 		{ code: "state", states: ["unlit", "ignighted", "extinguished"] }
-	],
-	behaviors: [ {name: "Unstable"} ],
+	],	
+    behaviorsByType: {
+	"*-ignighted": [{ name: "HeatSource", properties: { heatStrength: 5 } }],	
+    "*": [{name: "Unstable"}],
+	},
     renderpass: "OpaqueNoCull",
 	shapeByType: {
 		"*-unlit": { 
-			base: "block/iron/brazier2", SelectiveElements:["Base","Leg1","Leg2","Leg3","Leg4","Grille1","Fuel","Coal1","Coal2","Coal3"],
+			base: "block/metal/brazier2", SelectiveElements:["Base","Leg1","Leg2","Leg3","Leg4","Grille1","Fuel","Coal1","Coal2","Coal3"],
 			
 		},
 		"*-ignighted": { 
-			base: "block/iron/brazier2", SelectiveElements:["Base","Leg1","Leg2","Leg3","Leg4","Grille1","Embers"],
+			base: "block/metal/brazier2", SelectiveElements:["Base","Leg1","Leg2","Leg3","Leg4","Grille1","Embers"],
 			
 		},
 		"*-extinguished": { 
-			base: "block/iron/brazier2", SelectiveElements:["Base","Leg1","Leg2","Leg3","Leg4","Grille1","Ash","Lump1","Lump2","Lump3"],
+			base: "block/metal/brazier2", SelectiveElements:["Base","Leg1","Leg2","Leg3","Leg4","Grille1","Ash","Lump1","Lump2","Lump3"],
 			
 		},		
 	},
