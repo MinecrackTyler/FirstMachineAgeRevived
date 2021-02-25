@@ -1,10 +1,12 @@
 ﻿using System;
 
+using EnumsNET;
+
 using Newtonsoft.Json.Linq;
 
 using Vintagestory.API;
+using Vintagestory.API.MathTools;
 
-using EnumsNET;
 
 
 namespace FirstMachineAge
@@ -33,6 +35,14 @@ namespace FirstMachineAge
 				}
 			}
 		return resultList;
+		}
+
+
+		internal static bool Above(this BlockPos pos, BlockPos other)
+		{
+		if (pos.UpCopy( ) == other.Copy( )) return true;
+
+		return false;
 		}
 	}
 }

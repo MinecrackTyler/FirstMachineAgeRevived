@@ -72,6 +72,7 @@ namespace FirstMachineAge
 		{
 		CoreAPI.RegisterBlockBehaviorClass("FreeReinforcement", typeof(BlockBehaviorFreeReinforcement));
 		CoreAPI.RegisterBlockBehaviorClass("VerticalOrentiation",typeof(BlockBehaviorVerticalOrientation));
+		CoreAPI.RegisterBlockBehaviorClass("NeedSides", typeof(BlockBehaviorNeedSides));
 		}
 	}
 

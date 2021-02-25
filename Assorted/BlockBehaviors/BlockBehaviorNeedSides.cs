@@ -63,7 +63,14 @@ namespace FirstMachineAge
 
 		public override void OnNeighbourBlockChange(IWorldAccessor world, BlockPos pos, BlockPos neibpos, ref EnumHandling handling)
 		{
+		handling = EnumHandling.PassThrough;
 
+			if (!CheckCardinalsOk(world.BlockAccessor, pos.Copy( ))) 
+			{		
+			world.BlockAccessor.BreakBlock(pos, null,0);
+			}
+
+		base.OnNeighbourBlockChange(world, pos, neibpos, ref handling);
 		}
 
 		#endregion

@@ -69,6 +69,9 @@
     <Reference Include="Enums.NET">
       <HintPath>vs_libs\Enums.NET.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe">
+      <HintPath>vs_libs\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssortedModLoader.cs" />
