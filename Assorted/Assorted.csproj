@@ -66,6 +66,9 @@
       <HintPath>vs_libs\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Enums.NET">
+      <HintPath>vs_libs\Enums.NET.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssortedModLoader.cs" />
@@ -77,6 +80,7 @@
     <Compile Include="BlockBehaviors\BlockBehaviorVerticalOrientation.cs" />
     <Compile Include="BlockClasses\CollapsingBlock.cs" />
     <Compile Include="BlockClasses\FalseWall.cs" />
+    <Compile Include="BlockBehaviors\BlockBehaviorNeedSides.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BlockClasses\" />

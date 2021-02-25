@@ -4,6 +4,9 @@ using Newtonsoft.Json.Linq;
 
 using Vintagestory.API;
 
+using EnumsNET;
+
+
 namespace FirstMachineAge
 {
 	internal static class Helpers
@@ -12,11 +15,25 @@ namespace FirstMachineAge
 		{
 		if (@this.Exists == false) return defaultValue;
 		if (!(@this.Token is JValue)) return defaultValue;
-		
 
-		return @this.Token.Value<T>();
+
+		return @this.Token.Value<T>( );
 		}
 
+		internal static T[] FromEnumStrings<T>(this JsonObject @this) where T : struct //, Enum
+		{
+		var stuffList = @this.AsArray<string>( );		
+
+		var resultList = new T[stuffList.Length];
+		for (int i = 0; i<stuffList.Length; i++) {
+		var stuff = default(T);
+				if (Enums.TryParseUnsafe(stuffList[i], out stuff))
+				{
+				resultList[i] = stuff;
+				}
+			}
+		return resultList;
+		}
 	}
 }
 

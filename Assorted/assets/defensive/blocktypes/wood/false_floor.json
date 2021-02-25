@@ -5,6 +5,7 @@
     { code: "cover",  states: [ "cobblestone","stonebricks" ] },
     { code: "material", loadFromProperties: "block/rock" },    
     ],
+	behaviors: [{name: "NeedSides", properties: { applicableMaterials: ["Soil", "Wood", "Stone", "Ore", "Metal", "Mantle", "Ceramic", "Brick", "Other"]} }],
 	creativeinventory: { "general": ["*"], "terrain": ["*"] },
 	shape: { base: "block/wood/false_floor" },		
     blockmaterial: "Stone",
