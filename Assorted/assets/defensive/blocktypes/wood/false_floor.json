@@ -32,7 +32,8 @@
 	replaceable: 600,
 	resistance: 0.4,
 	sounds: {
-		"walk": "game:walk/stone",
+		"walk": "game:walk/wood",
+		"break":"game:effect/rockslide",
 		byTool: {
 			"Pickaxe": { hit: "game:block/rock-hit-pickaxe", break: "game:block/rock-break-pickaxe" }
 		}
@@ -42,5 +43,10 @@
 		translation: { x: -1.2, y: -1.1, z: -0.8 },
 		rotation: { x: -2, y: 25, z: -78 },
 		scale: 0.37
+	},
+	dropsByType: {
+		"*": [{ type: "item", code: "game:bamboostakes", quantity: { avg: 0.7, var: 1 }  } ],
+		"*-cobblestone-*": [{ type: "item", code: "game:stone-{material}" , quantity: { avg: 0.5 }  } ],
+		"*-stonebricks-*": [{ type: "item", code: "game:stonebrick-{material}" , quantity: { avg: 0.5 }  }]
 	}
 }

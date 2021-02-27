@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Threading;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Config;
@@ -12,7 +12,7 @@ namespace FirstMachineAge
 {
 	public class CollapsingBlock : Block
 	{
-		private readonly Cuboidf[ ] collapseZones = { new Cuboidf(0.1f, 0.1f, 0.0f, 0.95f, 0.95f, 0.25f) };
+		private readonly Cuboidf[ ] collapseZones = { new Cuboidf(0.06f, 0.1f, 0.1f, 0.937f, 0.25f, 1.0f) };
 
 
 		private void MabeyCollapse(IWorldAccessor localAcc, BlockPos here, float delay)
@@ -24,10 +24,9 @@ namespace FirstMachineAge
 		//hitboxSize: { x: 0.6, y: 1.85 } > Seraph
 		//hitboxSize: { x: 0.85, y: 0.5 }> Pup
 		//hitboxSize: { x: 0.4, y: 0.3 } > lil'Bunny
-
+			 
 		bool enough = false;				
-		var victems = localAcc.GetIntersectingEntities(here.UpCopy( ), collapseZones);//TOP 'Surface' - excluding edges
-		//var victems = localAcc.GetEntitiesInsideCuboid(here.AddCopy(-1,-1,-1),here.AddCopy(1,1,1));//TOP 'Surface' - excluding edges
+		var victems = localAcc.GetIntersectingEntities(here.UpCopy( ), collapseZones, (e) => { return true;});//TOP 'Surface' - excluding edges
 
 		foreach (var entity in victems) 
 		{
@@ -43,7 +42,9 @@ namespace FirstMachineAge
 		}
 
 		if (enough) {
-		localAcc.BlockAccessor.BreakBlock(here, null, 0);
+		localAcc.BlockAccessor.BreakBlock(here.Copy(), null);
+		//TODO: Sound & Dust
+		
 		}
 
 		}
@@ -79,16 +80,7 @@ namespace FirstMachineAge
 
 		#region Overrides
 
-		//TODO: Fall apart if player tries to 'Hoe' 'Dig' or mess with block in any way, or even place things on top of it...
-		public override void OnEntityInside(IWorldAccessor world, Entity entity, BlockPos pos)
-		{
-		if (api.Side.IsClient()) return;
 
-		//Get Ready to CRUMBLE!
-		#if DEBUG
-		ServerAPI.Logger.VerboseDebug($"OnEntityInside ({entity.Code}) of [{entity.GetType( ).Name}] @ {pos}");
-		#endif
-		}
 
 		public override void OnEntityCollide(IWorldAccessor world, Entity entity, BlockPos pos, BlockFacing facing, Vec3d collideSpeed, bool isImpact)
 		{
@@ -99,7 +91,7 @@ namespace FirstMachineAge
 		#endif
 
 		//Tick Callback; in 200ms...
-		ServerAPI.World.RegisterCallbackUnique(MabeyCollapse, pos ,100);		
+		ServerAPI.World.RegisterCallbackUnique(MabeyCollapse, pos.Copy() ,50);		
 		}
 
 		public override string GetPlacedBlockName(IWorldAccessor world, BlockPos pos)
@@ -121,6 +113,46 @@ namespace FirstMachineAge
 		}
 
 		base.OnNeighbourBlockChange(world, pos, neibpos);
+		}
+
+		public override bool CanCreatureSpawnOn(IBlockAccessor blockAccessor, BlockPos pos, EntityProperties type, BaseSpawnConditions sc)
+		{
+		return false;
+		}
+
+		public override void OnBlockBroken(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
+		{
+		if (api.Side.IsClient( )) {
+		//Dust
+		/*
+		byPlayer.Entity.World.SpawnParticles(new SimpleParticleProperties( ) {
+			MinQuantity = 0,
+			AddQuantity = 10,
+			Color = ColorUtil.ToRgba(128, 128, 128, 64),
+			MinPos = new Vec3d(posx + faceVec.X * 0.01f, posy + faceVec.Y * 0.01f, posz + faceVec.Z * 0.01f),
+			AddPos = new Vec3d(0, 0, 0),
+			MinVelocity = new Vec3f(
+				   4 * faceVec.X,
+				   4 * faceVec.Y,
+				   4 * faceVec.Z
+			   ),
+			AddVelocity = new Vec3f(
+				   8 * (( float )rnd.NextDouble( ) - 0.5f),
+				   8 * (( float )rnd.NextDouble( ) - 0.5f),
+				   8 * (( float )rnd.NextDouble( ) - 0.5f)
+			   ),
+			LifeLength = 0.025f,
+			GravityEffect = 0f,
+			MinSize = 0.03f,
+			MaxSize = 0.4f,
+			ParticleModel = EnumParticleModel.Quad,
+			VertexFlags = 200,
+			SizeEvolve = new EvolvingNatFloat(EnumTransformFunction.LINEAR, -0.15f)
+		}, byPlayer);
+		*/
+		}
+
+		base.OnBlockBroken(world, pos, byPlayer, dropQuantityMultiplier);
 		}
 
 		#endregion
