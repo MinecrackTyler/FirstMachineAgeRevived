@@ -32,7 +32,8 @@
 	behaviors: [
 		{name: "HorizontalOrientable", properties: {  dropBlockFace: "north" }}		
 	],
-	creativeinventory: { "general": ["sconse_brick-*"], "construction": ["sconse_brick-*"] },	
+    renderpass: "OpaqueNoCull",
+	creativeinventory: { "general": ["*-north"], "construction": ["*-north"] },	
 	replaceable: 200,
 	resistance: 4,	
 	rainPermeable: false,

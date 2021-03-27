@@ -14,24 +14,28 @@ namespace FirstMachineAge
 		public EnumBlockMaterial[ ] ApplicableMaterials { get; private set; }
 
 		public BlockBehaviorNeedSides(Block block) : base(block)
-		{}
-	
+		{}	
 
 
 		protected bool CheckCardinalsOk(IBlockAccessor world, BlockPos checkPos)
 		{
-		//Visit all cardinals
-		Stack<BlockPos> checkList = new Stack<BlockPos>( );
+		//Visit all cardinals, mabey diagonal support?
+		Stack<Cardinal> directions = new Stack<Cardinal>( );
 
-		checkList.Push(checkPos.NorthCopy());
-		checkList.Push(checkPos.EastCopy());
-		checkList.Push(checkPos.WestCopy());
-		checkList.Push(checkPos.SouthCopy());
+		directions.Push(Cardinal.North);
+		directions.Push(Cardinal.East);
+		directions.Push(Cardinal.West);
+		directions.Push(Cardinal.South);
 					
-		while (checkList.Count > 0) {
-		Block toCheck = world.GetBlock(checkList.Pop( ));
-		if (toCheck.BlockMaterial != EnumBlockMaterial.Air 
-				|| ApplicableMaterials.Any( am => am == toCheck.BlockMaterial ) ) return true;
+		while (directions.Count > 0) {
+		var direction = directions.Pop( );
+		BlockPos probePos = checkPos.AddCopy(direction.Normali);
+		Block toCheck = world.GetBlock(probePos);
+			if (toCheck.BlockMaterial != EnumBlockMaterial.Air && ApplicableMaterials.Any(am => am == toCheck.BlockMaterial)) 
+			{
+			var counterFace = BlockFacing.FromCode(direction.Opposite.Code);
+				if (toCheck.SideSolid[counterFace.Index]) return true;
+			}
 		}
 
 		return false;
@@ -49,16 +53,19 @@ namespace FirstMachineAge
 
 		public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref EnumHandling handling, ref string failureCode)
 		{
-		//handling = EnumHandling.PreventDefault;
+		handling = EnumHandling.PreventDefault;
 		//Got sides?
 		if (CheckCardinalsOk(world.BlockAccessor, blockSel.Position.Copy( ))) 
-		{ return true; }
+		{
+			handling = EnumHandling.PassThrough;
+			return true;
+		}
 		else
 		{
 		failureCode = @"requirehorizontalattachable";
 		}
 
-		return false;
+		return true;
 		}
 
 		public override void OnNeighbourBlockChange(IWorldAccessor world, BlockPos pos, BlockPos neibpos, ref EnumHandling handling)
