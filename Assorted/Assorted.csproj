@@ -161,7 +161,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\defensive\blocktypes\metal\brazier.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\defensive\shapes\block\stone\brick_w_candle.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -170,7 +169,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\defensive\blocktypes\stone\sconse_brick.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\defensive\shapes\block\wood\false_floor.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

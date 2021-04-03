@@ -62,7 +62,7 @@ namespace FirstMachineAge
 		}
 		else
 		{
-		failureCode = @"requirehorizontalattachable";
+		failureCode = @"requirehorizontalside";
 		}
 
 		return true;

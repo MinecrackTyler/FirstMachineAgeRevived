@@ -11,6 +11,6 @@
 		"_#_______#_",		
 		"_#_______#_",		
 	]],
-	name: "Lattice Iron Grille",
-	output: { type: "block", code: "defensive:grille_vertical-north", stacksize: 3  }
+	name: "Lattice Iron Grille V",
+	output: { type: "block", code: "defensive:grille_vertical-down", stacksize: 3  }
 }

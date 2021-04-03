@@ -48,9 +48,7 @@ namespace FirstMachineAge
 			}
 
 		if (enough) {
-		localAcc.BlockAccessor.BreakBlock(here.Copy(), null);
-		//TODO: Sound & Dust
-		
+		localAcc.BlockAccessor.BreakBlock(here.Copy(), null);				
 		}
 
 		}
@@ -98,7 +96,7 @@ namespace FirstMachineAge
 		#endif
 
 		//Tick Callback; in 200ms...
-		ServerAPI.World.RegisterCallbackUnique(MabeyCollapse, pos.Copy() ,50);		
+		ServerAPI.World.RegisterCallback(MabeyCollapse, pos.Copy() ,50);		
 		}
 
 		public override void OnEntityInside(IWorldAccessor world, Entity entity, BlockPos pos)
@@ -111,7 +109,7 @@ namespace FirstMachineAge
 		#endif
 
 		//Tick Callback; in 200ms...
-		ServerAPI.World.RegisterCallbackUnique(MabeyCollapse, pos.Copy( ), 50);
+		ServerAPI.World.RegisterCallback(MabeyCollapse, pos.Copy( ), 50);
 		}
 
 		public override string GetPlacedBlockName(IWorldAccessor world, BlockPos pos)
@@ -140,29 +138,31 @@ namespace FirstMachineAge
 		return false;
 		}
 
-		public override void OnBlockBroken(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1)
+		public override void OnBlockRemoved(IWorldAccessor world, BlockPos pos)
 		{
 		if (api.Side.IsClient( )) {
+		var capi = api as ICoreClientAPI;
 		//Bits of broken block
 
-		var particleProps = new SimpleParticleProperties(1, 3, this.GetRandomColor(api as ICoreClientAPI, pos.Copy( ), BlockFacing.UP), new Vec3d( ), new Vec3d( ), new Vec3f(-0.25f, -0.25f, -0.25f), new Vec3f(0.25f, 0.25f, 0.25f), 1, 1, 0.1f, 0.3f, EnumParticleModel.Quad);
-		particleProps.AddPos.Set(1.4, 1.4, 1.4);
-		particleProps.AddQuantity = 20;
-		particleProps.MinVelocity.Set(-0.25f, 0, -0.25f);
-		particleProps.AddVelocity.Set(0.5f, 1, 0.5f);
+		var particleProps = new SimpleParticleProperties(9, 12, this.GetRandomColor(api as ICoreClientAPI, pos.Copy( ), BlockFacing.UP), pos.ToVec3d( ),pos.ToVec3d( ), Vec3f.Zero, Vec3f.Zero);
+		
+		particleProps.MinQuantity = 9;
+		particleProps.MinVelocity.Set(-0.05f, 0, -0.05f);		
+		particleProps.AddVelocity.Set(0.5f, 0, 0.5f);
 		particleProps.WithTerrainCollision = true;
 		particleProps.ParticleModel = EnumParticleModel.Cube;
-		particleProps.LifeLength = 1.5f;
-		particleProps.SizeEvolve = EvolvingNatFloat.create(EnumTransformFunction.QUADRATIC, -0.5f);
+		particleProps.LifeLength = 1.5f;		
 		particleProps.GravityEffect = 2.5f;
-		particleProps.MinSize = 0.5f;
-		particleProps.MaxSize = 1.5f;
+		particleProps.MinSize = 0.75f;
+		particleProps.MaxSize = 1.0f;
+		particleProps.WithTerrainCollision = true;
 
-		byPlayer.Entity.World.SpawnParticles(particleProps, byPlayer);
-		
+		capi.World.SpawnParticles(particleProps);
+		//TODO: Sound 
+
 		}
 
-		base.OnBlockBroken(world, pos, byPlayer, dropQuantityMultiplier);
+		base.OnBlockRemoved(world, pos);
 		}
 
 		#endregion

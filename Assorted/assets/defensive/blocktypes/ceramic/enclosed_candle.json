@@ -1,9 +1,9 @@
 ﻿{
 	code: "enclosed_candle",	
 	storageFlags: 1,
-    behaviors: [{name: "HorizontalOrientable"}],
+    behaviors: [{name: "HorizontalAttachable", properties: {  dropBlockFace: "north" }}],
 	variantgroups: [		
-		{ code:"wall", loadFromProperties: "abstract/horizontalorientation" }
+		{ code:"side", loadFromProperties: "abstract/horizontalorientation" }
 	],   
     collisionbox: null,
     renderpass: "OpaqueNoCull",
