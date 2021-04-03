@@ -1,0 +1,9 @@
+﻿{
+	ingredientPattern: "_S_	S_S	_S_",
+	ingredients: {
+		"S": { type: "block", code: "game:cobblestoneslab-*-down-free", name: "rock", allowedVariants: ["andesite", "chalk", "chert", "conglomerate", "limestone", "claystone", "granite", "sandstone", "shale", "basalt", "peridotite", "phyllite", "slate", "bauxite"]}		
+	},
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "defensive:slot_hole-{rock}-up", quantity: 1 }
+}

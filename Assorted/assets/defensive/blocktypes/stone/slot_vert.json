@@ -1,18 +1,15 @@
 {
 	code: "slot_vertical",		
-	variantgroups: [		
+	variantgroups: [
+		{ code: "rock", loadFromProperties: "block/rock" },
 		{ code: "side", loadFromProperties: "abstract/horizontalorientation" }
-	],		
+	],
 	shapebytype: {		
 		"*-north": { base: "block/stone/slot_vert", rotateY: 0 },
 		"*-east": { base: "block/stone/slot_vert" , rotateY: 270 },
 		"*-south": { base: "block/stone/slot_vert" , rotateY: 180 },
 		"*-west": { base: "block/stone/slot_vert", rotateY: 90 },		
-	},
-	variantgroups: [
-		{ loadFromProperties: "block/rock" },
-		{ code: "rot", states: ["north", "east", "south", "west"] }
-	],
+	},	
 	textures: {		
 		all: { base: "game:block/stone/cobblestone/{rock}1" },
 	},	
@@ -26,7 +23,7 @@
 	behaviors: [
 		{name: "HorizontalOrientable", properties: {  dropBlockFace: "north" }}		
 	],
-	creativeinventory: { "general": ["slot_vertical-*"], "decorative": ["slot_vertical-*"] },	
+	creativeinventory: { "general": ["slot_vertical-*-north"], "decorative": ["slot_vertical-*-north"] },	
 	resistance: 2,
 	rainPermeable: true,
 	lightAbsorption: 0,

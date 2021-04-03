@@ -23,7 +23,7 @@
 	behaviors: [
 		{name: "HorizontalOrientable", properties: {  dropBlockFace: "north" }}, {name: "FreeReinforcement", properties: { howmuch: 15 }}	
 	],
-	creativeinventory: { "general": ["grille_horizontal-*"], "decorative": ["grille_horizontal-*"] },	
+	creativeinventory: { "general": ["grille_horizontal-north"], "decorative": ["grille_horizontal-north"] },	
 	resistance: 4,
 	rainPermeable: true,
 	lightAbsorption: 0,

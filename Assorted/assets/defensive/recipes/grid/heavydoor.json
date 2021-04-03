@@ -1,7 +1,7 @@
 ﻿{
 	ingredientPattern: "WPW	WSW	WPW",
 	ingredients: {
-		"W": { type: "item", code: "game:plank-*" },
+		"W": { type: "item", code: "game:plank-*", quantity: 2 },
         "P": { type:"block", code:"game:plankslab-*"},
         "S": { type: "item", code: "game:stick" },
 	},

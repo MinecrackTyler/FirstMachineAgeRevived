@@ -23,7 +23,7 @@
 	behaviors: [
 		{ name: "VerticalOrentiation"  }
 	],
-	creativeinventory: { "general": ["slot_hole-*"], "decorative": ["slot_hole-*"] },	
+	creativeinventory: { "general": ["slot_hole-*-up"], "decorative": ["slot_hole-*-up"] },	
 	resistance: 2,
 	rainPermeable: true,
 	lightAbsorption: 0,
