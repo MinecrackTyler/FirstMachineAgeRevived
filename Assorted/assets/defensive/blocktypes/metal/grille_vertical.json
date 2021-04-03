@@ -19,7 +19,7 @@
 		all: false
 	},
 	behaviors: [
-		{name: "HorizontalUpDownOrientable" },
+		{name: "VerticalOrentiation" },
 		{name: "FreeReinforcement", properties: { howmuch: 15 }}
 	],
 	creativeinventory: { "general": ["grille_vertical-*"], "decorative": ["grille_vertical-*"] },	

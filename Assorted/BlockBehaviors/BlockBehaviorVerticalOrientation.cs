@@ -44,7 +44,7 @@ namespace FirstMachineAge
 		
 		}
 		else {
-		var closestFace = blockSel.HitPosition.Y < 0.5f ? BlockFacing.UP : BlockFacing.DOWN;
+		var closestFace = blockSel.HitPosition.Y > 0.5f ? BlockFacing.UP : BlockFacing.DOWN;
 
 		blockRotated = world.GetBlock(block.CodeWithVariant(verticalKey, closestFace.Code));
 		}
