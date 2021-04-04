@@ -27,6 +27,7 @@
 	resistance: 4,
 	rainPermeable: true,
 	lightAbsorption: 0,
+    materialDensity:7870.
 	selectionboxesByType: {		
 		"*-north": [		
 		{ x1: 0.875, y1: 0, z1: 0.125, x2: 0.95, y2: 1, z2: 0.25, rotateY: 90 },
