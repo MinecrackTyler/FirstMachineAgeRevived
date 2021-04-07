@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -64,6 +66,7 @@ namespace AnvilMetalRecovery
 		ServerCore.ClassRegistryNative.ReplaceBlockEntityType(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));
 
 		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
+			ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);
 		}
 
 		public override void StartClientSide(ICoreClientAPI api)
@@ -104,6 +107,32 @@ namespace AnvilMetalRecovery
 		}
 		}
 		*/
+
+		private void MaterialDataGathering( )
+		{
+		//Count out Voxels in smthing recipes for all metal-ingot(?) derived items;
+		var examineList = ServerAPI.World.SmithingRecipes.Where(sr => sr.Enabled && sr.Ingredient.Type == EnumItemClass.Item && sr.Output.Type == EnumItemClass.Item);
+
+		foreach (var recipie in examineList) {		
+			CollectibleObject inputObject =  recipie.Ingredient.Type == EnumItemClass.Item ? ServerAPI.World.GetItem(recipie.Ingredient.Code) : ServerAPI.World.GetBlock(recipie.Ingredient.Code) as CollectibleObject;
+			Item outputItem = ServerAPI.World.GetItem(recipie.Output.Code);
+
+			if (inputObject.CombustibleProps.SmeltingType == EnumSmeltType.Smelt && inputObject.CombustibleProps.SmeltedRatio > 0)
+			{
+			//Item Input Has a metal Unit value...(Smeltable)	
+			//Resolve?
+			int setVoxels = 0;
+			var unsprung = recipie.Voxels.OfType<bool>( );
+			setVoxels = unsprung.Count(vox => vox);
+
+			#if DEBUG
+			Mod.Logger.VerboseDebug($"{recipie.Output.Quantity}* '{outputItem.Code}' -> made of {setVoxels}x '{inputObject.Code}'");
+			#endif
+
+			}			
+		}
+
+		}
 	}
 
 
