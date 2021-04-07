@@ -16,6 +16,7 @@ namespace AnvilMetalRecovery
 	public partial class MetalRecoverySystem : ModSystem
 	{		
 		internal const string anvilKey = @"Anvil";
+		internal const float ingotVoxelEquivalent = 2.38f;
 
 		private ICoreAPI CoreAPI;
 		private ICoreServerAPI ServerAPI;
@@ -117,7 +118,7 @@ namespace AnvilMetalRecovery
 			CollectibleObject inputObject =  recipie.Ingredient.Type == EnumItemClass.Item ? ServerAPI.World.GetItem(recipie.Ingredient.Code) : ServerAPI.World.GetBlock(recipie.Ingredient.Code) as CollectibleObject;
 			Item outputItem = ServerAPI.World.GetItem(recipie.Output.Code);
 
-			if (inputObject.CombustibleProps.SmeltingType == EnumSmeltType.Smelt && inputObject.CombustibleProps.SmeltedRatio > 0)
+			if (inputObject.CombustibleProps != null && inputObject.CombustibleProps.SmeltingType == EnumSmeltType.Smelt && inputObject.CombustibleProps.SmeltedRatio > 0)
 			{
 			//Item Input Has a metal Unit value...(Smeltable)	
 			//Resolve?
@@ -126,7 +127,7 @@ namespace AnvilMetalRecovery
 			setVoxels = unsprung.Count(vox => vox);
 
 			#if DEBUG
-			Mod.Logger.VerboseDebug($"{recipie.Output.Quantity}* '{outputItem.Code}' -> made of {setVoxels}x '{inputObject.Code}'");
+			Mod.Logger.VerboseDebug($"{recipie.Output.Quantity}* '{outputItem.Code}' -> {setVoxels}x '{inputObject.Code}' voxel = ~{setVoxels*ingotVoxelEquivalent:F1} metal Units");
 			#endif
 
 			}			
