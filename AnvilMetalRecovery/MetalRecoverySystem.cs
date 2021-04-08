@@ -14,9 +14,11 @@ using Vintagestory.ServerMods;
 namespace AnvilMetalRecovery
 {
 	public partial class MetalRecoverySystem : ModSystem
-	{		
+	{				
 		internal const string anvilKey = @"Anvil";
 		internal const float ingotVoxelEquivalent = 2.38f;
+
+		private Dictionary<AssetLocation, uint> itemToVoxelLookup = new Dictionary<AssetLocation, uint>();
 
 		private ICoreAPI CoreAPI;
 		private ICoreServerAPI ServerAPI;
@@ -114,23 +116,45 @@ namespace AnvilMetalRecovery
 		//Count out Voxels in smthing recipes for all metal-ingot(?) derived items;
 		var examineList = ServerAPI.World.SmithingRecipes.Where(sr => sr.Enabled && sr.Ingredient.Type == EnumItemClass.Item && sr.Output.Type == EnumItemClass.Item);
 
-		foreach (var recipie in examineList) {		
+		foreach (var recipie in examineList) 
+		{		
 			CollectibleObject inputObject =  recipie.Ingredient.Type == EnumItemClass.Item ? ServerAPI.World.GetItem(recipie.Ingredient.Code) : ServerAPI.World.GetBlock(recipie.Ingredient.Code) as CollectibleObject;
 			Item outputItem = ServerAPI.World.GetItem(recipie.Output.Code);
 
-			if (inputObject.CombustibleProps != null && inputObject.CombustibleProps.SmeltingType == EnumSmeltType.Smelt && inputObject.CombustibleProps.SmeltedRatio > 0)
-			{
+			if (inputObject.CombustibleProps != null && inputObject.CombustibleProps.SmeltingType == EnumSmeltType.Smelt && inputObject.CombustibleProps.SmeltedRatio > 0) {
 			//Item Input Has a metal Unit value...(Smeltable)	
 			//Resolve?
 			int setVoxels = 0;
-			var unsprung = recipie.Voxels.OfType<bool>( );
-			setVoxels = unsprung.Count(vox => vox);
+			setVoxels = recipie.Voxels.OfType<bool>( ).Count(vox => vox);
 
 			#if DEBUG
-			Mod.Logger.VerboseDebug($"{recipie.Output.Quantity}* '{outputItem.Code}' -> {setVoxels}x '{inputObject.Code}' voxel = ~{setVoxels*ingotVoxelEquivalent:F1} metal Units");
+			Mod.Logger.VerboseDebug($"{recipie.Output.Quantity}* '{outputItem.Code}' -> {setVoxels}x '{inputObject.Code}' voxel = ~{setVoxels * ingotVoxelEquivalent:F1} metal Units");
 			#endif
 
-			}			
+			if (outputItem.Tool.HasValue) 
+			{
+				itemToVoxelLookup.Add(outputItem.Code.Clone( ), (( uint )(setVoxels / recipie.Output.Quantity)));
+				#if DEBUG
+				Mod.Logger.VerboseDebug($"Mapped: (tool) '{outputItem.Code}' -> (tool) '{outputItem.Code}'");
+				#endif
+			}
+			else 
+			{
+			//Tool-head map to Tool item			
+			var itemToolCode = ServerAPI.World.GridRecipes.FirstOrDefault(gr => gr.Ingredients.Any(crg => crg.Value.Code.Equals(outputItem.Code)) && gr.Enabled && gr.Output.Type == EnumItemClass.Item)?.Output.Code;
+				if (itemToolCode != null) 
+				{
+					var itemTool = ServerAPI.World.GetItem(itemToolCode);
+					if (itemTool.Tool.HasValue) 
+					{
+					itemToVoxelLookup.Add(itemToolCode.Clone( ), (( uint )(setVoxels / recipie.Output.Quantity)));
+					#if DEBUG
+					Mod.Logger.VerboseDebug($"Mapped: (head) '{outputItem.Code}' -> (tool) '{itemToolCode}'");
+					#endif
+					}
+				}
+			}
+		}		
 		}
 
 		}
