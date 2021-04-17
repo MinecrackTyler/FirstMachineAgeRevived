@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Datastructures;
 using Vintagestory.API.Server;
 using Vintagestory.Client.NoObf;
 using Vintagestory.Common;
@@ -62,14 +63,16 @@ namespace AnvilMetalRecovery
 		Mod.Logger.Error("Cannot access 'ServerCoreAPI' class:  API (implimentation) has changed, Contact Developer!");
 		return;
 		}
-					
+
 		//ServerAPI.ClassRegistry.GetBlockEntityClass
 		//ServerAPI.RegisterBlockEntityClass(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));
-
+		ServerCore.RegisterEntityBehaviorClass(@"HotbarObserver", typeof(HotbarObserverBehavior));
 		ServerCore.ClassRegistryNative.ReplaceBlockEntityType(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));
 
+		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);
+		ServerCore.Event.RegisterEventBusListener(HotbarEventReciever, 1.0f, HotbarObserverBehavior.HotbarChannelName);
+
 		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
-			ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);
 		}
 
 		public override void StartClientSide(ICoreClientAPI api)
@@ -158,6 +161,19 @@ namespace AnvilMetalRecovery
 		}
 
 		}
+
+		private void HotbarEventReciever(string eventName, ref EnumHandling handling, IAttribute data)
+		{
+		handling = EnumHandling.PassThrough;
+		HotbarObserverData hotbarData = data as HotbarObserverData;
+
+		#if DEBUG
+		Mod.Logger.VerboseDebug("HotbarEvent Rx: Item:{0} Slot#{1} PlayerUID:{2}", hotbarData.ItemCode.ToString( ), hotbarData.SlotID, hotbarData.PlayerUID);
+		#endif
+
+		}
+
+
 	}
 
 

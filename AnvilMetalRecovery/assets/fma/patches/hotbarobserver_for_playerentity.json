@@ -1,0 +1,10 @@
+﻿[
+  {
+    "op": "add",
+    "path": "/server/behaviors/11",
+    "value": {
+      "code": "HotbarObserver"
+    },
+    "file": "game:entities/humanoid/player.json"
+  }
+]

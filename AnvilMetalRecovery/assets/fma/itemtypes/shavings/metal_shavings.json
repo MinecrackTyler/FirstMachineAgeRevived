@@ -10,12 +10,13 @@
 			"*-titanium": true,
 			"*-rhodium": true,
 			"*-stainlessteel": true,
+            "*-blistersteel":true,
 			"*-uranium": true
 			}
 		}		
 	},
 	variantgroups: [
-		{ code: "metal", loadFromProperties: "game:block/metal" },
+		{ code: "metal", states: ["blistersteel"], loadFromProperties: "game:block/metal" },
 	],	
 	storageFlags: 5,
 

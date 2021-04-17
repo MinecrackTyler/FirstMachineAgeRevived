@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Vintagestory.API.Common;
+using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Server;
 using Vintagestory.Common;
 using Vintagestory.Server;
@@ -25,6 +26,14 @@ namespace AnvilMetalRecovery
 		registry.ItemClassToTypeMapping[className] = replacer;
 		}
 		}
+
+		internal static int? Hitpoints(this ItemStack itemStack)
+		{
+		if (itemStack.Attributes.HasAttribute(@"durability"))
+			return itemStack.Attributes.GetInt(@"durability", itemStack.Item.Durability);
+		else return null;
+		}
+
 	}
 }
 
