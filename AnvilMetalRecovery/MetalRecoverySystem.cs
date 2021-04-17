@@ -173,6 +173,16 @@ namespace AnvilMetalRecovery
 
 		}
 
+		/// <summary>
+		/// Items that are 'recoverable' from tool/weap Breakage.
+		/// </summary>
+		/// <value>The item filter list.</value>
+		public List<AssetLocation> ItemFilterList {
+			get
+			{
+			return itemToVoxelLookup.Keys.ToList( );
+			}
+		}
 
 	}
 

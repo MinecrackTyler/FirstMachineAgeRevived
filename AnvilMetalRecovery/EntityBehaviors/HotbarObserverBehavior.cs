@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+
 
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
@@ -16,7 +19,7 @@ namespace AnvilMetalRecovery
 	public class HotbarObserverBehavior : EntityBehavior
 	{
 		public readonly static string HotbarChannelName = @"HotbarEvents";
-		public Collection<AssetLocation> ItemFilterList;
+		private static List<AssetLocation> ItemFilterList;
 
 		protected HotbarObserverData TrackedItemData;
 
@@ -36,6 +39,11 @@ namespace AnvilMetalRecovery
 
 		public HotbarObserverBehavior(Entity entity) : base(entity)
 		{
+		if (ItemFilterList == null)
+			{
+			MetalRecoverySystem metalRecoveryMod = entity.Api.ModLoader.GetModSystem<MetalRecoverySystem>( );
+			ItemFilterList = metalRecoveryMod.ItemFilterList;
+			}
 		}
 
 
@@ -58,6 +66,9 @@ namespace AnvilMetalRecovery
 		{
 		var watchedSlot = Player.RightHandItemSlot;
 		if (!watchedSlot.Empty) {
+
+		if (!ItemFilterList.Contains(watchedSlot?.Itemstack.Collectible.Code)) return;
+
 		if (watchedSlot.Itemstack.Class == EnumItemClass.Item && TrackedItemData == null) {
 		var durability = Player.RightHandItemSlot?.Itemstack?.Hitpoints();
 		//starts empty		
