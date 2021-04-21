@@ -84,6 +84,10 @@ namespace AnvilMetalRecovery
 		SetupHotbarObserver( );
 
 		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
+
+		#if DEBUG
+			ServerAPI.RegisterCommand("durability", "edit durability of item", " (Held tool) and #", EditDurability);
+		#endif
 		}
 
 		public override void StartClientSide(ICoreClientAPI api)
@@ -190,7 +194,7 @@ namespace AnvilMetalRecovery
 		if (ItemFilterList.Contains(hotbarData.ItemCode)) {
 		#if DEBUG
 		var rec = itemToVoxelLookup[hotbarData.ItemCode];
-		Mod.Logger.VerboseDebug("broken-tool/weap. {0} WORTH: {1}*{2} voxels", hotbarData.ItemCode.ToString( ),rec.Quantity, rec.IngotCode.ToShortString() );
+		Mod.Logger.VerboseDebug("broken-tool/weap. {0} WORTH: {1:F1}*{2} units", hotbarData.ItemCode.ToString( ),(rec.Quantity*ingotVoxelEquivalent), rec.IngotCode.ToShortString() );
 		#endif
 		}
 
@@ -198,6 +202,16 @@ namespace AnvilMetalRecovery
 
 
 
+		private void EditDurability(IServerPlayer player, int groupId, CmdArgs args)
+		{
+		if (!player.Entity.RightHandItemSlot.Empty &&
+			player.Entity.RightHandItemSlot.Itemstack.Class == EnumItemClass.Item) {
+		var number = args.PopInt( );
+
+		player.Entity.RightHandItemSlot.Itemstack.Hitpoints(number ?? 10);
+		}
+
+		}
 	}
 
 

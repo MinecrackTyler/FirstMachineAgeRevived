@@ -56,7 +56,7 @@ namespace AnvilMetalRecovery
 
 		//Attach event observer...	
 		Player.RightHandItemSlot.Inventory.SlotModified += Mainhand_InventorySlotChanging;
-		Player.RightHandItemSlot.MarkedDirty += Mainhand_ItemSlotCleared;
+		Player.RightHandItemSlot.MarkedDirty += Mainhand_MarkedDirty;
 
 		}
 		}
@@ -65,61 +65,63 @@ namespace AnvilMetalRecovery
 		{
 		var watchedSlot = Player.RightHandItemSlot;
 		if (!watchedSlot.Empty) {
-					
-		if (watchedSlot.Itemstack.Class == EnumItemClass.Item && TrackedItemData == null) {
-		if (!ItemFilterList.Contains(watchedSlot?.Itemstack.Item.Code)) return;
 
-		var durability = Player.RightHandItemSlot?.Itemstack?.Hitpoints();
-		//starts empty		
-		TrackedItemData = new HotbarObserverData(slotID, watchedSlot.Itemstack.Item, Player.PlayerUID);
-		#if DEBUG		
-		if (durability.HasValue)
-		ServerAPI.Logger.VerboseDebug("Slot Occupied by {1} in #{0}; Dur.{2}", TrackedItemData.SlotID, TrackedItemData.ItemCode.ToShortString( ), durability.Value);
-		else ServerAPI.Logger.VerboseDebug("Slot Occupied by {1} in #{0}", TrackedItemData.SlotID, TrackedItemData.ItemCode.ToShortString( ));
-		#endif
-		}
-		else if (watchedSlot.Itemstack.Class == EnumItemClass.Item && TrackedItemData != null) {
-		if (!ItemFilterList.Contains(watchedSlot?.Itemstack.Item.Code)) return;
-
-		var durability = Player.RightHandItemSlot?.Itemstack?.Hitpoints( );
-		//Changed						
-		TrackedItemData = new HotbarObserverData(slotID, watchedSlot.Itemstack.Item, Player.PlayerUID);
-		#if DEBUG
-		if (durability.HasValue) 
-		ServerAPI.Logger.VerboseDebug("Slot Changes to {1} in #{0}; Dur.{2}", TrackedItemData.SlotID, TrackedItemData.ItemCode.ToShortString( ),durability.Value);
-		else ServerAPI.Logger.VerboseDebug("Slot Changes to {1} in #{0}", TrackedItemData.SlotID, TrackedItemData.ItemCode.ToShortString( ));
-		#endif
-		}
-		else if (watchedSlot.Itemstack.Class == EnumItemClass.Block && TrackedItemData != null) {
-		TrackedItemData = null;
-		#if DEBUG
-		ServerAPI.Logger.VerboseDebug("Slot Clear (non-item) in #{0}", slotID);
-		#endif
-		}
-		}
-		else {
-		if (TrackedItemData?.SlotID == slotID) {
-		#if DEBUG
-		ServerAPI.Logger.VerboseDebug("Same Slot Cleared (empty) in #{0} - possible stack-erase?", slotID);
-		#endif
-		}
-		else { TrackedItemData = null; }
-		#if DEBUG
-		ServerAPI.Logger.VerboseDebug("Slot (empty) in #{0}", slotID);
-		#endif
-		}
-		}
-
-		private bool Mainhand_ItemSlotCleared( )
+		if (watchedSlot.Itemstack.Class == EnumItemClass.Item) 
 		{
-		//send Message if slot had item of interest before, and durability (now?) close to zero
-		if (TrackedItemData != null && Player.RightHandItemSlot.Empty ) {
+			if (ItemFilterList.Contains(watchedSlot?.Itemstack.Item.Code)) 
+			{						
+			var durability = Player.RightHandItemSlot?.Itemstack?.Hitpoints( );
+			//starts empty	|| Slot changes
+			if (TrackedItemData == null || TrackedItemData.SlotID != slotID) 
+				{
+				TrackedItemData = new HotbarObserverData(slotID, watchedSlot.Itemstack.Item, Player.PlayerUID);
+				#if DEBUG
+				ServerAPI.Logger.VerboseDebug("Tracking {0} in #{1}; Dur[{2}]", TrackedItemData.ItemCode.ToShortString( ), slotID, durability);
+				#endif
+				}
+			}
+			else 
+			{
+			TrackedItemData = null;//Untrack other item	
 			#if DEBUG
-			ServerAPI.Logger.VerboseDebug("Slot MarkedDirty #{0} WAS {1}", TrackedItemData.SlotID, TrackedItemData.ItemCode.ToShortString( ));
+			ServerAPI.Logger.VerboseDebug("Ignoring (filtered item) in #{0}", slotID);
 			#endif
+			}
+		}
+		else 
+		{
+		TrackedItemData = null;//Ignore Blocks
+		#if DEBUG
+		ServerAPI.Logger.VerboseDebug("Ignoring (block) in #{0}", slotID);
+		#endif
+		}
 
-			ServerAPI.Event.PushEvent(HotbarChannelName, TrackedItemData);
-			TrackedItemData = null;			
+		}
+		}
+
+		private bool Mainhand_MarkedDirty( )
+		{
+		//mabey send Message if slot had item of interest before?
+		if (TrackedItemData != null ) {
+		var durability = Player.RightHandItemSlot?.Itemstack?.Hitpoints( );
+		#if DEBUG
+		ServerAPI.Logger.VerboseDebug("DirtyEvent: Tracked Slot#{0} is {1}", TrackedItemData.SlotID, TrackedItemData.ItemCode.ToShortString( ));
+		if (Player.RightHandItemSlot.Itemstack.Class == EnumItemClass.Item) {
+		ServerAPI.Logger.VerboseDebug("^ Active Item: {0}, Slot#{2}, Dur[{1}]", Player.RightHandItemSlot.Itemstack.Item.Code, durability ?? -0, Player.RightHandItemSlot.Itemstack.Id );
+		}
+		#endif
+
+		if (Player.Player.InventoryManager.ActiveHotbarSlotNumber == TrackedItemData.SlotID) {
+			
+				if (durability.HasValue && durability.Value < 2) 
+				{
+				#if DEBUG
+				ServerAPI.Logger.VerboseDebug("Tracked Slot Cleared! #{0} WAS {1}", TrackedItemData.SlotID, TrackedItemData.ItemCode.ToShortString( ));
+				#endif	
+				ServerAPI.Event.PushEvent(HotbarChannelName, TrackedItemData);
+				TrackedItemData = null;
+				}	
+			}							
 		}
 		return false;//When should this be true? 
 		}

@@ -34,6 +34,11 @@ namespace AnvilMetalRecovery
 		else return null;
 		}
 
+		internal static void Hitpoints(this ItemStack itemStack, int number)
+		{
+		if (itemStack.Attributes.HasAttribute(@"durability"))
+			 itemStack.Attributes.SetInt(@"durability", number);		
+		}
 	}
 }
 
