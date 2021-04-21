@@ -19,13 +19,24 @@ namespace AnvilMetalRecovery
 		internal const string anvilKey = @"Anvil";
 		internal const float ingotVoxelEquivalent = 2.38f;
 
-		private Dictionary<AssetLocation, uint> itemToVoxelLookup = new Dictionary<AssetLocation, uint>();
+		private Dictionary<AssetLocation, RecoveryEntry> itemToVoxelLookup = new Dictionary<AssetLocation, RecoveryEntry>();//Ammount & Material?
 
 		private ICoreAPI CoreAPI;
 		private ICoreServerAPI ServerAPI;
 		private ServerCoreAPI ServerCore { get; set; }
 		private ClientCoreAPI ClientCore { get; set; }
 		//private RecipeLoader LoaderOfRecipies { get; set;}
+
+		/// <summary>
+		/// Items that are 'recoverable' from tool/weap Breakage.
+		/// </summary>
+		/// <value>The item filter list.</value>
+		public List<AssetLocation> ItemFilterList {
+			get
+			{
+			return itemToVoxelLookup.Keys.ToList( );
+			}
+		}
 
 		public override bool AllowRuntimeReload {
 			get { return false; }
@@ -65,12 +76,12 @@ namespace AnvilMetalRecovery
 		}
 
 		//ServerAPI.ClassRegistry.GetBlockEntityClass
-		//ServerAPI.RegisterBlockEntityClass(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));
-		ServerCore.RegisterEntityBehaviorClass(@"HotbarObserver", typeof(HotbarObserverBehavior));
+		//ServerAPI.RegisterBlockEntityClass(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));		
 		ServerCore.ClassRegistryNative.ReplaceBlockEntityType(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));
 
 		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);
-		ServerCore.Event.RegisterEventBusListener(HotbarEventReciever, 1.0f, HotbarObserverBehavior.HotbarChannelName);
+
+		SetupHotbarObserver( );
 
 		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
 		}
@@ -114,6 +125,11 @@ namespace AnvilMetalRecovery
 		}
 		*/
 
+		private void SetupHotbarObserver( ){
+		ServerCore.RegisterEntityBehaviorClass(@"HotbarObserver", typeof(HotbarObserverBehavior));
+		ServerCore.Event.RegisterEventBusListener(HotbarEventReciever, 1.0f, HotbarObserverBehavior.HotbarChannelName);
+		}
+
 		private void MaterialDataGathering( )
 		{
 		//Count out Voxels in smthing recipes for all metal-ingot(?) derived items;
@@ -136,7 +152,7 @@ namespace AnvilMetalRecovery
 
 			if (outputItem.Tool.HasValue) 
 			{
-				itemToVoxelLookup.Add(outputItem.Code.Clone( ), (( uint )(setVoxels / recipie.Output.Quantity)));
+				itemToVoxelLookup.Add(outputItem.Code.Clone( ), new RecoveryEntry(inputObject.Code, ( uint )(setVoxels / recipie.Output.Quantity)));
 				#if DEBUG
 				Mod.Logger.VerboseDebug($"Mapped: (tool) '{outputItem.Code}' -> (tool) '{outputItem.Code}'");
 				#endif
@@ -150,7 +166,7 @@ namespace AnvilMetalRecovery
 					var itemTool = ServerAPI.World.GetItem(itemToolCode);
 					if (itemTool.Tool.HasValue) 
 					{
-					itemToVoxelLookup.Add(itemToolCode.Clone( ), (( uint )(setVoxels / recipie.Output.Quantity)));
+					itemToVoxelLookup.Add(itemToolCode.Clone( ), new RecoveryEntry(inputObject.Code, ( uint )(setVoxels / recipie.Output.Quantity)));
 					#if DEBUG
 					Mod.Logger.VerboseDebug($"Mapped: (head) '{outputItem.Code}' -> (tool) '{itemToolCode}'");
 					#endif
@@ -171,18 +187,16 @@ namespace AnvilMetalRecovery
 		Mod.Logger.VerboseDebug("HotbarEvent Rx: Item:{0} Slot#{1} PlayerUID:{2}", hotbarData.ItemCode.ToString( ), hotbarData.SlotID, hotbarData.PlayerUID);
 		#endif
 
+		if (ItemFilterList.Contains(hotbarData.ItemCode)) {
+		#if DEBUG
+		var rec = itemToVoxelLookup[hotbarData.ItemCode];
+		Mod.Logger.VerboseDebug("broken-tool/weap. {0} WORTH: {1}*{2} voxels", hotbarData.ItemCode.ToString( ),rec.Quantity, rec.IngotCode.ToShortString() );
+		#endif
 		}
 
-		/// <summary>
-		/// Items that are 'recoverable' from tool/weap Breakage.
-		/// </summary>
-		/// <value>The item filter list.</value>
-		public List<AssetLocation> ItemFilterList {
-			get
-			{
-			return itemToVoxelLookup.Keys.ToList( );
-			}
 		}
+
+
 
 	}
 

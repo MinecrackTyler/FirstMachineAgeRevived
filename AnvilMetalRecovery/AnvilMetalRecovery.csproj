@@ -72,12 +72,13 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="EntityBehaviors\HotbarObserverBehavior.cs" />
     <Compile Include="EntityBehaviors\HotbarObserverData.cs" />
+    <Compile Include="Data\MetalProperties.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\shavings\metal_shavings.json">
+    <None Include="assets\fma\itemtypes\metal\metal_shavings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\fma\shapes\item\shavings\metal_shavings.json">
@@ -98,7 +99,7 @@
     <Folder Include="assets\fma\" />
     <Folder Include="assets\fma\shapes\" />
     <Folder Include="assets\fma\itemtypes\" />
-    <Folder Include="assets\fma\itemtypes\shavings\" />
+    <Folder Include="assets\fma\itemtypes\metal\" />
     <Folder Include="assets\fma\shapes\item\" />
     <Folder Include="assets\fma\shapes\item\shavings\" />
     <Folder Include="assets\fma\lang\" />
@@ -110,6 +111,7 @@
     <Folder Include="assets\fma\recipes\grid\tool\" />
     <Folder Include="EntityBehaviors\" />
     <Folder Include="assets\fma\patches\" />
+    <Folder Include="Data\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -18,8 +18,8 @@ namespace AnvilMetalRecovery
 	/// </summary>
 	public class HotbarObserverBehavior : EntityBehavior
 	{
-		public readonly static string HotbarChannelName = @"HotbarEvents";
-		private static List<AssetLocation> ItemFilterList;
+		public const string HotbarChannelName = @"HotbarEvents";
+		protected static List<AssetLocation> ItemFilterList;
 
 		protected HotbarObserverData TrackedItemData;
 
@@ -39,11 +39,10 @@ namespace AnvilMetalRecovery
 
 		public HotbarObserverBehavior(Entity entity) : base(entity)
 		{
-		if (ItemFilterList == null)
-			{
-			MetalRecoverySystem metalRecoveryMod = entity.Api.ModLoader.GetModSystem<MetalRecoverySystem>( );
-			ItemFilterList = metalRecoveryMod.ItemFilterList;
-			}
+		if (ItemFilterList == null) {
+		MetalRecoverySystem metalRecoveryMod = entity.Api.ModLoader.GetModSystem<MetalRecoverySystem>( );
+		ItemFilterList = metalRecoveryMod.ItemFilterList;
+		}
 		}
 
 
@@ -66,10 +65,10 @@ namespace AnvilMetalRecovery
 		{
 		var watchedSlot = Player.RightHandItemSlot;
 		if (!watchedSlot.Empty) {
-
-		if (!ItemFilterList.Contains(watchedSlot?.Itemstack.Collectible.Code)) return;
-
+					
 		if (watchedSlot.Itemstack.Class == EnumItemClass.Item && TrackedItemData == null) {
+		if (!ItemFilterList.Contains(watchedSlot?.Itemstack.Item.Code)) return;
+
 		var durability = Player.RightHandItemSlot?.Itemstack?.Hitpoints();
 		//starts empty		
 		TrackedItemData = new HotbarObserverData(slotID, watchedSlot.Itemstack.Item, Player.PlayerUID);
@@ -80,6 +79,8 @@ namespace AnvilMetalRecovery
 		#endif
 		}
 		else if (watchedSlot.Itemstack.Class == EnumItemClass.Item && TrackedItemData != null) {
+		if (!ItemFilterList.Contains(watchedSlot?.Itemstack.Item.Code)) return;
+
 		var durability = Player.RightHandItemSlot?.Itemstack?.Hitpoints( );
 		//Changed						
 		TrackedItemData = new HotbarObserverData(slotID, watchedSlot.Itemstack.Item, Player.PlayerUID);
