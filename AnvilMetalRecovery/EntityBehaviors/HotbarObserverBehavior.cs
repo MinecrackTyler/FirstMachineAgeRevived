@@ -103,17 +103,17 @@ namespace AnvilMetalRecovery
 		{
 		//mabey send Message if slot had item of interest before?
 		if (TrackedItemData != null ) {
-		var durability = Player.RightHandItemSlot?.Itemstack?.Hitpoints( );
+		int? durability = Player.RightHandItemSlot?.Itemstack?.Hitpoints( );
 		#if DEBUG
 		ServerAPI.Logger.VerboseDebug("DirtyEvent: Tracked Slot#{0} is {1}", TrackedItemData.SlotID, TrackedItemData.ItemCode.ToShortString( ));
-		if (Player.RightHandItemSlot.Itemstack.Class == EnumItemClass.Item) {
-		ServerAPI.Logger.VerboseDebug("^ Active Item: {0}, Slot#{2}, Dur[{1}]", Player.RightHandItemSlot.Itemstack.Item.Code, durability ?? -0, Player.RightHandItemSlot.Itemstack.Id );
+		if (!Player.RightHandItemSlot.Empty && Player.RightHandItemSlot.Itemstack.Class == EnumItemClass.Item) {
+		ServerAPI.Logger.VerboseDebug("^ Active Item: {0}, Slot#{2}, Dur[{1}]", Player.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Item.Code, durability ?? 0, Player.Player.InventoryManager.ActiveHotbarSlotNumber );
 		}
 		#endif
 
 		if (Player.Player.InventoryManager.ActiveHotbarSlotNumber == TrackedItemData.SlotID) {
 			
-				if (durability.HasValue && durability.Value < 2) 
+				if (Player.RightHandItemSlot.Empty ) 
 				{
 				#if DEBUG
 				ServerAPI.Logger.VerboseDebug("Tracked Slot Cleared! #{0} WAS {1}", TrackedItemData.SlotID, TrackedItemData.ItemCode.ToShortString( ));

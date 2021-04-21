@@ -29,6 +29,7 @@ namespace AnvilMetalRecovery
 
 		internal static int? Hitpoints(this ItemStack itemStack)
 		{
+		if (itemStack == null || itemStack.Attributes == null) return null;
 		if (itemStack.Attributes.HasAttribute(@"durability"))
 			return itemStack.Attributes.GetInt(@"durability", itemStack.Item.Durability);
 		else return null;

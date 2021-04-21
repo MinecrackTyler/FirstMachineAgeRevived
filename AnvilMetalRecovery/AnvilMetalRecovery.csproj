@@ -72,7 +72,7 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="EntityBehaviors\HotbarObserverBehavior.cs" />
     <Compile Include="EntityBehaviors\HotbarObserverData.cs" />
-    <Compile Include="Data\MetalProperties.cs" />
+    <Compile Include="Data\RecoveryEntry.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">

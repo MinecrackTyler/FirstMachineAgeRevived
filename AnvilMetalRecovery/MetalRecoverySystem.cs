@@ -209,6 +209,7 @@ namespace AnvilMetalRecovery
 		var number = args.PopInt( );
 
 		player.Entity.RightHandItemSlot.Itemstack.Hitpoints(number ?? 10);
+		player.Entity.RightHandItemSlot.MarkDirty( );
 		}
 
 		}
