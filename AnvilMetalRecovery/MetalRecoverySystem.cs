@@ -17,7 +17,7 @@ namespace AnvilMetalRecovery
 	public partial class MetalRecoverySystem : ModSystem
 	{				
 		internal const string anvilKey = @"Anvil";
-		internal const float ingotVoxelEquivalent = 2.38f;
+		public const float IngotVoxelEquivalent = 2.38f;
 
 		private Dictionary<AssetLocation, RecoveryEntry> itemToVoxelLookup = new Dictionary<AssetLocation, RecoveryEntry>();//Ammount & Material?
 
@@ -56,8 +56,8 @@ namespace AnvilMetalRecovery
 		{
 		this.CoreAPI = api;
 
-		
-		
+
+		RegisterItemMappings( );
 
 		base.Start(api);
 		}
@@ -107,6 +107,14 @@ namespace AnvilMetalRecovery
 		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
 		}
 
+
+		private void RegisterItemMappings( )
+		{
+		this.CoreAPI.RegisterItemClass("VariableMetalItem", typeof(VariableMetalItem));
+
+		}
+
+
 		/*
 		internal void GenerateMetalShavingsItems( )
 		{
@@ -151,7 +159,7 @@ namespace AnvilMetalRecovery
 			setVoxels = recipie.Voxels.OfType<bool>( ).Count(vox => vox);
 
 			#if DEBUG
-			Mod.Logger.VerboseDebug($"{recipie.Output.Quantity}* '{outputItem.Code}' -> {setVoxels}x '{inputObject.Code}' voxel = ~{setVoxels * ingotVoxelEquivalent:F1} metal Units");
+			Mod.Logger.VerboseDebug($"{recipie.Output.Quantity}* '{outputItem.Code}' -> {setVoxels}x '{inputObject.Code}' voxel = ~{setVoxels * IngotVoxelEquivalent:F1} metal Units");
 			#endif
 
 			if (outputItem.Tool.HasValue) 
@@ -194,7 +202,7 @@ namespace AnvilMetalRecovery
 		if (ItemFilterList.Contains(hotbarData.ItemCode)) {
 		#if DEBUG
 		var rec = itemToVoxelLookup[hotbarData.ItemCode];
-		Mod.Logger.VerboseDebug("broken-tool/weap. {0} WORTH: {1:F1}*{2} units", hotbarData.ItemCode.ToString( ),(rec.Quantity*ingotVoxelEquivalent), rec.IngotCode.ToShortString() );
+		Mod.Logger.VerboseDebug("broken-tool/weap. {0} WORTH: {1:F1}*{2} units", hotbarData.ItemCode.ToString( ),(rec.Quantity*IngotVoxelEquivalent), rec.IngotCode.ToShortString() );
 		#endif
 		}
 

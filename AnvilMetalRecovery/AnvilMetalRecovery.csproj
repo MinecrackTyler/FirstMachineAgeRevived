@@ -73,6 +73,7 @@
     <Compile Include="EntityBehaviors\HotbarObserverBehavior.cs" />
     <Compile Include="EntityBehaviors\HotbarObserverData.cs" />
     <Compile Include="Data\RecoveryEntry.cs" />
+    <Compile Include="Items\VariableMetalItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
@@ -81,7 +82,7 @@
     <None Include="assets\fma\itemtypes\metal\metal_shavings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\shapes\item\shavings\metal_shavings.json">
+    <None Include="assets\fma\shapes\item\metal\metal_shavings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\fma\lang\en.json">
@@ -93,6 +94,13 @@
     <None Include="assets\fma\patches\hotbarobserver_for_playerentity.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="modicon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\shapes\item\metal\fragments.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\itemtypes\metal\fragments.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />
@@ -101,7 +109,7 @@
     <Folder Include="assets\fma\itemtypes\" />
     <Folder Include="assets\fma\itemtypes\metal\" />
     <Folder Include="assets\fma\shapes\item\" />
-    <Folder Include="assets\fma\shapes\item\shavings\" />
+    <Folder Include="assets\fma\shapes\item\metal\" />
     <Folder Include="assets\fma\lang\" />
     <Folder Include="BlockEntities\" />
     <Folder Include="assets\fma\shapes\item\tools\" />
@@ -112,6 +120,7 @@
     <Folder Include="EntityBehaviors\" />
     <Folder Include="assets\fma\patches\" />
     <Folder Include="Data\" />
+    <Folder Include="Items\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -20,7 +20,7 @@
 	],	
 	storageFlags: 5,
 
-	shape: { base: "fma:item/shavings/metal_shavings" },
+	shape: { base: "fma:item/metal/metal_shavings" },
 	textures: {
 		"metal": { base: "game:block/metal/ingot/{metal}" },
 	},
