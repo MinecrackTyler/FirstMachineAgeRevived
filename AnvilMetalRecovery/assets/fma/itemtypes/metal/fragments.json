@@ -2,18 +2,15 @@
 	code: "metal_fragments",
 	class:"VariableMetalItem",
 	maxstacksize: 1,
-	attributes: {		
+	attributes: {
 		handbook: {
-			exclude:  true
-			}
-		}		
+			exclude: true
+		}
 	},
-	
 	storageFlags: 5,
-
 	shape: { base: "fma:item/metal/fragments" },
 	textures: {
-		"metal": { base: "game:block/metal/plate/copper" },
+		"metal": { base: "game:block/metal/plate/gold" },
 	},
 	creativeinventory: { "general": ["*"], "items": ["*"] },
 	materialDensity: 9000,		

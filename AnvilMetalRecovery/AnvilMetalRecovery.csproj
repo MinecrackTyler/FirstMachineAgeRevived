@@ -100,7 +100,9 @@
     <None Include="assets\fma\shapes\item\metal\fragments.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\metal\fragments.json" />
+    <None Include="assets\fma\itemtypes\metal\fragments.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />

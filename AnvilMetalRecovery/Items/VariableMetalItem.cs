@@ -10,18 +10,19 @@ namespace AnvilMetalRecovery
 {
 	public class VariableMetalItem : Item
 	{
+		private const string default_IngotCode = @"game:ingot-copper";
 		private const string metalQuantityKey = @"metalQuantity";
 		private const string metalIngotCodeKey = @"metalIngotCode";
 
-		protected ClientCoreAPI ClientAPI { get; private set; }
-
 		protected AssetLocation MetalCode(ItemStack itemStack)
 		{
-		return new AssetLocation(itemStack.Attributes.GetString(metalIngotCodeKey, @"game:ingot-copper"));
+		if (itemStack == null || itemStack.Attributes == null) return new AssetLocation(default_IngotCode);
+		return new AssetLocation(itemStack.Attributes.GetString(metalIngotCodeKey, default_IngotCode));
 		}
 
 		protected int MetalQuantity(ItemStack itemStack)
 		{
+		if (itemStack == null || itemStack.Attributes == null) return 10;
 		return itemStack.Attributes.GetInt(metalQuantityKey, 10);
 		}
 
@@ -29,14 +30,22 @@ namespace AnvilMetalRecovery
 		public override void OnBeforeRender(ICoreClientAPI capi, ItemStack itemstack, EnumItemRenderTarget target, ref ItemRenderInfo renderinfo)
 		{
 		//Set correct material texture from ItemStack attributes
+		LoadedTexture texturePlaceholder = new LoadedTexture(capi);
 		var ingotCode = MetalCode(itemstack);
+		var textureDonatorItem = capi.World.GetItem(ingotCode);
+		var newTexture = textureDonatorItem.FirstTexture.Base.WithPathAppendixOnce(".png");
 
-		var textureDonatorItem = ClientAPI.World.GetItem(ingotCode);
+		//#if DEBUG
+		//capi.Logger.VerboseDebug("VariableMetalItem Txr: {0}", newTexture);
+      	//#endif			                  
+		
+		capi.Render.GetOrLoadTexture(newTexture, ref texturePlaceholder);
 
-		this.Textures["metal"] = textureDonatorItem.FirstTexture;
+		renderinfo.TextureId = texturePlaceholder.TextureId;
 
-		//renderinfo.TextureId = textureDonatorItem.FirstTexture.??
+		//this.Textures["metal"] = textureDonatorItem.FirstTexture;
 
+		//Cache TextId# on TempAttributes ?
 		}
 
 		/* (from Itemstack -attr)
