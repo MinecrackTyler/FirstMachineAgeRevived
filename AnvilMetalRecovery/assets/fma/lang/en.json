@@ -22,6 +22,6 @@
     "fma:item-metal_shaving-titanium": "Titanium Shavings",
     "fma:item-metal_shaving-uranium": "Uranium Shavings",
     "fma:item-metal_shaving-zinc": "Zinc Shavings",
-	"fma:item-metal_fragments":"Broken (metal) Fragments.",
-	"fma:metal_worth":"worth {0} units of {1}.",
+	"fma:item-metal_fragments":"Broken metal fragments.",
+	"fma:metal_worth":"Worth {0} units of {1}.",
 }

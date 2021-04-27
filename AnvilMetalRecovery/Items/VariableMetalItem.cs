@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
@@ -24,6 +25,14 @@ namespace AnvilMetalRecovery
 		{
 		if (itemStack == null || itemStack.Attributes == null) return 10;
 		return itemStack.Attributes.GetInt(metalQuantityKey, 10);
+		}
+
+		protected string MetalName(ItemStack itemStack)
+		{
+		//TODO: generic 'material' Language entries...
+		if (itemStack == null || itemStack.Attributes == null) return String.Empty;
+		var sliced = Lang.GetUnformatted(itemStack.Attributes.GetString(metalIngotCodeKey, default_IngotCode)).Split(' ');
+		return String.Join(" ", sliced.Take(sliced.Length - 1));
 		}
 
 
@@ -110,12 +119,11 @@ namespace AnvilMetalRecovery
 		public override void GetHeldItemInfo(ItemSlot inSlot, System.Text.StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
 		{
 		base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
-		var metalName = Lang.Get(MetalCode(inSlot.Itemstack).ToString( ));
+		var metalName = MetalName(inSlot.Itemstack);
 		var metalQuantity = MetalQuantity(inSlot.Itemstack);
 
-		dsc.AppendLine(Lang.Get("metal_worth", metalQuantity, metalName));
+		dsc.AppendLine(Lang.Get("fma:metal_worth", metalQuantity, metalName));
 		}
-
 	}
 
 }
