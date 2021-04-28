@@ -17,6 +17,7 @@ namespace AnvilMetalRecovery
 	public partial class MetalRecoverySystem : ModSystem
 	{				
 		internal const string anvilKey = @"Anvil";
+		internal const string metalFragmentsCode = @"fma:metal_fragments";
 		public const float IngotVoxelEquivalent = 2.38f;
 
 		private Dictionary<AssetLocation, RecoveryEntry> itemToVoxelLookup = new Dictionary<AssetLocation, RecoveryEntry>();//Ammount & Material?
@@ -25,7 +26,7 @@ namespace AnvilMetalRecovery
 		private ICoreServerAPI ServerAPI;
 		private ServerCoreAPI ServerCore { get; set; }
 		private ClientCoreAPI ClientCore { get; set; }
-		//private RecipeLoader LoaderOfRecipies { get; set;}
+
 
 		/// <summary>
 		/// Items that are 'recoverable' from tool/weap Breakage.
@@ -35,6 +36,17 @@ namespace AnvilMetalRecovery
 			get
 			{
 			return itemToVoxelLookup.Keys.ToList( );
+			}
+		}
+
+		/// <summary>
+		/// Items that are 'recoverable' from tool/weap Breakage.
+		/// </summary>
+		/// <value>The item filter list.</value>
+		public Dictionary<AssetLocation, RecoveryEntry> ItemRecoveryTable {
+			get
+			{
+			return itemToVoxelLookup;
 			}
 		}
 
@@ -149,36 +161,44 @@ namespace AnvilMetalRecovery
 
 		foreach (var recipie in examineList) 
 		{		
-			CollectibleObject inputObject =  recipie.Ingredient.Type == EnumItemClass.Item ? ServerAPI.World.GetItem(recipie.Ingredient.Code) : ServerAPI.World.GetBlock(recipie.Ingredient.Code) as CollectibleObject;
+			CollectibleObject metalObject =  recipie.Ingredient.Type == EnumItemClass.Item ? ServerAPI.World.GetItem(recipie.Ingredient.Code) : ServerAPI.World.GetBlock(recipie.Ingredient.Code) as CollectibleObject;
 			Item outputItem = ServerAPI.World.GetItem(recipie.Output.Code);
 
-			if (inputObject.CombustibleProps != null && inputObject.CombustibleProps.SmeltingType == EnumSmeltType.Smelt && inputObject.CombustibleProps.SmeltedRatio > 0) {
+			if (metalObject.CombustibleProps != null && metalObject.CombustibleProps.SmeltingType == EnumSmeltType.Smelt && metalObject.CombustibleProps.SmeltedRatio > 0) {
 			//Item Input Has a metal Unit value...(Smeltable)	
 			//Resolve?
 			int setVoxels = 0;
 			setVoxels = recipie.Voxels.OfType<bool>( ).Count(vox => vox);
 
 			#if DEBUG
-			Mod.Logger.VerboseDebug($"{recipie.Output.Quantity}* '{outputItem.Code}' -> {setVoxels}x '{inputObject.Code}' voxel = ~{setVoxels * IngotVoxelEquivalent:F1} metal Units");
+			Mod.Logger.VerboseDebug($"{recipie.Output.Quantity}* '{outputItem.Code}' -> {setVoxels}x '{metalObject.Code}' voxel = ~{setVoxels * IngotVoxelEquivalent:F1} metal Units");
 			#endif
-
-			if (outputItem.Tool.HasValue) 
+			//Direct output *IS* tool or tool-like Durability type item (chisel )
+			if (outputItem.Tool.HasValue || outputItem.Durability > 1) 
 			{
-				itemToVoxelLookup.Add(outputItem.Code.Clone( ), new RecoveryEntry(inputObject.Code, ( uint )(setVoxels / recipie.Output.Quantity)));
+				itemToVoxelLookup.Add(outputItem.Code.Clone( ), new RecoveryEntry(metalObject.Code, 
+						                                                          ( uint )(setVoxels / recipie.Output.Quantity),
+						              												metalObject.CombustibleProps.MeltingDuration,
+						                                                          metalObject.CombustibleProps.MeltingPoint)
+						             );
 				#if DEBUG
-				Mod.Logger.VerboseDebug($"Mapped: (tool) '{outputItem.Code}' -> (tool) '{outputItem.Code}'");
+				Mod.Logger.VerboseDebug($"Mapped: ('tool') '{outputItem.Code}' -> ('tool') '{outputItem.Code}'");
 				#endif
 			}
 			else 
 			{
-			//Tool-head map to Tool item			
+			//Tool-head map to Tool item; decode
 			var itemToolCode = ServerAPI.World.GridRecipes.FirstOrDefault(gr => gr.Ingredients.Any(crg => crg.Value.Code.Equals(outputItem.Code)) && gr.Enabled && gr.Output.Type == EnumItemClass.Item)?.Output.Code;
 				if (itemToolCode != null) 
 				{
 					var itemTool = ServerAPI.World.GetItem(itemToolCode);
 					if (itemTool.Tool.HasValue) 
 					{
-					itemToVoxelLookup.Add(itemToolCode.Clone( ), new RecoveryEntry(inputObject.Code, ( uint )(setVoxels / recipie.Output.Quantity)));
+					itemToVoxelLookup.Add(itemToolCode.Clone( ), new RecoveryEntry(metalObject.Code,
+																				  ( uint )(setVoxels / recipie.Output.Quantity),
+																					  metalObject.CombustibleProps.MeltingDuration,
+																				  metalObject.CombustibleProps.MeltingPoint)
+									 );
 					#if DEBUG
 					Mod.Logger.VerboseDebug($"Mapped: (head) '{outputItem.Code}' -> (tool) '{itemToolCode}'");
 					#endif
@@ -201,9 +221,41 @@ namespace AnvilMetalRecovery
 
 		if (ItemFilterList.Contains(hotbarData.ItemCode)) {
 		#if DEBUG
-		var rec = itemToVoxelLookup[hotbarData.ItemCode];
+		RecoveryEntry rec = itemToVoxelLookup[hotbarData.ItemCode];
 		Mod.Logger.VerboseDebug("broken-tool/weap. {0} WORTH: {1:F1}*{2} units", hotbarData.ItemCode.ToString( ),(rec.Quantity*IngotVoxelEquivalent), rec.IngotCode.ToShortString() );
 		#endif
+
+		var playerTarget = ServerAPI.World.PlayerByUid(hotbarData.PlayerUID);
+		var hotbarInv = playerTarget.InventoryManager.GetHotbarInventory( );
+		var hotSlot = hotbarInv[hotbarData.SlotID];
+		var spim = playerTarget.InventoryManager as ServerPlayerInventoryManager;
+
+
+		if (hotSlot.Empty) 
+			{
+			#if DEBUG
+			Mod.Logger.VerboseDebug("Directly inserting fragments into hotbar slot# {0}", hotbarData.SlotID);
+			#endif
+
+			VariableMetalItem variableMetal = ServerAPI.World.GetItem(new AssetLocation(metalFragmentsCode)) as VariableMetalItem;
+			ItemStack metalFragmentsStack = new ItemStack(variableMetal, 1);
+			variableMetal.ApplyMetalProperties(rec, ref metalFragmentsStack);
+			hotSlot.Itemstack = metalFragmentsStack;
+			hotSlot.Itemstack.ResolveBlockOrItem(ServerAPI.World);
+			hotSlot.MarkDirty( );
+			spim.NotifySlot(playerTarget, hotSlot);
+			}
+		else 
+			{
+			#if DEBUG
+			Mod.Logger.VerboseDebug("Occupied Hotbar slot# {0}; shoving item in general direction of player...", hotbarData.SlotID);
+			#endif
+
+			VariableMetalItem variableMetal = ServerAPI.World.GetItem(new AssetLocation(metalFragmentsCode)) as VariableMetalItem;
+			ItemStack metalFragmentsStack = new ItemStack(variableMetal, 1);
+			variableMetal.ApplyMetalProperties(rec, ref metalFragmentsStack);
+			spim.TryGiveItemstack(metalFragmentsStack, true);			
+			}
 		}
 
 		}

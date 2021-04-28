@@ -15,15 +15,14 @@
 	creativeinventory: { "general": ["*"], "items": ["*"] },
 	materialDensity: 9000,		
 	guiTransform: {
-        rotate: true,
-		translation: { x: -3, y: 0, z: 0 },
-		rotation: { x: 149, y: -30, z: 7 },
+		translation: { x: 4, y: 0, z: 0 },
+		rotation: { x: 135, y: 18, z: 2 },
 		origin: { x: 0.5, y: 0.1, z: 0.5 },
-		scale: 3.02
+		scale: 2.69
 	},
 	fpHandTransform: {
 		translation: { x: 0, y: 0.1, z: 0 },
-		rotation: { x: 65, y: 21, z: -6 },
+		rotation: { x: 16, y: 29, z: -4 },
 		origin: { x: 0.5, y: 0.1, z: 0.5 },
 		scale: 2.15
 	},

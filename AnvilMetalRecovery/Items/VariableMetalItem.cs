@@ -31,8 +31,16 @@ namespace AnvilMetalRecovery
 		{
 		//TODO: generic 'material' Language entries...
 		if (itemStack == null || itemStack.Attributes == null) return String.Empty;
-		var sliced = Lang.GetUnformatted(itemStack.Attributes.GetString(metalIngotCodeKey, default_IngotCode)).Split(' ');
+		var sliced = Lang.GetUnformatted("item-"+MetalCode(itemStack).Path).Split(' ');
 		return String.Join(" ", sliced.Take(sliced.Length - 1));
+		}
+
+		protected MetalRecoverySystem AnvilMetalRecoveryMod 
+		{
+			get
+			{
+				return this.api.ModLoader.GetModSystem<MetalRecoverySystem>( );
+			}
 		}
 
 
@@ -78,42 +86,46 @@ namespace AnvilMetalRecovery
 		//virtual void DoSmelt //Mabey?
 
 
-		public void ApplyMetalProperties(RecoveryEntry become, ItemStack contStack)
+		public void ApplyMetalProperties(RecoveryEntry recoveryData, ref ItemStack contStack)
 		{
-		contStack.Attributes.SetInt(metalQuantityKey, ( int )become.Quantity);
-		contStack.Attributes.SetString(metalIngotCodeKey, become.IngotCode.ToString( ));
+		contStack.Attributes.SetInt(metalQuantityKey, ( int )recoveryData.Quantity);
+		contStack.Attributes.SetString(metalIngotCodeKey, recoveryData.IngotCode.ToString( ));
 
 		if (CombustibleProps == null) {
 		CombustibleProps = new CombustibleProperties( ) {
 			SmeltingType = EnumSmeltType.Smelt,
-			MeltingPoint = 999,//TODO: This is where a Rules based metal propperties Master-file would help!
-			MeltingDuration = 123,
-			SmeltedRatio = ( int )Math.Round(become.Quantity * MetalRecoverySystem.IngotVoxelEquivalent, 0),
-			SmeltedStack = new JsonItemStack( ) { Code = become.IngotCode.Clone( ), Quantity = 1 }
+			MeltingPoint = recoveryData.Melting_Point,
+			MeltingDuration = recoveryData.Melting_Duration,
+			SmeltedRatio = ( int )(100 / (recoveryData.Quantity * MetalRecoverySystem.IngotVoxelEquivalent)),
+			SmeltedStack = new JsonItemStack( ) { Type = EnumItemClass.Item, Code = recoveryData.IngotCode.Clone( ), Quantity = 1 }
 		};
 		CombustibleProps.SmeltedStack.Resolve(api.World, "VariableMetalItem_apply", true);
-
-
 		}
 
 		}
 
-		public void RegenerateCombustablePropsFromStack(ItemStack contStack)
+		protected void RegenerateCombustablePropsFromStack(ref ItemStack contStack)
 		{
-		//TODO: Lookup Metal data from Ingot-{metal} code....Clumsy!
-		int quantity = 1;
 		AssetLocation ingotCode = null;
+		var metalCode = MetalCode(contStack);
 
-		if (CombustibleProps == null) {
-		CombustibleProps = new CombustibleProperties( ) {
-			SmeltingType = EnumSmeltType.Smelt,
-			MeltingPoint = 999,//TODO: This is where a Rules based metal propperties Master-file would help!
-			MeltingDuration = 123,
-			SmeltedRatio = ( int )Math.Round(quantity * MetalRecoverySystem.IngotVoxelEquivalent, 0),
-			SmeltedStack = new JsonItemStack( ) { Code = ingotCode.Clone( ), Quantity = 1 }
-		};
-		CombustibleProps.SmeltedStack.Resolve(api.World, "VariableMetalItem_regen", true);
+		if (metalCode != null && AnvilMetalRecoveryMod.ItemFilterList.Contains(MetalCode(contStack)))
+		{
+		var recoveryData = AnvilMetalRecoveryMod.ItemRecoveryTable[metalCode];	
+
+		if (CombustibleProps == null) 
+			{
+				CombustibleProps = new CombustibleProperties( ) {
+					SmeltingType = EnumSmeltType.Smelt,
+					MeltingPoint = recoveryData.Melting_Point,
+					MeltingDuration = recoveryData.Melting_Duration,
+					SmeltedRatio = ( int )(100 / (recoveryData.Quantity * MetalRecoverySystem.IngotVoxelEquivalent)),
+					SmeltedStack = new JsonItemStack( ) { Code = ingotCode.Clone( ), Quantity = 1 }
+				};
+				CombustibleProps.SmeltedStack.Resolve(api.World, "VariableMetalItem_regen", true);
+			}
 		}
+
 		}
 
 		public override void GetHeldItemInfo(ItemSlot inSlot, System.Text.StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
