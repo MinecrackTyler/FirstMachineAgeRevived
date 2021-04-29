@@ -47,19 +47,31 @@ namespace AnvilMetalRecovery
 
 
 
-		public override void Initialize(EntityProperties properties, Vintagestory.API.JsonObject attributes)
+		public override void OnEntitySpawn( )
 		{
-		if (this.entity.Api.Side.IsServer( )) {
-		#if DEBUG
-		ServerAPI.Logger.VerboseDebug("Hotbar Observer Online for: {0}", Player.GetName());
-		#endif
-
-		//Attach event observer...	
-		Player.RightHandItemSlot.Inventory.SlotModified += Mainhand_InventorySlotChanging;
-		Player.RightHandItemSlot.MarkedDirty += Mainhand_MarkedDirty;
-
+		AttachEvents( );
 		}
+
+		public override void OnEntityLoaded( )
+		{
+		AttachEvents( );
 		}
+
+
+		private void AttachEvents( )
+		{
+			if (this.entity.Api.Side.IsServer( )) 
+			{
+			#if DEBUG
+			ServerAPI.Logger.VerboseDebug("Hotbar Observer Online for: {0}", Player.GetName( ));
+			#endif
+
+			//Attach event observer...	
+			Player.RightHandItemSlot.Inventory.SlotModified += Mainhand_InventorySlotChanging;
+			Player.RightHandItemSlot.MarkedDirty += Mainhand_MarkedDirty;
+			}
+		}
+
 
 		private void Mainhand_InventorySlotChanging(int slotID)
 		{

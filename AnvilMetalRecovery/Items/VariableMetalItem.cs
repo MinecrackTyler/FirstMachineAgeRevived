@@ -6,6 +6,7 @@ using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.Client.NoObf;
+using Vintagestory.GameContent;
 
 namespace AnvilMetalRecovery
 {
@@ -15,16 +16,27 @@ namespace AnvilMetalRecovery
 		private const string metalQuantityKey = @"metalQuantity";
 		private const string metalIngotCodeKey = @"metalIngotCode";
 
+		/// <summary>
+		/// Store Ingot Code (here)
+		/// </summary>
+		/// <returns>The code.</returns>
+		/// <param name="itemStack">Item stack.</param>
+		/// <remarks>If base metal still exists - can still smelt...</remarks>
 		protected AssetLocation MetalCode(ItemStack itemStack)
 		{
 		if (itemStack == null || itemStack.Attributes == null) return new AssetLocation(default_IngotCode);
 		return new AssetLocation(itemStack.Attributes.GetString(metalIngotCodeKey, default_IngotCode));
 		}
 
+		/// <summary>
+		/// Store metal UNIT quantity value.
+		/// </summary>
+		/// <returns>The quantity.</returns>
+		/// <param name="itemStack">Item stack.</param>
 		protected int MetalQuantity(ItemStack itemStack)
 		{
-		if (itemStack == null || itemStack.Attributes == null) return 10;
-		return itemStack.Attributes.GetInt(metalQuantityKey, 10);
+		if (itemStack == null || itemStack.Attributes == null) return 0;
+		return itemStack.Attributes.GetInt(metalQuantityKey, 0);
 		}
 
 		protected string MetalName(ItemStack itemStack)
@@ -60,72 +72,47 @@ namespace AnvilMetalRecovery
 
 		renderinfo.TextureId = texturePlaceholder.TextureId;
 
-		//this.Textures["metal"] = textureDonatorItem.FirstTexture;
-
 		//Cache TextId# on TempAttributes ?
 		}
 
-		/* (from Itemstack -attr)
-		 * On creation/container entry: - assign (everywhere!):
-		 * CombustibleProps
-		 * .SmeltedStack
-		 * .ResolvedItemstack.
-		 * 
-		*/
 
-
-
-
-		//virtual bool CanBePlacedInto(ItemStack stack, ItemSlot slot) //Here?
-
-		//virtual void OnModifiedInInventorySlot //Only for new-Inserts (?)
-
-		//virtual bool CanSmelt //YES!
-		//virtual float GetMeltingDuration //Order-ops, or failsafe?
-		//virtual float GetMeltingPoint //Order-ops, or failsafe?
-		//virtual void DoSmelt //Mabey?
-
-
-		public void ApplyMetalProperties(RecoveryEntry recoveryData, ref ItemStack contStack)
+		public override bool CanSmelt(IWorldAccessor world, ISlotProvider cookingSlotsProvider, ItemStack inputStack, ItemStack outputStack)
 		{
-		contStack.Attributes.SetInt(metalQuantityKey, ( int )recoveryData.Quantity);
-		contStack.Attributes.SetString(metalIngotCodeKey, recoveryData.IngotCode.ToString( ));
+		#if DEBUG
+		api.Logger.VerboseDebug("CanSmelt: ");
+		#endif
 
-		if (CombustibleProps == null) {
-		CombustibleProps = new CombustibleProperties( ) {
-			SmeltingType = EnumSmeltType.Smelt,
-			MeltingPoint = recoveryData.Melting_Point,
-			MeltingDuration = recoveryData.Melting_Duration,
-			SmeltedRatio = ( int )(100 / (recoveryData.Quantity * MetalRecoverySystem.IngotVoxelEquivalent)),
-			SmeltedStack = new JsonItemStack( ) { Type = EnumItemClass.Item, Code = recoveryData.IngotCode.Clone( ), Quantity = 1 }
-		};
-		CombustibleProps.SmeltedStack.Resolve(api.World, "VariableMetalItem_apply", true);
+		if (inputStack != null ) 
+		{
+		RegenerateCombustablePropsFromStack(inputStack);
+		return (outputStack == null) && this.CombustibleProps.MeltingPoint > 1;
+		}
+		return false;
 		}
 
+		public override float GetMeltingPoint(IWorldAccessor world, ISlotProvider cookingSlotsProvider, ItemSlot inputSlot)
+		{
+		RegenerateCombustablePropsFromStack(inputSlot?.Itemstack);
+
+		return this?.CombustibleProps.MeltingPoint ?? 0f;
 		}
 
-		protected void RegenerateCombustablePropsFromStack(ref ItemStack contStack)
+		public override float GetMeltingDuration(IWorldAccessor world, ISlotProvider cookingSlotsProvider, ItemSlot inputSlot)
 		{
-		AssetLocation ingotCode = null;
-		var metalCode = MetalCode(contStack);
+		RegenerateCombustablePropsFromStack(inputSlot?.Itemstack);
 
-		if (metalCode != null && AnvilMetalRecoveryMod.ItemFilterList.Contains(MetalCode(contStack)))
-		{
-		var recoveryData = AnvilMetalRecoveryMod.ItemRecoveryTable[metalCode];	
-
-		if (CombustibleProps == null) 
-			{
-				CombustibleProps = new CombustibleProperties( ) {
-					SmeltingType = EnumSmeltType.Smelt,
-					MeltingPoint = recoveryData.Melting_Point,
-					MeltingDuration = recoveryData.Melting_Duration,
-					SmeltedRatio = ( int )(100 / (recoveryData.Quantity * MetalRecoverySystem.IngotVoxelEquivalent)),
-					SmeltedStack = new JsonItemStack( ) { Code = ingotCode.Clone( ), Quantity = 1 }
-				};
-				CombustibleProps.SmeltedStack.Resolve(api.World, "VariableMetalItem_regen", true);
-			}
+		return this?.CombustibleProps.MeltingDuration ?? 0f;
 		}
 
+		public override void DoSmelt(IWorldAccessor world, ISlotProvider cookingSlotsProvider, ItemSlot inputSlot, ItemSlot outputSlot)
+		{
+		RegenerateCombustablePropsFromStack(inputSlot?.Itemstack);
+		#if DEBUG
+		world.Logger.VerboseDebug("Invoked: 'DoSmelt' CookSlots#{1} In.stk: {0} ", (inputSlot.Empty ? "empty" : inputSlot.Itemstack.Collectible.Code.ToShortString( )), cookingSlotsProvider.Slots.Length);
+		#endif
+
+
+		base.DoSmelt(world, cookingSlotsProvider, inputSlot, outputSlot);
 		}
 
 		public override void GetHeldItemInfo(ItemSlot inSlot, System.Text.StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
@@ -136,6 +123,63 @@ namespace AnvilMetalRecovery
 
 		dsc.AppendLine(Lang.Get("fma:metal_worth", metalQuantity, metalName));
 		}
+
+		public override void OnModifiedInInventorySlot(IWorldAccessor world, ItemSlot slot, ItemStack extractedStack = null)
+		{
+		RegenerateCombustablePropsFromStack(slot.Itemstack);			
+		}
+
+		//Merge (same) metal piles together? Upto 100 units.
+		//TryMergeStacks ???
+		//virtual bool CanBePlacedInto(ItemStack stack, ItemSlot slot) //?
+		//virtual void OnModifiedInInventorySlot //Only for new-Inserts (?)
+
+		public void ApplyMetalProperties(RecoveryEntry recoveryData, ref ItemStack contStack)
+		{
+		contStack.Attributes.SetInt(metalQuantityKey, ( int )recoveryData.Quantity);
+		contStack.Attributes.SetString(metalIngotCodeKey, recoveryData.IngotCode.ToString( ));
+					
+		CombustibleProps = new CombustibleProperties( ) {
+			SmeltingType = EnumSmeltType.Smelt,
+			MeltingPoint = recoveryData.Melting_Point,
+			MeltingDuration = recoveryData.Melting_Duration,
+			SmeltedRatio = ( int )(100 / (recoveryData.Quantity * MetalRecoverySystem.IngotVoxelEquivalent)),
+			SmeltedStack = new JsonItemStack( ) { Type = EnumItemClass.Item, Code = recoveryData.IngotCode.Clone( ), Quantity = 1 }
+		};
+		CombustibleProps.SmeltedStack.Resolve(api.World, "VariableMetalItem_apply", true);		
+		}
+
+		protected void RegenerateCombustablePropsFromStack(ItemStack contStack)
+		{
+		if (contStack == null ) return;
+		if (this.CombustibleProps != null) return;
+					
+		var metalCode = MetalCode(contStack);
+		var metalUnits = MetalQuantity(contStack);
+
+		if (metalCode != null )
+		{
+		var sourceMetalItem = api.World.GetItem(metalCode);	
+						
+		CombustibleProps = new CombustibleProperties( ) {
+			SmeltingType = EnumSmeltType.Smelt,
+			MeltingPoint = sourceMetalItem.CombustibleProps.MeltingPoint,
+			MeltingDuration = sourceMetalItem.CombustibleProps.MeltingDuration,
+			SmeltedRatio = ( int )(100 / (metalUnits * MetalRecoverySystem.IngotVoxelEquivalent)),
+			SmeltedStack = new JsonItemStack( ) { Type = EnumItemClass.Item, Code = sourceMetalItem.Code.Clone( ), Quantity = 1 }
+		};
+		CombustibleProps.SmeltedStack.Resolve(api.World, "VariableMetalItem_regen", true);
+		//Back-Inject source Input Item stack - as Firepit checks THAT
+		contStack.Collectible.CombustibleProps = CombustibleProps.Clone( );
+
+		#if DEBUG
+		api.Logger.VerboseDebug("Melt point: {0}, Duration: {1}, Ratio: {2}, Out.stk: {3}", this.CombustibleProps.MeltingPoint,this.CombustibleProps.MeltingDuration,this.CombustibleProps.SmeltedRatio, this.CombustibleProps.SmeltedStack.ResolvedItemstack.Item.Code.ToString());
+		#endif
+		}		
+
+		}
+
+
 	}
 
 }

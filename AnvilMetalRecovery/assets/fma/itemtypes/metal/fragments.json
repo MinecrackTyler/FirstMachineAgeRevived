@@ -5,7 +5,8 @@
 	attributes: {
 		handbook: {
 			exclude: true
-		}
+		},
+        allowHeating: true,
 	},
 	storageFlags: 5,
 	shape: { base: "fma:item/metal/fragments" },

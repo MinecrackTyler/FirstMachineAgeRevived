@@ -29,7 +29,7 @@ namespace AnvilMetalRecovery
 
 
 		/// <summary>
-		/// Items that are 'recoverable' from tool/weap Breakage.
+		/// Valid Items that are 'recoverable' (Asset Codes) only
 		/// </summary>
 		/// <value>The item filter list.</value>
 		public List<AssetLocation> ItemFilterList {
@@ -40,7 +40,7 @@ namespace AnvilMetalRecovery
 		}
 
 		/// <summary>
-		/// Items that are 'recoverable' from tool/weap Breakage.
+		/// ALL Items that have were derivable from smithing recipies (and are tool / durable)
 		/// </summary>
 		/// <value>The item filter list.</value>
 		public Dictionary<AssetLocation, RecoveryEntry> ItemRecoveryTable {
