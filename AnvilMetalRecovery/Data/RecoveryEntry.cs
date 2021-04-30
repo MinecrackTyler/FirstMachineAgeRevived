@@ -7,7 +7,10 @@ namespace AnvilMetalRecovery
 	public struct RecoveryEntry
 	{
 		public AssetLocation IngotCode;
-		public uint Quantity;//IN: Voxels
+		/// <summary>
+		/// Metal Quantity (VOXELS)
+		/// </summary>
+		public uint Quantity;
 		public float Melting_Duration;
 		public int Melting_Point;
 
