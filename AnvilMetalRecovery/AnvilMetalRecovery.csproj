@@ -74,6 +74,7 @@
     <Compile Include="EntityBehaviors\HotbarObserverData.cs" />
     <Compile Include="Data\RecoveryEntry.cs" />
     <Compile Include="Items\VariableMetalItem.cs" />
+    <Compile Include="Items\SmartSmeltableItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">

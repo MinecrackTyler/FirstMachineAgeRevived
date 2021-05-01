@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
@@ -39,6 +40,18 @@ namespace AnvilMetalRecovery
 		{
 		if (itemStack.Attributes.HasAttribute(@"durability"))
 			 itemStack.Attributes.SetInt(@"durability", number);		
+		}
+
+		internal static bool BeginingOnly(this AssetLocation checkCode, string term)
+		{			
+			return checkCode.Valid && checkCode.Path.Split('-').First().Equals(term, StringComparison.OrdinalIgnoreCase);
+		}
+
+		internal static AssetLocation AppendPathVariant(this AssetLocation toAppend, string append)
+		{
+		var appendedCode = toAppend.Clone( );
+		appendedCode.Path += ("-" + append);
+		return appendedCode;
 		}
 	}
 }

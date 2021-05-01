@@ -18,6 +18,7 @@ namespace AnvilMetalRecovery
 	{				
 		internal const string anvilKey = @"Anvil";
 		internal const string metalFragmentsCode = @"fma:metal_fragments";
+		internal const string metalShavingsCode = @"metal_shaving";
 		public const float IngotVoxelEquivalent = 2.38f;
 
 		private Dictionary<AssetLocation, RecoveryEntry> itemToVoxelLookup = new Dictionary<AssetLocation, RecoveryEntry>();//Ammount & Material?
@@ -61,7 +62,7 @@ namespace AnvilMetalRecovery
 
 		public override double ExecuteOrder( )
 		{
-		return 0.1d;
+		return 0.11d;
 		}
 
 		public override void Start(ICoreAPI api)
@@ -91,7 +92,7 @@ namespace AnvilMetalRecovery
 		//ServerAPI.RegisterBlockEntityClass(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));		
 		ServerCore.ClassRegistryNative.ReplaceBlockEntityType(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));
 
-		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);
+		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);		
 
 		SetupHotbarObserver( );
 
@@ -100,6 +101,8 @@ namespace AnvilMetalRecovery
 		#if DEBUG
 			ServerAPI.RegisterCommand("durability", "edit durability of item", " (Held tool) and #", EditDurability);
 		#endif
+
+		
 		}
 
 		public override void StartClientSide(ICoreClientAPI api)
@@ -122,32 +125,11 @@ namespace AnvilMetalRecovery
 
 		private void RegisterItemMappings( )
 		{
-		this.CoreAPI.RegisterItemClass("VariableMetalItem", typeof(VariableMetalItem));
-
+		this.CoreAPI.RegisterItemClass(@"VariableMetalItem", typeof(VariableMetalItem));
+		this.CoreAPI.RegisterItemClass(@"SmartSmeltableItem", typeof(SmartSmeltableItem));
 		}
 
 
-		/*
-		internal void GenerateMetalShavingsItems( )
-		{
-		//TODO: Automatic Generation of Item 'metal_shaving' by metal & alloy list at RUNTIME
-		var genericShaving = ServerAPI.World.ClassRegistry.CreateItem("metal_shaving");
-		//genericShaving.CombustibleProps.
-
-		var metalProperties = new Dictionary<AssetLocation, MetalProperty>( );
-
-		foreach (var entry in ServerAPI.Assets.GetMany<MetalProperty>(Mod.Logger, "worldproperties/")) {
-		AssetLocation loc = entry.Key.Clone( );
-		loc.Path = loc.Path.Replace("worldproperties/", "");
-		loc.RemoveEnding( );
-
-		entry.Value.Code.Domain = entry.Key.Domain;
-
-		metalProperties.Add(loc, entry.Value);
-
-		}
-		}
-		*/
 
 		private void SetupHotbarObserver( ){
 		ServerCore.RegisterEntityBehaviorClass(@"HotbarObserver", typeof(HotbarObserverBehavior));
@@ -270,6 +252,48 @@ namespace AnvilMetalRecovery
 
 		player.Entity.RightHandItemSlot.Itemstack.Hitpoints(number ?? 10);
 		player.Entity.RightHandItemSlot.MarkDirty( );
+		}
+
+		}
+
+		/// <summary>
+		/// Adds all smelting related 'combustibleProps' fields from known Ingot Codes; (matching variant keys)
+		/// </summary>
+		/// <returns>The combuastable properties by code variant.</returns>
+		/// <param name="updatingCode">PARTIAL Item code.</param>
+		private void ApplySmeltingPropertiesByCodeVariant(AssetLocation updatingCode,  int ratioOverride = 1 )
+		{
+		//ALL ????:'ingot-*' type items...
+		var ingotItems = ServerAPI.World.Items.Where(itm => itm.ItemId > 0 && itm.Code != null && itm.Code.BeginingOnly(@"ingot"));
+
+		#if DEBUG
+		this.Mod.Logger.VerboseDebug("found {0} Ingot type items", ingotItems.Count());
+		#endif
+
+		foreach (var ingotEntry in ingotItems) {
+		if (ingotEntry == null) continue;
+		string metalName = ingotEntry?.Variant[@"metal"];
+		var metalSmeltProps = ingotEntry?.CombustibleProps?.Clone( );
+		
+		if (metalSmeltProps == null) continue;//SHOULD BE NEVER !
+		if (string.IsNullOrEmpty(metalName)) continue;
+
+		metalSmeltProps.SmeltedRatio = ratioOverride;
+		AssetLocation shavingCode = updatingCode.AppendPathVariant(metalName);
+		var shavingEquivalentItem = ServerAPI.World.GetItem(shavingCode);
+		if (shavingEquivalentItem != null) 
+			{
+			shavingEquivalentItem.CombustibleProps = metalSmeltProps;
+			#if DEBUG
+			ServerAPI.Logger.VerboseDebug("Updated SmeltProps, for: {0}", shavingCode.ToString( ));
+			#endif
+			}
+			else 
+			{
+			#if DEBUG
+			ServerAPI.Logger.VerboseDebug("Non-existant item: {0}", shavingCode.ToString( ));
+			#endif
+			}
 		}
 
 		}
