@@ -64,6 +64,10 @@
       <HintPath>vs_libs\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>vs_libs\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MetalRecoverySystem.cs" />
@@ -75,6 +79,8 @@
     <Compile Include="Data\RecoveryEntry.cs" />
     <Compile Include="Items\VariableMetalItem.cs" />
     <Compile Include="Items\SmartSmeltableItem.cs" />
+    <Compile Include="Harmony\AnvilDaptor.cs" />
+    <Compile Include="MetalRecoverySystem_Components.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
@@ -124,6 +130,7 @@
     <Folder Include="assets\fma\patches\" />
     <Folder Include="Data\" />
     <Folder Include="Items\" />
+    <Folder Include="Harmony\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -62,16 +62,17 @@ namespace AnvilMetalRecovery
 		LoadedTexture texturePlaceholder = new LoadedTexture(capi);
 		var ingotCode = MetalCode(itemstack);
 		var textureDonatorItem = capi.World.GetItem(ingotCode);
+		if (textureDonatorItem != null) {
 		var newTexture = textureDonatorItem.FirstTexture.Base.WithPathAppendixOnce(".png");
 
 		//#if DEBUG
 		//capi.Logger.VerboseDebug("VariableMetalItem Txr: {0}", newTexture);
-      	//#endif			                  
-		
+		//#endif			                  
+
 		capi.Render.GetOrLoadTexture(newTexture, ref texturePlaceholder);
 
 		renderinfo.TextureId = texturePlaceholder.TextureId;
-
+		}
 		//Cache TextId# on TempAttributes ?
 		}
 
