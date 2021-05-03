@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
+
+using HarmonyLib;
 
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
-using Vintagestory.API.Datastructures;
 using Vintagestory.API.Server;
 using Vintagestory.Client.NoObf;
-using Vintagestory.Common;
 using Vintagestory.Server;
-using Vintagestory.ServerMods;
 
 namespace AnvilMetalRecovery
 {
@@ -71,7 +68,11 @@ namespace AnvilMetalRecovery
 
 		RegisterItemMappings( );
 
-		//TODO: Setup HARMONY Patches
+		#if DEBUG
+		//Harmony.DEBUG = true;
+		#endif
+		var harmony = new Harmony(this.Mod.Info.ModID);
+		harmony.PatchAll( );
 
 		base.Start(api);
 		}
@@ -89,9 +90,7 @@ namespace AnvilMetalRecovery
 		return;
 		}
 
-		//ServerAPI.ClassRegistry.GetBlockEntityClass
-		//ServerAPI.RegisterBlockEntityClass(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));		
-		ServerCore.ClassRegistryNative.ReplaceBlockEntityType(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));
+		//ServerCore.ClassRegistryNative.ReplaceBlockEntityType(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));
 
 		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);		
 
@@ -118,7 +117,7 @@ namespace AnvilMetalRecovery
 		return;
 		}
 
-		ClientCore.ClassRegistryNative.ReplaceBlockEntityType(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));
+		//ClientCore.ClassRegistryNative.ReplaceBlockEntityType(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));
 
 		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
 		}

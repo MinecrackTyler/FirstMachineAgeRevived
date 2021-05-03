@@ -27,13 +27,13 @@ namespace AnvilMetalRecovery
 
 		protected void RegenerateCombustablePropsByVariant(ItemSlot slot)
 		{
-		if (this.CombustibleProps != null || slot.Itemstack.Collectible.CombustibleProps != null) return;
+		if (this.CombustibleProps != null || ( slot.Empty == false && slot.Itemstack.Collectible.CombustibleProps != null)) return;
 
 		var ingotAssetCode = _ingotPrefix.AppendPathVariant(Metal);//Wildcard find? excluding domain?
 		var ingotEntry = api.World.GetItem(ingotAssetCode);
 		var metalSmeltProps = ingotEntry?.CombustibleProps?.Clone( );
 
-		if (metalSmeltProps != null) 
+		if ((ingotEntry != null || !ingotEntry.IsMissing) && metalSmeltProps != null) 
 			{		
 			metalSmeltProps.SmeltedRatio = Ratio;
 
@@ -46,7 +46,7 @@ namespace AnvilMetalRecovery
 			else 
 			{
 			#if DEBUG
-			api.Logger.VerboseDebug("Non-existant Ingot: {0}", ingotAssetCode.ToString( ));
+			api.Logger.VerboseDebug("Non-existant Ingot or C.Props: {0}", ingotAssetCode.ToString( ));
 			#endif
 			}		
 		}

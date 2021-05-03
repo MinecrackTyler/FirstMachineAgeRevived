@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 
 using HarmonyLib;
@@ -11,7 +12,7 @@ using Vintagestory.GameContent;
 namespace AnvilMetalRecovery
 {
 	/// <summary>
-	/// Harmony patcher class to generate Bus-Events from Anvil, and other-effects
+	/// Harmony patcher class to wrap B.E. Anvil class
 	/// </summary>
 	[HarmonyPatch(typeof(BlockEntityAnvil))]
 	public class AnvilDaptor 
@@ -21,9 +22,9 @@ namespace AnvilMetalRecovery
 	[HarmonyPatch(nameof(BlockEntityAnvil.OnSplit))]	
 	private static void Prefix_OnSplit(Vec3i voxelPos, BlockEntityAnvil __instance)
 	{
-	SmithAssist anvil = __instance as SmithAssist;	
+	var anvil = new SmithAssist(__instance);
 
-	if (anvil.IsShavable && anvil.Voxels[voxelPos.X, voxelPos.Y, voxelPos.Z] == ( byte )EnumVoxelMaterial.Metal) {
+	if (anvil.IsShavable && anvil.Voxel(voxelPos.X, voxelPos.Y, voxelPos.Z) == EnumVoxelMaterial.Metal) {
 	#if DEBUG
 	anvil.Logger.VerboseDebug("Split some {0} @{1}, Total:{2}", anvil.BaseMetal, voxelPos, anvil.SplitCount);
 	#endif
@@ -34,31 +35,53 @@ namespace AnvilMetalRecovery
 
 	[HarmonyPostfix]
 	[HarmonyPatch(nameof(BlockEntityAnvil.GetBlockInfo))]
-	private static void Postfix_GetBlockInfo(IPlayer forPlayer, StringBuilder dsc, BlockEntityAnvil __instance)
+	private static void Postfix_GetBlockInfo(IPlayer forPlayer, ref StringBuilder dsc, BlockEntityAnvil __instance)
 	{	
-	SmithAssist anvil = __instance as SmithAssist;
+	var anvil = new SmithAssist(__instance);
 
-	if (anvil.IsShavable && anvil.SplitCount > 0 && anvil.BaseMaterial != null) {
-	dsc.AppendFormat("[ {0} ÷ {1} ] = {2}", anvil.SplitCount, SmithAssist.splitValue, Lang.GetUnformatted($"fma:item-metal_shaving-{anvil.BaseMetal}"));
+		if (anvil.BaseMaterial != null && anvil.IsShavable && anvil.SplitCount > 0) 
+		{
+		dsc.AppendFormat("[ {0} ÷ {1} ] : {2}", anvil.SplitCount, SmithAssist.shavingValue, Lang.GetUnformatted($"fma:item-metal_shaving-{anvil.BaseMetal}"));
+		}
 	}
 
+	[HarmonyPrefix]
+	[HarmonyPatch(nameof(BlockEntityAnvil.CheckIfFinished))]
+	private static void Prefix_CheckIfFinished(IPlayer byPlayer, BlockEntityAnvil __instance)
+	{
+	var anvil = new SmithAssist(__instance);
+		if (anvil.WorkMatchesRecipe( )) 
+		{
+		anvil.IssueShavings(byPlayer );						
+		}
 	}
 
+	/* [HarmonyReversePatch] 
+	private bool MatchesRecipe() //But faster?
+	*/
+		 
 
 	}
 
 	/// <summary>
 	/// Special tools for handling the Anvil's data/state, ect...
 	/// </summary>
-	internal class SmithAssist : BlockEntityAnvil
+	internal class SmithAssist
 	{
+		private readonly BlockEntityAnvil bea;
+
 		internal const string splitCountKey = @"splitCount";
-		internal const uint splitValue = 5;
+		internal const uint shavingValue = 5;
+
+		internal SmithAssist(BlockEntityAnvil a)
+		{
+		this.bea = a;
+		}
 
 		internal ILogger Logger {
 			get
 			{
-			return Api.World.Logger;
+			return bea.Api.World.Logger;
 			}
 		}
 
@@ -69,15 +92,21 @@ namespace AnvilMetalRecovery
 			}
 		}
 
+		// public byte[,,] Voxels = new byte[16, 6, 16];
+		internal EnumVoxelMaterial Voxel( int X , int Y , int Z ) 
+		{		
+		return (EnumVoxelMaterial)bea.Voxels[X, Y, Z]; 
+		}
+
 
 		internal int SplitCount {
 			get
 			{
-			return this.WorkItemStack?.Attributes.TryGetInt(splitCountKey) ?? 0;
+			return bea.WorkItemStack?.Attributes.TryGetInt(splitCountKey) ?? 0;
 			}
 			set
 			{
-			this.WorkItemStack?.Attributes.SetInt(splitCountKey, value);
+			bea.WorkItemStack?.Attributes.SetInt(splitCountKey, value);
 			}
 		}
 
@@ -85,14 +114,14 @@ namespace AnvilMetalRecovery
 			get
 			{
 			//this.SelectedRecipe <-- things that are recoverable?
-			return this.WorkItemStack?.Collectible?.FirstCodePart( ).Equals(@"ironbloom") == false;
+			return bea.WorkItemStack?.Collectible?.FirstCodePart( ).Equals(@"ironbloom") == false;
 			}
 		}
 
 		internal IAnvilWorkable AnvilWorkpiece {
 			get
 			{
-			if (this.WorkItemStack != null && this.WorkItemStack.Collectible is IAnvilWorkable) { return this.WorkItemStack.Collectible as IAnvilWorkable; }
+			if (bea.WorkItemStack != null && bea.WorkItemStack.Collectible is IAnvilWorkable) { return bea.WorkItemStack.Collectible as IAnvilWorkable; }
 
 			return null;
 			}
@@ -101,7 +130,7 @@ namespace AnvilMetalRecovery
 		internal ItemStack BaseMaterial {
 			get
 			{
-			if (this.WorkItemStack != null) return AnvilWorkpiece.GetBaseMaterial(this.WorkItemStack);//Right??
+			if (bea.WorkItemStack != null) return AnvilWorkpiece.GetBaseMaterial(bea.WorkItemStack);//Right??
 			return null;
 			}
 		}
@@ -111,6 +140,63 @@ namespace AnvilMetalRecovery
 			{
 			return this?.BaseMaterial?.Collectible.LastCodePart( );
 			}
+		}
+
+		internal int MetalVoxelCount {
+			get { return bea.Voxels.OfType<byte>( ).Count(vox => vox == (byte)EnumVoxelMaterial.Metal); }
+		}
+
+
+		internal void IssueShavings(IPlayer byPlayer )
+		{
+		if (this.SplitCount > 0) {
+		int shavingsCount = ( int )(SplitCount / shavingValue);
+
+		if (shavingsCount > 0) 
+			{
+			#if DEBUG
+			Logger.VerboseDebug("RecoveryAnvil: Smithing done - recover: {0} shavings of {1}", shavingsCount, BaseMaterial);
+			#endif
+
+			Item metalShavingsItem = bea.Api.World.GetItem(MetalShavingsCode.WithPathAppendix("-" + BaseMaterial));
+
+			if (metalShavingsItem != null) 
+			{
+				ItemStack metalShavingsStack = new ItemStack(metalShavingsItem, shavingsCount);
+
+				if (byPlayer != null) {
+				if (byPlayer.InventoryManager.TryGiveItemstack(metalShavingsStack, false) == false) { byPlayer.Entity.World.SpawnItemEntity(metalShavingsStack, byPlayer.Entity.Pos.XYZ); }
+				}
+			}
+			else 
+				{
+				Logger.Warning("Missing or Invalid Item: {0} ", MetalShavingsCode.WithPathAppendix("-" + BaseMaterial));
+				}
+				this.SplitCount = 0;
+			}
+		}
+		}
+
+		/// <summary>
+		/// Copy-Paste, from 'BEAnvil.cs'
+		/// </summary>
+		/// <returns>The matches recipe.</returns>
+		internal bool WorkMatchesRecipe()
+		{
+		if (bea.SelectedRecipe == null) return false;
+
+		int ymax = Math.Min(6, bea.SelectedRecipe.QuantityLayers);//Why ignore higher layers?
+
+		var theRecipie = bea.recipeVoxels; //RotatedRecipeVoxels
+
+		for (int x = 0; x < 16; x++) {
+		for (int y = 0; y < ymax; y++) {
+		for (int z = 0; z < 16; z++) {
+		byte desiredMat = ( byte )(theRecipie[x, y, z] ? EnumVoxelMaterial.Metal : EnumVoxelMaterial.Empty);
+
+		if (bea.Voxels[x, y, z] != desiredMat) { return false;	}	}	}	}
+
+		return true;
 		}
 	}
 }

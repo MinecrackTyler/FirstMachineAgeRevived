@@ -42,7 +42,7 @@ namespace AnvilMetalRecovery
 		protected string MetalName(ItemStack itemStack)
 		{
 		//TODO: generic 'material' Language entries...
-		if (itemStack == null || itemStack.Attributes == null) return String.Empty;
+		if (itemStack == null || itemStack.Attributes == null) return @"?";
 		var sliced = Lang.GetUnformatted("item-"+MetalCode(itemStack).Path).Split(' ');
 		return String.Join(" ", sliced.Take(sliced.Length - 1));
 		}
@@ -129,7 +129,7 @@ namespace AnvilMetalRecovery
 
 		public override void OnModifiedInInventorySlot(IWorldAccessor world, ItemSlot slot, ItemStack extractedStack = null)
 		{
-		RegenerateCombustablePropsFromStack(slot.Itemstack);			
+		if (!slot.Empty) RegenerateCombustablePropsFromStack(slot.Itemstack);			
 		}
 
 		//Merge (same) metal piles together? Upto 100 units.
@@ -155,8 +155,10 @@ namespace AnvilMetalRecovery
 
 		if (metalCode != null )
 		{
-		var sourceMetalItem = api.World.GetItem(metalCode);	
-						
+		var sourceMetalItem = api.World.GetItem(metalCode);
+
+		if (sourceMetalItem == null || sourceMetalItem.IsMissing || sourceMetalItem.CombustibleProps == null) return;
+
 		CombustibleProps = new CombustibleProperties( ) {
 			SmeltingType = EnumSmeltType.Smelt,
 			MeltingPoint = sourceMetalItem.CombustibleProps.MeltingPoint,
@@ -169,7 +171,7 @@ namespace AnvilMetalRecovery
 		contStack.Collectible.CombustibleProps = CombustibleProps.Clone( );
 
 		#if DEBUG
-				api.Logger.VerboseDebug("Melt point: {0}, Duration: {1}, Ratio: {2}, Out.stk: {3} * {4}", this.CombustibleProps.MeltingPoint,this.CombustibleProps.MeltingDuration,this.CombustibleProps.SmeltedRatio, this.CombustibleProps.SmeltedStack.ResolvedItemstack.Item.Code.ToString(),this.CombustibleProps.SmeltedStack.StackSize );
+		api.Logger.VerboseDebug("Melt point: {0}, Duration: {1}, Ratio: {2}, Out.stk: {3} * {4}", this.CombustibleProps.MeltingPoint,this.CombustibleProps.MeltingDuration,this.CombustibleProps.SmeltedRatio, this.CombustibleProps.SmeltedStack.ResolvedItemstack.Item.Code.ToString(),this.CombustibleProps.SmeltedStack.StackSize );
 		#endif
 		}		
 
