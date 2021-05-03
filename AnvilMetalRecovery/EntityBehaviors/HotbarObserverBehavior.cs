@@ -81,15 +81,18 @@ namespace AnvilMetalRecovery
 		if (watchedSlot.Itemstack.Class == EnumItemClass.Item) 
 		{
 			if (ItemFilterList.Contains(watchedSlot?.Itemstack.Item.Code)) 
-			{						
-			var durability = Player.RightHandItemSlot?.Itemstack?.Hitpoints( );
+			{									
 			//starts empty	|| Slot changes
-			if (TrackedItemData == null || TrackedItemData.SlotID != slotID) 
+				if ((TrackedItemData == null || TrackedItemData.SlotID != slotID) ) 
 				{
-				TrackedItemData = new HotbarObserverData(slotID, watchedSlot.Itemstack.Item, Player.PlayerUID);
-				#if DEBUG
-				ServerAPI.Logger.VerboseDebug("Tracking {0} in #{1}; Dur[{2}]", TrackedItemData.ItemCode.ToShortString( ), slotID, durability);
-				#endif
+				var hitpoints = Player.RightHandItemSlot?.Itemstack?.Hitpoints( );
+				if (hitpoints.HasValue && hitpoints.Value <= 1)
+					{
+					TrackedItemData = new HotbarObserverData(slotID, watchedSlot.Itemstack.Item, Player.PlayerUID);
+					#if DEBUG
+					ServerAPI.Logger.VerboseDebug("Tracking {0} in #{1}; H.P.[{2}]", TrackedItemData.ItemCode.ToShortString( ), slotID, hitpoints);
+					#endif
+					}
 				}
 			}
 			else 
@@ -115,11 +118,11 @@ namespace AnvilMetalRecovery
 		{
 		//mabey send Message if slot had item of interest before?
 		if (TrackedItemData != null ) {
-		int? durability = Player.RightHandItemSlot?.Itemstack?.Hitpoints( );
+		int? hitpoints = Player.RightHandItemSlot?.Itemstack?.Hitpoints( );
 		#if DEBUG
 		ServerAPI.Logger.VerboseDebug("DirtyEvent: Tracked Slot#{0} is {1}", TrackedItemData.SlotID, TrackedItemData.ItemCode.ToShortString( ));
 		if (!Player.RightHandItemSlot.Empty && Player.RightHandItemSlot.Itemstack.Class == EnumItemClass.Item) {
-		ServerAPI.Logger.VerboseDebug("^ Active Item: {0}, Slot#{2}, Dur[{1}]", Player.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Item.Code, durability ?? 0, Player.Player.InventoryManager.ActiveHotbarSlotNumber );
+		ServerAPI.Logger.VerboseDebug("^ Active Item: {0}, Slot#{2}, H.P.[{1}]", Player.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Item.Code, hitpoints ?? 0, Player.Player.InventoryManager.ActiveHotbarSlotNumber );
 		}
 		#endif
 

@@ -33,28 +33,30 @@ namespace AnvilMetalRecovery
 		
 	}
 
-	[HarmonyPostfix]
-	[HarmonyPatch(nameof(BlockEntityAnvil.GetBlockInfo))]
-	private static void Postfix_GetBlockInfo(IPlayer forPlayer, ref StringBuilder dsc, BlockEntityAnvil __instance)
-	{	
-	var anvil = new SmithAssist(__instance);
-
-		if (anvil.BaseMaterial != null && anvil.IsShavable && anvil.SplitCount > 0) 
-		{
-		dsc.AppendFormat("[ {0} ÷ {1} ] : {2}", anvil.SplitCount, SmithAssist.shavingValue, Lang.GetUnformatted($"fma:item-metal_shaving-{anvil.BaseMetal}"));
-		}
-	}
-
 	[HarmonyPrefix]
 	[HarmonyPatch(nameof(BlockEntityAnvil.CheckIfFinished))]
 	private static void Prefix_CheckIfFinished(IPlayer byPlayer, BlockEntityAnvil __instance)
 	{
 	var anvil = new SmithAssist(__instance);
-		if (anvil.WorkMatchesRecipe( )) 
+	if (anvil.WorkMatchesRecipe( )) {
+	anvil.IssueShavings(byPlayer);
+	}
+	}
+
+	[HarmonyPostfix]
+	[HarmonyPatch(nameof(BlockEntityAnvil.GetBlockInfo))]
+	private static void Postfix_GetBlockInfo(IPlayer forPlayer, StringBuilder dsc, BlockEntityAnvil __instance)
+	{
+	if (__instance.Api.Side.IsServer()) return;
+	var anvil = new SmithAssist(__instance);
+
+		if (anvil.BaseMaterial != null && anvil.IsShavable && anvil.SplitCount > 0) 
 		{
-		anvil.IssueShavings(byPlayer );						
+		dsc.AppendFormat("[ {0} ÷ {1} ] : {2}\n", anvil.SplitCount, SmithAssist.shavingValue, Lang.GetUnformatted($"fma:item-metal_shaving-{anvil.BaseMetal}"));
 		}
 	}
+
+	
 
 	/* [HarmonyReversePatch] 
 	private bool MatchesRecipe() //But faster?
@@ -150,31 +152,30 @@ namespace AnvilMetalRecovery
 		internal void IssueShavings(IPlayer byPlayer )
 		{
 		if (this.SplitCount > 0) {
-		int shavingsCount = ( int )(SplitCount / shavingValue);
+		int shavingQty = ( int )(SplitCount / shavingValue);
 
-		if (shavingsCount > 0) 
-			{
-			#if DEBUG
-			Logger.VerboseDebug("RecoveryAnvil: Smithing done - recover: {0} shavings of {1}", shavingsCount, BaseMaterial);
-			#endif
-
-			Item metalShavingsItem = bea.Api.World.GetItem(MetalShavingsCode.WithPathAppendix("-" + BaseMaterial));
+			if (shavingQty > 0) 
+			{			
+			Item metalShavingsItem = bea.Api.World.GetItem(MetalShavingsCode.AppendPathVariant(BaseMetal));
 
 			if (metalShavingsItem != null) 
 			{
-				ItemStack metalShavingsStack = new ItemStack(metalShavingsItem, shavingsCount);
+				ItemStack metalShavingsStack = new ItemStack(metalShavingsItem, shavingQty);
 
 				if (byPlayer != null) {
-				if (byPlayer.InventoryManager.TryGiveItemstack(metalShavingsStack, false) == false) { byPlayer.Entity.World.SpawnItemEntity(metalShavingsStack, byPlayer.Entity.Pos.XYZ); }
+				if (byPlayer.InventoryManager.TryGiveItemstack(metalShavingsStack, false) == false) { bea.Api.World.SpawnItemEntity(metalShavingsStack, bea.Pos.ToVec3d().Add(0.1d,0,0) ); }
+				#if DEBUG
+				Logger.VerboseDebug("RecoveryAnvil: Smithing done - recover: {0} shavings of {1}", shavingQty, metalShavingsItem.Code);
+				#endif
 				}
 			}
 			else 
 				{
 				Logger.Warning("Missing or Invalid Item: {0} ", MetalShavingsCode.WithPathAppendix("-" + BaseMaterial));
-				}
-				this.SplitCount = 0;
+				}		
 			}
 		}
+		this.SplitCount = 0;
 		}
 
 		/// <summary>
