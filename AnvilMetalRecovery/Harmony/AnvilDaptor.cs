@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 using HarmonyLib;
@@ -9,7 +10,7 @@ using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
 
-namespace AnvilMetalRecovery
+namespace AnvilMetalRecovery.Patches
 {
 	/// <summary>
 	/// Harmony patcher class to wrap B.E. Anvil class
@@ -17,7 +18,21 @@ namespace AnvilMetalRecovery
 	[HarmonyPatch(typeof(BlockEntityAnvil))]
 	public class AnvilDaptor 
 	{
-	 
+
+	[HarmonyPrepare]
+	private static bool DeduplicatePatching(MethodBase original, Harmony harmony)
+	{
+
+	if (original != null ) {
+		foreach(var patched in harmony.GetPatchedMethods()) 
+		{
+		if (patched.Name == original.Name)return false; //SKIPS PATCHING, its already there
+		}
+	}
+
+	return true;//patch all other methods
+	}
+
 	[HarmonyPrefix]
 	[HarmonyPatch(nameof(BlockEntityAnvil.OnSplit))]	
 	private static void Prefix_OnSplit(Vec3i voxelPos, BlockEntityAnvil __instance)
@@ -44,15 +59,14 @@ namespace AnvilMetalRecovery
 	}
 
 	[HarmonyPostfix]
-	[HarmonyPatch(nameof(BlockEntityAnvil.GetBlockInfo))]
+	[HarmonyPatch(nameof(BlockEntityAnvil.GetBlockInfo))]	
 	private static void Postfix_GetBlockInfo(IPlayer forPlayer, StringBuilder dsc, BlockEntityAnvil __instance)
-	{
-	if (__instance.Api.Side.IsServer()) return;
+	{	
 	var anvil = new SmithAssist(__instance);
 
 		if (anvil.BaseMaterial != null && anvil.IsShavable && anvil.SplitCount > 0) 
-		{
-		dsc.AppendFormat("[ {0} ÷ {1} ] : {2}\n", anvil.SplitCount, SmithAssist.shavingValue, Lang.GetUnformatted($"fma:item-metal_shaving-{anvil.BaseMetal}"));
+		{			
+		dsc.AppendFormat("[ {0} ] : {1} × {2}\n", anvil.SplitCount, Lang.GetUnformatted($"fma:item-metal_shaving-{anvil.BaseMetal}"), anvil.ShavingQuantity);
 		}
 	}
 
@@ -73,7 +87,7 @@ namespace AnvilMetalRecovery
 		private readonly BlockEntityAnvil bea;
 
 		internal const string splitCountKey = @"splitCount";
-		internal const uint shavingValue = 5;
+		internal const int shavingValue = 5;
 
 		internal SmithAssist(BlockEntityAnvil a)
 		{
@@ -87,7 +101,7 @@ namespace AnvilMetalRecovery
 			}
 		}
 
-		internal static AssetLocation MetalShavingsCode {
+		public static AssetLocation MetalShavingsCode {
 			get
 			{
 			return new AssetLocation(@"fma", @"metal_shaving");
@@ -101,7 +115,7 @@ namespace AnvilMetalRecovery
 		}
 
 
-		internal int SplitCount {
+		public int SplitCount {
 			get
 			{
 			return bea.WorkItemStack?.Attributes.TryGetInt(splitCountKey) ?? 0;
@@ -112,12 +126,17 @@ namespace AnvilMetalRecovery
 			}
 		}
 
-		internal bool IsShavable {
+		public bool IsShavable {
 			get
 			{
 			//this.SelectedRecipe <-- things that are recoverable?
 			return bea.WorkItemStack?.Collectible?.FirstCodePart( ).Equals(@"ironbloom") == false;
 			}
+		}
+
+		public int ShavingQuantity 
+		{
+			get { return (SplitCount / shavingValue); }
 		}
 
 		internal IAnvilWorkable AnvilWorkpiece {
@@ -137,14 +156,14 @@ namespace AnvilMetalRecovery
 			}
 		}
 
-		internal string BaseMetal {
+		public string BaseMetal {
 			get
 			{
 			return this?.BaseMaterial?.Collectible.LastCodePart( );
 			}
 		}
 
-		internal int MetalVoxelCount {
+		public int MetalVoxelCount {
 			get { return bea.Voxels.OfType<byte>( ).Count(vox => vox == (byte)EnumVoxelMaterial.Metal); }
 		}
 
