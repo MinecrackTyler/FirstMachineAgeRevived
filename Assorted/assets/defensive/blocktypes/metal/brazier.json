@@ -30,7 +30,7 @@
 		"coal": { base:  "game:block/coal/charcoal"},
 		"rusty-iron": { base: "game:block/currency/rusty-iron"},		
     },
-	creativeinventory: { "general": ["*"], "decorative": ["*"] },
+	creativeinventory: { "general": ["*"], "decorative": ["*"] , "defensive": ["*"] },
 	blockmaterial: "Metal",
 	replaceable: 200,
 	lightAbsorption: 0,

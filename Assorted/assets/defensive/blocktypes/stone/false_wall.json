@@ -18,7 +18,7 @@
 		{ code: "state", states: ["closed", "opened"] },		
         { code: "material", loadFromProperties: "block/rock" },		
 	],
-	creativeinventory: { "general": ["false_wall-north-down-closed-*"], "decorative": ["false_wall-north-down-closed-*"] },	
+	creativeinventory: { "general": ["false_wall-north-down-closed-*"], "decorative": ["false_wall-north-down-closed-*"], "defensive": ["false_wall-north-down-closed-*"] },	
 	textures: {
 		"stone": { base: "game:block/stone/brick/{material}1" },    							
 		"wood": { base: "game:block/wood/planks/oak1" },		

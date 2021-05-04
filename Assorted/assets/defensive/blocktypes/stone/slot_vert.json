@@ -23,7 +23,7 @@
 	behaviors: [
 		{name: "HorizontalOrientable", properties: {  dropBlockFace: "north" }}		
 	],
-	creativeinventory: { "general": ["slot_vertical-*-north"], "decorative": ["slot_vertical-*-north"] },	
+	creativeinventory: { "general": ["slot_vertical-*-north"], "decorative": ["slot_vertical-*-north"], "defensive": ["slot_vertical-*-north"] },	
 	resistance: 2,
 	rainPermeable: true,
 	lightAbsorption: 0,
@@ -65,9 +65,9 @@
 	},
 	materialDensity: 600,
 	sounds: {
-		"walk": "walk/stone",
+		"walk": "game:walk/stone",
 		byTool: {
-			"Pickaxe": { hit: "block/rock-hit-pickaxe", break: "block/rock-break-pickaxe" }
+			"Pickaxe": { hit: "game:block/rock-hit-pickaxe", break: "game:block/rock-break-pickaxe" }
 		}
 	},
 }

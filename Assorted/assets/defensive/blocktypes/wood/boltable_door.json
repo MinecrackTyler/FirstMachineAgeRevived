@@ -17,7 +17,7 @@
 		{ code: "part", states: ["down", "up"] },
 		{ code: "state", states: ["closed", "opened"] },		
 	],
-	creativeinventory: { "general": ["boltable_door-north-down-closed"], "decorative": ["boltable_door-north-down-closed"] },	
+	creativeinventory: { "general": ["boltable_door-north-down-closed"], "decorative": ["boltable_door-north-down-closed"], "defensive": ["boltable_door-north-down-closed"] },	
 	textures: {
 		"wall-inside": { base:"game:block/wood/crate/wall-inside"},
 		"oak2": { base:"game:block/wood/planks/oak2"},

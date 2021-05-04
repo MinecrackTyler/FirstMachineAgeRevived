@@ -20,7 +20,7 @@
     <ConsolePause>false</ConsolePause>
     <CustomCommands>
       <CustomCommands>
-        <Command type="AfterBuild" command="7z -tzip a Defensive_${ProjectConfig}.zip" workingdir="${TargetDir}" />
+        <Command type="AfterBuild" command="7z a -tzip -x!*.zip -aoa  Defensive_${ProjectConfig}.zip" workingdir="${TargetDir}" />
         <Command type="AfterClean" command="rm -f *.zip" workingdir="${TargetDir}" />
       </CustomCommands>
     </CustomCommands>
@@ -31,6 +31,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="7z -tzip a Defensive_${ProjectConfig}.zip" workingdir="${TargetDir}" />
+        <Command type="AfterClean" command="rm -f *.zip" workingdir="${TargetDir}" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -207,6 +213,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\defensive\recipes\grid\false_wall.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\recipes\grid\enclosed_candle.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

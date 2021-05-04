@@ -1,0 +1,13 @@
+﻿{
+	ingredientPattern: "PPP QCQ	_B_",
+	ingredients: {
+		"P": { type: "item", code: "game:clay-*" },
+        "Q": { type:"item", code:"game:clearquartz"},
+        "C": { type: "item", code: "game:candle" },
+        "B": { type: "block", code: "game:bowl-burned" },
+	},
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "defensive:enclosed_candle-north"  }
+}
+

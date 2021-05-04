@@ -22,7 +22,7 @@
 		{name: "VerticalOrentiation" },
 		{name: "FreeReinforcement", properties: { howmuch: 15 }}
 	],
-	creativeinventory: { "general": ["grille_vertical-up"], "decorative": ["grille_vertical-up"] },	
+	creativeinventory: { "general": ["grille_vertical-up"], "decorative": ["grille_vertical-up"] , "defensive": ["grille_vertical-up"] },	
 	resistance: 4,
 	rainPermeable: true,
 	lightAbsorption: 0,

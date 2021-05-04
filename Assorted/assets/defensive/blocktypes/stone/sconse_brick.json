@@ -33,7 +33,7 @@
 		{name: "HorizontalOrientable", properties: {  dropBlockFace: "north" }}		
 	],
     renderpass: "OpaqueNoCull",
-	creativeinventory: { "general": ["*-north"], "construction": ["*-north"] },	
+	creativeinventory: { "general": ["*-north"], "construction": ["*-north"] , "defensive": ["*-north"] },	
 	replaceable: 200,
 	resistance: 4,	
 	rainPermeable: false,

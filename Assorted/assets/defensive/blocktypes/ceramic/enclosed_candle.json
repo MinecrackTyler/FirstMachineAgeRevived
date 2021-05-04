@@ -25,7 +25,7 @@
 		"semi_t_cera": { base: "ceramic/semi_t_cera" },
 		"brown1": { base: "game:block/clay/hardened/brown1"}       
     },
-	creativeinventory: { "general": ["*-north"], "decorative": ["*-north"] },
+	creativeinventory: { "general": ["*-north"], "decorative": ["*-north"], "defensive": ["*-north"] },
 	replaceable: 300,
 	resistance: 0.25,
 	maxStackSize: 4,

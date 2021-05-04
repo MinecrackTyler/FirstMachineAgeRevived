@@ -6,7 +6,7 @@
     { code: "material", loadFromProperties: "block/rock" },    
     ],
 	behaviors: [{name: "NeedSides", properties: { applicableMaterials: ["Soil", "Wood", "Stone", "Ore", "Metal", "Mantle", "Ceramic", "Brick", "Other"]} }],
-	creativeinventory: { "general": ["*"], "terrain": ["*"] },
+	creativeinventory: { "general": ["*"], "terrain": ["*"], "defensive": ["*"] },
 	shape: { base: "block/wood/false_floor" },		
     blockmaterial: "Stone",
 	texturesByType: {    	
