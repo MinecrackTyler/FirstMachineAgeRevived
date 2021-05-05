@@ -86,7 +86,7 @@ namespace AnvilMetalRecovery
 				if ((TrackedItemData == null || TrackedItemData.SlotID != slotID) ) 
 				{
 				var hitpoints = Player.RightHandItemSlot?.Itemstack?.Hitpoints( );
-				if (hitpoints.HasValue && hitpoints.Value <= 1)
+				if (hitpoints.HasValue && hitpoints.Value >= 1)
 					{
 					TrackedItemData = new HotbarObserverData(slotID, watchedSlot.Itemstack.Item, Player.PlayerUID);
 					#if DEBUG
@@ -122,21 +122,29 @@ namespace AnvilMetalRecovery
 		#if DEBUG
 		ServerAPI.Logger.VerboseDebug("DirtyEvent: Tracked Slot#{0} is {1}", TrackedItemData.SlotID, TrackedItemData.ItemCode.ToShortString( ));
 		if (!Player.RightHandItemSlot.Empty && Player.RightHandItemSlot.Itemstack.Class == EnumItemClass.Item) {
-		ServerAPI.Logger.VerboseDebug("^ Active Item: {0}, Slot#{2}, H.P.[{1}]", Player.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Item.Code, hitpoints ?? 0, Player.Player.InventoryManager.ActiveHotbarSlotNumber );
+		ServerAPI.Logger.VerboseDebug("^ Active Item: {0}, Slot#{2}, H.P.[{1}]", Player.Player.InventoryManager.ActiveHotbarSlot.Itemstack.Item.Code, hitpoints ?? -1, Player.Player.InventoryManager.ActiveHotbarSlotNumber );
 		}
 		#endif
 
-		if (Player.Player.InventoryManager.ActiveHotbarSlotNumber == TrackedItemData.SlotID) {
-			
-				if (Player.RightHandItemSlot.Empty ) 
+			if (Player.Player.InventoryManager.ActiveHotbarSlotNumber == TrackedItemData.SlotID) 
+			{
+				if (Player.RightHandItemSlot.Empty) 
 				{
 				#if DEBUG
 				ServerAPI.Logger.VerboseDebug("Tracked Slot Cleared! #{0} WAS {1}", TrackedItemData.SlotID, TrackedItemData.ItemCode.ToShortString( ));
 				#endif	
 				ServerAPI.Event.PushEvent(HotbarChannelName, TrackedItemData);
 				TrackedItemData = null;
-				}	
-			}							
+				} 
+				else if ( ItemFilterList.Contains(Player.RightHandItemSlot?.Itemstack?.Item?.Code) && hitpoints <= 0)
+				{
+				#if DEBUG
+				ServerAPI.Logger.VerboseDebug("Tracked Slot HP=0!, #{0} WAS {1}", TrackedItemData.SlotID, TrackedItemData.ItemCode.ToShortString( ));
+				#endif
+				ServerAPI.Event.PushEvent(HotbarChannelName, TrackedItemData);
+				TrackedItemData = null;		
+				}		
+			}					
 		}
 		return false;//When should this be true? 
 		}
