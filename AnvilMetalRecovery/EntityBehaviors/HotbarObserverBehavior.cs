@@ -75,7 +75,16 @@ namespace AnvilMetalRecovery
 
 		private void Mainhand_InventorySlotChanging(int slotID)
 		{
-		var watchedSlot = Player.RightHandItemSlot;
+
+		if (slotID != Player.Player.InventoryManager.ActiveHotbarSlotNumber) 
+		{
+		#if DEBUG
+		ServerAPI.Logger.VerboseDebug("Ingoring (Slot switching); Event-Slot #{1} -> HB #{0} ", Player.Player.InventoryManager.ActiveHotbarSlotNumber, slotID);
+		#endif
+		return;
+		}
+
+		var watchedSlot = Player.RightHandItemSlot; //InventoryManager.ActiveHotbarSlot;
 		if (!watchedSlot.Empty) {
 
 		if (watchedSlot.Itemstack.Class == EnumItemClass.Item) 
@@ -83,12 +92,12 @@ namespace AnvilMetalRecovery
 			if (ItemFilterList.Contains(watchedSlot?.Itemstack.Item.Code)) 
 			{									
 			//starts empty	|| Slot changes
-				if ((TrackedItemData == null || TrackedItemData.SlotID != slotID) ) 
+				if ((TrackedItemData == null || TrackedItemData.SlotID != Player.Player.InventoryManager.ActiveHotbarSlotNumber) ) 
 				{
 				var hitpoints = Player.RightHandItemSlot?.Itemstack?.Hitpoints( );
 				if (hitpoints.HasValue && hitpoints.Value >= 1)
 					{
-					TrackedItemData = new HotbarObserverData(slotID, watchedSlot.Itemstack.Item, Player.PlayerUID);
+					TrackedItemData = new HotbarObserverData(Player.Player.InventoryManager.ActiveHotbarSlotNumber, watchedSlot.Itemstack.Item, Player.PlayerUID);
 					#if DEBUG
 					ServerAPI.Logger.VerboseDebug("Tracking {0} in #{1}; H.P.[{2}]", TrackedItemData.ItemCode.ToShortString( ), slotID, hitpoints);
 					#endif
@@ -130,6 +139,11 @@ namespace AnvilMetalRecovery
 			{
 				if (Player.RightHandItemSlot.Empty) 
 				{
+				//Apparently; 'RightHandItemSlot' isn't accurate
+				var hotbarInv = Player.Player.InventoryManager.GetHotbarInventory( );
+				var hotSlot = hotbarInv[TrackedItemData.SlotID];
+				if (!hotSlot.Empty) return false;
+
 				#if DEBUG
 				ServerAPI.Logger.VerboseDebug("Tracked Slot Cleared! #{0} WAS {1}", TrackedItemData.SlotID, TrackedItemData.ItemCode.ToShortString( ));
 				#endif	
