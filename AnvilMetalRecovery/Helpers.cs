@@ -53,6 +53,11 @@ namespace AnvilMetalRecovery
 		appendedCode.Path += ("-" + append);
 		return appendedCode;
 		}
+
+		internal static bool NothingNull(params object[ ] parameters)
+		{
+		return parameters.All(parm => parm != null);
+		}
 	}
 }
 

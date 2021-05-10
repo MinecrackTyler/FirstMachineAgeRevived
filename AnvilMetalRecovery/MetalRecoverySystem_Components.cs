@@ -22,35 +22,68 @@ namespace AnvilMetalRecovery
 		var examineList = ServerAPI.World.SmithingRecipes.Where(sr => sr.Enabled && sr.Ingredient.Type == EnumItemClass.Item && sr.Output.Type == EnumItemClass.Item);
 
 		foreach (var recipie in examineList) {
-		CollectibleObject metalObject = recipie.Ingredient.Type == EnumItemClass.Item ? ServerAPI.World.GetItem(recipie.Ingredient.Code) : ServerAPI.World.GetBlock(recipie.Ingredient.Code) as CollectibleObject;
-		Item outputItem = ServerAPI.World.GetItem(recipie.Output.Code);
 
-		if (metalObject.CombustibleProps != null && metalObject.CombustibleProps.SmeltingType == EnumSmeltType.Smelt && metalObject.CombustibleProps.SmeltedRatio > 0) {
+		if (SmithingRecipieValidator(recipie) == false) {
+		#if DEBUG
+		Mod.Logger.Debug($"Probable invalid Smithing Recipie: {recipie.Name.ToString( )}, skipping.");
+		#endif
+		continue;
+		}
+
+		CollectibleObject metalObject = recipie.Ingredient.Type == EnumItemClass.Item ? ServerAPI.World.GetItem(recipie.Ingredient.Code) : ServerAPI.World.GetBlock(recipie.Ingredient.Code) as CollectibleObject;
+		Item outputItem = ServerAPI.World.GetItem(recipie?.Output?.Code);
+
+		if (outputItem == null) {
+		#if DEBUG
+		Mod.Logger.Debug($"Missing Output item, from: {recipie.Name.ToString( )}, skipping.");
+		#endif
+		continue;
+		}
+
+		if (metalObject != null && metalObject.CombustibleProps != null && metalObject.CombustibleProps.SmeltingType == EnumSmeltType.Smelt && metalObject.CombustibleProps.SmeltedRatio > 0) {
 		//Item Input Has a metal Unit value...(Smeltable)	
 		//Resolve?
 		int setVoxels = 0;
-		setVoxels = recipie.Voxels.OfType<bool>( ).Count(vox => vox);
+		setVoxels = recipie.Voxels.OfType<bool>( ).Count(vox => vox);							
 
 		#if DEBUG
-		Mod.Logger.VerboseDebug($"{recipie.Output.Quantity}* '{outputItem.Code}' -> {setVoxels}x '{metalObject.Code}' voxel = ~{setVoxels * IngotVoxelEquivalent:F1} metal Units");
+		Mod.Logger.VerboseDebug($"Info: {recipie.Output.Quantity}* '{outputItem.Code}' -> {setVoxels}x '{metalObject.Code}' voxel = ~{setVoxels * IngotVoxelEquivalent:F1} metal Units");
 		#endif
 		//Direct output *IS* tool or tool-like Durability type item (chisel )
 		if (outputItem.Tool.HasValue || outputItem.Durability > 1) {
+
+		if (itemToVoxelLookup.ContainsKey(outputItem.Code)) { 
+		Mod.Logger.Warning($"Duplicate recipie '{recipie.Name}' output item: '{outputItem.Code.ToString()}'");				
+		}
+		else {
 		itemToVoxelLookup.Add(outputItem.Code.Clone( ), new RecoveryEntry(metalObject.Code,
 																		  ( uint )(setVoxels / recipie.Output.Quantity),
 																			  metalObject.CombustibleProps.MeltingDuration,
 																		  metalObject.CombustibleProps.MeltingPoint)
 							 );
-		#if DEBUG
-		Mod.Logger.VerboseDebug($"Mapped: ('tool') '{outputItem.Code}' -> ('tool') '{outputItem.Code}'");
-		#endif
+			#if DEBUG
+			Mod.Logger.VerboseDebug($"Mapped: ('tool') '{outputItem.Code}' -> ('tool') '{outputItem.Code}'");
+			#endif
+			}
+						
 		}
 		else {
 		//Tool-head map to Tool item; decode
 		var itemToolCode = ServerAPI.World.GridRecipes.FirstOrDefault(gr => gr.Ingredients.Any(crg => crg.Value.Code.Equals(outputItem.Code)) && gr.Enabled && gr.Output.Type == EnumItemClass.Item)?.Output.Code;
 		if (itemToolCode != null) {
 		var itemTool = ServerAPI.World.GetItem(itemToolCode);
-		if (itemTool.Tool.HasValue) {
+		if (itemTool == null) {
+		#if DEBUG
+		Mod.Logger.Debug($"Missing Output Tool item, from: {recipie.Name.ToString( )}, skipping.");
+		#endif
+		continue;
+		}
+
+		if ( itemTool.Tool.HasValue) {
+		if (itemToVoxelLookup.ContainsKey(itemToolCode)) {
+		Mod.Logger.Warning($"Duplicate recipie '{recipie.Name}' output tool-item: '{itemToolCode.ToString( )}'");
+		}
+		else
 		itemToVoxelLookup.Add(itemToolCode.Clone( ), new RecoveryEntry(metalObject.Code,
 																	  ( uint )(setVoxels / recipie.Output.Quantity),
 																		  metalObject.CombustibleProps.MeltingDuration,
@@ -65,6 +98,19 @@ namespace AnvilMetalRecovery
 		}
 		}
 
+		}
+
+		private bool SmithingRecipieValidator(SmithingRecipe aRecipie )
+		{
+		if (Helpers.NothingNull(aRecipie,
+		aRecipie.Ingredient, aRecipie.Ingredient.Code,
+		aRecipie.Output, aRecipie.Output.Code, aRecipie.Output.Type))
+		//2nd Stage - 
+		if (aRecipie.Ingredients.Length >= 1 && aRecipie.Ingredient.Quantity >= 1)
+			if (aRecipie.Output.Quantity > 0)
+				return true;
+
+		return false;
 		}
 
 		private void HotbarEventReciever(string eventName, ref EnumHandling handling, IAttribute data)
