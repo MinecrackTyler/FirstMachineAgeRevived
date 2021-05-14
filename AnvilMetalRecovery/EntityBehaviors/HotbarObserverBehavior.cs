@@ -20,9 +20,8 @@ namespace AnvilMetalRecovery
 	{
 		public const string HotbarChannelName = @"HotbarEvents";
 		protected static List<AssetLocation> ItemFilterList;
-
 		protected HotbarObserverData TrackedItemData;
-
+		public bool Connected { get; private set;}
 
 		public override string PropertyName( )
 		{
@@ -45,11 +44,10 @@ namespace AnvilMetalRecovery
 		}
 		}
 
-
-
-		public override void OnEntitySpawn( )
+		internal static void DirectConnect(IServerPlayer byPlayer)
 		{
-		AttachEvents( );
+		var hbObserver = byPlayer.Entity.GetBehavior<HotbarObserverBehavior>( );
+		hbObserver?.AttachEvents( );
 		}
 
 		public override void OnEntityLoaded( )
@@ -57,18 +55,18 @@ namespace AnvilMetalRecovery
 		AttachEvents( );
 		}
 
-
-		private void AttachEvents( )
+		public void AttachEvents( )
 		{
-			if (this.entity.Api.Side.IsServer( )) 
+			if (this.entity.Api.Side.IsServer( ) && Connected == false) 
 			{
 			#if DEBUG
-			ServerAPI.Logger.VerboseDebug("Hotbar Observer Online for: {0}", Player.GetName( ));
+			ServerAPI.Logger.VerboseDebug("Hotbar Observer Online for: {0}", Player?.Player.PlayerName);
 			#endif
 
-			//Attach event observer...	
+			//Attach event observer...				
 			Player.RightHandItemSlot.Inventory.SlotModified += Mainhand_InventorySlotChanging;
 			Player.RightHandItemSlot.MarkedDirty += Mainhand_MarkedDirty;
+			this.Connected = true;
 			}
 		}
 
@@ -162,6 +160,7 @@ namespace AnvilMetalRecovery
 		}
 		return false;//When should this be true? 
 		}
-	}
+
+}
 }
 

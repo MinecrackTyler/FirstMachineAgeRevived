@@ -99,7 +99,7 @@ namespace AnvilMetalRecovery
 		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
 
 		#if DEBUG
-			ServerAPI.RegisterCommand("durability", "edit durability of item", " (Held tool) and #", EditDurability);
+		ServerAPI.RegisterCommand("durability", "edit durability of item", " (Held tool) and #", EditDurability, Privilege.give);
 		#endif
 
 		
@@ -134,6 +134,7 @@ namespace AnvilMetalRecovery
 		private void SetupHotbarObserver( ){
 		ServerCore.RegisterEntityBehaviorClass(@"HotbarObserver", typeof(HotbarObserverBehavior));
 		ServerCore.Event.RegisterEventBusListener(HotbarEventReciever, 1.0f, HotbarObserverBehavior.HotbarChannelName);
+		ServerCore.Event.PlayerNowPlaying += HotbarObserverBehavior.DirectConnect;
 		}
 
 

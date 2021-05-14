@@ -110,6 +110,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="BlockEntities\MetalRecovery_BlockEntityAnvil.cs" />
+    <None Include="assets\fma\lang\de.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />
