@@ -16,6 +16,8 @@
 	"defensive:blockdesc-grille_horizontal-*": "A horizontal grille of latticed wrought iron bars.",
     "defensive:blockdesc-grille_vertical-*": "Vertical cross-bars of sturdy iron.",
 
+    "game:tabname-defensive":"Defensive Stuff",
+
 	"defensive:placefailure-requirehorizontalside": "Cannot place block here! It needs one solid sided block adjacent.",
     "defensive:ingameerror-requirehorizontalside": "2Cannot place block here! It needs one solid sided block adjacent.",
     "defensive:ingameerror-boltedclosed":"Bolted Shut.",
