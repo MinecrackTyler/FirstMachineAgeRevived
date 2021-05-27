@@ -24,7 +24,7 @@ namespace ConstructionSupport
 		{
 			CoreAPI.RegisterBlockClass(DeckworkHorizontalBlock.BlockClassName, typeof(DeckworkHorizontalBlock));
 			CoreAPI.RegisterBlockClass(DeckworkCornerBlock.BlockClassName, typeof(DeckworkCornerBlock));
-			CoreAPI.RegisterBlockClass(TrussBlock.BlockClassName, typeof(TrussBlock));
+			//CoreAPI.RegisterBlockClass(TrussBlock.BlockClassName, typeof(TrussBlock));
 		}
 
 

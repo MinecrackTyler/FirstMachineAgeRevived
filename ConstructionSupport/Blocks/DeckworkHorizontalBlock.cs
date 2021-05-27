@@ -31,12 +31,12 @@ namespace ConstructionSupport
 
 		public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref string failureCode)
 		{
-		var surfaceBlock = world.BlockAccessor.GetBlock(blockSel.Position.Copy().Offset(blockSel.Face.GetOpposite()));
+		var surfaceBlock = world.BlockAccessor.GetBlock(blockSel.Position.Copy().Offset(blockSel.Face.Opposite));
 
 		if (base.ValidAttachmentFaces.Contains(blockSel.Face)) 
 		{		
 
-		if (IsHardSurface(world.BlockAccessor, surfaceBlock, blockSel.Position, OwnRotation.GetOpposite())) 
+		if (IsHardSurface(world.BlockAccessor, surfaceBlock, blockSel.Position, OwnRotation.Opposite)) 
 		{		
 		
 		#if DEBUG
@@ -77,7 +77,7 @@ namespace ConstructionSupport
 
 		if (preventDefault) return result;
 
-		var rotatedBlockId = RotateToFace(blockSel.Face.GetOpposite());
+		var rotatedBlockId = RotateToFace(blockSel.Face.Opposite);
 		//Switcheroo!
 		world.BlockAccessor.SetBlock(rotatedBlockId.BlockId, blockSel.Position, byItemStack);
 		

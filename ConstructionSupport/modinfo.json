@@ -1,12 +1,12 @@
 ﻿{
   "type": "code",
   "name": "Construction Supports",
-  "description" : "Scaffolds and Construction equipment, for the builders.",
+  "description" : "Scaffolds and Deckwork blocks, supports for vertical builds.",
   "authors": ["Melchior"],
   "ModID":"constructionsupport",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "dependencies": { 
-	"game": "1.13.4",
+	"game": "1.14.0",
 	"survival": ""
   },
   "website": "http://nowebsite.nope"

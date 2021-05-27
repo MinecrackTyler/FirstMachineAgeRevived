@@ -11,7 +11,7 @@
 		{ code:"side", loadFromProperties: "abstract/horizontalorientation" }
 	],
 	textures: {		
-		"linen": { base: "game:block/linen"},
+		"rope": { base: "materials/rope_texture"},
 		"stem": { base: "game:block/plant/bamboo/stem-brown"}
 	},
 	creativeinventory: { "general": ["bamboo_scaffold-north"], "decorative": ["bamboo_scaffold-north"] },	

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Vintagestory.API.Common;
+using Vintagestory.API.Common.Entities;
 using Vintagestory.API.MathTools;
 
 namespace ConstructionSupport
@@ -55,12 +56,12 @@ namespace ConstructionSupport
 			}
 		}
 
-		public override bool CanCreatureSpawnOn(IBlockAccessor blockAccessor, BlockPos pos, Vintagestory.API.Common.Entities.EntityProperties type, Vintagestory.API.Common.Entities.BaseSpawnConditions sc)
+		public override bool CanCreatureSpawnOn(IBlockAccessor blockAccessor, BlockPos pos, EntityProperties type, BaseSpawnConditions sc)
 		{
 		return false;//Never, anything.
 		}
 
-		protected bool IsHardSurface(IBlockAccessor world, Block checkBlock, BlockPos checkPos, BlockFacing checkFace)
+		public bool IsHardSurface(IBlockAccessor world, Block checkBlock, BlockPos checkPos, BlockFacing checkFace)
 		{
 			if (checkBlock != null && checkBlock.MatterState == EnumMatterState.Solid &&
 			    (
@@ -70,6 +71,7 @@ namespace ConstructionSupport
 			    checkBlock.BlockMaterial == EnumBlockMaterial.Ore ||
 			    checkBlock.BlockMaterial == EnumBlockMaterial.Other ||
 			    checkBlock.BlockMaterial == EnumBlockMaterial.Stone ||
+			    checkBlock.BlockMaterial == EnumBlockMaterial.Metal ||
 			    checkBlock.BlockMaterial == EnumBlockMaterial.Wood 			   
 			   ))
 			{
@@ -77,6 +79,35 @@ namespace ConstructionSupport
 			//checkBlock.SideSolid[blockFace.Index]
 		}
 			
+		return false;
+		}
+
+		public bool CheckCornerSolid(IBlockAccessor world,  BlockPos checkPos )
+		{
+		//Visit all diagonal combinations
+		Stack<BlockPos> checkList = new Stack<BlockPos>( );
+
+		checkList.Push(checkPos.Copy( ).Add( 1, 1, 0));
+		checkList.Push(checkPos.Copy( ).Add( 1,-1, 0));
+		checkList.Push(checkPos.Copy( ).Add(-1, 1, 0));
+		checkList.Push(checkPos.Copy( ).Add(-1,-1, 0));
+		Block toCheck;
+		while (checkList.Count > 0 )
+		{
+		toCheck = world.GetBlock(checkList.Pop( ));
+		if (toCheck != null && toCheck.IsSolid()) return true;
+		}				
+
+		return false;
+		}
+
+		public bool IsDeckwork(IBlockAccessor world, BlockPos checkPos)
+		{
+		var aBlock = world.GetBlock(checkPos);
+
+		if (aBlock != null && aBlock is GenericScaffold) {
+		return true;
+		}
 		return false;
 		}
 

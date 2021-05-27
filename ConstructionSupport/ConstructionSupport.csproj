@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>ConstructionSupport</RootNamespace>
     <AssemblyName>ConstructionSupport</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,7 +20,7 @@
     <ConsolePause>false</ConsolePause>
     <CustomCommands>
       <CustomCommands>
-        <Command type="AfterBuild" command="7z -tzip a ${ProjectName}_${ProjectConfig}.zip" workingdir="${TargetDir}" />
+        <Command type="AfterBuild" command="7z a -tzip -x!*.zip -aoa ${ProjectName}_${ProjectConfig}.zip" workingdir="${TargetDir}" />
         <Command type="AfterClean" command="rm -f *.zip" workingdir="${TargetDir}" />
       </CustomCommands>
     </CustomCommands>
@@ -73,7 +73,6 @@
     <Compile Include="Assignments.cs" />
     <Compile Include="Blocks\DeckworkHorizontalBlock.cs" />
     <Compile Include="Blocks\DeckworkCornerBlock.cs" />
-    <Compile Include="Blocks\TrussBlock.cs" />
     <Compile Include="Blocks\Common\GenericScaffold.cs" />
     <Compile Include="Blocks\Common\BlockHelpers.cs" />
   </ItemGroup>
@@ -93,7 +92,9 @@
     <None Include="assets\fma\blocktypes\frames\deckwork_horiz.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\blocktypes\frames\deckwork_corner.json" />
+    <None Include="assets\fma\blocktypes\frames\deckwork_corner.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="assets\fma\blocktypes\frames\truss_vert.json" />
     <None Include="assets\fma\recipes\grid\frames\deckwork_horiz.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -104,6 +105,10 @@
     <None Include="assets\fma\blocktypes\frames\bamboo_scaffold.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="assets\fma\textures\materials\rope_texture.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Blocks\TrussBlock.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />

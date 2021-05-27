@@ -1,1 +1,55 @@
-﻿
+﻿{
+	code: "deckwork_corner",
+	class: "DeckworkCorner",
+	attributes: {
+		reinforcable: false,
+		canChisel: false,
+		handbook: {
+			groupBy: ["deckwork_corner-*"]	
+		},
+        ValidAttachemtFaces: ["north","east", "south", "west"],
+	},
+	replaceable: 200,
+	resistance: 1.5,
+	blockmaterial: "Wood",
+	variantgroups: [		
+		{ code: "corner", states: ["ne", "nw", "se", "sw"] }
+	],
+	creativeinventory: { "general": ["*-ne"], "construction": ["*-ne"] },
+	drops: [{ code: "deckwork_corner-ne" }],
+	shapebytype: {		
+		"*-ne": { base: "block/frames/deckwork_diag", rotateY: 0 },
+		"*-nw": { base: "block/frames/deckwork_diag", rotateY: 90 },
+		"*-se": { base: "block/frames/deckwork_diag", rotateY: 180 },	
+    	"*-sw": { base: "block/frames/deckwork_diag", rotateY: 270 },		
+	},
+	sideopaque: { all: false, up: true },
+	emitSideAo: {all: false, up: true },
+	textures: {		
+		"ladder": { base: "game:block/wood/ladder" },
+		"generic": { base:"game:block/wood/planks/generic"}			
+	},
+	selectionBox: { x1: 0, y1: 0.55, z1: 0, x2: 1, y2: 1, z2: 1 },
+	selectionBox: { x1: 0, y1: 0.55, z1: 0, x2: 1, y2: 1, z2: 1 },
+	sounds: {
+		"hit": "game:block/planks",
+		"break": "game:block/planks",
+		"place": "game:block/planks",
+		"walk": "game:walk/wood"
+	},
+	combustibleProps: {
+		burnTemperature: 800,
+		burnDuration: 20,
+	},
+	materialDensity: 600,
+	guiTransform: {
+		translation: { x: 0, y: 2, z: 0 },
+		origin: { x: 0.5, y: 0.25, z: 0.5 }
+	},
+	heldTpIdleAnimation: "holdbothhandslarge", heldTpUseAnimation: "twohandplaceblock",
+	tpHandTransform: {
+		translation: { x: -1.2, y: -1.1, z: -0.8 },
+		rotation: { x: -2, y: 25, z: -78 },
+		scale: 0.37
+	}
+}
