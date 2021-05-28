@@ -31,6 +31,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="7z a -tzip -x!*.zip -aoa ${ProjectName}_${ProjectConfig}.zip" workingdir="${TargetDir}" />
+        <Command type="AfterClean" command="rm -f *.zip" workingdir="${TargetDir}" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
