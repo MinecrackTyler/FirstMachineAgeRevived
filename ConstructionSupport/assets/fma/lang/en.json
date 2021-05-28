@@ -1,0 +1,13 @@
+﻿{
+	"fma:block-bamboo_scaffold-*":"Bamboo Scaffold",
+	"fma:block-deckwork_corner-*":"Deck-work (corner)",
+    "fma:block-deckwork_horiz-*":"Deck-work (side)",
+
+    "fma:blockdesc-bamboo_scaffold-*": "A climbable bamboo frame.",
+   
+
+    "game:tabname-constructionsupport":"Construction",
+
+	"constructionsupport:placefailure-surface_solid_diagonal": "Place against solid block or deck sides...not here.",
+    "constructionsupport:placefailure-surface_solid_horizontal":"Needs a Solid SIDE, to place this.",
+}

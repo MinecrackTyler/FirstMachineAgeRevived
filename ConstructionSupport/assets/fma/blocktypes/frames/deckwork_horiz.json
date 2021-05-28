@@ -15,7 +15,7 @@
 	variantgroups: [		
 		{ code: "rot", states: ["north", "east", "south", "west"] }
 	],
-	creativeinventory: { "general": ["*-north"], "construction": ["*-north"] },
+	creativeinventory: { "general": ["*-north"], "construction": ["*-north"], "constructionsupport": ["*-north"] },
 	drops: [{ code: "deckwork_horiz-north" }],
 	shapebytype: {		
 		"*-north": { base: "block/frames/deckwork_horiz", rotateY: 0 },

@@ -14,7 +14,7 @@
 		"rope": { base: "materials/rope_texture"},
 		"stem": { base: "game:block/plant/bamboo/stem-brown"}
 	},
-	creativeinventory: { "general": ["bamboo_scaffold-north"], "decorative": ["bamboo_scaffold-north"] },	
+	creativeinventory: { "general": ["bamboo_scaffold-north"], "decorative": ["bamboo_scaffold-north"], "constructionsupport": ["bamboo_scaffold-north"] },	
 	shapeinventory: { base: "block/frames/bamboo_scaffold" },
 	shapebytype: {
 		"*-north": { base: "block/frames/bamboo_scaffold", rotateY: 0 },

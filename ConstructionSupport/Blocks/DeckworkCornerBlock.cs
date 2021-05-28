@@ -26,21 +26,22 @@ namespace ConstructionSupport
 		--Must be in contact(NEWS) with 1 other "deckwork_horiz" (or more)
 		--Directly below: AIR ONLY!
 
-		[If 'attached' side-scafolds - block breaks off too!]
+		[If 'attached' side-scafolds - block breaks off too?]
 		[If B.U.D. with solid (non-truss) block Above - scaffold(s) breaks !]
 		 */
 
 		public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref string failureCode)
 		{
-		var placeSpot = blockSel.Position.AddCopy(blockSel.Face, 1);
-		var lookSpot = blockSel.Position.Copy( ).Offset(blockSel.Face.Opposite);
+		var lookSpot = blockSel.Position.AddCopy(blockSel.Face.Opposite);
+		var placeSpot = lookSpot.AddCopy(blockSel.Face);		
 		var surfaceBlock = world.BlockAccessor.GetBlock(lookSpot);
+		var placementArea = world.BlockAccessor.GetBlock(placeSpot);
 		BlockPos cornerPos;
 
-		if (base.ValidAttachmentFaces.Contains(blockSel.Face)) {					
-
+		if (base.ValidAttachmentFaces.Contains(blockSel.Face)) {
+		
 		//of the 4 Corners - any 1 a solid block; AND attachment to deckwork on faces... 
-		if (IsDeckwork(world.BlockAccessor, lookSpot) 
+		if (placementArea == null || placementArea.IsGaseous() && IsDeckwork(world.BlockAccessor, lookSpot) 
 				&& CheckCornerSolid(world.BlockAccessor, placeSpot, out cornerPos)) 
 		{					
 		
@@ -81,11 +82,12 @@ namespace ConstructionSupport
 
 		if (preventDefault) return result;
 		//Find Corner;
-		var lookSpot = blockSel.Position.Copy( ).Offset(blockSel.Face.Opposite);
-		var placeSpot = blockSel.Position.AddCopy(blockSel.Face, 1);
+		var lookSpot = blockSel.Position.AddCopy(blockSel.Face.Opposite);
+		var placeSpot = lookSpot.AddCopy(blockSel.Face);
+		var placementArea = world.BlockAccessor.GetBlock(placeSpot);
 		BlockPos cornerPos;
 		CheckCornerSolid(world.BlockAccessor, placeSpot, out cornerPos);
-		var realCornerInitial = placeSpot.DiagonalInitial(cornerPos);
+		var realCornerInitial = cornerPos.DiagonalInitial(placeSpot);
 
 		#if DEBUG
 		api.World.Logger.VerboseDebug($"Diagonal Changed: {realCornerInitial} for {this.Code}, Look: {lookSpot} ,Place: {placeSpot}, Corner: {cornerPos}");
@@ -94,7 +96,7 @@ namespace ConstructionSupport
 		var blockAssetCode = this.CodeWithVariant(@"corner", realCornerInitial);
 
 		var rotatedBlock = api.World.BlockAccessor.GetBlock(blockAssetCode);
-		if (rotatedBlock != null) 
+		if (placementArea == null || placementArea.IsGaseous( ) && rotatedBlock != null) 
 				{
 				world.BlockAccessor.SetBlock(rotatedBlock.BlockId, placeSpot, byItemStack);
 				return true;

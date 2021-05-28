@@ -15,13 +15,13 @@
 	variantgroups: [		
 		{ code: "corner", states: ["ne", "nw", "se", "sw"] }
 	],
-	creativeinventory: { "general": ["*-ne"], "construction": ["*-ne"] },
+	creativeinventory: { "general": ["*-ne"], "construction": ["*-ne"], "constructionsupport": ["*-ne"]  },
 	drops: [{ code: "deckwork_corner-ne" }],
 	shapebytype: {		
-		"*-ne": { base: "block/frames/deckwork_diag", rotateY: 0 },
-		"*-nw": { base: "block/frames/deckwork_diag", rotateY: -90 },
+		"*-ne": { base: "block/frames/deckwork_diag", rotateY: 270 },
+		"*-nw": { base: "block/frames/deckwork_diag", rotateY: 0 },
 		"*-se": { base: "block/frames/deckwork_diag", rotateY: 180 },	
-    	"*-sw": { base: "block/frames/deckwork_diag", rotateY: 270 },		
+    	"*-sw": { base: "block/frames/deckwork_diag", rotateY: 90 },		
 	},
 	sideopaque: { all: false, up: true },
 	emitSideAo: {all: false, up: true },
