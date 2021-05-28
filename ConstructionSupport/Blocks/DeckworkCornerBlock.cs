@@ -32,21 +32,22 @@ namespace ConstructionSupport
 
 		public override bool TryPlaceBlock(IWorldAccessor world, IPlayer byPlayer, ItemStack itemstack, BlockSelection blockSel, ref string failureCode)
 		{
-		var placeSpot = blockSel.Position.AddCopy(blockSel.Face.Opposite, 1);
+		var placeSpot = blockSel.Position.AddCopy(blockSel.Face, 1);
 		var lookSpot = blockSel.Position.Copy( ).Offset(blockSel.Face.Opposite);
 		var surfaceBlock = world.BlockAccessor.GetBlock(lookSpot);
+		BlockPos cornerPos;
 
 		if (base.ValidAttachmentFaces.Contains(blockSel.Face)) {					
 
 		//of the 4 Corners - any 1 a solid block; AND attachment to deckwork on faces... 
 		if (IsDeckwork(world.BlockAccessor, lookSpot) 
-				&& CheckCornerSolid(world.BlockAccessor, placeSpot )) 
+				&& CheckCornerSolid(world.BlockAccessor, placeSpot, out cornerPos)) 
 		{					
-		#if DEBUG
-		api.World.Logger.VerboseDebug($"Success: {blockSel.Face} for {this.Code} onto {surfaceBlock.Code} @ {blockSel.Position}");
-		#endif
-
+		
 		if (CanPlaceBlock(world, byPlayer, blockSel, ref failureCode)) {
+		#if DEBUG
+		api.World.Logger.VerboseDebug($"Valid: {blockSel.Face} for {this.Code} onto {surfaceBlock.Code} @ {blockSel.Position}");
+		#endif
 		return DoPlaceBlock(world, byPlayer, blockSel, itemstack);
 		}
 		}
@@ -79,13 +80,27 @@ namespace ConstructionSupport
 		}
 
 		if (preventDefault) return result;
+		//Find Corner;
+		var lookSpot = blockSel.Position.Copy( ).Offset(blockSel.Face.Opposite);
+		var placeSpot = blockSel.Position.AddCopy(blockSel.Face, 1);
+		BlockPos cornerPos;
+		CheckCornerSolid(world.BlockAccessor, placeSpot, out cornerPos);
+		var realCornerInitial = placeSpot.DiagonalInitial(cornerPos);
 
-		var rotatedBlockId = RotateToFace(blockSel.Face.Opposite);
-		//Switcheroo!
-		world.BlockAccessor.SetBlock(rotatedBlockId.BlockId, blockSel.Position, byItemStack);
+		#if DEBUG
+		api.World.Logger.VerboseDebug($"Diagonal Changed: {realCornerInitial} for {this.Code}, Look: {lookSpot} ,Place: {placeSpot}, Corner: {cornerPos}");
+		#endif
 
+		var blockAssetCode = this.CodeWithVariant(@"corner", realCornerInitial);
 
-		return true;
+		var rotatedBlock = api.World.BlockAccessor.GetBlock(blockAssetCode);
+		if (rotatedBlock != null) 
+				{
+				world.BlockAccessor.SetBlock(rotatedBlock.BlockId, placeSpot, byItemStack);
+				return true;
+				}
+
+			return false;
 		}
 
 

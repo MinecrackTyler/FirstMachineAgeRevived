@@ -19,7 +19,7 @@
 	drops: [{ code: "deckwork_corner-ne" }],
 	shapebytype: {		
 		"*-ne": { base: "block/frames/deckwork_diag", rotateY: 0 },
-		"*-nw": { base: "block/frames/deckwork_diag", rotateY: 90 },
+		"*-nw": { base: "block/frames/deckwork_diag", rotateY: -90 },
 		"*-se": { base: "block/frames/deckwork_diag", rotateY: 180 },	
     	"*-sw": { base: "block/frames/deckwork_diag", rotateY: 270 },		
 	},

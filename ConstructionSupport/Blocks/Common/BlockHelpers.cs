@@ -32,6 +32,14 @@ namespace ConstructionSupport
 
 		return false;
 		}
+
+		public static string DiagonalInitial(this BlockPos pos, BlockPos other)
+		{
+		//Subtract, to Normal; then 'Cardinals'...
+		var normal = pos.SubCopy(other);
+		var diagonal = Cardinal.FromNormali(normal.ToVec3i( ));
+		return diagonal?.Initial ?? "?";
+		}
 	}
 }
 

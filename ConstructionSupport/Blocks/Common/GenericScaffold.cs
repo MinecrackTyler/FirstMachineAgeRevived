@@ -82,22 +82,27 @@ namespace ConstructionSupport
 		return false;
 		}
 
-		public bool CheckCornerSolid(IBlockAccessor world,  BlockPos checkPos )
+		public bool CheckCornerSolid(IBlockAccessor world,  BlockPos checkPos, out BlockPos foundCorner )
 		{
 		//Visit all diagonal combinations
 		Stack<BlockPos> checkList = new Stack<BlockPos>( );
 
-		checkList.Push(checkPos.Copy( ).Add( 1, 1, 0));
-		checkList.Push(checkPos.Copy( ).Add( 1,-1, 0));
-		checkList.Push(checkPos.Copy( ).Add(-1, 1, 0));
-		checkList.Push(checkPos.Copy( ).Add(-1,-1, 0));
+		checkList.Push(checkPos.Copy( ).Add( 1, 0, 1));
+		checkList.Push(checkPos.Copy( ).Add( 1, 0,-1));
+		checkList.Push(checkPos.Copy( ).Add(-1, 0, 1));
+		checkList.Push(checkPos.Copy( ).Add(-1, 0,-1));
 		Block toCheck;
 		while (checkList.Count > 0 )
 		{
-		toCheck = world.GetBlock(checkList.Pop( ));
-		if (toCheck != null && toCheck.IsSolid()) return true;
-		}				
-
+		var here = checkList.Pop( );
+		toCheck = world.GetBlock(here);
+			if (toCheck != null && toCheck.IsSolid( )) 
+				{
+					foundCorner = here;
+					return true; 
+				}
+		}
+		foundCorner = null;
 		return false;
 		}
 
