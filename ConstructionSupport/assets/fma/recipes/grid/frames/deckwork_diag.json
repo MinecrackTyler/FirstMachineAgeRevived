@@ -1,11 +1,10 @@
 ﻿{
-	ingredientPattern: "_W_	SPS",
+	ingredientPattern: "_W_	_P_",
 	ingredients: {
         "W": { type:"block", code:"game:plankslab-*"},
 		"P": { type: "item", code: "game:plank-*", name: "wood", allowedVariants: ["birch", "oak", "maple", "pine", "acacia", "kapok", "aged"], quantity: 2 },
-        "S": { type: "item", code: "game:stick", name: "stick" }
 	},
 	width: 3,
 	height: 2,
-	output: { type: "block", code: "deckwork_horiz-north", quantity: 1  }
+	output: { type: "block", code: "deckwork_corner-ne", quantity: 1  }
 }

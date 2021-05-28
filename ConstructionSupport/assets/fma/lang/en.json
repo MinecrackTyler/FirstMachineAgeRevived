@@ -8,6 +8,6 @@
 
     "game:tabname-constructionsupport":"Construction",
 
-	"constructionsupport:placefailure-surface_solid_diagonal": "Place against solid block or deck sides...not here.",
-    "constructionsupport:placefailure-surface_solid_horizontal":"Needs a Solid SIDE, to place this.",
+	"game:placefailure-surface_solid_diagonal": "Place against deck sides...not here.",
+    "game:placefailure-surface_solid_horizontal":"Needs a Solid SIDE, to place this.",
 }

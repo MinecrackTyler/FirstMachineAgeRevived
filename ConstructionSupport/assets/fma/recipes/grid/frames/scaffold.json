@@ -1,0 +1,11 @@
+﻿{
+	ingredientPattern: "BBB	BRB	BBB",
+	ingredients: {
+        "B": { type:"item", code:"game:bamboostakes" },
+		"R": { type: "item", code: "game:rope", quantity: 2 },
+	},
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "bamboo_scaffold-north", quantity: 3  }
+}
+
