@@ -98,6 +98,8 @@ namespace AnvilMetalRecovery
 		}
 		}
 
+		//Cache list too		
+		ServerAPI.ObjectCache.Add(itemFilterListCacheKey, itemToVoxelLookup);		
 		}
 
 		private bool SmithingRecipieValidator(SmithingRecipe aRecipie )
@@ -119,7 +121,7 @@ namespace AnvilMetalRecovery
 		HotbarObserverData hotbarData = data as HotbarObserverData;
 
 		#if DEBUG
-		Mod.Logger.VerboseDebug("HotbarEvent Rx: Item:{0} Slot#{1} PlayerUID:{2}", hotbarData.ItemCode.ToString( ), hotbarData.SlotID, hotbarData.PlayerUID);
+		Mod.Logger.VerboseDebug("HotbarEvent Rx: Item:{0} InventoryID '{1}' Slot#{2} PlayerUID:{3}", hotbarData.ItemCode.ToString( ),hotbarData.InventoryID ,hotbarData.Inventory_SlotID, hotbarData.PlayerUID);
 		#endif
 
 		if (ItemFilterList.Contains(hotbarData.ItemCode)) {
@@ -130,13 +132,13 @@ namespace AnvilMetalRecovery
 
 		var playerTarget = ServerAPI.World.PlayerByUid(hotbarData.PlayerUID);
 		var hotbarInv = playerTarget.InventoryManager.GetHotbarInventory( );
-		var hotSlot = hotbarInv[hotbarData.SlotID];
+		var hotSlot = hotbarInv[hotbarData.Inventory_SlotID];
 		var spim = playerTarget.InventoryManager as ServerPlayerInventoryManager;
+		bool probablyHotbar = hotbarData.InventoryID.StartsWith(@"hotbar", StringComparison.Ordinal);
 
-
-		if (hotSlot.Empty) {
+		if (probablyHotbar && hotSlot.Empty) {
 		#if DEBUG
-		Mod.Logger.VerboseDebug("Directly inserting fragments into hotbar slot# {0}", hotbarData.SlotID);
+		Mod.Logger.VerboseDebug("Directly inserting fragments into hotbar slot# {0}", hotbarData.Inventory_SlotID);
 		#endif
 
 		VariableMetalItem variableMetal = ServerAPI.World.GetItem(new AssetLocation(metalFragmentsCode)) as VariableMetalItem;
@@ -149,7 +151,7 @@ namespace AnvilMetalRecovery
 		}
 		else {
 		#if DEBUG
-		Mod.Logger.VerboseDebug("Occupied Hotbar slot# {0}; shoving item in general direction of player...", hotbarData.SlotID);
+		Mod.Logger.VerboseDebug("Hotbar (or crafting?) slot#{0} occupied; shoving {1} in general direction of player...", hotbarData.Inventory_SlotID,hotbarData.ItemCode.ToShortString());
 		#endif
 
 		VariableMetalItem variableMetal = ServerAPI.World.GetItem(new AssetLocation(metalFragmentsCode)) as VariableMetalItem;

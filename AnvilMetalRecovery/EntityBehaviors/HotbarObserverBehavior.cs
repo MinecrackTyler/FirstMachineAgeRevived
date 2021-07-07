@@ -13,12 +13,13 @@ using Vintagestory.Server;
 
 namespace AnvilMetalRecovery
 {
+	#region OBSOLETE
 	/// <summary>
 	/// Push events to Messagebus on certain INVENTORY hotbar actions
 	/// </summary>
 	public class HotbarObserverBehavior : EntityBehavior
 	{
-		public const string HotbarChannelName = @"HotbarEvents";
+		
 		protected static List<AssetLocation> ItemFilterList;
 		protected HotbarObserverData TrackedItemData;
 		public bool Connected { get; private set;}
@@ -160,7 +161,7 @@ namespace AnvilMetalRecovery
 		}
 		return false;//When should this be true? 
 		}
-
+		#endregion
 }
 }
 

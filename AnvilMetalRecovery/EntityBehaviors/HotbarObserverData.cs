@@ -9,13 +9,15 @@ namespace AnvilMetalRecovery
 	public class HotbarObserverData : IAttribute
 	{		
 		public AssetLocation ItemCode { get; private set; }
-		public int SlotID { get; private set; }
+		public string InventoryID { get; private set; }
+		public int Inventory_SlotID { get; private set; }
 		public string PlayerUID { get; private set; }
 
-		public HotbarObserverData(int slotID, Item item, string playerUID)
+		public HotbarObserverData(string inventoryID, int slotID, AssetLocation itemCode, string playerUID)
 		{
-		SlotID = slotID;
-		this.ItemCode = item.Code.Clone();
+		InventoryID = inventoryID;
+		Inventory_SlotID = slotID;
+		this.ItemCode = itemCode.Clone();
 		PlayerUID = playerUID;
 		}
 
@@ -26,7 +28,8 @@ namespace AnvilMetalRecovery
 
 		public void FromBytes(BinaryReader stream)
 		{
-		SlotID = stream.ReadInt32( );
+		InventoryID = stream.ReadString( );
+		Inventory_SlotID = stream.ReadInt32( );
 		ItemCode = new AssetLocation( stream.ReadString( ));
 		PlayerUID = stream.ReadString( );
 		}
@@ -43,7 +46,8 @@ namespace AnvilMetalRecovery
 
 		public void ToBytes(BinaryWriter stream)
 		{
-		stream.Write(SlotID );
+		stream.Write(InventoryID );
+		stream.Write(Inventory_SlotID);
 		stream.Write(ItemCode.ToString());
 		stream.Write(PlayerUID);
 		}

@@ -16,7 +16,9 @@ namespace AnvilMetalRecovery
 		internal const string anvilKey = @"Anvil";
 		internal const string metalFragmentsCode = @"fma:metal_fragments";
 		internal const string metalShavingsCode = @"metal_shaving";
+		internal const string itemFilterListCacheKey = @"AMR_ItemFilters";
 		public const float IngotVoxelEquivalent = 2.38f;
+		public const string HotbarChannelName = @"HotbarEvents";
 
 		private Dictionary<AssetLocation, RecoveryEntry> itemToVoxelLookup = new Dictionary<AssetLocation, RecoveryEntry>();//Ammount & Material?
 
@@ -132,9 +134,9 @@ namespace AnvilMetalRecovery
 
 
 		private void SetupHotbarObserver( ){
-		ServerCore.RegisterEntityBehaviorClass(@"HotbarObserver", typeof(HotbarObserverBehavior));
-		ServerCore.Event.RegisterEventBusListener(HotbarEventReciever, 1.0f, HotbarObserverBehavior.HotbarChannelName);
-		ServerCore.Event.PlayerNowPlaying += HotbarObserverBehavior.DirectConnect;
+		//ServerCore.RegisterEntityBehaviorClass(@"HotbarObserver", typeof(HotbarObserverBehavior));
+		ServerCore.Event.RegisterEventBusListener(HotbarEventReciever, 1.0f, HotbarChannelName);
+		//ServerCore.Event.PlayerNowPlaying += HotbarObserverBehavior.DirectConnect;		
 		}
 
 

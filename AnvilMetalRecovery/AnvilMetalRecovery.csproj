@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>AnvilMetalRecovery</RootNamespace>
     <AssemblyName>AnvilMetalRecovery</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -73,13 +73,13 @@
     <Compile Include="MetalRecoverySystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers.cs" />
-    <Compile Include="EntityBehaviors\HotbarObserverBehavior.cs" />
     <Compile Include="EntityBehaviors\HotbarObserverData.cs" />
     <Compile Include="Data\RecoveryEntry.cs" />
     <Compile Include="Items\VariableMetalItem.cs" />
     <Compile Include="Items\SmartSmeltableItem.cs" />
     <Compile Include="Harmony\AnvilDaptor.cs" />
     <Compile Include="MetalRecoverySystem_Components.cs" />
+    <Compile Include="Harmony\GenericItemMortalityDetector.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
@@ -98,7 +98,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\fma\patches\hotbarobserver_for_playerentity.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="modicon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -113,6 +112,7 @@
     <None Include="assets\fma\lang\de.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="EntityBehaviors\HotbarObserverBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />
