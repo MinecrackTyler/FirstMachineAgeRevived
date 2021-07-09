@@ -18,7 +18,7 @@ namespace AnvilMetalRecovery
 		internal const string metalShavingsCode = @"metal_shaving";
 		internal const string itemFilterListCacheKey = @"AMR_ItemFilters";
 		public const float IngotVoxelEquivalent = 2.38f;
-		public const string HotbarChannelName = @"HotbarEvents";
+		public const string ItemDamageChannelName = @"ItemDamageEvents";
 
 		private Dictionary<AssetLocation, RecoveryEntry> itemToVoxelLookup = new Dictionary<AssetLocation, RecoveryEntry>();//Ammount & Material?
 
@@ -41,7 +41,7 @@ namespace AnvilMetalRecovery
 
 		/// <summary>
 		/// ALL Items that have were derivable from smithing recipies (and are tool / durable)
-		/// </summary>
+		/// </summary>/
 		/// <value>The item filter list.</value>
 		public Dictionary<AssetLocation, RecoveryEntry> ItemRecoveryTable {
 			get
@@ -90,13 +90,11 @@ namespace AnvilMetalRecovery
 		else {
 		Mod.Logger.Error("Cannot access 'ServerCoreAPI' class:  API (implimentation) has changed, Contact Developer!");
 		return;
-		}
-
-		//ServerCore.ClassRegistryNative.ReplaceBlockEntityType(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));
+		}					
 
 		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);		
 
-		SetupHotbarObserver( );
+		SetupGeneralObservers( );
 
 		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
 
@@ -119,7 +117,7 @@ namespace AnvilMetalRecovery
 		return;
 		}
 
-		//ClientCore.ClassRegistryNative.ReplaceBlockEntityType(anvilKey, typeof(MetalRecovery_BlockEntityAnvil));
+		
 
 		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
 		}
@@ -133,10 +131,8 @@ namespace AnvilMetalRecovery
 
 
 
-		private void SetupHotbarObserver( ){
-		//ServerCore.RegisterEntityBehaviorClass(@"HotbarObserver", typeof(HotbarObserverBehavior));
-		ServerCore.Event.RegisterEventBusListener(HotbarEventReciever, 1.0f, HotbarChannelName);
-		//ServerCore.Event.PlayerNowPlaying += HotbarObserverBehavior.DirectConnect;		
+		private void SetupGeneralObservers( ){
+		ServerCore.Event.RegisterEventBusListener(Item_DamageEventReciever, 1.0f, ItemDamageChannelName);		
 		}
 
 

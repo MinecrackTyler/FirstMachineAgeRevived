@@ -48,17 +48,17 @@ namespace AnvilMetalRecovery.Patches
 		#endif
 		if (DamageFilterTool.Ignore(world, __instance)) return;
 		#if DEBUG
-		world.Api.Logger.VerboseDebug("InventoryID: {0}, Class: {1}", itemslot.Inventory.InventoryID, itemslot.Inventory.ClassName);//Class: hotbar
+		world.Api.Logger.VerboseDebug("InventoryID: {0}, Class: {1}", itemslot?.Inventory?.InventoryID, itemslot?.Inventory?.ClassName);//Class: hotbar
 		world.Api.Logger.VerboseDebug("Thing has HP: {0}", itemslot.Itemstack.Hitpoints( ));
 		#endif
-		if (itemslot.Itemstack.Hitpoints( ) <= amount) 
+		if (itemslot.Itemstack.Hitpoints( ) <= amount && itemslot.Inventory != null) 
 			{
 			#if DEBUG
 			world.Api.Logger.VerboseDebug("Sending Item Expiry Event");
 			#endif
 			var playerEntity = byEntity as EntityPlayer;
 			var hotbarEvent = new HotbarObserverData(itemslot.Inventory.InventoryID, itemslot.Inventory.GetSlotId(itemslot), __instance.Code, (playerEntity == null ? String.Empty : playerEntity.PlayerUID));
-			world.Api.Event.PushEvent(MetalRecoverySystem.HotbarChannelName, hotbarEvent);
+			world.Api.Event.PushEvent(MetalRecoverySystem.ItemDamageChannelName, hotbarEvent);
 			}
 		}
 

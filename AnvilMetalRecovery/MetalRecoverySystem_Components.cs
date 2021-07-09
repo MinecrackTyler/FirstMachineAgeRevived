@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.Server;
 using Vintagestory.Client.NoObf;
@@ -57,7 +58,7 @@ namespace AnvilMetalRecovery
 		}
 		else {
 		itemToVoxelLookup.Add(outputItem.Code.Clone( ), new RecoveryEntry(metalObject.Code,
-																		  ( uint )(setVoxels / recipie.Output.Quantity),
+							                                              ( uint )(setVoxels / recipie.Output.Quantity),
 																			  metalObject.CombustibleProps.MeltingDuration,
 																		  metalObject.CombustibleProps.MeltingPoint)
 							 );
@@ -115,54 +116,58 @@ namespace AnvilMetalRecovery
 		return false;
 		}
 
-		private void HotbarEventReciever(string eventName, ref EnumHandling handling, IAttribute data)
+		private void Item_DamageEventReciever(string eventName, ref EnumHandling handling, IAttribute data)
 		{
 		handling = EnumHandling.PassThrough;
 		HotbarObserverData hotbarData = data as HotbarObserverData;
 
 		#if DEBUG
-		Mod.Logger.VerboseDebug("HotbarEvent Rx: Item:{0} InventoryID '{1}' Slot#{2} PlayerUID:{3}", hotbarData.ItemCode.ToString( ),hotbarData.InventoryID ,hotbarData.Inventory_SlotID, hotbarData.PlayerUID);
+		Mod.Logger.VerboseDebug("Item_Damage Rx: Item:{0} InventoryID '{1}' Slot#{2} PlayerUID:{3}", hotbarData.ItemCode.ToString( ), hotbarData.InventoryID, hotbarData.Inventory_SlotID, hotbarData.PlayerUID);
 		#endif
 
-		if (ItemFilterList.Contains(hotbarData.ItemCode)) {
+		if (ItemFilterList.Contains(hotbarData.ItemCode)) 	{
+				
 		RecoveryEntry rec = itemToVoxelLookup[hotbarData.ItemCode];
 		#if DEBUG
-		Mod.Logger.VerboseDebug("broken-tool/weap. {0} WORTH: {1:F1}*{2} units", hotbarData.ItemCode.ToString( ), (rec.Quantity * IngotVoxelEquivalent), rec.IngotCode.ToShortString( ));
+		Mod.Logger.VerboseDebug("broken-item {0} WORTH: {1:F1}*{2} units", hotbarData.ItemCode.ToString( ), (rec.Quantity * IngotVoxelEquivalent), rec.IngotCode.ToShortString( ));
 		#endif
 
+		if (String.IsNullOrEmpty(hotbarData.PlayerUID) || String.IsNullOrEmpty(hotbarData.InventoryID)) return;
+
+		bool probablyHotbar = hotbarData.InventoryID.StartsWith(GlobalConstants.hotBarInvClassName, StringComparison.Ordinal);
 		var playerTarget = ServerAPI.World.PlayerByUid(hotbarData.PlayerUID);
+		var spim = playerTarget.InventoryManager as ServerPlayerInventoryManager;												
 		var hotbarInv = playerTarget.InventoryManager.GetHotbarInventory( );
 		var hotSlot = hotbarInv[hotbarData.Inventory_SlotID];
-		var spim = playerTarget.InventoryManager as ServerPlayerInventoryManager;
-		bool probablyHotbar = hotbarData.InventoryID.StartsWith(@"hotbar", StringComparison.Ordinal);
 
-		if (probablyHotbar && hotSlot.Empty) {
-		#if DEBUG
-		Mod.Logger.VerboseDebug("Directly inserting fragments into hotbar slot# {0}", hotbarData.Inventory_SlotID);
-		#endif
+			if (probablyHotbar && hotSlot.Empty) 
+			{					
+			#if DEBUG
+			Mod.Logger.VerboseDebug("Directly inserting fragments into hotbar slot# {0}", hotbarData.Inventory_SlotID);
+			#endif
 
-		VariableMetalItem variableMetal = ServerAPI.World.GetItem(new AssetLocation(metalFragmentsCode)) as VariableMetalItem;
-		ItemStack metalFragmentsStack = new ItemStack(variableMetal, 1);
-		variableMetal.ApplyMetalProperties(rec, ref metalFragmentsStack);
-		hotSlot.Itemstack = metalFragmentsStack;
-		hotSlot.Itemstack.ResolveBlockOrItem(ServerAPI.World);
-		hotSlot.MarkDirty( );
-		spim.NotifySlot(playerTarget, hotSlot);
-		}
-		else {
-		#if DEBUG
-		Mod.Logger.VerboseDebug("Hotbar (or crafting?) slot#{0} occupied; shoving {1} in general direction of player...", hotbarData.Inventory_SlotID,hotbarData.ItemCode.ToShortString());
-		#endif
+			VariableMetalItem variableMetal = ServerAPI.World.GetItem(new AssetLocation(metalFragmentsCode)) as VariableMetalItem;
+			ItemStack metalFragmentsStack = new ItemStack(variableMetal, 1);
+			variableMetal.ApplyMetalProperties(rec, ref metalFragmentsStack);
+			hotSlot.Itemstack = metalFragmentsStack;
+			hotSlot.Itemstack.ResolveBlockOrItem(ServerAPI.World);
+			hotSlot.MarkDirty( );
+			spim.NotifySlot(playerTarget, hotSlot);
+			}							
+			else
+			{
+			#if DEBUG
+			Mod.Logger.VerboseDebug("Hotbar-occupied (or crafting) slot#{0} so; shoving {1} in general direction of player...", hotbarData.Inventory_SlotID, hotbarData.ItemCode.ToShortString( ));
+			#endif
 
-		VariableMetalItem variableMetal = ServerAPI.World.GetItem(new AssetLocation(metalFragmentsCode)) as VariableMetalItem;
-		ItemStack metalFragmentsStack = new ItemStack(variableMetal, 1);
-		variableMetal.ApplyMetalProperties(rec, ref metalFragmentsStack);
-		spim.TryGiveItemstack(metalFragmentsStack, true);
-		}
-		}
-
+			VariableMetalItem variableMetal = ServerAPI.World.GetItem(new AssetLocation(metalFragmentsCode)) as VariableMetalItem;
+			ItemStack metalFragmentsStack = new ItemStack(variableMetal, 1);
+			variableMetal.ApplyMetalProperties(rec, ref metalFragmentsStack);
+			spim.TryGiveItemstack(metalFragmentsStack, true);
+			}		
 		}
 
+		}
 
 
 		private void EditDurability(IServerPlayer player, int groupId, CmdArgs args)
