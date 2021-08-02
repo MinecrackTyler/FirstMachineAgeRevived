@@ -79,39 +79,34 @@ namespace AnvilMetalRecovery
 
 		public override bool CanSmelt(IWorldAccessor world, ISlotProvider cookingSlotsProvider, ItemStack inputStack, ItemStack outputStack)
 		{
+		var props = LocateCombustableFromInventory(cookingSlotsProvider);
+		
 		#if DEBUG
-		api.Logger.VerboseDebug("CanSmelt: ");
+		api.Logger.VerboseDebug("CanSmelt? ");
 		#endif
-
-		if (inputStack != null ) 
-		{
-		RegenerateCombustablePropsFromStack(inputStack);
-		return (outputStack == null) && this.CombustibleProps.MeltingPoint > 1;
-		}
-		return false;
+		return (outputStack == null) && props?.SmeltingType == EnumSmeltType.Smelt;				
 		}
 
 		public override float GetMeltingPoint(IWorldAccessor world, ISlotProvider cookingSlotsProvider, ItemSlot inputSlot)
-		{
-		RegenerateCombustablePropsFromStack(inputSlot?.Itemstack);
+		{		
+		var props = LocateCombustableFromInventory(cookingSlotsProvider);
 
-		return this?.CombustibleProps.MeltingPoint ?? 0f;
+		return props?.MeltingPoint ?? 9999f;		
 		}
 
 		public override float GetMeltingDuration(IWorldAccessor world, ISlotProvider cookingSlotsProvider, ItemSlot inputSlot)
 		{
-		RegenerateCombustablePropsFromStack(inputSlot?.Itemstack);
+		var props = LocateCombustableFromInventory(cookingSlotsProvider);
 
-		return this?.CombustibleProps.MeltingDuration ?? 0f;
+		return props?.MeltingDuration ?? 9999f;		
 		}
 
 		public override void DoSmelt(IWorldAccessor world, ISlotProvider cookingSlotsProvider, ItemSlot inputSlot, ItemSlot outputSlot)
 		{
-		RegenerateCombustablePropsFromStack(inputSlot?.Itemstack);
+		RegenerateCombustablePropsFromStack(inputSlot.Itemstack);
 		#if DEBUG
 		world.Logger.VerboseDebug("Invoked: 'DoSmelt' CookSlots#{1} In.stk: {0} ", (inputSlot.Empty ? "empty" : inputSlot.Itemstack.Collectible.Code.ToShortString( )), cookingSlotsProvider.Slots.Length);
 		#endif
-
 
 		base.DoSmelt(world, cookingSlotsProvider, inputSlot, outputSlot);
 		}
@@ -121,8 +116,10 @@ namespace AnvilMetalRecovery
 		{
 		var metalName = MetalName(inSlot.Itemstack);
 		var metalQuantity = ( int )Math.Floor(MetalQuantity(inSlot.Itemstack) * MetalRecoverySystem.IngotVoxelEquivalent);
-		if (CombustibleProps  != null && CombustibleProps.MeltingPoint > 0) {		
-		dsc.AppendLine(Lang.Get("game:smeltpoint-smelt", CombustibleProps.MeltingPoint));
+		var props = RegenerateCombustablePropsFromStack(inSlot.Itemstack);
+
+		if (props  != null && props.MeltingPoint > 0) {		
+		dsc.AppendLine(Lang.Get("game:smeltpoint-smelt", props.MeltingPoint));
 		}
 		dsc.AppendLine(Lang.Get("fma:metal_worth", metalQuantity, metalName));
 		}
@@ -145,40 +142,62 @@ namespace AnvilMetalRecovery
 		RegenerateCombustablePropsFromStack(contStack);
 		}
 
-		protected void RegenerateCombustablePropsFromStack(ItemStack contStack)
+		protected CombustibleProperties RegenerateCombustablePropsFromStack(ItemStack contStack)
 		{
-		if (contStack == null ) return;
-		if (this.CombustibleProps != null) return;
-					
+		if (contStack == null ) return null;
+		//if (contStack.Class == EnumItemClass.Item && contStack.Item.CombustibleProps != null) return contStack.Item.CombustibleProps;
+
 		var metalCode = MetalCode(contStack);
 		var metalUnits = MetalQuantity(contStack);
 
-		if (metalCode != null )
+		if (metalCode != null || metalUnits > 0)
 		{
 		var sourceMetalItem = api.World.GetItem(metalCode);
 
-		if (sourceMetalItem == null || sourceMetalItem.IsMissing || sourceMetalItem.CombustibleProps == null) return;
-
-		CombustibleProps = new CombustibleProperties( ) {
+		if (sourceMetalItem == null || sourceMetalItem.IsMissing || sourceMetalItem.CombustibleProps == null) return null;
+		
+		var aCombustibleProps = new CombustibleProperties( ) {
 			SmeltingType = EnumSmeltType.Smelt,
 			MeltingPoint = sourceMetalItem.CombustibleProps.MeltingPoint,
 			MeltingDuration = sourceMetalItem.CombustibleProps.MeltingDuration,
+			HeatResistance = sourceMetalItem.CombustibleProps.HeatResistance,
+			MaxTemperature = sourceMetalItem.CombustibleProps.MaxTemperature,
+			SmokeLevel = sourceMetalItem.CombustibleProps.SmokeLevel,
 			SmeltedRatio = 100,
 			SmeltedStack = new JsonItemStack( ) { Type = EnumItemClass.Item, Code = sourceMetalItem.Code.Clone( ), Quantity = (int)Math.Floor(metalUnits * MetalRecoverySystem.IngotVoxelEquivalent) }
 		};
-		CombustibleProps.SmeltedStack.Resolve(api.World, "VariableMetalItem_regen", true);
-		//Back-Inject source Input Item stack - as Firepit checks THAT
-		contStack.Collectible.CombustibleProps = CombustibleProps.Clone( );
+		aCombustibleProps.SmeltedStack.Resolve(api.World, "VariableMetalItem_regen", true);
+		//Back-Inject source Input Item stack - as Crucible checks THAT
+		contStack.Item.CombustibleProps = aCombustibleProps.Clone( );		
 
 		#if DEBUG
-		api.Logger.VerboseDebug("Melt point: {0}, Duration: {1}, Ratio: {2}, Out.stk: {3} * {4}", this.CombustibleProps.MeltingPoint,this.CombustibleProps.MeltingDuration,this.CombustibleProps.SmeltedRatio, this.CombustibleProps.SmeltedStack.ResolvedItemstack.Item.Code.ToString(),this.CombustibleProps.SmeltedStack.StackSize );
+		api.Logger.VerboseDebug("Melt point: {0}, Duration: {1}, Ratio: {2}, Out.stk: {3} * {4}", aCombustibleProps.MeltingPoint, aCombustibleProps.MeltingDuration, aCombustibleProps.SmeltedRatio, aCombustibleProps.SmeltedStack.ResolvedItemstack.Item.Code.ToString(), aCombustibleProps.SmeltedStack.Quantity );
 		#endif
-		}		
-
+		return aCombustibleProps;
+		}
+		return null;
 		}
 
 
-	}
+		protected CombustibleProperties LocateCombustableFromInventory(ISlotProvider cookingSlotsProvider )
+		{
+		if (cookingSlotsProvider is InventorySmelting) 
+			{
+			var smeltInventory = cookingSlotsProvider as InventorySmelting;
 
+			CombustibleProperties props = null;
+			foreach (var cookSlot in smeltInventory.CookingSlots) 
+			{
+			if (!cookSlot.Empty && cookSlot.Itemstack.Class == EnumItemClass.Item && cookSlot.Itemstack.Item.Code == this.Code) 
+				{
+				//TODO: Check *ALL* items - for similarity before returning _A_ match
+				props = RegenerateCombustablePropsFromStack(cookSlot.Itemstack);
+				return props;
+				}
+			}	
+			}
+		return null;
+		}
+	}
 }
 
