@@ -142,23 +142,30 @@ namespace FirstMachineAge
 		{
 		if (api.Side.IsClient( )) {
 		var capi = api as ICoreClientAPI;
-		//Bits of broken block
 
-		var particleProps = new SimpleParticleProperties(9, 12, this.GetRandomColor(api as ICoreClientAPI, pos.Copy( ), BlockFacing.UP), pos.ToVec3d( ),pos.ToVec3d( ), Vec3f.Zero, Vec3f.Zero);
+		//int color = capi.BlockTextureAtlas.GetRandomColor(this.TextureSubIdForBlockColor);
+
+		//Bits of broken block
+		var particleProps = new SimpleParticleProperties
+		(7, 12, 
+		0x808080, 
+		pos.ToVec3d().Add(0.1, 0.75, 0.1),
+		pos.ToVec3d().Add(0.7, 0.0, 0.7),
+		Vec3f.Zero,
+		Vec3f.Zero,
+		5, //life length
+		0.8f, //gravity effect 
+		0.25f, 0.7f, //min size, max size
+		EnumParticleModel.Cube); // quad or cube
+
 		
-		particleProps.MinQuantity = 9;
-		particleProps.MinVelocity.Set(-0.05f, 0, -0.05f);		
-		particleProps.AddVelocity.Set(0.5f, 0, 0.5f);
+		particleProps.ShouldSwimOnLiquid = true;		
 		particleProps.WithTerrainCollision = true;
-		particleProps.ParticleModel = EnumParticleModel.Cube;
-		particleProps.LifeLength = 1.5f;		
-		particleProps.GravityEffect = 2.5f;
-		particleProps.MinSize = 0.75f;
-		particleProps.MaxSize = 1.0f;
-		particleProps.WithTerrainCollision = true;
+		particleProps.WindAffected = false;
+		
 
 		capi.World.SpawnParticles(particleProps);
-		//TODO: Sound 
+		//TODO: Sound ?
 
 		}
 

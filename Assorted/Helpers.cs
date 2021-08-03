@@ -5,6 +5,7 @@ using EnumsNET;
 using Newtonsoft.Json.Linq;
 
 using Vintagestory.API;
+using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 
 

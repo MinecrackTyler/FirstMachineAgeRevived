@@ -3,10 +3,10 @@
   "name": "Defensive Structures",
   "description" : "Defensive structures and emplacements, ideal for stone castles...",
   "authors": ["Melchior"],
-  "version": "0.1.4",
+  "version": "0.1.5",
 	"ModID":"defensive",
   "dependencies": { 
-	"game": "1.14.0",
+	"game": "1.15.3",
 	"survival": ""
   },
   "website": "http://noname.nope"

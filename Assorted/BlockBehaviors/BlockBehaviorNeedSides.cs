@@ -5,12 +5,14 @@ using System.Linq;
 
 using Vintagestory.API;
 using Vintagestory.API.Common;
+using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 
 namespace FirstMachineAge
 {
 	public class BlockBehaviorNeedSides : BlockBehavior
 	{
+		private const string _applicableMatKey = @"applicableMaterials";
 		public EnumBlockMaterial[ ] ApplicableMaterials { get; private set; }
 
 		public BlockBehaviorNeedSides(Block block) : base(block)
@@ -47,7 +49,7 @@ namespace FirstMachineAge
 		{
 		base.Initialize(properties);
 		
-		this.ApplicableMaterials = properties[@"applicableMaterials"].FromEnumStrings<EnumBlockMaterial>();
+		this.ApplicableMaterials = properties[_applicableMatKey].FromEnumStrings<EnumBlockMaterial>();
 		
 		}
 
