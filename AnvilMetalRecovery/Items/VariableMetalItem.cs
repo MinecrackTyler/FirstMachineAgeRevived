@@ -88,7 +88,7 @@ namespace AnvilMetalRecovery
 		public override void GetHeldItemInfo(ItemSlot inSlot, System.Text.StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
 		{
 		var metalName = MetalName(inSlot.Itemstack);
-		var metalQuantity = ( int )Math.Floor(MetalQuantity(inSlot.Itemstack) * MetalRecoverySystem.IngotVoxelEquivalent);
+		var metalQuantity = ( int )Math.Floor(MetalQuantity(inSlot.Itemstack) * AnvilMetalRecoveryMod.CachedConfiguration.VoxelEquivalentValue);
 		var props = RegenerateCombustablePropsFromStack(inSlot.Itemstack);
 
 		if (props  != null && props.MeltingPoint > 0) {		
@@ -133,7 +133,7 @@ namespace AnvilMetalRecovery
 			MaxTemperature = sourceMetalItem.CombustibleProps.MaxTemperature,
 			SmokeLevel = sourceMetalItem.CombustibleProps.SmokeLevel,
 			SmeltedRatio = 100,
-			SmeltedStack = new JsonItemStack( ) { Type = EnumItemClass.Item, Code = sourceMetalItem.Code.Clone( ), Quantity = (int)Math.Floor(metalUnits * MetalRecoverySystem.IngotVoxelEquivalent) }
+			SmeltedStack = new JsonItemStack( ) { Type = EnumItemClass.Item, Code = sourceMetalItem.Code.Clone( ), Quantity = (int)Math.Floor(metalUnits * AnvilMetalRecoveryMod.CachedConfiguration.VoxelEquivalentValue) }
 		};
 		aCombustibleProps.SmeltedStack.Resolve(api.World, "VariableMetalItem_regen", true);
 		
@@ -164,7 +164,7 @@ namespace AnvilMetalRecovery
 		Item metalBits = api.World.GetItem(new AssetLocation(GlobalConstants.DefaultDomain, @"metalbit-" + metalCode));
 		if (metalBits != null) 
 			{
-			gridRecipe.Output.Quantity = ( int )(Math.Round(metalUnits * MetalRecoverySystem.IngotVoxelEquivalent) / 5);
+			gridRecipe.Output.Quantity = ( int )(Math.Round(metalUnits * AnvilMetalRecoveryMod.CachedConfiguration.VoxelEquivalentValue) / 5);
 			gridRecipe.Output.Code = metalBits.Code;
 			gridRecipe.Output.Resolve(api.World, "VariableMetalItem_crafting");
 			}

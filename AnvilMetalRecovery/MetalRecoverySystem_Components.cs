@@ -48,7 +48,7 @@ namespace AnvilMetalRecovery
 		setVoxels = recipie.Voxels.OfType<bool>( ).Count(vox => vox);							
 
 		#if DEBUG
-		Mod.Logger.VerboseDebug($"Info: {recipie.Output.Quantity}* '{outputItem.Code}' -> {setVoxels}x '{metalObject.Code}' voxel = ~{setVoxels * IngotVoxelEquivalent:F1} metal Units");
+		Mod.Logger.VerboseDebug($"Info: {recipie.Output.Quantity}* '{outputItem.Code}' -> {setVoxels}x '{metalObject.Code}' voxel = ~{setVoxels * CachedConfiguration.VoxelEquivalentValue:F1} metal Units");
 		#endif
 		//Direct output *IS* tool or tool-like Durability type item (chisel )
 		if (outputItem.Tool.HasValue || outputItem.Durability > 1) {
@@ -125,11 +125,11 @@ namespace AnvilMetalRecovery
 		Mod.Logger.VerboseDebug("Item_Damage Rx: Item:{0} InventoryID '{1}' Slot#{2} PlayerUID:{3}", hotbarData.ItemCode.ToString( ), hotbarData.InventoryID, hotbarData.Inventory_SlotID, hotbarData.PlayerUID);
 		#endif
 
-		if (ItemFilterList.Contains(hotbarData.ItemCode)) 	{
+		if (CachedConfiguration.ToolFragmentRecovery && ItemFilterList.Contains(hotbarData.ItemCode)) 	{
 				
 		RecoveryEntry rec = itemToVoxelLookup[hotbarData.ItemCode];
 		#if DEBUG
-		Mod.Logger.VerboseDebug("broken-item {0} WORTH: {1:F1}*{2} units", hotbarData.ItemCode.ToString( ), (rec.Quantity * IngotVoxelEquivalent), rec.IngotCode.ToShortString( ));
+		Mod.Logger.VerboseDebug("broken-item {0} WORTH: {1:F1}*{2} units", hotbarData.ItemCode.ToString( ), (rec.Quantity * CachedConfiguration.VoxelEquivalentValue), rec.IngotCode.ToShortString( ));
 		#endif
 
 		if (String.IsNullOrEmpty(hotbarData.PlayerUID) || String.IsNullOrEmpty(hotbarData.InventoryID)) return;
@@ -163,7 +163,11 @@ namespace AnvilMetalRecovery
 			VariableMetalItem variableMetal = ServerAPI.World.GetItem(new AssetLocation(metalFragmentsCode)) as VariableMetalItem;
 			ItemStack metalFragmentsStack = new ItemStack(variableMetal, 1);
 			variableMetal.ApplyMetalProperties(rec, ref metalFragmentsStack);
-			spim.TryGiveItemstack(metalFragmentsStack, true);
+				if (spim.TryGiveItemstack(metalFragmentsStack, true) == false) 
+					{
+					//Player with full Inv.
+					ServerAPI.World.SpawnItemEntity(metalFragmentsStack, playerTarget.Entity.Pos.XYZ);
+					}
 			}		
 		}
 

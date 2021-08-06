@@ -12,13 +12,17 @@ using Vintagestory.Server;
 namespace AnvilMetalRecovery
 {
 	public partial class MetalRecoverySystem : ModSystem
-	{				
+	{
+		internal const string _configFilename = @"amr_config.json";
 		internal const string anvilKey = @"Anvil";
 		internal const string metalFragmentsCode = @"fma:metal_fragments";
 		internal const string metalShavingsCode = @"metal_shaving";
 		internal const string itemFilterListCacheKey = @"AMR_ItemFilters";
-		public const float IngotVoxelEquivalent = 2.38f;
+		public const float IngotVoxelDefault = 2.38f;
 		public const string ItemDamageChannelName = @"ItemDamageEvents";
+
+		internal IServerNetworkChannel _ConfigDownlink;
+		internal IClientNetworkChannel _ConfigUplink;
 
 		private Dictionary<AssetLocation, RecoveryEntry> itemToVoxelLookup = new Dictionary<AssetLocation, RecoveryEntry>();//Ammount & Material?
 
@@ -26,6 +30,17 @@ namespace AnvilMetalRecovery
 		private ICoreServerAPI ServerAPI;
 		private ServerCoreAPI ServerCore { get; set; }
 		private ClientCoreAPI ClientCore { get; set; }
+
+		internal AMRConfig CachedConfiguration {
+			get
+			{
+			return ( AMRConfig )CoreAPI.ObjectCache[_configFilename];
+			}
+			set
+			{
+			CoreAPI.ObjectCache.Add(_configFilename, value);
+			}
+		}
 
 
 		/// <summary>
@@ -90,8 +105,11 @@ namespace AnvilMetalRecovery
 		else {
 		Mod.Logger.Error("Cannot access 'ServerCoreAPI' class:  API (implimentation) has changed, Contact Developer!");
 		return;
-		}					
-
+		}
+		PrepareServersideConfig( );
+		PrepareDownlinkChannel( );
+		ServerAPI.Event.PlayerJoin += SendClientConfigMessage;
+		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.Shutdown, PersistServersideConfig);
 		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);		
 
 		SetupGeneralObservers( );
@@ -117,8 +135,7 @@ namespace AnvilMetalRecovery
 		return;
 		}
 
-		
-
+		ListenForServerConfigMessage( );
 		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
 		}
 
@@ -134,6 +151,68 @@ namespace AnvilMetalRecovery
 		private void SetupGeneralObservers( ){
 		ServerCore.Event.RegisterEventBusListener(Item_DamageEventReciever, 1.0f, ItemDamageChannelName);		
 		}
+
+		private void PrepareServersideConfig( )
+		{
+		AMRConfig config = ServerAPI.LoadModConfig<AMRConfig>(_configFilename);
+
+		if (config == null) {
+		//Regen default
+		Mod.Logger.Warning("Regenerating default config as it was missing / unparsable...");
+		ServerAPI.StoreModConfig<AMRConfig>(new AMRConfig( ), _configFilename);
+		config = ServerAPI.LoadModConfig<AMRConfig>(_configFilename);
+		}
+
+		this.CachedConfiguration = config;					
+		}
+
+		private void PersistServersideConfig( )
+		{
+		if (this.CachedConfiguration != null) {
+		Mod.Logger.Notification("Persisting configuration.");
+		ServerAPI.StoreModConfig<AMRConfig>(this.CachedConfiguration, _configFilename);
+		}
+		}
+
+		private void PrepareDownlinkChannel( )
+		{
+		_ConfigDownlink = ServerAPI.Network.RegisterChannel(_configFilename);
+		_ConfigDownlink.RegisterMessageType<AMRConfig>( );
+		}
+
+		private void SendClientConfigMessage(IServerPlayer byPlayer)
+		{
+		#if DEBUG
+		Mod.Logger.VerboseDebug("Sending joiner: {0} a copy of config data.", byPlayer.PlayerName);
+		#endif
+
+		_ConfigDownlink.SendPacket<AMRConfig>(this.CachedConfiguration, byPlayer);
+		}
+
+		private void ListenForServerConfigMessage( )
+		{
+		_ConfigUplink = ClientCore.Network.RegisterChannel(_configFilename);
+		_ConfigUplink = _ConfigUplink.RegisterMessageType<AMRConfig>( );
+
+		#if DEBUG
+		Mod.Logger.VerboseDebug("Registered RX channel: '{0}'", _ConfigUplink.ChannelName);
+		#endif
+
+		_ConfigUplink.SetMessageHandler<AMRConfig>(RecievedConfigMessage);
+		}
+
+		private void RecievedConfigMessage(AMRConfig networkMessage)
+		{
+		#if DEBUG
+		Mod.Logger.Debug("Got Config message!");
+		#endif
+
+		if (networkMessage != null) {
+			Mod.Logger.Debug("Message value; Recover Broken Tools:{0}, VoxelEquiv#{1:F2}", networkMessage.ToolFragmentRecovery, networkMessage.VoxelEquivalentValue);
+		this.CachedConfiguration = networkMessage;
+		}
+		}
+
 
 
 	}

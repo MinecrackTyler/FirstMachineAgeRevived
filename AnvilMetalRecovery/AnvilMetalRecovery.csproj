@@ -68,6 +68,10 @@
       <HintPath>vs_libs\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="protobuf-net">
+      <HintPath>vs_libs\protobuf-net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MetalRecoverySystem.cs" />
@@ -80,6 +84,7 @@
     <Compile Include="Harmony\AnvilDaptor.cs" />
     <Compile Include="MetalRecoverySystem_Components.cs" />
     <Compile Include="Harmony\GenericItemMortalityDetector.cs" />
+    <Compile Include="Data\AMR_Config.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">

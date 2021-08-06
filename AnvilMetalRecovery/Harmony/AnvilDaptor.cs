@@ -66,7 +66,7 @@ namespace AnvilMetalRecovery.Patches
 
 		if (anvil.BaseMaterial != null && anvil.IsShavable && anvil.SplitCount > 0) 
 		{			
-		dsc.AppendFormat("[ {0} ] : {1} × {2}\n", anvil.SplitCount, Lang.GetUnformatted($"fma:item-metal_shaving-{anvil.BaseMetal}"), anvil.ShavingQuantity);
+		dsc.AppendFormat("[ {0} ] : {1} × {2}\n", anvil.SplitCount, Lang.GetUnformatted($"game:item-metalbit-{anvil.BaseMetal}"), anvil.ShavingQuantity);
 		}
 	}
 
@@ -104,7 +104,7 @@ namespace AnvilMetalRecovery.Patches
 		public static AssetLocation MetalShavingsCode {
 			get
 			{
-			return new AssetLocation(@"fma", @"metal_shaving");
+			return new AssetLocation(GlobalConstants.DefaultDomain, @"metalbit");
 			}
 		}
 
@@ -114,6 +114,12 @@ namespace AnvilMetalRecovery.Patches
 		return (EnumVoxelMaterial)bea.Voxels[X, Y, Z]; 
 		}
 
+		private AMRConfig CachedConfiguration {
+			get
+			{
+			return ( AMRConfig )bea.Api.ObjectCache[MetalRecoverySystem._configFilename];
+			}
+		}
 
 		public int SplitCount {
 			get
@@ -136,7 +142,7 @@ namespace AnvilMetalRecovery.Patches
 
 		public int ShavingQuantity 
 		{
-			get { return (SplitCount / shavingValue); }
+			get { return ( int )(Math.Round(SplitCount * CachedConfiguration.VoxelEquivalentValue) / shavingValue); }
 		}
 
 		internal IAnvilWorkable AnvilWorkpiece {
@@ -171,7 +177,7 @@ namespace AnvilMetalRecovery.Patches
 		internal void IssueShavings(IPlayer byPlayer )
 		{
 		if (this.SplitCount > 0) {
-		int shavingQty = ( int )(SplitCount / shavingValue);
+		int shavingQty = ShavingQuantity;
 
 			if (shavingQty > 0) 
 			{			
