@@ -2,12 +2,10 @@
 	code: "metal_fragments",
 	class:"VariableMetalItem",
 	maxstacksize: 1,
-    dimensions: { width: 0.1, height: 0.07, length: 0.1 },
 	attributes: {
 		handbook: {
 			exclude: true
-		},
-        allowHeating: true,
+		}        
 	},
 	storageFlags: 5,
 	shape: { base: "fma:item/metal/fragments" },

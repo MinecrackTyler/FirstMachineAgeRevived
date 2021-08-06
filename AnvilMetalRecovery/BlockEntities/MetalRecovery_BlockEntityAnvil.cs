@@ -25,7 +25,7 @@ namespace AnvilMetalRecovery
 		public static AssetLocation MetalShavingsCode {
 			get
 			{
-			return new AssetLocation(@"fma", @"metal_shaving");
+			return new AssetLocation(@"fma", @"metal_shaving");//new AssetLocation(GlobalConstants.Domain, @"metalbit");
 			}
 		}
 

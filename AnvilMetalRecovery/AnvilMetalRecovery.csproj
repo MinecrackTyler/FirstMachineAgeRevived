@@ -113,6 +113,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="EntityBehaviors\HotbarObserverBehavior.cs" />
+    <None Include="assets\fma\recipes\grid\variableMetal_smash.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />
