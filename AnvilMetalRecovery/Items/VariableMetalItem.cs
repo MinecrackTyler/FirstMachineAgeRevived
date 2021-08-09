@@ -157,7 +157,7 @@ namespace AnvilMetalRecovery
 		api.Logger.VerboseDebug("MatchesForCrafting::'{0}'", this.Code);
 		#endif
 
-		if (inputStack != null) {
+		if (inputStack != null && inputStack.Class == EnumItemClass.Item && inputStack.Item.Code == this.Code) {
 		var metalCode = MetalCode(inputStack);
 		var metalUnits = MetalQuantity(inputStack);
 
@@ -167,10 +167,12 @@ namespace AnvilMetalRecovery
 			gridRecipe.Output.Quantity = ( int )(Math.Round(metalUnits * AnvilMetalRecoveryMod.CachedConfiguration.VoxelEquivalentValue) / 5);
 			gridRecipe.Output.Code = metalBits.Code;
 			gridRecipe.Output.Resolve(api.World, "VariableMetalItem_crafting");
-			}
+			
+			return true;
+			}						
 		}
 
-		return true;
+		return false;
 		}
 	}
 }
