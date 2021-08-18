@@ -5,6 +5,7 @@
 		"C": { type: "item", code: "game:chisel-*", isTool: true, toolDurabilityCost: 5},
 		"I": { type: "item", code: "metal_fragments",  name: "metal" }
 	},
+    name: "recover_brokentool",
 	width: 1,
 	height: 2,
 	output: { type: "item", code: "game:metalbit-copper", quantity: 0 }

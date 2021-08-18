@@ -154,26 +154,38 @@ namespace AnvilMetalRecovery
 		public override bool MatchesForCrafting(ItemStack inputStack, GridRecipe gridRecipe, CraftingRecipeIngredient ingredient)
 		{
 		#if DEBUG
-		api.Logger.VerboseDebug("MatchesForCrafting::'{0}'", this.Code);
-		#endif
+		api.Logger.VerboseDebug("MatchesForCrafting::'{0}', RecipieName: '{1}', Ing. '{2}'", inputStack.Collectible.Code, gridRecipe.Name, ingredient.Code);
+#endif
 
-		if (inputStack != null && inputStack.Class == EnumItemClass.Item && inputStack.Item.Code == this.Code) {
-		var metalCode = MetalCode(inputStack);
-		var metalUnits = MetalQuantity(inputStack);
+		if (inputStack != null
+			&& gridRecipe.Name.Domain == this.Code.Domain
+			&& inputStack.Class == EnumItemClass.Item
+			&& inputStack.Collectible.Code == this.Code
+			&& ingredient.Code.Domain == this.Code.Domain
+			) 
+		{
 
-		Item metalBits = api.World.GetItem(new AssetLocation(GlobalConstants.DefaultDomain, @"metalbit-" + metalCode));
-		if (metalBits != null) 
+		if (api.Side.IsServer( )) 
 			{
-			gridRecipe.Output.Quantity = ( int )(Math.Round(metalUnits * AnvilMetalRecoveryMod.CachedConfiguration.VoxelEquivalentValue) / 5);
-			gridRecipe.Output.Code = metalBits.Code;
-			gridRecipe.Output.Resolve(api.World, "VariableMetalItem_crafting");
-			
-			return true;
-			}						
-		}
+			var metalCode = MetalCode(inputStack);
+			var metalUnits = MetalQuantity(inputStack);
 
+			Item metalBits = api.World.GetItem(new AssetLocation(GlobalConstants.DefaultDomain, @"metalbit-" + metalCode));
+			if (metalBits != null) 
+				{
+				gridRecipe.Output.Quantity = ( int )(Math.Round(metalUnits * AnvilMetalRecoveryMod.CachedConfiguration.VoxelEquivalentValue) / 5);
+				gridRecipe.Output.Code = metalBits.Code;
+				gridRecipe.Output.Resolve(api.World, "VariableMetalItem_crafting");													
+				}			
+			}
+		return true;
+		}
 		return false;
 		}
+
+
+
+
 	}
 }
 
