@@ -1,0 +1,59 @@
+﻿{
+	code: "log_barricade",	
+	behaviors: 		
+		 [{name: "Unstable", properties: { attachedToFaces: ["down"] }}, {name: "NWOrientable"}],	
+	variantgroups: [				
+		{ code: "orientation", states: [ "ns", "we" ] },
+	],
+	creativeinventory: { "general": ["log_barricade-ns"], "construction": ["log_barricade-ns"] },			
+    shapeByType: {		
+		"*-ns": { base: "block/wood/log_barricade" },
+        "*-we": { base: "block/wood/log_barricade", rotateY: 90},
+        },
+    sidesolid: {
+		all: false, down: true, up: true
+	},
+	sideopaque: {
+		all: false
+	},
+	blockmaterial: "Wood",
+	requiredMiningTier: 1,
+	attributes: {
+		handbook: {
+			groupBy: ["log_barricade-*"]
+		}		
+	},
+	textures: {
+		"side": { base:"game:game:block/wood/firewood/side"},
+		"vines": { base:"game:block/vines/basket/normal-westeast"},
+		"toplog": { base:"game:block/wood/firewood/front"}		
+	},	
+	resistance: 4.5,
+	sounds: {
+		"place": "game:block/planks",
+		"walk": "game:walk/wood",
+		"hit": "game:block/planks",
+		"break": "game:block/planks",
+		byTool: {
+			"Axe": { hit: "game:block/chop", break: "game:block/planks" }
+		}
+	},
+	drops: [
+		{ type: "block", code: "log_barricade-ns", quantity: { avg: 1 }  }
+	],
+    rainPermeable: true,
+    lightAbsorption: 5,
+	combustibleProps: 
+    	{        
+			burnTemperature: 800,
+			burnDuration: 80,		
+		},
+	maxStackSize: 16,
+	materialDensity: 700,
+	heldTpIdleAnimation: "holdbothhandslarge", heldTpUseAnimation: "twohandplaceblock",
+	tpHandTransform: {
+		translation: { x: -1.2, y: -1.1, z: -0.8 },
+		rotation: { x: -2, y: 25, z: -78 },
+		scale: 0.37
+	}
+}

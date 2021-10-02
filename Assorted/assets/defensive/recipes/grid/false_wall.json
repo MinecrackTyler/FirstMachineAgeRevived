@@ -1,0 +1,10 @@
+﻿{
+	ingredientPattern: "PRP	PRP	PRP",
+	ingredients: {
+		"P": { type: "item", code: "game:plank-*", quantity: 2 },
+        "R": { type:"block", code:"game:stonebrickslab-*-down-free", name:"rock", allowedVariants: ["andesite", "chalk", "chert", "conglomerate", "limestone", "claystone", "granite", "sandstone", "shale", "basalt", "peridotite", "phyllite", "slate", "bauxite"]},
+	},
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "defensive:false_wall-north-down-closed-{rock}"  }
+}
