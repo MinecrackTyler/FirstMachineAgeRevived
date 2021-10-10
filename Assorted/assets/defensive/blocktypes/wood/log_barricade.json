@@ -7,9 +7,31 @@
 	],
 	creativeinventory: { "general": ["log_barricade-ns"], "construction": ["log_barricade-ns"] },			
     shapeByType: {		
-		"*-ns": { base: "block/wood/log_barricade" },
-        "*-we": { base: "block/wood/log_barricade", rotateY: 90},
+			"*-ns": { base: "block/wood/log_barricade", 
+            	alternates: 
+        		[
+            	{ base: "block/wood/log_barricade2" },
+            	]
+        	},			
+        	"*-we": { base: "block/wood/log_barricade", rotateY: 90, 
+            	alternates: 
+        		[
+            	{ base: "block/wood/log_barricade2" , rotateY: 90 },
+            	]
+       	 	},
         },
+    collisionbox: { x1: 0, y1: 0, z1: 0.3, x2: 1, y2: 1.1, z2: 0.71,
+		rotateYByType: {
+			"*-ns": 0,
+			"*-we": 90,			
+		},
+    },
+    selectionbox: { x1: 0, y1: 0, z1: 0.3, x2: 1, y2: 1.1, z2: 0.71,
+		rotateYByType: {
+			"*-ns": 0,
+			"*-we": 90,			
+		},
+    },
     sidesolid: {
 		all: false, down: true, up: true
 	},
@@ -45,8 +67,8 @@
     lightAbsorption: 5,
 	combustibleProps: 
     	{        
-			burnTemperature: 800,
-			burnDuration: 80,		
+			burnTemperature: 700,
+			burnDuration: 72,		
 		},
 	maxStackSize: 16,
 	materialDensity: 700,

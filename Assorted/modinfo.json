@@ -1,12 +1,12 @@
 {
   "type": "code",
   "name": "Defensive Structures",
-  "description" : "Defensive structures and emplacements, ideal for stone castles...",
+  "description" : "Defensive structures & emplacements, ideal for outposts, castles, forts...",
   "authors": ["Melchior"],
-  "version": "0.1.5",
+  "version": "0.1.6",
 	"ModID":"defensive",
   "dependencies": { 
-	"game": "1.15.3",
+	"game": "1.15.6",
 	"survival": ""
   },
   "website": "http://noname.nope"

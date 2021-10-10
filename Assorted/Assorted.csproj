@@ -100,6 +100,7 @@
     <Folder Include="assets\defensive\textures\ceramic\" />
     <Folder Include="assets\defensive\shapes\block\ceramic\" />
     <Folder Include="assets\defensive\blocktypes\ceramic\" />
+    <Folder Include="assets\defensive\textures\liquids\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\defensive\blocktypes\metal\grille_horizontal.json">
@@ -216,6 +217,33 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\defensive\recipes\grid\enclosed_candle.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\blocktypes\metal\crusie_lamp.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\shapes\block\metal\crusie_lamp.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\textures\metal\black_iron2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\textures\liquids\liquid_oil.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\shapes\block\wood\log_cornercade.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\shapes\block\wood\log_topcade.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\shapes\block\wood\log_barricade.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\blocktypes\wood\log_barricade.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\shapes\block\wood\log_barricade2.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

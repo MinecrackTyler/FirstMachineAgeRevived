@@ -10,16 +10,18 @@
     "defensive:block-false_wall-*": "False wall",
     "defensive:block-enclosed_candle-*":"Enclosed candle holder",
     "defensive:block-false_floor-*":"False Floor",
+    "defensive:block-log_barricade-*":"Log Barricade",
 
     "defensive:blockdesc-grille_vertical-*": "A vertical grille of latticed wrought iron bars.",
     "defensive:blockdesc-boltable_door-*":"Integrated bolt lock.",
 	"defensive:blockdesc-grille_horizontal-*": "A horizontal grille of latticed wrought iron bars.",
     "defensive:blockdesc-grille_vertical-*": "Vertical cross-bars of sturdy iron.",
+    "defensive:blockdesc-log_barricade-*":"A rough barrier fit for the Frontier.",
 
     "game:tabname-defensive":"Defensive Stuff",
 
 	"defensive:placefailure-requirehorizontalside": "Cannot place block here! It needs one solid sided block adjacent.",
-    "defensive:ingameerror-requirehorizontalside": "2Cannot place block here! It needs one solid sided block adjacent.",
+    "defensive:ingameerror-requirehorizontalside": "Cannot place that here! Needs an adjacent solid sided block.",
     "defensive:ingameerror-boltedclosed":"Bolted Shut.",
     "defensive:bolted_shut": "<font color='red'>Bolted Shut!</font>",
     "defensive:bolted_open": "Its Open.",
