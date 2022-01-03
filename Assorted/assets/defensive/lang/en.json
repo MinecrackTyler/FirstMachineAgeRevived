@@ -11,12 +11,16 @@
     "defensive:block-enclosed_candle-*":"Enclosed candle holder",
     "defensive:block-false_floor-*":"False Floor",
     "defensive:block-log_barricade-*":"Log Barricade",
+    "defensive:block-log_topcade-*":"Log Top Barricade",
+    "defensive:block-log_cornercade-*":"Log Corner Barricade",
+    "defensive:block-crusie_lamp":"Crusie Lamp",
 
     "defensive:blockdesc-grille_vertical-*": "A vertical grille of latticed wrought iron bars.",
     "defensive:blockdesc-boltable_door-*":"Integrated bolt lock.",
 	"defensive:blockdesc-grille_horizontal-*": "A horizontal grille of latticed wrought iron bars.",
     "defensive:blockdesc-grille_vertical-*": "Vertical cross-bars of sturdy iron.",
     "defensive:blockdesc-log_barricade-*":"A rough barrier fit for the Frontier.",
+    "defensive:blockdesc-crusie_lamp":"Burn that midnight oil 4x FASTER.",
 
     "game:tabname-defensive":"Defensive Stuff",
 

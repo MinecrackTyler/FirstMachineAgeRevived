@@ -15,7 +15,8 @@
 	sidesolid: { all: false },
 	sideopaque: { all: false },
 	resistance: 2,
-	lightHsv:  [9, 3, 11],
+    storageFlags: 1,
+	lightHsv:  [11, 4, 11],
 	collisionbox: null,
 	selectionbox: { x1: 0.3125, y1: 0.5, z1: 0.3125, x2: 0.6875, y2: 1, z2: 0.6875 },			
 	lightAbsorption: 0,
@@ -27,46 +28,92 @@
 	particleProperties: [
     	{
         posOffset: [
-			{ avg: -0.25, var: 0.2 },{ avg: 0, var: 0.2 },{ avg: -0.25, var: 0.2 }
+			{ avg: 0.09, var: 0.001 },{ avg: -0.41, var: 0.001 },{ avg: 0.15, var: 0.001 }
         ],
         velocity: [
-            { avg: 0.07, var: 0.06 },{ avg: 0.1, var: 0 },{ avg: 0.1, var: 0 }
+            { avg: 0.0, var: 0.0 },{ avg: 0, var: 0 },{ avg: 0.0, var: 0.0 }
         ],
         hsvaColor: [
-           { avg: 20, var: 20 }, { avg: 255, var: 50 }, { avg: 255, var: 50 },  { avg: 255, var: 0 }
+           { avg: 30, var: 10 }, { avg: 255, var: 5 }, { avg: 255, var: 5 },  { avg: 240, var: 0 }
         ],
         quantity: { avg: 3, var: 1 },
-        lifeLength: { avg: 0.14, var: 0.07 },
-        gravityEffect: { avg: -0.12, var: -0.03 },
-        size: { avg: 0.02, var: 0.01 },
+        lifeLength: { avg: 0.12, var: 0.03 },
+        gravityEffect: { avg: -0.09, var: -0.03 },
+        size: { avg: 0.06, var: 0.01 },
         particleModel: "Quad",
-        sizeEvolve: { transform: "linear", factor: 0.09 },
-        opacityEvolve: { transform: "quadratic", factor: -21 },
+        sizeEvolve: { transform: "linear", factor: 0.12 },
+        opacityEvolve: { transform: "quadratic", factor: -25 },
+		redEvolve: { transform: "quadratic", factor: -1, maxvalue: 30 },
         dieInLiquid: true,        
-        windAffectednes: 0.3        
+		windAffectednes: 0.06,
+		glowLevel: 64,
     	},
         {
-		posOffset: [
-			{ avg: -0.25, var: 0.2 },{ avg: 0, var: 0.2 },{ avg: -0.25, var: 0.2 }
-		],
-		velocity: [
-			{ avg: 0.11, var: 0.1 },{ avg: 0.11, var: 0.1 },{ avg: 0.11, var: 0.1 }
-		],
-		hsvaColor: [
-			{ avg: 0, var: 0 }, { avg: 0, var: 0 },
-			{ avg: 0, var: 0 }, { avg: 85, var: 0 }
-		],
-		quantity: { avg: 2, var: 1 },
-		lifeLength: { avg: 0.9, var: 0.75 },
-		gravityEffect: { avg: -0.12, var: -0.05 },
-		size: { avg: 0.24, var: 0.12 },
-		particleModel: "Quad",
-		sizeEvolve: { transform: "root", factor: 0.05 },
-		opacityEvolve: { transform: "smoothstep", factor: 20 },
-		dieInLiquid: true,
-		randomVelocityChange: true,
-		windAffectednes: 0.3
-		}
+        posOffset: [
+			{ avg: 0.09, var: 0.001 },{ avg: -0.41, var: 0.001 },{ avg: -0.15, var: 0.001 }
+        ],
+        velocity: [
+            { avg: 0.0, var: 0.0 },{ avg: 0, var: 0 },{ avg: 0.0, var: 0.0 }
+        ],
+        hsvaColor: [
+           { avg: 30, var: 10 }, { avg: 255, var: 5 }, { avg: 255, var: 5 },  { avg: 240, var: 0 }
+        ],
+        quantity: { avg: 3, var: 1 },
+        lifeLength: { avg: 0.12, var: 0.03 },
+        gravityEffect: { avg: -0.09, var: -0.03 },
+        size: { avg: 0.06, var: 0.01 },
+        particleModel: "Quad",
+        sizeEvolve: { transform: "linear", factor: 0.12 },
+        opacityEvolve: { transform: "quadratic", factor: -25 },
+		redEvolve: { transform: "quadratic", factor: -1, maxvalue: 30 },
+        dieInLiquid: true,        
+		windAffectednes: 0.06,
+		glowLevel: 64,
+    	},
+        {
+        posOffset: [
+			{ avg: -0.180, var: 0.001 },{ avg: -0.41, var: 0.001 },{ avg: 0.15, var: 0.001 }
+        ],
+        velocity: [
+            { avg: 0.0, var: 0.0 },{ avg: 0, var: 0 },{ avg: 0.0, var: 0.0 }
+        ],
+        hsvaColor: [
+           { avg: 30, var: 10 }, { avg: 255, var: 5 }, { avg: 255, var: 5 },  { avg: 240, var: 0 }
+        ],
+        quantity: { avg: 3, var: 1 },
+        lifeLength: { avg: 0.12, var: 0.03 },
+        gravityEffect: { avg: -0.09, var: -0.03 },
+        size: { avg: 0.06, var: 0.01 },
+        particleModel: "Quad",
+        sizeEvolve: { transform: "linear", factor: 0.12 },
+        opacityEvolve: { transform: "quadratic", factor: -25 },
+		redEvolve: { transform: "quadratic", factor: -1, maxvalue: 30 },
+        dieInLiquid: true,        
+		windAffectednes: 0.06,
+		glowLevel: 64,
+    	},
+        {
+        posOffset: [
+			{ avg: -0.180, var: 0.001 },{ avg: -0.41, var: 0.001 },{ avg: -0.15, var: 0.001 }
+        ],
+        velocity: [
+            { avg: 0.0, var: 0.0 },{ avg: 0, var: 0 },{ avg: 0.0, var: 0.0 }
+        ],
+        hsvaColor: [
+           { avg: 30, var: 10 }, { avg: 255, var: 5 }, { avg: 255, var: 5 },  { avg: 240, var: 0 }
+        ],
+        quantity: { avg: 3, var: 1 },
+        lifeLength: { avg: 0.12, var: 0.03 },
+        gravityEffect: { avg: -0.09, var: -0.03 },
+        size: { avg: 0.06, var: 0.01 },
+        particleModel: "Quad",
+        sizeEvolve: { transform: "linear", factor: 0.12 },
+        opacityEvolve: { transform: "quadratic", factor: -25 },
+		redEvolve: { transform: "quadratic", factor: -1, maxvalue: 30 },
+        dieInLiquid: true,        
+		windAffectednes: 0.06,
+		glowLevel: 64,
+    	}   
 	],
 	rainPermeable: true,
 	materialDensity: 1500,

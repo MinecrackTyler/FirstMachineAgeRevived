@@ -1,23 +1,15 @@
 ﻿{
-	code: "log_barricade",	
+	code: "log_topcade",	
 	behaviors: 		
 		 [{name: "Unstable", properties: { attachedToFaces: ["down"] }}, {name: "NWOrientable"}],	
 	variantgroups: [				
 		{ code: "orientation", states: [ "ns", "we" ] },
 	],
-	creativeinventory: { "general": ["log_barricade-ns"], "construction": ["log_barricade-ns"], "defensive": ["log_barricade-ns"] },			
+	creativeinventory: { "general": ["log_topcade-ns"], "construction": ["log_topcade-ns"], "defensive": ["log_topcade-ns"]},			
     shapeByType: {		
-			"*-ns": { base: "block/wood/log_barricade", 
-            	alternates: 
-        		[
-            	{ base: "block/wood/log_barricade2" },
-            	]
+			"*-ns": { base: "block/wood/log_topcade",             	
         	},			
-        	"*-we": { base: "block/wood/log_barricade", rotateY: 90, 
-            	alternates: 
-        		[
-            	{ base: "block/wood/log_barricade2" , rotateY: 90 },
-            	]
+        	"*-we": { base: "block/wood/log_topcade", rotateY: 90,             	
        	 	},
         },
     collisionbox: { x1: 0, y1: 0, z1: 0.3, x2: 1, y2: 1.1, z2: 0.71,
@@ -42,7 +34,7 @@
 	requiredMiningTier: 1,
 	attributes: {
 		handbook: {
-			groupBy: ["log_barricade-*"]
+			groupBy: ["log_topcade-*"]
 		}		
 	},
 	textures: {
@@ -61,7 +53,7 @@
 		}
 	},
 	drops: [
-		{ type: "block", code: "log_barricade-ns", quantity: { avg: 1 }  }
+		{ type: "block", code: "log_topcade-ns", quantity: { avg: 1 }  }
 	],
     rainPermeable: false,
     lightAbsorption: 5,
@@ -79,3 +71,4 @@
 		scale: 0.37
 	}
 }
+

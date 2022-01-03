@@ -1,35 +1,35 @@
 ﻿{
-	code: "log_barricade",	
+	code: "log_cornercade",	
 	behaviors: 		
-		 [{name: "Unstable", properties: { attachedToFaces: ["down"] }}, {name: "NWOrientable"}],	
+		 [{name: "Unstable", properties: { attachedToFaces: ["down"] }}, {name: "HorizontalOrientable", properties: {  dropBlockFace: "north" }},],	
 	variantgroups: [				
-		{ code: "orientation", states: [ "ns", "we" ] },
+		{ code:"side", loadFromProperties: "abstract/horizontalorientation" }
 	],
-	creativeinventory: { "general": ["log_barricade-ns"], "construction": ["log_barricade-ns"], "defensive": ["log_barricade-ns"] },			
+	creativeinventory: { "general": ["log_cornercade-north"], "construction": ["log_cornercade-north"], "defensive": ["log_cornercade-north"]},			
     shapeByType: {		
-			"*-ns": { base: "block/wood/log_barricade", 
-            	alternates: 
-        		[
-            	{ base: "block/wood/log_barricade2" },
-            	]
+			"*-north": { base: "block/wood/log_cornercade", rotateY: 180,
         	},			
-        	"*-we": { base: "block/wood/log_barricade", rotateY: 90, 
-            	alternates: 
-        		[
-            	{ base: "block/wood/log_barricade2" , rotateY: 90 },
-            	]
+        	"*-east": { base: "block/wood/log_cornercade", rotateY: 270,
+       	 	},
+        	"*-south": { base: "block/wood/log_cornercade", 
+       	 	},
+        	"*-west": { base: "block/wood/log_cornercade", rotateY: 90,
        	 	},
         },
-    collisionbox: { x1: 0, y1: 0, z1: 0.3, x2: 1, y2: 1.1, z2: 0.71,
+    collisionbox: { x1: 0.27, y1: 0, z1: 0.3, x2: 1.0625, y2: 1, z2: 1, 
 		rotateYByType: {
-			"*-ns": 0,
-			"*-we": 90,			
+			"*-north": 180,
+			"*-east": 270,
+            "*-south": 0,
+            "*-west": 90,
 		},
     },
-    selectionbox: { x1: 0, y1: 0, z1: 0.3, x2: 1, y2: 1.1, z2: 0.71,
+    selectionbox: { x1: 0.27, y1: 0, z1: 0.3, x2: 1.0625, y2: 1, z2: 1, 
 		rotateYByType: {
-			"*-ns": 0,
-			"*-we": 90,			
+			"*-north": 180,
+			"*-east": 270,
+            "*-south": 0,
+            "*-west": 90,
 		},
     },
     sidesolid: {
@@ -42,7 +42,7 @@
 	requiredMiningTier: 1,
 	attributes: {
 		handbook: {
-			groupBy: ["log_barricade-*"]
+			groupBy: ["log_cornercade-*"]
 		}		
 	},
 	textures: {
@@ -61,7 +61,7 @@
 		}
 	},
 	drops: [
-		{ type: "block", code: "log_barricade-ns", quantity: { avg: 1 }  }
+		{ type: "block", code: "log_cornercade-north", quantity: { avg: 1 }  }
 	],
     rainPermeable: false,
     lightAbsorption: 5,

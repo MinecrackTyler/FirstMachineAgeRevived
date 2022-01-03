@@ -8,9 +8,6 @@
 	"textureSizes": {
 	},
 	"textures": {
-		"side": "game:block/wood/firewood/side",
-		"vines": "game:block/vines/basket/normal-westeast",
-		"toplog": "game:block/wood/firewood/front"
 	},
 	"elements": [
 		{
@@ -46,24 +43,24 @@
 		},
 		{
 			"name": "FrontLog2",
-			"from": [ -2.0, 0.0, 9.5 ], 
+			"from": [ -2.0, 2.0, 9.5 ], 
 			"to": [ 2.0, 12.0, 13.5 ], 
 			"rotationOrigin": [ 0.0, 0.0, 0.0 ],
 			"rotationY": 45.0,
 			"faces": {
-				"north": { "texture": "#side", "uv": [ 11.5, 0.0, 15.5, 12.0 ] },
-				"east": { "texture": "#side", "uv": [ 4.5, 0.0, 8.5, 12.0 ] },
-				"south": { "texture": "#side", "uv": [ 12.0, 0.0, 16.0, 12.0 ] },
-				"west": { "texture": "#side", "uv": [ 7.5, 0.0, 11.5, 12.0 ] },
+				"north": { "texture": "#side", "uv": [ 11.5, 0.0, 15.5, 10.0 ] },
+				"east": { "texture": "#side", "uv": [ 4.5, 0.0, 8.5, 10.0 ] },
+				"south": { "texture": "#side", "uv": [ 12.0, 0.0, 16.0, 10.0 ] },
+				"west": { "texture": "#side", "uv": [ 7.5, 0.0, 11.5, 10.0 ] },
 				"up": { "texture": "#toplog", "uv": [ 0.0, 8.0, 4.0, 12.0 ] },
 				"down": { "texture": "#toplog", "uv": [ 12.0, 4.5, 16.0, 8.5 ] }
 			},
 			"children": [
 				{
 					"name": "Binding4",
-					"from": [ -0.25, 3.5, -0.25 ], 
-					"to": [ 4.25, 4.5, 4.25 ], 
-					"rotationOrigin": [ 1.5, 0.0, 1.5 ],
+					"from": [ -0.25, 1.5, -0.25 ], 
+					"to": [ 4.25, 2.5, 4.25 ], 
+					"rotationOrigin": [ 1.5, -2.0, 1.5 ],
 					"rotationY": -5.122641596244655E-6,
 					"faces": {
 						"north": { "texture": "#vines", "uv": [ 7.5, 7.5, 12.0, 8.5 ] },
@@ -122,8 +119,9 @@
 			"children": [
 				{
 					"name": "Binding9",
-					"from": [ 2.0, -0.25, -0.25 ], 
-					"to": [ 3.0, 4.25, 4.25 ], 
+					"from": [ 4.1, -0.25, -0.25 ], 
+					"to": [ 5.1, 4.25, 4.25 ], 
+					"rotationOrigin": [ 0.1, 0.0, 0.0 ],
 					"faces": {
 						"north": { "texture": "#vines", "uv": [ 5.0, 4.5, 6.0, 9.0 ] },
 						"east": { "texture": "#vines", "uv": [ 5.0, 5.5, 9.5, 10.0 ] },
@@ -135,8 +133,8 @@
 				},
 				{
 					"name": "Binding10",
-					"from": [ 13.0, -0.25, -0.25 ], 
-					"to": [ 14.0, 4.25, 4.25 ], 
+					"from": [ 11.5, -0.25, -0.25 ], 
+					"to": [ 12.5, 4.25, 4.25 ], 
 					"faces": {
 						"north": { "texture": "#vines", "uv": [ 5.0, 4.5, 6.0, 9.0 ] },
 						"east": { "texture": "#vines", "uv": [ 5.0, 5.5, 9.5, 10.0 ] },
@@ -163,8 +161,8 @@
 			"children": [
 				{
 					"name": "Binding11",
-					"from": [ 12.0, -0.25, -0.25 ], 
-					"to": [ 13.0, 4.25, 4.25 ], 
+					"from": [ 10.5, -0.25, -0.25 ], 
+					"to": [ 11.5, 4.25, 4.25 ], 
 					"rotationOrigin": [ 0.0, 0.0, -4.5 ],
 					"faces": {
 						"north": { "texture": "#vines", "uv": [ 5.0, 4.5, 6.0, 9.0 ] },
@@ -177,8 +175,8 @@
 				},
 				{
 					"name": "Binding12",
-					"from": [ 3.0, -0.25, -0.25 ], 
-					"to": [ 4.0, 4.25, 4.25 ], 
+					"from": [ 5.1, -0.25, -0.25 ], 
+					"to": [ 6.1, 4.25, 4.25 ], 
 					"rotationOrigin": [ 0.0, 0.0, -4.5 ],
 					"faces": {
 						"north": { "texture": "#vines", "uv": [ 5.0, 4.5, 6.0, 9.0 ] },
