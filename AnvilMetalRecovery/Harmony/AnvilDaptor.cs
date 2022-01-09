@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -41,7 +42,7 @@ namespace AnvilMetalRecovery.Patches
 
 	if (anvil.IsShavable && anvil.Voxel(voxelPos.X, voxelPos.Y, voxelPos.Z) == EnumVoxelMaterial.Metal) {
 	#if DEBUG
-	anvil.Logger.VerboseDebug("Split some {0} @{1}, Total:{2}", anvil.BaseMetal, voxelPos, anvil.SplitCount);
+	anvil.Logger.VerboseDebug("{0}, Split into {1} @{2}, Total:{3}",anvil.OutputCode ,anvil.BaseMetal, voxelPos, anvil.SplitCount);
 	#endif
 	anvil.SplitCount++;
 	}
@@ -64,7 +65,7 @@ namespace AnvilMetalRecovery.Patches
 	{	
 	var anvil = new SmithAssist(__instance);
 
-		if (anvil.BaseMaterial != null && anvil.IsShavable && anvil.SplitCount > 0) 
+		if (anvil.BaseMaterial != null && anvil.SplitCount > 0) 
 		{			
 		dsc.AppendFormat("[ {0} ] : {1} × {2}\n", anvil.SplitCount, Lang.GetUnformatted($"game:item-metalbit-{anvil.BaseMetal}"), anvil.ShavingQuantity);
 		}
@@ -135,8 +136,17 @@ namespace AnvilMetalRecovery.Patches
 		public bool IsShavable {
 			get
 			{
-			//this.SelectedRecipe <-- things that are recoverable?
-			return bea.WorkItemStack?.Collectible?.FirstCodePart( ).Equals(@"ironbloom") == false;
+			if (bea.WorkItemStack?.Collectible?.FirstCodePart().Equals(@"ironbloom") == true
+				|| (bea.SelectedRecipe != null
+				    && PrefixMatcher(CachedConfiguration.BlackList, this.OutputCode) )) 
+				{
+					#if DEBUG
+					this.Logger.VerboseDebug("That ain't shavable: {0}", this.OutputCode);
+					#endif
+					return false;
+				}
+
+			return true;
 			}
 		}
 
@@ -159,6 +169,13 @@ namespace AnvilMetalRecovery.Patches
 			{
 			if (bea.WorkItemStack != null) return AnvilWorkpiece.GetBaseMaterial(bea.WorkItemStack);//Right??
 			return null;
+			}
+		}
+
+		internal AssetLocation OutputCode {
+			get
+			{
+			return bea.SelectedRecipe.Output.Code;
 			}
 		}
 
@@ -223,6 +240,17 @@ namespace AnvilMetalRecovery.Patches
 		if (bea.Voxels[x, y, z] != desiredMat) { return false;	}	}	}	}
 
 		return true;
+		}
+
+		internal bool PrefixMatcher(List<AssetLocation> nameList, AssetLocation target)
+		{
+		if (nameList == null || nameList.Count == 0 || target == null) return false;
+
+			foreach (var aName in nameList) {
+			if (target.BeginsWith(aName.Domain, aName.Path)) return true;			
+		}
+
+		return false;
 		}
 	}
 }

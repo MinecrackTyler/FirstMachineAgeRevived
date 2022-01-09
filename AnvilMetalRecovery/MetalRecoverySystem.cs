@@ -156,12 +156,18 @@ namespace AnvilMetalRecovery
 		{
 		AMRConfig config = ServerAPI.LoadModConfig<AMRConfig>(_configFilename);
 
-		if (config == null) {
-		//Regen default
-		Mod.Logger.Warning("Regenerating default config as it was missing / unparsable...");
-		ServerAPI.StoreModConfig<AMRConfig>(new AMRConfig( ), _configFilename);
-		config = ServerAPI.LoadModConfig<AMRConfig>(_configFilename);
-		}
+		if (config == null) 
+			{
+			//Regen default
+			Mod.Logger.Warning("Regenerating default config as it was missing / unparsable...");
+			ServerAPI.StoreModConfig<AMRConfig>(new AMRConfig(true), _configFilename);
+			config = ServerAPI.LoadModConfig<AMRConfig>(_configFilename);
+			}
+			else if( config.BlackList == null || config.BlackList.Count == 0)
+			{
+			AMRConfig defaults = new AMRConfig(true);
+			config.BlackList = defaults.BlackList;
+			}
 
 		this.CachedConfiguration = config;					
 		}
@@ -208,7 +214,7 @@ namespace AnvilMetalRecovery
 		#endif
 
 		if (networkMessage != null) {
-			Mod.Logger.Debug("Message value; Recover Broken Tools:{0}, VoxelEquiv#{1:F2}", networkMessage.ToolFragmentRecovery, networkMessage.VoxelEquivalentValue);
+			Mod.Logger.Debug("Message value; Recover Broken Tools:{0}, VoxelEquiv#{1:F2}, Blacklist #{2}", networkMessage.ToolFragmentRecovery, networkMessage.VoxelEquivalentValue, networkMessage.BlackList.Count);
 		this.CachedConfiguration = networkMessage;
 		}
 		}

@@ -91,9 +91,7 @@ namespace AnvilMetalRecovery
 		var metalQuantity = ( int )Math.Floor(MetalQuantity(inSlot.Itemstack) * AnvilMetalRecoveryMod.CachedConfiguration.VoxelEquivalentValue);
 		var props = RegenerateCombustablePropsFromStack(inSlot.Itemstack);
 
-		if (props  != null && props.MeltingPoint > 0) {		
-		dsc.AppendLine(Lang.Get("game:smeltpoint-smelt", props.MeltingPoint));
-		}
+	
 		dsc.AppendLine(Lang.Get("fma:metal_worth", metalQuantity, metalName));
 		}
 

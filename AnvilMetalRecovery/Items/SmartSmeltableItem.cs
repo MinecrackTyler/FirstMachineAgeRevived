@@ -25,6 +25,36 @@ namespace AnvilMetalRecovery
 		RegenerateCombustablePropsByVariant(slot);
 		}
 
+		public override string GetHeldItemName(ItemStack itemStack)
+		{
+		RegenerateCombustablePropsByVariant(itemStack);
+		return base.GetHeldItemName(itemStack);
+		}
+
+		protected void RegenerateCombustablePropsByVariant(ItemStack stack)
+		{
+		if (this.CombustibleProps != null ||  stack.Collectible.CombustibleProps != null) return;
+
+		var ingotAssetCode = _ingotPrefix.AppendPathVariant(Metal);//Wildcard find? excluding domain?
+		var ingotEntry = api.World.GetItem(ingotAssetCode);
+		var metalSmeltProps = ingotEntry?.CombustibleProps?.Clone( );
+
+		if ((ingotEntry != null || !ingotEntry.IsMissing) && metalSmeltProps != null) {
+		metalSmeltProps.SmeltedRatio = Ratio;
+
+		//Back-Inject source Input Item stack - as Firepit checks THAT	
+		stack.Collectible.CombustibleProps = metalSmeltProps.Clone( );
+		#if DEBUG
+		api.Logger.VerboseDebug("set SmeltProps, for: {0} from {1}", this.Code.ToString( ), ingotAssetCode.ToString( ));
+		#endif
+		}
+		else {
+		#if DEBUG
+		api.Logger.VerboseDebug("Non-existant Ingot or C.Props: {0}", ingotAssetCode.ToString( ));
+		#endif
+		}
+		}
+
 		protected void RegenerateCombustablePropsByVariant(ItemSlot slot)
 		{
 		if (this.CombustibleProps != null || ( slot.Empty == false && slot.Itemstack.Collectible.CombustibleProps != null)) return;
