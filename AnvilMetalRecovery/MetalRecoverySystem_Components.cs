@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
-using Vintagestory.API.Client;
+
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.Server;
-using Vintagestory.Client.NoObf;
+
 using Vintagestory.Common;
+using Vintagestory.GameContent;
 using Vintagestory.Server;
-using Vintagestory.ServerMods;
+
 
 namespace AnvilMetalRecovery
 {
@@ -20,7 +19,7 @@ namespace AnvilMetalRecovery
 		private void MaterialDataGathering( )
 		{
 		//Count out Voxels in smthing recipes for all metal-ingot(?) derived items;
-		var examineList = ServerAPI.World.SmithingRecipes.Where(sr => sr.Enabled && sr.Ingredient.Type == EnumItemClass.Item && sr.Output.Type == EnumItemClass.Item);
+		var examineList = this.SmithingRecipies.Where(sr => sr.Enabled && sr.Ingredient.Type == EnumItemClass.Item && sr.Output.Type == EnumItemClass.Item);
 
 		foreach (var recipie in examineList) {
 

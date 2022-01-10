@@ -7,6 +7,7 @@ using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;
 using Vintagestory.Client.NoObf;
+using Vintagestory.GameContent;
 using Vintagestory.Server;
 
 namespace AnvilMetalRecovery
@@ -42,12 +43,18 @@ namespace AnvilMetalRecovery
 			}
 		}
 
+		internal List<SmithingRecipe> SmithingRecipies
+		{
+			get { return CoreAPI.ModLoader.GetModSystem<RecipeRegistrySystem>( ).SmithingRecipes; }
+        }
 
-		/// <summary>
-		/// Valid Items that are 'recoverable' (Asset Codes) only
-		/// </summary>
-		/// <value>The item filter list.</value>
-		public List<AssetLocation> ItemFilterList {
+
+
+	/// <summary>
+	/// Valid Items that are 'recoverable' (Asset Codes) only
+	/// </summary>
+	/// <value>The item filter list.</value>
+	public List<AssetLocation> ItemFilterList {
 			get
 			{
 			return itemToVoxelLookup.Keys.ToList( );
