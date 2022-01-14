@@ -1,22 +1,36 @@
 ﻿{
 	code: "crusie_lamp",
+    variantgroups: [		
+    { code:"fuel", states: [ "alcohol", "oil" ] },
+    ],
 	behaviors: [ 
 		{name: "CanAttach", properties: { sides: ["up"] } }, 
-		{name: "Unstable", properties: { attachedToFaces: ["up" ] } }
+		{name: "Unstable", properties: { attachedToFaces: ["up" ] } },
+        {name: "HeatSource", properties: { heatStrength: 3 } }
     ],       
-	creativeinventory: { "general": ["*"], "decorative": ["*"] },
-	textures: {
-		"fuel": { base: "liquids/liquid_oil" },
+	creativeinventory: { "general": ["*"], "decorative": ["*"], "defensive": ["*"] },
+    texturesByType: {
+		"*-alcohol": { 
+        "fuel": { base: "game:block/liquid/milkportion", alpha: 70 },
 		"iron": { base: "metal/black_iron2" },
 		"wick": { base: "game:block/linen" },
-	},
+        	},
+        "*-oil": { 
+        "fuel": { base: "liquids/liquid_oil" },
+		"iron": { base: "metal/black_iron2" },
+		"wick": { base: "game:block/linen" },
+        	},
+    },        	
 	shape: { base: "block/metal/crusie_lamp" },
 	blockmaterial: "Metal",
 	sidesolid: { all: false },
 	sideopaque: { all: false },
 	resistance: 2,
-    storageFlags: 1,
-	lightHsv:  [11, 4, 11],
+    storageFlags: 1,	
+    lightHsvByType: {
+		"*-alcohol": [38, 6, 11],
+		"*-oil": [11, 6, 11],
+		},
 	collisionbox: null,
 	selectionbox: { x1: 0.3125, y1: 0.5, z1: 0.3125, x2: 0.6875, y2: 1, z2: 0.6875 },			
 	lightAbsorption: 0,
@@ -25,8 +39,99 @@
 		break: "block/chandelier-break",
 	},
 	maxStackSize: 1,
-	particleProperties: [
+	particlePropertiesByType: {
+		"*-alcohol": [			
     	{
+        posOffset: [
+			{ avg: 0.09, var: 0.001 },{ avg: -0.41, var: 0.001 },{ avg: 0.15, var: 0.001 }
+        ],
+        velocity: [
+            { avg: 0.0, var: 0.0 },{ avg: 0, var: 0 },{ avg: 0.0, var: 0.0 }
+        ],
+        hsvaColor: [
+           { avg: 140, var: 15 }, { avg: 250, var: 5 }, { avg: 200, var: 5 },  { avg: 150, var: 0 }
+        ],
+        quantity: { avg: 3, var: 1 },
+        lifeLength: { avg: 0.12, var: 0.03 },
+        gravityEffect: { avg: -0.09, var: -0.03 },
+        size: { avg: 0.06, var: 0.01 },
+        particleModel: "Quad",
+        sizeEvolve: { transform: "linear", factor: 0.12 },
+        opacityEvolve: { transform: "quadratic", factor: -25 },
+		redEvolve: { transform: "quadratic", factor: -1, maxvalue: 30 },
+        dieInLiquid: true,        
+		windAffectednes: 0.06,
+		glowLevel: 64,
+    	},
+        {
+        posOffset: [
+			{ avg: 0.09, var: 0.001 },{ avg: -0.41, var: 0.001 },{ avg: -0.15, var: 0.001 }
+        ],
+        velocity: [
+            { avg: 0.0, var: 0.0 },{ avg: 0, var: 0 },{ avg: 0.0, var: 0.0 }
+        ],
+        hsvaColor: [
+           { avg: 140, var: 15 }, { avg: 250, var: 5 }, { avg: 200, var: 5 },  { avg: 150, var: 0 }
+        ],
+        quantity: { avg: 3, var: 1 },
+        lifeLength: { avg: 0.12, var: 0.03 },
+        gravityEffect: { avg: -0.09, var: -0.03 },
+        size: { avg: 0.06, var: 0.01 },
+        particleModel: "Quad",
+        sizeEvolve: { transform: "linear", factor: 0.12 },
+        opacityEvolve: { transform: "quadratic", factor: -25 },
+		redEvolve: { transform: "quadratic", factor: -1, maxvalue: 30 },
+        dieInLiquid: true,        
+		windAffectednes: 0.06,
+		glowLevel: 64,
+    	},
+        {
+        posOffset: [
+			{ avg: -0.180, var: 0.001 },{ avg: -0.41, var: 0.001 },{ avg: 0.15, var: 0.001 }
+        ],
+        velocity: [
+            { avg: 0.0, var: 0.0 },{ avg: 0, var: 0 },{ avg: 0.0, var: 0.0 }
+        ],
+        hsvaColor: [
+           { avg: 140, var: 15 }, { avg: 250, var: 5 }, { avg: 200, var: 5 },  { avg: 150, var: 0 }
+        ],
+        quantity: { avg: 3, var: 1 },
+        lifeLength: { avg: 0.12, var: 0.03 },
+        gravityEffect: { avg: -0.09, var: -0.03 },
+        size: { avg: 0.06, var: 0.01 },
+        particleModel: "Quad",
+        sizeEvolve: { transform: "linear", factor: 0.12 },
+        opacityEvolve: { transform: "quadratic", factor: -25 },
+		redEvolve: { transform: "quadratic", factor: -1, maxvalue: 30 },
+        dieInLiquid: true,        
+		windAffectednes: 0.06,
+		glowLevel: 64,
+    	},
+        {
+        posOffset: [
+			{ avg: -0.180, var: 0.001 },{ avg: -0.41, var: 0.001 },{ avg: -0.15, var: 0.001 }
+        ],
+        velocity: [
+            { avg: 0.0, var: 0.0 },{ avg: 0, var: 0 },{ avg: 0.0, var: 0.0 }
+        ],
+        hsvaColor: [
+           { avg: 140, var: 15 }, { avg: 250, var: 5 }, { avg: 200, var: 5 },  { avg: 150, var: 0 }
+        ],
+        quantity: { avg: 3, var: 1 },
+        lifeLength: { avg: 0.12, var: 0.03 },
+        gravityEffect: { avg: -0.09, var: -0.03 },
+        size: { avg: 0.06, var: 0.01 },
+        particleModel: "Quad",
+        sizeEvolve: { transform: "linear", factor: 0.12 },
+        opacityEvolve: { transform: "quadratic", factor: -25 },
+		redEvolve: { transform: "quadratic", factor: -1, maxvalue: 30 },
+        dieInLiquid: true,        
+		windAffectednes: 0.06,
+		glowLevel: 64,
+    	}   
+	],
+    "*-oil": [			   
+        {
         posOffset: [
 			{ avg: 0.09, var: 0.001 },{ avg: -0.41, var: 0.001 },{ avg: 0.15, var: 0.001 }
         ],
@@ -113,8 +218,22 @@
         dieInLiquid: true,        
 		windAffectednes: 0.06,
 		glowLevel: 64,
-    	}   
-	],
+    	}    
+    ] },        
 	rainPermeable: true,
 	materialDensity: 1500,
+    guiTransform: {
+		translation: { x: 1, y: 12, z: 0 },
+		scale: 2.5
+	},
+    fpHandTransform: {
+		translation: { x: -0.1, y: -0.1, z: 0.5 },
+		rotation: { x: 5, y: -82, z: -5 }
+	},
+    groundTransform: {
+		translation: { x: 0, y: 0, z: 0 },
+		rotation: { x: 0, y: -45, z: 0 },
+		origin: { x: 0.5, y: 0, z: 0.5 },
+		scale: 3
+	},
 }

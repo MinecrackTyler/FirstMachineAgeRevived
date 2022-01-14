@@ -4,7 +4,7 @@
 		"P": { type: "item", code: "game:clay-blue" },
         "Q": { type: "item", code:"game:clearquartz" },
         "C": { type: "item", code: "game:candle" },
-        "B": { type: "block", code: "game:bowl-burned" },
+        "B": { type: "block", code: "game:bowl-fired" },
 	},
 	width: 3,
 	height: 3,

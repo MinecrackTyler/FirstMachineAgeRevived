@@ -13,14 +13,17 @@
     "defensive:block-log_barricade-*":"Log Barricade",
     "defensive:block-log_topcade-*":"Log Top Barricade",
     "defensive:block-log_cornercade-*":"Log Corner Barricade",
-    "defensive:block-crusie_lamp":"Crusie Lamp",
+    "defensive:block-crusie_lamp-oil":"Crusie Lamp (oil)",
+    "defensive:block-crusie_lamp-alcohol":"Crusie Lamp (spirit)",
+
+    "defensive:item-crusie_shell":"Incomplete Crusie Lamp (shell)",
 
     "defensive:blockdesc-grille_vertical-*": "A vertical grille of latticed wrought iron bars.",
     "defensive:blockdesc-boltable_door-*":"Integrated bolt lock.",
 	"defensive:blockdesc-grille_horizontal-*": "A horizontal grille of latticed wrought iron bars.",
     "defensive:blockdesc-grille_vertical-*": "Vertical cross-bars of sturdy iron.",
     "defensive:blockdesc-log_barricade-*":"A rough barrier fit for the Frontier.",
-    "defensive:blockdesc-crusie_lamp":"Burn that midnight oil 4x FASTER.",
+    "defensive:blockdesc-crusie_lamp-*":"Burn the midnight fuel 4x FASTER.",
 
     "game:tabname-defensive":"Defensive Stuff",
 

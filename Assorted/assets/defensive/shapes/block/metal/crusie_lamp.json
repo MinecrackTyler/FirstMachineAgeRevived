@@ -10,7 +10,7 @@
 	"textures": {
 		"fuel": "liquids/liquid_oil",
 		"iron": "metal/black_iron2",
-		"wick": "block/linen",
+		"wick": "block/linen"
 	},
 	"elements": [
 		{

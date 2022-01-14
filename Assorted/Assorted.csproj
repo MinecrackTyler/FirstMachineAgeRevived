@@ -101,6 +101,8 @@
     <Folder Include="assets\defensive\shapes\block\ceramic\" />
     <Folder Include="assets\defensive\blocktypes\ceramic\" />
     <Folder Include="assets\defensive\textures\liquids\" />
+    <Folder Include="assets\defensive\itemtypes\" />
+    <Folder Include="assets\defensive\itemtypes\metal\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\defensive\blocktypes\metal\grille_horizontal.json">
@@ -168,6 +170,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\defensive\blocktypes\metal\brazier.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\defensive\shapes\block\stone\brick_w_candle.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -259,6 +262,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\defensive\recipes\grid\log_cornercade.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\recipes\smithing\crusie_lamp.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\itemtypes\metal\crusie_shell.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\recipes\grid\crusie_lamp.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

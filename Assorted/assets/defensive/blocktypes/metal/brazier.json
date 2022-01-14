@@ -2,24 +2,28 @@
 	code: "brazier",		
 	maxstacksize: 1,
 	variantgroups: [
-		{ code: "state", states: ["unlit", "ignighted", "extinguished"] }
+		{ code: "state", states: ["unfueld","unlit","ignighted","extinguished"] }
 	],	
     behaviorsByType: {
-	"*-ignighted": [{ name: "HeatSource", properties: { heatStrength: 5 } }],	
+	"*-ignighted": [{ name: "HeatSource", properties: { heatStrength: 8 } }],	
     "*": [{name: "Unstable"}],
 	},
     renderpass: "OpaqueNoCull",
 	shapeByType: {
+        "*-unfueld": { 
+			base: "block/metal/brazier2", SelectiveElements:["Base/Leg*","Base/Grille1"],
+			
+		},
 		"*-unlit": { 
-			base: "block/metal/brazier2", SelectiveElements:["Base","Leg1","Leg2","Leg3","Leg4","Grille1","Fuel","Coal1","Coal2","Coal3"],
+			base: "block/metal/brazier2", SelectiveElements:["Base/Leg*","Base/Grille1","Base/Fuel/Coal*",],
 			
 		},
 		"*-ignighted": { 
-			base: "block/metal/brazier2", SelectiveElements:["Base","Leg1","Leg2","Leg3","Leg4","Grille1","Embers"],
+			base: "block/metal/brazier2", SelectiveElements:["Base/Leg*","Base/Grille1","Base/Fuel/Embers"],
 			
 		},
 		"*-extinguished": { 
-			base: "block/metal/brazier2", SelectiveElements:["Base","Leg1","Leg2","Leg3","Leg4","Grille1","Ash","Lump1","Lump2","Lump3"],
+			base: "block/metal/brazier2", SelectiveElements:["Base/Leg*","Base/Grille1","Base/Fuel/Ash/Lump*"],
 			
 		},		
 	},
@@ -34,7 +38,7 @@
 	blockmaterial: "Metal",
 	replaceable: 200,
 	lightAbsorption: 0,
-	resistance: 1.5,
+	resistance: 2.0,
 	sideopaque: { all: false },
 	sidesolid: { all: false },
 	lightHsvByType: {		
@@ -64,18 +68,10 @@
 		"hit": "game:block/anvil",
 		ambientByType: { "*-ignighted": "game:effect/embers" }
 	},
-	dropsByType: {
-		"*-1": [  { type: "item", code: "candle", quantity: { avg: 1 } } ],
-		"*-2": [  { type: "item", code: "candle", quantity: { avg: 2 } } ],
-		"*-3": [  { type: "item", code: "candle", quantity: { avg: 3 } } ],
-		"*-4": [  { type: "item", code: "candle", quantity: { avg: 4 } } ],
-		"*-5": [  { type: "item", code: "candle", quantity: { avg: 5 } } ],
-		"*-6": [  { type: "item", code: "candle", quantity: { avg: 6 } } ],
-		"*-7": [  { type: "item", code: "candle", quantity: { avg: 7 } } ],
-		"*-8": [  { type: "item", code: "candle", quantity: { avg: 8 } } ],
-		"*-9": [  { type: "item", code: "candle", quantity: { avg: 9 } } ],
-	},
-	materialDensity: 700,	
+	drops: [
+		 { type: "block", code: "brazier-unlit", quantity: { avg: 1 } }
+	],
+	materialDensity: 9000,	
 	collisionSelectionBox: { x1: 0, y1: 0, z1: 0.25, x2: 1, y2: 0.75, z2: 0.75 },
     rainPermeable: false,
 }

@@ -6,7 +6,7 @@
   "version": "0.1.6",
 	"ModID":"defensive",
   "dependencies": { 
-	"game": "1.15.6",
+	"game": "1.16.0",
 	"survival": ""
   },
   "website": "http://noname.nope"

@@ -1,0 +1,30 @@
+﻿[
+{
+	ingredientPattern: "WFW	_C_	W_W",
+	ingredients: {		
+        "F": { type: "item", code:"game:fat" },
+        "C": { type: "item", code: "defensive:crusie_shell" },
+        "W": { type: "item", code: "game:flaxfibers" },
+	},
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "defensive:crusie_lamp-oil", quantity: 1  }
+}, 
+{
+	ingredientPattern: "WFW	_C_	W_W",
+	ingredients: {		
+        "F": { type: "block", code:"game:bowl-fired" },
+        "C": { type: "item", code: "defensive:crusie_shell" },
+        "W": { type: "item", code: "game:flaxfibers" },
+	},
+	width: 3,
+	height: 3,
+    attributes: {
+		liquidContainerProps: {
+			requiresContent: { type: "item", code: "alcoholportion" },
+			requiresLitres: 0.2
+		}
+	},
+	output: { type: "block", code: "defensive:crusie_lamp-alcohol", quantity: 1  }
+}
+]

@@ -1,0 +1,15 @@
+﻿{
+	ingredient: { type: "item", code: "game:ingot-iron", name: "metal" },
+	pattern: [[
+        "__#____##",
+		"_###____#",
+		"#####___#",
+		"_###__#__",				
+		"__#__###_",
+		"#___#####",
+		"#____###_",
+		"##____#__",		
+	]],
+	name: "Crusie Lamp shells",
+	output: { type: "item", code: "defensive:crusie_shell", stacksize: 2  }
+}

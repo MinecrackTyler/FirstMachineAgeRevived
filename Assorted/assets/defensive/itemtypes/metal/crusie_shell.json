@@ -1,0 +1,26 @@
+﻿{
+	code: "crusie_shell",	
+	creativeinventory: { "general": ["*"], "decorative": ["*"], "defensive": ["*"] },
+	textures: {		
+		"iron": { base: "metal/black_iron2" },		
+	},
+    attributes: {
+		displaycaseable: false, 
+		shelvable: false,		
+	},
+	shape: { base: "block/metal/crusie_lamp", scale: 2.0, selectiveElements:["Pan/Handle1","Pan/Sides","Pan/Tip1","Pan/Tip2","Pan/Tip3","Pan/Tip4"] },	
+	sidesolid: { all: false },
+	sideopaque: { all: false },	
+    storageFlags: 1,			
+	maxStackSize: 2,		
+	materialDensity: 1500,
+    guiTransform: {
+		translation: { x: 15, y: 30, z: 0 },
+		rotation: { x: -143, y: -71, z: 19 },
+		origin: { x: 0, y: 0, z: 0 }
+	},
+    fpHandTransform: {
+		translation: { x: 0.05, y: -0.55, z: 0 },
+		rotation: { x: 18, y: 102, z: -23 }
+	}
+}

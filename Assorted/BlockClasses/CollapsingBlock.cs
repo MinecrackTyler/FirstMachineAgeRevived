@@ -34,8 +34,8 @@ namespace FirstMachineAge
 				foreach (var entity in victems) 
 				{
 					if (entity.IsInteractable &&
-					entity.Properties.HitBoxSize.X >= 0.51 &&
-					entity.Properties.HitBoxSize.Y >= 0.51) 
+					entity.Properties.CollisionBoxSize.X >= 0.51 &&
+					entity.Properties.CollisionBoxSize.Y >= 0.51) 
 					{
 					#if DEBUG
 					ServerAPI.Logger.VerboseDebug($"Collision box ( W{collapseZones[0].Width} H{collapseZones[0].Height} L{collapseZones[0].Length})");
