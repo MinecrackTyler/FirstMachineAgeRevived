@@ -61,18 +61,20 @@ namespace FirstMachineAge
 
 		private void RegisterBlockClasses( )
 		{
-		CoreAPI.RegisterBlockClass("BoltableDoor", typeof(BoltableDoor));
-		CoreAPI.RegisterBlockClass("FalseWall", typeof(FalseWall));
-		CoreAPI.RegisterBlockEntityClass(BoltableDoorEntityNameKey, typeof(BoltableDoorBlockEntity));
+		CoreAPI.RegisterBlockClass(@"BoltableDoor", typeof(BoltableDoor));
+		CoreAPI.RegisterBlockClass(@"FalseWall", typeof(FalseWall));		
+		CoreAPI.RegisterBlockClass(@"CollapsingBlock", typeof(CollapsingBlock));
+		CoreAPI.RegisterBlockClass(@"RectangularBrazier", typeof(RectangularBrazier));
 
-		CoreAPI.RegisterBlockClass("CollapsingBlock", typeof(CollapsingBlock));
+
+		CoreAPI.RegisterBlockEntityClass(BoltableDoorEntityNameKey, typeof(BoltableDoorBlockEntity));
 		}
 
 		private void RegisterBehaviorClasses( )
 		{
-		CoreAPI.RegisterBlockBehaviorClass("FreeReinforcement", typeof(BlockBehaviorFreeReinforcement));
-		CoreAPI.RegisterBlockBehaviorClass("VerticalOrentiation",typeof(BlockBehaviorVerticalOrientation));
-		CoreAPI.RegisterBlockBehaviorClass("NeedSides", typeof(BlockBehaviorNeedSides));
+		CoreAPI.RegisterBlockBehaviorClass(@"FreeReinforcement", typeof(BlockBehaviorFreeReinforcement));
+		CoreAPI.RegisterBlockBehaviorClass(@"VerticalOrentiation",typeof(BlockBehaviorVerticalOrientation));
+		CoreAPI.RegisterBlockBehaviorClass(@"NeedSides", typeof(BlockBehaviorNeedSides));
 		}
 	}
 

@@ -15,6 +15,7 @@
     "defensive:block-log_cornercade-*":"Log Corner Barricade",
     "defensive:block-crusie_lamp-oil":"Crusie Lamp (oil)",
     "defensive:block-crusie_lamp-alcohol":"Crusie Lamp (spirit)",
+    "defensive:block-brazier-*":"Rectangular Brazier",
 
     "defensive:item-crusie_shell":"Incomplete Crusie Lamp (shell)",
 
@@ -23,13 +24,17 @@
 	"defensive:blockdesc-grille_horizontal-*": "A horizontal grille of latticed wrought iron bars.",
     "defensive:blockdesc-grille_vertical-*": "Vertical cross-bars of sturdy iron.",
     "defensive:blockdesc-log_barricade-*":"A rough barrier fit for the Frontier.",
-    "defensive:blockdesc-crusie_lamp-*":"Burn the midnight fuel 4x FASTER.",
+    "defensive:blockdesc-crusie_lamp-*":"Burn that midnight fuel faster.",
+	"defensive:blockdesc-brazier-empty":"Needs fuel...",
+	"defensive:blockdesc-brazier-extinct":"Needs fuel again...",
+	"defensive:blockdesc-brazier-lit":"What a lovely warm glow.",
 
     "game:tabname-defensive":"Defensive Stuff",
 
 	"defensive:placefailure-requirehorizontalside": "Cannot place block here! It needs one solid sided block adjacent.",
     "defensive:ingameerror-requirehorizontalside": "Cannot place that here! Needs an adjacent solid sided block.",
     "defensive:ingameerror-boltedclosed":"Bolted Shut.",
+	"defensive:ingameerror-lackfuel":"Insufficient for fueling this, needs more fuel...",
     "defensive:bolted_shut": "<font color='red'>Bolted Shut!</font>",
     "defensive:bolted_open": "Its Open.",
 }

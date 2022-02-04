@@ -174,11 +174,11 @@
 					"rotationOrigin": [ 8.0, -1.75, 0.75 ],
 					"rotationX": -45.0,
 					"faces": {
-						"north": { "texture": "#ember", "uv": [ 1.0, 10.5, 14.0, 13.0 ], "glow": 128 },
-						"east": { "texture": "#ember", "uv": [ 6.0, 4.5, 13.0, 7.0 ], "glow": 128 },
-						"south": { "texture": "#ember", "uv": [ 1.0, 5.5, 14.0, 8.0 ], "glow": 128 },
-						"west": { "texture": "#ember", "uv": [ 5.5, 4.5, 12.5, 7.0 ], "glow": 128 },
-						"up": { "texture": "#ember", "uv": [ 1.0, 4.5, 14.0, 11.5 ], "glow": 128 },
+						"north": { "texture": "#ember", "uv": [ 1.0, 10.5, 14.0, 13.0 ], "glow": 255 },
+						"east": { "texture": "#ember", "uv": [ 6.0, 4.5, 13.0, 7.0 ], "glow": 255 },
+						"south": { "texture": "#ember", "uv": [ 1.0, 5.5, 14.0, 8.0 ], "glow": 255 },
+						"west": { "texture": "#ember", "uv": [ 5.5, 4.5, 12.5, 7.0 ], "glow": 255 },
+						"up": { "texture": "#ember", "uv": [ 1.0, 4.5, 14.0, 11.5 ], "glow": 255 },
 						"down": { "texture": "#ember", "uv": [ 0.5, 4.0, 13.5, 11.0 ], "enabled": false }
 					}
 				},

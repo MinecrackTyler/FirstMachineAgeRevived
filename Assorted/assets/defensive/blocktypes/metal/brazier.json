@@ -1,29 +1,31 @@
 ﻿{
-	code: "brazier",		
+	code: "brazier",	
+	class: "RectangularBrazier",
 	maxstacksize: 1,
 	variantgroups: [
-		{ code: "state", states: ["unfueld","unlit","ignighted","extinguished"] }
+		{ code: "state", states: ["empty","fueled","lit","extinct"] }
 	],	
     behaviorsByType: {
-	"*-ignighted": [{ name: "HeatSource", properties: { heatStrength: 8 } }],	
-    "*": [{name: "Unstable"}],
+	"*-lit": [{ name: "HeatSource", properties: { heatStrength: 8 } }],	
+	"*-fueled": [{ name: "Ignitable" }],
+    "*": [{name: "UnstableFalling"}],
 	},
     renderpass: "OpaqueNoCull",
 	shapeByType: {
-        "*-unfueld": { 
+        "*-empty": { 
 			base: "block/metal/brazier2", SelectiveElements:["Base/Leg*","Base/Grille1"],
 			
 		},
-		"*-unlit": { 
+		"*-fueled": { 
 			base: "block/metal/brazier2", SelectiveElements:["Base/Leg*","Base/Grille1","Base/Fuel/Coal*",],
 			
 		},
-		"*-ignighted": { 
-			base: "block/metal/brazier2", SelectiveElements:["Base/Leg*","Base/Grille1","Base/Fuel/Embers"],
+		"*-lit": { 
+			base: "block/metal/brazier2", SelectiveElements:["Base/Leg*","Base/Grille1","Base/Embers"],
 			
 		},
-		"*-extinguished": { 
-			base: "block/metal/brazier2", SelectiveElements:["Base/Leg*","Base/Grille1","Base/Fuel/Ash/Lump*"],
+		"*-extinct": { 
+			base: "block/metal/brazier2", SelectiveElements:["Base/Leg*","Base/Grille1","Base/Ash/Lump*"],
 			
 		},		
 	},
@@ -34,7 +36,14 @@
 		"coal": { base:  "game:block/coal/charcoal"},
 		"rusty-iron": { base: "game:block/currency/rusty-iron"},		
     },
-	creativeinventory: { "general": ["*"], "decorative": ["*"] , "defensive": ["*"] },
+	attributes: {
+        transientProps: {
+			convertFrom: "brazier-lit", 
+			convertTo: "brazier-extinct", 
+			inGameHours: "100",
+		}		
+    },
+	creativeinventory: { "decorative": ["brazier-empty"] , "defensive": ["brazier-empty"] },
 	blockmaterial: "Metal",
 	replaceable: 200,
 	lightAbsorption: 0,
@@ -42,23 +51,24 @@
 	sideopaque: { all: false },
 	sidesolid: { all: false },
 	lightHsvByType: {		
-		"*-ignighted": [8, 5, 10],			
+		"*-lit": [8, 12, 5],			
 	},
 	particlePropertiesByType: {
-		"*-ignighted": [
-			{
-			"__comment": "Fire quads",
-			hsvaColor: [{ avg: 20, var: 20 }, { avg: 255, var: 50 }, { avg: 255, var: 50 },  { avg: 255, var: 0 }],
-			opacityEvolve: { transform: "quadratic", factor: -16 },
-			gravityEffect: { avg: 0, var: 0 },
+		"*-lit": [
+			{			
+			hsvaColor: [{ avg: 50, var: 10 }, { avg: 255, var: 0 }, { avg: 200, var: 10 },  { avg: 250, var: 0 }],
+            posOffset: [{ avg: 0.55, var: 0.06 },{ avg: 0.65, var: -0.9 },{ avg: 0.0, var: -0.35 }],
+        	velocity: [{ avg: 0.1, var: 0.5 },{ avg: 0.1, var: -0.1 },{ avg: -0.2, var: -0.1 }],
+			opacityEvolve: { transform: "linear", factor: -90 },
+			gravityEffect: { avg: -0.02, var: 0.0 },
 			velocity: [ { avg: 0, var: 0.0125 }, { avg: 0.03, var: 0.01 }, { avg: 0, var: 0.0125 }],
-			quantity: { avg: 0.1 },
+			quantity: { avg: 0.3 },
 			size: { avg: 0.05, var: 0.025 },
-			lifeLength: { avg: 0.5 },
-			sizeEvolve: { transform: "linear", factor: 0.1 },
+			lifeLength: { avg: 0.15, var: 0.35 },
+			sizeEvolve: { transform: "linear", factor: -0.15 },
 			particleModel: "Quad",
 			vertexFlags: 128,
-			windAffectednes: 0.05
+			windAffectednes: 0.3
 			}	
         ]	
 	},
@@ -66,10 +76,10 @@
 		"place": "game:block/anvil",
 		"break": "game:block/anvil",
 		"hit": "game:block/anvil",
-		ambientByType: { "*-ignighted": "game:effect/embers" }
+		ambientByType: { "*-lit": "game:effect/embers" }
 	},
 	drops: [
-		 { type: "block", code: "brazier-unlit", quantity: { avg: 1 } }
+		 { type: "block", code: "brazier-empty", quantity: { avg: 1 } }
 	],
 	materialDensity: 9000,	
 	collisionSelectionBox: { x1: 0, y1: 0, z1: 0.25, x2: 1, y2: 0.75, z2: 0.75 },

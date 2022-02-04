@@ -90,6 +90,7 @@
     <Compile Include="BlockClasses\CollapsingBlock.cs" />
     <Compile Include="BlockClasses\FalseWall.cs" />
     <Compile Include="BlockBehaviors\BlockBehaviorNeedSides.cs" />
+    <Compile Include="BlockClasses\RectangularBrazier.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BlockClasses\" />

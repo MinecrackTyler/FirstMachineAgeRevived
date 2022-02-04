@@ -1,7 +1,7 @@
 {
   "type": "code",
   "name": "Defensive Structures",
-  "description" : "Defensive structures & emplacements, ideal for outposts, castles, forts...",
+  "description" : "Defensive structures & barriers; ideal for outposts, castles, forts...",
   "authors": ["Melchior"],
   "version": "0.1.6",
 	"ModID":"defensive",
