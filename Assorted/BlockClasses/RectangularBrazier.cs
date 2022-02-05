@@ -16,16 +16,23 @@ namespace FirstMachineAge
 	{
 		private const string stateKey = @"state";
 		private const string fuledValue = @"fueled";
+		private const string extinguishedValue = @"extinguished";
 		private const string litValue = @"lit";
 		private const float ignitionTime = 2f;
 		private const int fuelReqt = 5;
 		private const float fireDmg = 0.5f;
-		private WorldInteraction[ ] interactMustFuel, interactMustIgnight;
+		private const int fuel_Temp = 999;
+		private const int fuel_Duration = 30;
 
+		private WorldInteraction[ ] interactMustFuel, interactMustIgnight;
+		private string flameoutPercentKey = @"flameoutPercent";
+		private WeatherSystemBase weatherSys;
 
 		public override void OnLoaded(ICoreAPI api)
 		{
 		base.OnLoaded(api);
+
+		weatherSys = api.ModLoader.GetModSystem<WeatherSystemBase>( );
 
 		if (api.Side.IsClient( )) 
 			{
@@ -35,7 +42,7 @@ namespace FirstMachineAge
 			List<ItemStack> ignitionSources = new List<ItemStack>();
 
 			foreach (CollectibleObject obj in api.World.Collectibles) {
-			if (obj.CombustibleProps?.BurnTemperature >= 999 && obj.CombustibleProps?.BurnDuration >= 30) 
+			if (obj.CombustibleProps?.BurnTemperature >= fuel_Temp && obj.CombustibleProps?.BurnDuration >= fuel_Duration) 
 			{
 				List<ItemStack> stacks = obj.GetHandBookStacks(clientAPI);
 				if (stacks != null) solidFuels.AddRange(stacks);
@@ -81,6 +88,13 @@ namespace FirstMachineAge
 			}
 		}
 
+		public float FlameoutPercent {
+			get
+			{
+			return this.Attributes[flameoutPercentKey].AsFloat(0.01f);
+			}
+		}
+
 		public override EnumIgniteState OnTryIgniteBlock(EntityAgent byEntity, BlockPos pos, float secondsIgniting)
 		{
 			if (Fueled) 
@@ -113,7 +127,7 @@ namespace FirstMachineAge
 			if ((!Fueled && !Lit) 
 			    && hbItemStack != null 
 			    && hbItemStack.Class == EnumItemClass.Item 
-			    && hbItemStack.Item?.CombustibleProps.BurnTemperature >= 999 && hbItemStack.Item?.CombustibleProps.BurnDuration >= 30) 
+			    && hbItemStack.Item?.CombustibleProps.BurnTemperature >= fuel_Temp && hbItemStack.Item?.CombustibleProps.BurnDuration >= fuel_Duration) 
 			{		
 			if (byPlayer != null && byPlayer.WorldData.CurrentGameMode == EnumGameMode.Survival) {
 				if (byPlayer.InventoryManager.ActiveHotbarSlot.StackSize >= fuelReqt) {
@@ -151,8 +165,8 @@ namespace FirstMachineAge
 			{
 				if (entity is EntityAgent && entity.Alive) 
 				{					
-				entity.ReceiveDamage(new DamageSource( ) { Source = EnumDamageSource.Block, SourceBlock = this, Type = EnumDamageType.Fire, SourcePos = pos.ToVec3d( ) }, fireDmg);
-
+				entity.ReceiveDamage(new DamageSource( ) { Source = EnumDamageSource.Block, SourceBlock = this, Type = EnumDamageType.Fire, SourcePos = pos.ToVec3d( ), DamageTier = 5, KnockbackStrength = 0.25f }, fireDmg);
+				if (Sounds?.Inside != null)	world.PlaySoundAt(Sounds.Inside, entity.Pos.X, entity.Pos.Y, entity.Pos.Z);
 				}
 			}
 		}
@@ -171,6 +185,38 @@ namespace FirstMachineAge
 		return null;//Must be burning
 		}
 
+
+		public override bool ShouldReceiveServerGameTicks(IWorldAccessor world, BlockPos pos, Random offThreadRandom, out object extra)
+		{
+		extra = null;
+
+		if (Lit) { 			
+			var rainLevel = world.BlockAccessor.GetRainMapHeightAt(pos);
+			if (pos.Y >= rainLevel) { //Brr, its Wet out here!
+			var rainPos = new BlockPos(pos.X, rainLevel, pos.Z);
+			var precip = weatherSys.GetPrecipitation(pos.ToVec3d());
+
+			if (precip >= 0.4) { return true; }
+			if (offThreadRandom.NextDouble( ) <= (FlameoutPercent * 10) ) { return true; }			
+			}
+			else if (offThreadRandom.NextDouble( ) <= FlameoutPercent){ return true; }
+			}
+
+		return false;
+		}
+
+		public override void OnServerGameTick(IWorldAccessor world, BlockPos pos, object extra = null)
+		{
+			if (Lit) {			
+				#if DEBUG
+				api.Logger.VerboseDebug("Got server-game tick for flameout! @ {0}", pos);
+				#endif
+
+				Block extinctBlock = world.GetBlock(CodeWithVariant(stateKey, extinguishedValue));
+				world.BlockAccessor.ExchangeBlock(extinctBlock.BlockId, pos);
+				world.BlockAccessor.MarkBlockDirty(pos);
+				}			
+		}
 	}
 }
 

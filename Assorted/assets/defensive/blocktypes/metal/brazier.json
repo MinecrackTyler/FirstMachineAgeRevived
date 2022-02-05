@@ -3,7 +3,7 @@
 	class: "RectangularBrazier",
 	maxstacksize: 1,
 	variantgroups: [
-		{ code: "state", states: ["empty","fueled","lit","extinct"] }
+		{ code: "state", states: ["empty","fueled","lit","extinguished"] }
 	],	
     behaviorsByType: {
 	"*-lit": [{ name: "HeatSource", properties: { heatStrength: 8 } }],	
@@ -24,7 +24,7 @@
 			base: "block/metal/brazier2", SelectiveElements:["Base/Leg*","Base/Grille1","Base/Embers"],
 			
 		},
-		"*-extinct": { 
+		"*-extinguished": { 
 			base: "block/metal/brazier2", SelectiveElements:["Base/Leg*","Base/Grille1","Base/Ash/Lump*"],
 			
 		},		
@@ -36,12 +36,8 @@
 		"coal": { base:  "game:block/coal/charcoal"},
 		"rusty-iron": { base: "game:block/currency/rusty-iron"},		
     },
-	attributes: {
-        transientProps: {
-			convertFrom: "brazier-lit", 
-			convertTo: "brazier-extinct", 
-			inGameHours: "100",
-		}		
+	attributes: {       		
+		flameoutPercent: 0.001,				
     },
 	creativeinventory: { "decorative": ["brazier-empty"] , "defensive": ["brazier-empty"] },
 	blockmaterial: "Metal",
@@ -56,8 +52,8 @@
 	particlePropertiesByType: {
 		"*-lit": [
 			{			
-			hsvaColor: [{ avg: 50, var: 10 }, { avg: 255, var: 0 }, { avg: 200, var: 10 },  { avg: 250, var: 0 }],
-            posOffset: [{ avg: 0.55, var: 0.06 },{ avg: 0.65, var: -0.9 },{ avg: 0.0, var: -0.35 }],
+			hsvaColor: [{ avg: 34, var: 10 }, { avg: 255, var: 0 }, { avg: 240, var: 10 },  { avg: 200, var: 50 }],
+            posOffset: [{ avg: 0.1, var: 0.5 },{ avg: -0.2, var: 0.0 },{ avg: 0.1, var: 0.25 }],
         	velocity: [{ avg: 0.1, var: 0.5 },{ avg: 0.1, var: -0.1 },{ avg: -0.2, var: -0.1 }],
 			opacityEvolve: { transform: "linear", factor: -90 },
 			gravityEffect: { avg: -0.02, var: 0.0 },
@@ -76,7 +72,8 @@
 		"place": "game:block/anvil",
 		"break": "game:block/anvil",
 		"hit": "game:block/anvil",
-		ambientByType: { "*-lit": "game:effect/embers" }
+		ambientByType: { "*-lit": "game:effect/embers" },
+        insideByType: { "*-lit": "game:effect/extinguish1" },
 	},
 	drops: [
 		 { type: "block", code: "brazier-empty", quantity: { avg: 1 } }

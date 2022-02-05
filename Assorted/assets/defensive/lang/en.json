@@ -26,7 +26,7 @@
     "defensive:blockdesc-log_barricade-*":"A rough barrier fit for the Frontier.",
     "defensive:blockdesc-crusie_lamp-*":"Burn that midnight fuel faster.",
 	"defensive:blockdesc-brazier-empty":"Needs fuel...",
-	"defensive:blockdesc-brazier-extinct":"Needs fuel again...",
+	"defensive:blockdesc-brazier-extinguished":"Needs fuel again...",
 	"defensive:blockdesc-brazier-lit":"What a lovely warm glow.",
 
     "game:tabname-defensive":"Defensive Stuff",
