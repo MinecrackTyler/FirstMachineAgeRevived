@@ -190,13 +190,13 @@ namespace FirstMachineAge
 		{
 		extra = null;
 
-		if (Lit) { 			
+		if (Lit && DateTime.Now.Second == 0) { 			
 			var rainLevel = world.BlockAccessor.GetRainMapHeightAt(pos);
 			if (pos.Y >= rainLevel) { //Brr, its Wet out here!
 			var rainPos = new BlockPos(pos.X, rainLevel, pos.Z);
 			var precip = weatherSys.GetPrecipitation(pos.ToVec3d());
 
-			if (precip >= 0.4) { return true; }
+			if (precip >= 0.3) { return true; }
 			if (offThreadRandom.NextDouble( ) <= (FlameoutPercent * 10) ) { return true; }			
 			}
 			else if (offThreadRandom.NextDouble( ) <= FlameoutPercent){ return true; }

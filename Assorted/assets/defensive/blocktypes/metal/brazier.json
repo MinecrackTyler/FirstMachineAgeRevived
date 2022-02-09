@@ -13,19 +13,19 @@
     renderpass: "OpaqueNoCull",
 	shapeByType: {
         "*-empty": { 
-			base: "block/metal/brazier2", SelectiveElements:["Base/Leg*","Base/Grille1"],
+			base: "block/metal/brazier3", SelectiveElements:["Base/Leg*","Base/Grille1"],
 			
 		},
 		"*-fueled": { 
-			base: "block/metal/brazier2", SelectiveElements:["Base/Leg*","Base/Grille1","Base/Fuel/Coal*",],
+			base: "block/metal/brazier3", SelectiveElements:["Base/Leg*","Base/Grille1","Base/Fuel/Coal*",],
 			
 		},
 		"*-lit": { 
-			base: "block/metal/brazier2", SelectiveElements:["Base/Leg*","Base/Grille1","Base/Embers"],
+			base: "block/metal/brazier3", SelectiveElements:["Base/Leg*","Base/Grille1","Base/Embers"],
 			
 		},
 		"*-extinguished": { 
-			base: "block/metal/brazier2", SelectiveElements:["Base/Leg*","Base/Grille1","Base/Ash/Lump*"],
+			base: "block/metal/brazier3", SelectiveElements:["Base/Leg*","Base/Grille1","Base/Ash/Lump*"],
 			
 		},		
 	},
@@ -37,7 +37,7 @@
 		"rusty-iron": { base: "game:block/currency/rusty-iron"},		
     },
 	attributes: {       		
-		flameoutPercent: 0.001,				
+		flameoutPercent: 0.0001,				
     },
 	creativeinventory: { "decorative": ["brazier-empty"] , "defensive": ["brazier-empty"] },
 	blockmaterial: "Metal",
@@ -79,6 +79,6 @@
 		 { type: "block", code: "brazier-empty", quantity: { avg: 1 } }
 	],
 	materialDensity: 9000,	
-	collisionSelectionBox: { x1: 0, y1: 0, z1: 0.25, x2: 1, y2: 0.75, z2: 0.75 },
+	collisionSelectionBox: { x1: 0.089, y1: 0.0625, z1: 0.089, x2: 0.9, y2: 0.75, z2: 0.9 },
     rainPermeable: false,
 }

@@ -15,7 +15,7 @@
     "defensive:block-log_cornercade-*":"Log Corner Barricade",
     "defensive:block-crusie_lamp-oil":"Crusie Lamp (oil)",
     "defensive:block-crusie_lamp-alcohol":"Crusie Lamp (spirit)",
-    "defensive:block-brazier-*":"Rectangular Brazier",
+    "defensive:block-brazier-*":"Square Brazier",
 
     "defensive:item-crusie_shell":"Incomplete Crusie Lamp (shell)",
 
@@ -27,7 +27,7 @@
     "defensive:blockdesc-crusie_lamp-*":"Burn that midnight fuel faster.",
 	"defensive:blockdesc-brazier-empty":"Needs fuel...",
 	"defensive:blockdesc-brazier-extinguished":"Needs fuel again...",
-	"defensive:blockdesc-brazier-lit":"What a lovely warm glow.",
+	"defensive:blockdesc-brazier-lit":"It glows, radiating warmth.",
 
     "game:tabname-defensive":"Defensive Stuff",
 

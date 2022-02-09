@@ -168,7 +168,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\defensive\shapes\block\metal\brazier2.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\defensive\blocktypes\metal\brazier.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -272,6 +271,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\defensive\recipes\grid\crusie_lamp.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\defensive\shapes\block\metal\brazier3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="modicon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
