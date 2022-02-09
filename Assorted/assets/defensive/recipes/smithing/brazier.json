@@ -1,0 +1,14 @@
+﻿{
+	ingredient: { type: "item", code: "game:ingot-iron", name: "metal" },
+	pattern: [[
+		"#_#_#_#_#_#",
+		"#_#######_#",
+		"#_#######_#",
+		"###########",				
+		"#_#######_#",
+		"#_#######_#",
+		"#_#_#_#_#_#",	
+	]],
+	name: "square Brazier (empty)",
+	output: { type: "block", code: "defensive:brazier-empty", stacksize: 1  }
+}
