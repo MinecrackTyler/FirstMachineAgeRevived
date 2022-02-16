@@ -85,13 +85,13 @@ namespace AnvilMetalRecovery
 
 
 
-		public override void GetHeldItemInfo(ItemSlot inSlot, System.Text.StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+		public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
 		{
 		var metalName = MetalName(inSlot.Itemstack);
 		var metalQuantity = ( int )Math.Floor(MetalQuantity(inSlot.Itemstack) * AnvilMetalRecoveryMod.CachedConfiguration.VoxelEquivalentValue);
 		var props = RegenerateCombustablePropsFromStack(inSlot.Itemstack);
 
-	
+		dsc.AppendLine(Lang.Get("fma:itemdesc-item-metal_fragments"));
 		dsc.AppendLine(Lang.Get("fma:metal_worth", metalQuantity, metalName));
 		}
 
@@ -153,7 +153,7 @@ namespace AnvilMetalRecovery
 		{
 		#if DEBUG
 		api.Logger.VerboseDebug("MatchesForCrafting::'{0}', RecipieName: '{1}', Ing. '{2}'", inputStack.Collectible.Code, gridRecipe.Name, ingredient.Code);
-#endif
+		#endif
 
 		if (inputStack != null
 			&& gridRecipe.Name.Domain == this.Code.Domain
