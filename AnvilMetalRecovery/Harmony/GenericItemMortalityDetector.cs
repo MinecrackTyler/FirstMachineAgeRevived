@@ -74,7 +74,7 @@ namespace AnvilMetalRecovery.Patches
 			return true;
 			}
 
-			Dictionary<AssetLocation, RecoveryEntry> itemToVoxelLookup = ( Dictionary<AssetLocation, RecoveryEntry> )world.Api.ObjectCache[MetalRecoverySystem.itemFilterListCacheKey];
+			var itemToVoxelLookup = MetalRecoverySystem.GetCachedLookupTable(world);
 
 			if (itemToVoxelLookup.ContainsKey(that.Code)) return false;
 

@@ -6,6 +6,7 @@ namespace AnvilMetalRecovery
 {
 	public struct RecoveryEntry
 	{
+		public readonly AssetLocation CollectableCode;
 		public AssetLocation IngotCode;
 		/// <summary>
 		/// Metal Quantity (VOXELS)
@@ -14,9 +15,10 @@ namespace AnvilMetalRecovery
 		public float Melting_Duration;
 		public int Melting_Point;
 
-		public RecoveryEntry(AssetLocation ig, uint qty, float dur, int point)
+		public RecoveryEntry(AssetLocation coll, AssetLocation ingot, uint qty, float dur, int point)
 		{
-		IngotCode = ig.Clone();
+		CollectableCode = coll.Clone();
+		IngotCode = ingot.Clone();
 		Quantity = qty;
 		Melting_Duration = dur;
 		Melting_Point = point;

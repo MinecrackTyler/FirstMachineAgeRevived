@@ -4,9 +4,9 @@
   "description" : "Get back lost scrap and smithing discards. Plus more.",
   "authors": ["Melchior"],
   "ModID":"metalrecovery",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "dependencies": { 
-	"game": "1.16.0",
+	"game": "1.16.4",
 	"survival": ""
   },
   "website": "http://nowebsite.nope"

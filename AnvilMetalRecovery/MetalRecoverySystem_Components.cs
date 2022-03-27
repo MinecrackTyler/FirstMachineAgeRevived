@@ -56,7 +56,7 @@ namespace AnvilMetalRecovery
 		Mod.Logger.Warning($"Duplicate recipie '{recipie.Name}' output item: '{outputItem.Code.ToString()}'");				
 		}
 		else {
-		itemToVoxelLookup.Add(outputItem.Code.Clone( ), new RecoveryEntry(metalObject.Code,
+		itemToVoxelLookup.Add(new RecoveryEntry(outputItem.Code, metalObject.Code,
 							                                              ( uint )(setVoxels / recipie.Output.Quantity),
 																			  metalObject.CombustibleProps.MeltingDuration,
 																		  metalObject.CombustibleProps.MeltingPoint)
@@ -84,7 +84,7 @@ namespace AnvilMetalRecovery
 		Mod.Logger.Warning($"Duplicate recipie '{recipie.Name}' output tool-item: '{itemToolCode.ToString( )}'");
 		}
 		else
-		itemToVoxelLookup.Add(itemToolCode.Clone( ), new RecoveryEntry(metalObject.Code,
+		itemToVoxelLookup.Add( new RecoveryEntry(itemToolCode.Clone( ), metalObject.Code,
 																	  ( uint )(setVoxels / recipie.Output.Quantity),
 																		  metalObject.CombustibleProps.MeltingDuration,
 																	  metalObject.CombustibleProps.MeltingPoint)
@@ -99,7 +99,9 @@ namespace AnvilMetalRecovery
 		}
 
 		//Cache list too		
-		ServerAPI.ObjectCache.Add(itemFilterListCacheKey, itemToVoxelLookup);		
+		ServerAPI.ObjectCache.Add(itemFilterListCacheKey, itemToVoxelLookup);
+
+		Mod.Logger.Event("tallied {0} smithables totaling {1} metal units from {2} smithing recipies!", itemToVoxelLookup.Count, itemToVoxelLookup.Sum(ie => ie.Quantity), this.SmithingRecipies.Count);
 		}
 
 		private bool SmithingRecipieValidator(SmithingRecipe aRecipie )

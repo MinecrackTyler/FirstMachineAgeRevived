@@ -85,6 +85,7 @@
     <Compile Include="MetalRecoverySystem_Components.cs" />
     <Compile Include="Harmony\GenericItemMortalityDetector.cs" />
     <Compile Include="Data\AMR_Config.cs" />
+    <Compile Include="Data\RecoveryEntryTable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">

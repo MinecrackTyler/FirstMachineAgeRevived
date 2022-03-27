@@ -25,7 +25,7 @@ namespace AnvilMetalRecovery
 		internal IServerNetworkChannel _ConfigDownlink;
 		internal IClientNetworkChannel _ConfigUplink;
 
-		private Dictionary<AssetLocation, RecoveryEntry> itemToVoxelLookup = new Dictionary<AssetLocation, RecoveryEntry>();//Ammount & Material?
+		private RecoveryEntryTable itemToVoxelLookup = new RecoveryEntryTable();//Item Asset Code to: Ammount & Material
 
 		private ICoreAPI CoreAPI;
 		private ICoreServerAPI ServerAPI;
@@ -48,13 +48,16 @@ namespace AnvilMetalRecovery
 			get { return CoreAPI.ModLoader.GetModSystem<RecipeRegistrySystem>( ).SmithingRecipes; }
         }
 
+		public static RecoveryEntryTable GetCachedLookupTable(IWorldAccessor world )
+		{
+			return ( RecoveryEntryTable )world.Api.ObjectCache[MetalRecoverySystem.itemFilterListCacheKey];
+		}
 
-
-	/// <summary>
-	/// Valid Items that are 'recoverable' (Asset Codes) only
-	/// </summary>
-	/// <value>The item filter list.</value>
-	public List<AssetLocation> ItemFilterList {
+		/// <summary>
+		/// Valid Items that are 'recoverable' (Asset Codes) only
+		/// </summary>
+		/// <value>The item filter list.</value>
+		public List<AssetLocation> ItemFilterList {
 			get
 			{
 			return itemToVoxelLookup.Keys.ToList( );
@@ -62,13 +65,17 @@ namespace AnvilMetalRecovery
 		}
 
 		/// <summary>
-		/// ALL Items that have were derivable from smithing recipies (and are tool / durable)
+		/// ALL Items that have were derivable from smithing recipies (and are 'tool' / have durability property)
 		/// </summary>/
 		/// <value>The item filter list.</value>
-		public Dictionary<AssetLocation, RecoveryEntry> ItemRecoveryTable {
+		public RecoveryEntryTable ItemRecoveryTable {
 			get
 			{
 			return itemToVoxelLookup;
+			}
+			set
+			{
+			itemToVoxelLookup = value;
 			}
 		}
 
@@ -126,8 +133,7 @@ namespace AnvilMetalRecovery
 		#if DEBUG
 		ServerAPI.RegisterCommand("durability", "edit durability of item", " (Held tool) and #", EditDurability, Privilege.give);
 		#endif
-
-		
+					
 		}
 
 		public override void StartClientSide(ICoreClientAPI api)

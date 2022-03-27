@@ -67,6 +67,7 @@ namespace AnvilMetalRecovery
 
 		base.MarkDirty (false);	
 		 */
+					
 
 		if (splitTemp > 0 && this.WorkItemStack == null && this.SelectedRecipe == null) 
 		{
