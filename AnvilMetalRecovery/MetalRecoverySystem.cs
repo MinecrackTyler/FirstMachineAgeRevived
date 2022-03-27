@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using HarmonyLib;
@@ -24,6 +25,8 @@ namespace AnvilMetalRecovery
 
 		internal IServerNetworkChannel _ConfigDownlink;
 		internal IClientNetworkChannel _ConfigUplink;
+
+		public event Action AMR_DataReady;
 
 		private RecoveryEntryTable itemToVoxelLookup = new RecoveryEntryTable();//Item Asset Code to: Ammount & Material
 
@@ -124,7 +127,8 @@ namespace AnvilMetalRecovery
 		PrepareDownlinkChannel( );
 		ServerAPI.Event.PlayerJoin += SendClientConfigMessage;
 		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.Shutdown, PersistServersideConfig);
-		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);		
+		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);	
+		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.WorldReady, CacheRecoveryDateTable);
 
 		SetupGeneralObservers( );
 
@@ -232,8 +236,12 @@ namespace AnvilMetalRecovery
 		}
 		}
 
-
-
+		private void CacheRecoveryDateTable( )
+		{
+		this.AMR_DataReady?.Invoke();
+		// Cache list too
+		ServerAPI.ObjectCache.Add(itemFilterListCacheKey, itemToVoxelLookup);
+		}
 	}
 
 

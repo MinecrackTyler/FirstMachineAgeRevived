@@ -98,9 +98,6 @@ namespace AnvilMetalRecovery
 		}
 		}
 
-		//Cache list too		
-		ServerAPI.ObjectCache.Add(itemFilterListCacheKey, itemToVoxelLookup);
-
 		Mod.Logger.Event("tallied {0} smithables totaling {1} metal units from {2} smithing recipies!", itemToVoxelLookup.Count, itemToVoxelLookup.Sum(ie => ie.Quantity), this.SmithingRecipies.Count);
 		}
 
