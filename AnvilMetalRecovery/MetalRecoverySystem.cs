@@ -35,7 +35,7 @@ namespace AnvilMetalRecovery
 		private ServerCoreAPI ServerCore { get; set; }
 		private ClientCoreAPI ClientCore { get; set; }
 
-		internal AMRConfig CachedConfiguration {
+		public AMRConfig CachedConfiguration {
 			get
 			{
 			return ( AMRConfig )CoreAPI.ObjectCache[_configFilename];
