@@ -127,8 +127,9 @@ namespace AnvilMetalRecovery
 		PrepareDownlinkChannel( );
 		ServerAPI.Event.PlayerJoin += SendClientConfigMessage;
 		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.Shutdown, PersistServersideConfig);
-		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);	
-		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.WorldReady, CacheRecoveryDateTable);
+		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);	
+		//ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.WorldReady, CacheRecoveryDataTable);//This does not appear to work?!
+		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.RunGame, CacheRecoveryDataTable);
 
 		SetupGeneralObservers( );
 
@@ -236,10 +237,13 @@ namespace AnvilMetalRecovery
 		}
 		}
 
-		private void CacheRecoveryDateTable( )
+		private void CacheRecoveryDataTable( )
 		{
 		this.AMR_DataReady?.Invoke();
 		// Cache list too
+		#if DEBUG
+		Mod.Logger.VerboseDebug("Adding Recovery entries table to Cache...");
+		#endif
 		ServerAPI.ObjectCache.Add(itemFilterListCacheKey, itemToVoxelLookup);
 		}
 	}
