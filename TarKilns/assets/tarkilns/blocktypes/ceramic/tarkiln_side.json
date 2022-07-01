@@ -1,0 +1,35 @@
+﻿{
+	code: "tarkiln_side",
+	class: "TarkilnBaseBlock",	
+    variantgroups: [		
+		{ code: "side", loadFromProperties: "abstract/horizontalorientation" }
+	],
+    behaviors: [{name: "HorizontalOrientable"}],
+    creativeinventory: { "general": ["*-north"] },
+	shapeByType: {
+    "*-north": { base: "block/ceramic/kiln_sidewall", SelectiveElements:["Base/*","BackWall/*"],  rotateY:0 },
+	"*-east": { base: "block/ceramic/kiln_sidewall", SelectiveElements:["Base/*","BackWall/*"], rotateY:270 },
+	"*-south": { base: "block/ceramic/kiln_sidewall", SelectiveElements:["Base/*","BackWall/*"], rotateY:180 },
+	"*-west": { base: "block/ceramic/kiln_sidewall", SelectiveElements:["Base/*","BackWall/*"], rotateY:90 },    
+	},
+    heldTpIdleAnimation: "holdbothhandslarge", heldTpUseAnimation: "twohandplaceblock",
+	blockmaterial: "Ceramic",
+	textures: {		
+    	"fireclay":  { base:"game:block/clay/hardened/fire1" },
+		"brickside": { base:"game:block/clay/brickslab/fireside" },
+    	"woodfront": { base:"game:block/wood/firewood/front" },
+		"woodside":  { base:"game:block/wood/firewood/side" },
+	},
+	sidesolid: {
+		all: false
+	},
+	sideopaque: {
+		all: false
+	},
+	lightAbsorption: 1,
+	replaceable: 600,
+	resistance: 3,
+	collisionSelectionBoxes: [
+		{ x1: 0, y1: 0, z1: 0, x2: 1, y2: 1, z1: 1 }
+	]	            
+}

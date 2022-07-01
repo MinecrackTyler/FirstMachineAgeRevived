@@ -1,0 +1,44 @@
+﻿{
+	code: "tarkiln_topport",
+	class: "GenericTogglePortBlock",
+    variantgroups: [
+		{ code: "state", states: ["closed", "opened"] }		
+	],    
+    creativeinventory: { "general": ["*-closed"] },
+	shapeByType: {
+    "*-opened": { base: "block/ceramic/ceramic_port-open" },
+	"*-closed": { base: "block/ceramic/ceramic_port" },	
+	},
+    heldTpIdleAnimation: "holdbothhandslarge", heldTpUseAnimation: "twohandplaceblock",
+	blockmaterial: "Ceramic",
+	textures: {
+		"fireclay": { base: "game:block/clay/hardened/fire1" },
+		"firebrick": { base:"game:block/clay/brickslab/firetop" }
+	},
+	sidesolid: {
+		all: false
+	},
+	sideopaque: {
+		all: false
+	},
+	lightAbsorption: 1,
+	replaceable: 600,
+	resistance: 3,	
+    collisionbox: { x1: 0, y1: 0, z1: 0, x2: 1, y2: 0.25, z2: 1 },   
+    selectionBoxesByType: {		
+    	"*-closed": [ 
+            { x1: 0, y1: 0, z1: 0, x2: 1, y2: 0.25, z2: 1 },
+			{ x1: 0.23, y1: 0.25, z1: 0.22, x2: 0.79, y2: 0.4925, z2: 0.79 }, 
+            ],
+        "*-opened": [ 
+           { x1: 0.1875, y1: 0.125, z1: 0.1875, x2: 0.4375, y2: 0.6875, z2: 0.875 },			 
+            ],
+        },
+    sounds: {
+		walk: "game:walk/stone",
+		place: "game:block/ceramicplace",
+        inside: "game:block/ceramicplace",
+        hit: "game:block/ceramichit",
+	}
+}
+

@@ -1,0 +1,52 @@
+﻿{
+	code: "tarkiln_base",
+	class: "TarkilnBaseBlock",
+	entityClass: "TarkilnBaseEntity",	
+	shape:  { base: "block/ceramic/kiln_base" },		
+    heldTpIdleAnimation: "holdbothhandslarge", heldTpUseAnimation: "twohandplaceblock",
+	blockmaterial: "Ceramic",
+	textures: {
+		"fireclay": { base: "game:block/clay/hardened/fire1" }
+	},
+	sidesolid: {
+		all: false
+	},
+	sideopaque: {
+		all: false
+	},
+	lightAbsorption: 1,
+	replaceable: 600,
+	resistance: 3,
+	collisionSelectionBoxes: [
+		{ x1: 0, y1: 0, z1: 0, x2: 1, y2: 1, z1: 1 }
+	],
+    collisionbox: { x1: 0, y1: 0, z1: 0, x2: 1, y2: 1, z2: 1 },
+    selectionboxes:[ { x1: 0, y1: 0, z1: 0, x2: 1, y2: 1, z2: 1 } ],        
+	attributes: {
+        multiblockStructure: { 
+   			blockNumbers: {
+				"tarkiln-base": 1,
+				"tarkiln-side-north":2,			
+                "tarkiln-side-east": 3,			
+                "tarkiln-side-west": 4,			
+                "tarkiln-side-south":5,							
+                "topport-closed":6,
+                "game:claybricks-fire":7,
+                "game:gravel-*":8,
+				"game:air": 9
+				},
+            offsets: [ 
+			{ x: 0, y: 0, z: 0, w: 1 },
+            { x: 1, y: 1, z: 0, w: 2 },
+            { x: 1, y: 0, z: 1, w: 3 },
+            { x: 1, y: -1, z: 0, w: 5 },            
+            { x: 1, y: 0, z: -1, w: 4 },
+            { x: 0, y: 1, z: 0, w: 7 },
+            { x: 0, y: 0, z: 1, w: 7 },
+            { x: 0, y: -1, z: 0, w: 7 },            
+            { x: 0, y: 0, z: -1, w: 7 }
+            ],
+        },
+
+        }
+}

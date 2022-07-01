@@ -1,0 +1,14 @@
+﻿{
+  "type": "code",
+  "name": "Tar Kilns",
+  "description" : "Have Pine, will Distill: TAR FOR THE HYDROCARBON GODs!",
+  "authors": ["Melchior"],
+  "ModID":"tarkilns",
+  "version": "0.1.0",
+  "dependencies": { 
+	"game": "1.16.5",
+	"survival": ""
+  },
+  "website": "http://nowebsite.nope"
+}
+

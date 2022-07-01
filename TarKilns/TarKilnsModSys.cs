@@ -1,0 +1,78 @@
+﻿using System;
+using System.Collections.Generic;
+
+using Vintagestory.API.Client;
+using Vintagestory.API.Common;
+using Vintagestory.API.Server;
+
+using Vintagestory.Common;
+using Vintagestory.Server;
+
+namespace TarKilns
+{
+	public class TarKilnsModSys : ModSystem
+	{
+	private ServerCoreAPI ServerCore { get; set; }
+	private ICoreServerAPI ServerAPI;
+	private ICoreAPI CoreAPI;
+
+	public override bool AllowRuntimeReload {
+		get { return false; }
+	}
+
+	public override bool ShouldLoad(EnumAppSide forSide)
+	{
+	return forSide.IsClient( ) || forSide.IsServer( );
+	}
+
+	public override double ExecuteOrder( )
+	{
+	return 0.1d;
+	}
+
+	public override void Start(ICoreAPI api)
+	{
+	base.Start(api);
+	this.CoreAPI = api;
+
+	RegisterBlockClasses( );
+	//RegisterBehaviorClasses( );
+	}
+
+	public override void StartServerSide(ICoreServerAPI api)
+	{
+	base.StartServerSide(api);
+
+	this.ServerAPI = api;
+
+
+	if (api is ServerCoreAPI) {
+	ServerCore = api as ServerCoreAPI;
+	}
+	else {
+	Mod.Logger.Error("Cannot access 'ServerCoreAPI' class:  API (implimentation) has changed, Contact Developer!");
+	return;
+	}
+
+	}
+
+	private void RegisterBlockClasses( )
+	{
+	CoreAPI.RegisterBlockClass(@"TarkilnBaseBlock", typeof(TarkilnBaseBlock));
+	CoreAPI.RegisterBlockClass(@"GenericTogglePortBlock", typeof(GenericTogglePortBlock));
+	
+
+	CoreAPI.RegisterBlockEntityClass(@"TarkilnBaseEntity", typeof(TarkilnBaseEntity));
+	}
+
+	/*
+	private void RegisterBehaviorClasses( )
+	{
+	CoreAPI.RegisterBlockBehaviorClass(@"FreeReinforcement", typeof(BlockBehaviorFreeReinforcement));
+	CoreAPI.RegisterBlockBehaviorClass(@"VerticalOrentiation", typeof(BlockBehaviorVerticalOrientation));
+	CoreAPI.RegisterBlockBehaviorClass(@"NeedSides", typeof(BlockBehaviorNeedSides));
+	}
+	*/
+	}
+}
+
