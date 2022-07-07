@@ -1,0 +1,12 @@
+﻿[
+  {
+    "op": "add",
+    "path": "/behaviorsByType/*-burned",
+    "value": [
+      {
+        "name": "directspraycooler_behavior"
+      }
+    ],
+    "file": "game:blocktypes/clay/wateringcan.json"
+  }
+]
