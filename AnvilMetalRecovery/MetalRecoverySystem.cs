@@ -7,10 +7,16 @@ using HarmonyLib;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;
+using Vintagestory.API.Util;
 using Vintagestory.Client.NoObf;
 using Vintagestory.GameContent;
 using Vintagestory.Server;
 
+/* IDEAS / ISSUES
+ * # Watering Can (molten-metal state) Ingot Cooling *Tssss*
+ * # Ingot breaks -> Metal fragments / bits (or a blob?)
+ * # Tool-break configurable ratio
+*/
 namespace AnvilMetalRecovery
 {
 	public partial class MetalRecoverySystem : ModSystem
@@ -20,8 +26,11 @@ namespace AnvilMetalRecovery
 		internal const string metalFragmentsCode = @"fma:metal_fragments";
 		internal const string metalShavingsCode = @"metal_shaving";
 		internal const string itemFilterListCacheKey = @"AMR_ItemFilters";
+
 		public const float IngotVoxelDefault = 2.38f;
 		public const string ItemDamageChannelName = @"ItemDamageEvents";
+
+
 
 		internal IServerNetworkChannel _ConfigDownlink;
 		internal IClientNetworkChannel _ConfigUplink;
@@ -101,6 +110,7 @@ namespace AnvilMetalRecovery
 		this.CoreAPI = api;
 
 		RegisterItemMappings( );
+		RegisterBlockBehaviors( );
 
 		#if DEBUG
 		//Harmony.DEBUG = true;
@@ -127,9 +137,8 @@ namespace AnvilMetalRecovery
 		PrepareDownlinkChannel( );
 		ServerAPI.Event.PlayerJoin += SendClientConfigMessage;
 		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.Shutdown, PersistServersideConfig);
-		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);	
-		//ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.WorldReady, CacheRecoveryDataTable);//This does not appear to work?!
-		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.RunGame, CacheRecoveryDataTable);
+		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);			
+		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.RunGame, CacheRecoveryDataTable);		
 
 		SetupGeneralObservers( );
 
@@ -152,7 +161,7 @@ namespace AnvilMetalRecovery
 		Mod.Logger.Error("Cannot access 'ClientCoreAPI' class:  API (implimentation) has changed, Contact Developer!");
 		return;
 		}
-
+		
 		ListenForServerConfigMessage( );
 		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
 		}
@@ -164,7 +173,13 @@ namespace AnvilMetalRecovery
 		this.CoreAPI.RegisterItemClass(@"SmartSmeltableItem", typeof(SmartSmeltableItem));
 		}
 
-
+		private void RegisterBlockBehaviors()
+		{
+		#if DEBUG
+		Mod.Logger.Debug("RegisterBlockBehaviors");
+		#endif
+		this.CoreAPI.RegisterBlockBehaviorClass(DirectSprayCooler_Behavior.ClassName, typeof(DirectSprayCooler_Behavior));
+		}
 
 		private void SetupGeneralObservers( ){
 		ServerCore.Event.RegisterEventBusListener(Item_DamageEventReciever, 1.0f, ItemDamageChannelName);		

@@ -8,7 +8,7 @@
 	"textureSizes": {
 	},
 	"textures": {
-		"metal": "block/metal/ingot/lead"
+		"metal": "game:block/metal/ingot/lead"
 	},
 	"elements": [
 		{

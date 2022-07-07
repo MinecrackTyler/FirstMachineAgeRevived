@@ -86,6 +86,7 @@
     <Compile Include="Harmony\GenericItemMortalityDetector.cs" />
     <Compile Include="Data\AMR_Config.cs" />
     <Compile Include="Data\RecoveryEntryTable.cs" />
+    <Compile Include="CollectableBehaviors\DirectSprayCooler_Behavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
@@ -125,6 +126,9 @@
     <None Include="assets\fma\lang\ru.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="assets\fma\patches\wateringcan_behavior.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />
@@ -146,6 +150,7 @@
     <Folder Include="Data\" />
     <Folder Include="Items\" />
     <Folder Include="Harmony\" />
+    <Folder Include="CollectableBehaviors\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

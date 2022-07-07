@@ -101,9 +101,9 @@ namespace AnvilMetalRecovery
 		//virtual bool CanBePlacedInto(ItemStack stack, ItemSlot slot) //?
 		//virtual void OnModifiedInInventorySlot //Only for new-Inserts (?)
 
-		public void ApplyMetalProperties(RecoveryEntry recoveryData, ref ItemStack contStack)
+		public void ApplyMetalProperties(RecoveryEntry recoveryData, ref ItemStack contStack, float percentAdjust = 1.0f)
 		{
-		contStack.Attributes.SetInt(metalQuantityKey, ( int )recoveryData.Quantity);
+		contStack.Attributes.SetInt(metalQuantityKey, ( int )(recoveryData.Quantity * percentAdjust));
 		contStack.Attributes.SetString(metalIngotCodeKey, recoveryData.IngotCode.ToString( ));
 
 		RegenerateCombustablePropsFromStack(contStack);

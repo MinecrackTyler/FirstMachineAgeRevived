@@ -13,13 +13,15 @@ namespace AnvilMetalRecovery
 		public AMRConfig( )
 		{
 		ToolFragmentRecovery = true;
-		VoxelEquivalentValue = MetalRecoverySystem.IngotVoxelDefault;		
+		VoxelEquivalentValue = MetalRecoverySystem.IngotVoxelDefault;
+		ToolRecoveryRate = 1.0f;
 		}
 
-		public AMRConfig(bool setDefaultBL)
+		public AMRConfig(bool setDefaultBL) 
 		{
 		ToolFragmentRecovery = true;
 		VoxelEquivalentValue = MetalRecoverySystem.IngotVoxelDefault;
+		ToolRecoveryRate = 1.0f;
 		if (setDefaultBL) {
 		BlackList = new List<AssetLocation> {					
 					new AssetLocation(@"game:metalplate"),
@@ -42,13 +44,16 @@ namespace AnvilMetalRecovery
 		[ProtoMember(3)]
 		public List<AssetLocation> BlackList;
 
-
+		[ProtoMember(4)]
+		public float ToolRecoveryRate;
 
 
 		[ProtoAfterDeserialization]
 		private void ClampRange( )
 		{
 		VoxelEquivalentValue = Math.Max(1f, Math.Min(VoxelEquivalentValue, MetalRecoverySystem.IngotVoxelDefault));
+		ToolRecoveryRate = Math.Min(1f, ToolRecoveryRate);
+		ToolRecoveryRate = Math.Max(0.1f, ToolRecoveryRate);
 		}
 
 

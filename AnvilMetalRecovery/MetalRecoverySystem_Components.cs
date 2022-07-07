@@ -146,7 +146,7 @@ namespace AnvilMetalRecovery
 
 			VariableMetalItem variableMetal = ServerAPI.World.GetItem(new AssetLocation(metalFragmentsCode)) as VariableMetalItem;
 			ItemStack metalFragmentsStack = new ItemStack(variableMetal, 1);
-			variableMetal.ApplyMetalProperties(rec, ref metalFragmentsStack);
+			variableMetal.ApplyMetalProperties(rec, ref metalFragmentsStack, CachedConfiguration.ToolRecoveryRate);
 			hotSlot.Itemstack = metalFragmentsStack;
 			hotSlot.Itemstack.ResolveBlockOrItem(ServerAPI.World);
 			hotSlot.MarkDirty( );
@@ -160,7 +160,7 @@ namespace AnvilMetalRecovery
 
 			VariableMetalItem variableMetal = ServerAPI.World.GetItem(new AssetLocation(metalFragmentsCode)) as VariableMetalItem;
 			ItemStack metalFragmentsStack = new ItemStack(variableMetal, 1);
-			variableMetal.ApplyMetalProperties(rec, ref metalFragmentsStack);
+			variableMetal.ApplyMetalProperties(rec, ref metalFragmentsStack, CachedConfiguration.ToolRecoveryRate);
 				if (spim.TryGiveItemstack(metalFragmentsStack, true) == false) 
 					{
 					//Player with full Inv.
