@@ -1,12 +1,12 @@
 ﻿{
   "type": "code",
   "name": "Anvil Metal Recovery+",
-  "description" : "Get back lost scrap and smithing discards. Plus more.",
+  "description" : "Get back smithing discards and broken tool scrap! Plus lots more.",
   "authors": ["Melchior"],
   "ModID":"metalrecovery",
-  "version": "0.1.17",
+  "version": "0.1.18-pre.0",
   "dependencies": { 
-	"game": "1.16.4",
+	"game": "1.16.5",
 	"survival": ""
   },
   "website": "http://nowebsite.nope"

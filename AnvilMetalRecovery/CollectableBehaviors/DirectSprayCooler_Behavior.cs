@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Vintagestory.API.Common;
+using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
 using Vintagestory.Server;
@@ -14,14 +15,41 @@ namespace AnvilMetalRecovery
 	/// <remarks>*TSSSSS!*</remarks>
 	public class DirectSprayCooler_Behavior : BlockBehavior
 	{
-		public const string ClassName = @"directspraycooler_behavior";
-		private const float coolRate = 0.5f;
+		public const string ClassName = @"directspraycooler";
+		private const string coolRateKey = @"coolRate";
+		private const float coolRateDefault = 0.5f;
 		private BlockWateringCan WateringCan;
 		protected ICoreAPI CoreAPI { get; set; }
+		public float CoolRate { get; private set;}
 
 		public DirectSprayCooler_Behavior(Block block) : base(block)
 		{ 
 			
+		}
+
+		public override void OnLoaded(ICoreAPI api)
+		{
+		#if DEBUG
+		api.Logger.VerboseDebug("DirectSprayCooler_Behavior::OnLoaded...");
+		#endif
+		base.OnLoaded(api);
+		CoreAPI = api;
+
+		WateringCan = block as BlockWateringCan;
+		if (WateringCan == null) { throw new InvalidOperationException(string.Format("Block with code '{0}' does not inherit from BlockWateringCan, which is required", block.Code)); }
+
+		}
+
+
+		public override void Initialize(JsonObject properties)
+		{
+		#if DEBUG
+		CoreAPI.Logger.VerboseDebug("DirectSprayCooler_Behavior::Initialize...");
+		#endif
+
+		CoolRate = properties[coolRateKey].AsFloat(coolRateDefault);
+
+		base.Initialize(properties);
 		}
 
 
@@ -29,25 +57,12 @@ namespace AnvilMetalRecovery
 		{
 		var temperature = itemStack.Collectible.GetTemperature(CoreAPI.World, itemStack);
 		if (temperature > 25f)//TODO: USE local AMBIENT Temp
-		itemStack.Collectible.SetTemperature(CoreAPI.World, itemStack, (temperature - coolRate), false);
+		itemStack.Collectible.SetTemperature(CoreAPI.World, itemStack, (temperature - CoolRate), false);
 		#if DEBUG
 		CoreAPI.Logger.VerboseDebug("Reduced Molten metal temp: {0:F1}  ", temperature);
 		#endif
 		}
 
-		public override void OnLoaded(ICoreAPI api) 
-		{
-		#if DEBUG
-		api.Logger.VerboseDebug("DirectSprayCooler_Behavior::OnLoaded...");
-		#endif
-		base.OnLoaded(api);
-		CoreAPI = api;
-			/*
-		WateringCan = block as BlockWateringCan;
-		if (WateringCan == null) 
-			{ throw new InvalidOperationException(string.Format("Block with code '{0}' does not inherit from BlockWateringCan, which is required", block.Code)); }
-		*/
-		}
 
 		public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling)
 		{

@@ -4,7 +4,7 @@
     "path": "/behaviorsByType/*-burned",
     "value": [
       {
-        "name": "directspraycooler_behavior"
+        name: "directspraycooler", properties: { coolRate: 1.0 }
       }
     ],
     "file": "game:blocktypes/clay/wateringcan.json"
