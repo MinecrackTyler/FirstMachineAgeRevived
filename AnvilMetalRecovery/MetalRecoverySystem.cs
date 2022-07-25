@@ -30,8 +30,6 @@ namespace AnvilMetalRecovery
 		public const float IngotVoxelDefault = 2.38f;
 		public const string ItemDamageChannelName = @"ItemDamageEvents";
 
-
-
 		internal IServerNetworkChannel _ConfigDownlink;
 		internal IClientNetworkChannel _ConfigUplink;
 
@@ -110,7 +108,8 @@ namespace AnvilMetalRecovery
 		this.CoreAPI = api;
 
 		RegisterItemMappings( );
-		RegisterBlockBehaviors( );
+		//RegisterBlockBehaviors( );
+		
 
 		#if DEBUG
 		//Harmony.DEBUG = true;
@@ -137,10 +136,11 @@ namespace AnvilMetalRecovery
 		PrepareDownlinkChannel( );
 		ServerAPI.Event.PlayerJoin += SendClientConfigMessage;
 		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.Shutdown, PersistServersideConfig);
-		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);			
-		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.RunGame, CacheRecoveryDataTable);		
+		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);		
+		PerformBlockClassSwaps();
+		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.RunGame, CacheRecoveryDataTable);				
 
-		SetupGeneralObservers( );
+		SetupGeneralObservers( );		
 
 		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
 
@@ -163,6 +163,9 @@ namespace AnvilMetalRecovery
 		}
 		
 		ListenForServerConfigMessage( );
+		//ClientCore.Event.RegisterCallback(PerformBlockClassSwaps, 0);
+		PerformBlockClassSwaps();
+
 		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
 		}
 
@@ -178,7 +181,21 @@ namespace AnvilMetalRecovery
 		#if DEBUG
 		Mod.Logger.Debug("RegisterBlockBehaviors");
 		#endif
-		this.CoreAPI.RegisterBlockBehaviorClass(DirectSprayCooler_Behavior.ClassName, typeof(DirectSprayCooler_Behavior));
+		//this.CoreAPI.RegisterBlockBehaviorClass(DirectSprayCooler_Behavior.ClassName, typeof(DirectSprayCooler_Behavior));
+		//this.CoreAPI.RegisterCollectibleBehaviorClass(DirectSprayCooler_Behavior.ClassName, typeof(DirectSprayCooler_Behavior));
+		}
+
+		private void PerformBlockClassSwaps(float delta = 0.0f)
+		{
+		PerformBlockClassSwaps( );
+		}
+
+		private void PerformBlockClassSwaps()
+		{
+		if (CoreAPI.Side == EnumAppSide.Server)
+			this.ServerCore.ClassRegistryNative.ReplaceBlockClassType(BlockWateringCanPlus.BlockClassName, typeof(BlockWateringCanPlus));
+		else
+			this.ClientCore.ClassRegistryNative.ReplaceBlockClassType(BlockWateringCanPlus.BlockClassName, typeof(BlockWateringCanPlus));
 		}
 
 		private void SetupGeneralObservers( ){
@@ -247,7 +264,7 @@ namespace AnvilMetalRecovery
 		#endif
 
 		if (networkMessage != null) {
-			Mod.Logger.Debug("Message value; Recover Broken Tools:{0}, VoxelEquiv#{1:F2}, Blacklist #{2}", networkMessage.ToolFragmentRecovery, networkMessage.VoxelEquivalentValue, networkMessage.BlackList.Count);
+		Mod.Logger.Debug("Message value; Recover Broken Tools:{0}, VoxelEquiv:{1:F2}, Tool Recovery {3:P0}, Blacklisted:{2}", networkMessage.ToolFragmentRecovery, networkMessage.VoxelEquivalentValue, networkMessage.BlackList.Count, networkMessage.ToolRecoveryRate);
 		this.CachedConfiguration = networkMessage;
 		}
 		}

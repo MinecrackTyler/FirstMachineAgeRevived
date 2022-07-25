@@ -127,7 +127,7 @@ namespace AnvilMetalRecovery
 				
 		RecoveryEntry rec = itemToVoxelLookup[hotbarData.ItemCode];
 		#if DEBUG
-		Mod.Logger.VerboseDebug("broken-item {0} WORTH: {1:F1}*{2} units", hotbarData.ItemCode.ToString( ), (rec.Quantity * CachedConfiguration.VoxelEquivalentValue), rec.IngotCode.ToShortString( ));
+		Mod.Logger.VerboseDebug("broken-item {0} abs. WORTH: {1:F1}*{2} units", hotbarData.ItemCode.ToString( ), (rec.Quantity * CachedConfiguration.VoxelEquivalentValue), rec.IngotCode.ToShortString( ));
 		#endif
 
 		if (String.IsNullOrEmpty(hotbarData.PlayerUID) || String.IsNullOrEmpty(hotbarData.InventoryID)) return;

@@ -26,4 +26,5 @@
 	"fma:item-metal_fragments":"Broken metal fragments.",
 	"fma:itemdesc-item-metal_fragments": "Try, chopping it apart with a Chisel...",
 	"fma:metal_worth":"Worth {0} units of {1}.",
+    "fma:spray_cooler_text":"\n...mabey it can cool off hot things, too?",
 }

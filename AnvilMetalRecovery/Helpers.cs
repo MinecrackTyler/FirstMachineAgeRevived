@@ -4,6 +4,7 @@ using System.Linq;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Server;
+using Vintagestory.API.Util;
 using Vintagestory.Common;
 using Vintagestory.Server;
 
@@ -11,6 +12,39 @@ namespace AnvilMetalRecovery
 {
 	internal static class Helpers
 	{
+		internal static void AddBlockBehavior(this ICoreAPI coreAPI, AssetLocation assetName, string behaviorCode, Type blockBehaviorType)
+		{
+		if (assetName.Valid && assetName.IsWildCard == false) 
+			{
+			var targetBlock = coreAPI.World.GetBlock(assetName);
+			var newBlockBehavior = coreAPI.ClassRegistry.CreateBlockBehavior(targetBlock, behaviorCode);			
+
+			if (targetBlock != null && newBlockBehavior != null) 
+				{
+				targetBlock.BlockBehaviors = targetBlock.BlockBehaviors.Append(newBlockBehavior);
+				targetBlock.CollectibleBehaviors = targetBlock.CollectibleBehaviors.Append(newBlockBehavior);
+				}
+				else {
+					coreAPI.Logger.Warning($"Could not append new BLOCK BEHAVIOR ({blockBehaviorType.Name}): '{behaviorCode}' to block [{assetName}]!");
+				}
+			}
+		}
+
+		internal static void AddCollectableBehavior(this ICoreAPI coreAPI, AssetLocation assetName, string behaviorCode, Type blockBehaviorType)
+		{
+		if (assetName.Valid && assetName.IsWildCard == false) {
+		var targetBlock = coreAPI.World.GetBlock(assetName);
+		var newCollectableBehavior = coreAPI.ClassRegistry.CreateCollectibleBehavior(targetBlock, behaviorCode);
+
+		if (targetBlock != null && newCollectableBehavior != null) {		
+		targetBlock.CollectibleBehaviors = targetBlock.CollectibleBehaviors.Append(newCollectableBehavior);
+		}
+		else {
+		coreAPI.Logger.Warning($"Could not append new COLLECTABLE BEHAVIOR ({blockBehaviorType.Name}): '{behaviorCode}' to something [{assetName}]!");
+		}
+		}
+		}
+
 		internal static void ReplaceBlockEntityType(this ClassRegistry registry, string className, Type blockentity)
 		{
 		if (registry.blockEntityClassnameToTypeMapping.ContainsKey(className)) {
@@ -26,6 +60,14 @@ namespace AnvilMetalRecovery
 		//replace it
 		registry.ItemClassToTypeMapping[className] = replacer;
 		}
+		}
+
+		internal static void ReplaceBlockClassType(this ClassRegistry registry, string className, Type replacer)
+		{
+		if (registry.BlockClassToTypeMapping.ContainsKey(className)) {
+		//replace it
+		registry.BlockClassToTypeMapping[className] = replacer;
+		}		
 		}
 
 		internal static int? Hitpoints(this ItemStack itemStack)
