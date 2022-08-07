@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 using HarmonyLib;
@@ -108,7 +109,7 @@ namespace AnvilMetalRecovery
 		this.CoreAPI = api;
 
 		RegisterItemMappings( );
-		//RegisterBlockBehaviors( );
+		RegisterBlockBehaviors( );
 		
 
 		#if DEBUG
@@ -138,7 +139,8 @@ namespace AnvilMetalRecovery
 		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.Shutdown, PersistServersideConfig);
 		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);		
 		PerformBlockClassSwaps();
-		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.RunGame, CacheRecoveryDataTable);				
+		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.RunGame, CacheRecoveryDataTable);
+		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.GameReady, AttachExtraBlockBehaviors);
 
 		SetupGeneralObservers( );		
 
@@ -181,14 +183,9 @@ namespace AnvilMetalRecovery
 		#if DEBUG
 		Mod.Logger.Debug("RegisterBlockBehaviors");
 		#endif
-		//this.CoreAPI.RegisterBlockBehaviorClass(DirectSprayCooler_Behavior.ClassName, typeof(DirectSprayCooler_Behavior));
-		//this.CoreAPI.RegisterCollectibleBehaviorClass(DirectSprayCooler_Behavior.ClassName, typeof(DirectSprayCooler_Behavior));
-		}
-
-		private void PerformBlockClassSwaps(float delta = 0.0f)
-		{
-		PerformBlockClassSwaps( );
-		}
+		this.CoreAPI.RegisterBlockBehaviorClass(MoldDestructionRecovererBehavior.BehaviorClassName, typeof(MoldDestructionRecovererBehavior));
+		this.CoreAPI.RegisterCollectibleBehaviorClass(MoldDestructionRecovererBehavior.BehaviorClassName, typeof(MoldDestructionRecovererBehavior));
+		}			
 
 		private void PerformBlockClassSwaps()
 		{
@@ -196,6 +193,42 @@ namespace AnvilMetalRecovery
 			this.ServerCore.ClassRegistryNative.ReplaceBlockClassType(BlockWateringCanPlus.BlockClassName, typeof(BlockWateringCanPlus));
 		else
 			this.ClientCore.ClassRegistryNative.ReplaceBlockClassType(BlockWateringCanPlus.BlockClassName, typeof(BlockWateringCanPlus));
+		}
+
+		private void AttachExtraBlockBehaviors()
+		{
+		Collection<AssetLocation> mold_behaviorsAppendList = new Collection<AssetLocation>( ) {
+				new AssetLocation(@"game",@"ingotmold-burned"),
+				new AssetLocation(@"game",@"toolmold-burned-*"),
+		};		
+
+		var moldRecoverBehaviorType = ServerAPI.ClassRegistry.GetBlockBehaviorClass(MoldDestructionRecovererBehavior.BehaviorClassName);
+		foreach (var assetName in mold_behaviorsAppendList) {
+		if (!assetName.IsWildCard) 
+				{ 
+				this.CoreAPI.AddBlockBehavior(assetName, MoldDestructionRecovererBehavior.BehaviorClassName, moldRecoverBehaviorType);
+				#if DEBUG
+				Mod.Logger.VerboseDebug("Attached Block-Behavior {0} to '{1}' ", MoldDestructionRecovererBehavior.BehaviorClassName, assetName);
+				#endif
+				}
+			else {
+					var searchResults = ServerAPI.World.SearchBlocks(assetName);
+					if (searchResults != null && searchResults.Length > 0) {
+					#if DEBUG
+					Mod.Logger.VerboseDebug("Attaching Block-Behaviors, wildcard matches from '{0}'", assetName);
+					#endif
+						for (int index = 0; index < searchResults.Length; index++) 
+						{
+						var matchBlock = searchResults[index];
+						this.CoreAPI.AddBlockBehavior(matchBlock.Code, MoldDestructionRecovererBehavior.BehaviorClassName, moldRecoverBehaviorType);
+						#if DEBUG
+						Mod.Logger.VerboseDebug("Attached Block-Behavior {0} to '{1}' ", MoldDestructionRecovererBehavior.BehaviorClassName, matchBlock.Code);
+						#endif
+						}
+					}
+				}
+		}
+		
 		}
 
 		private void SetupGeneralObservers( ){

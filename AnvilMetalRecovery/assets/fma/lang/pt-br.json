@@ -23,4 +23,7 @@
     "fma:item-metal_shaving-titanium": "Rebarbas de titânio",
     "fma:item-metal_shaving-uranium": "Rebarbas de urânio",
     "fma:item-metal_shaving-zinc": "Rebarbas de zinco",
+    "fma:item-metal_fragments":"Fragmentos de metal.",
+	"fma:itemdesc-item-metal_fragments": "Tente, partir isso com um cinzel...",
+	"fma:metal_worth":"vale {0} unidades de {1}."
 }

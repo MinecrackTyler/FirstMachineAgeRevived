@@ -87,6 +87,7 @@
     <Compile Include="Data\AMR_Config.cs" />
     <Compile Include="Data\RecoveryEntryTable.cs" />
     <Compile Include="Blocks\BlockWateringCanPlus.cs" />
+    <Compile Include="BlockBehaviors\MoldDestructionRecovererBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
@@ -153,6 +154,7 @@
     <Folder Include="Blocks\" />
     <Folder Include="assets\fma\sounds\" />
     <Folder Include="assets\fma\sounds\sfx\" />
+    <Folder Include="BlockBehaviors\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
