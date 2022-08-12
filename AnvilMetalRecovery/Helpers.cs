@@ -100,6 +100,14 @@ namespace AnvilMetalRecovery
 		{
 		return parameters.All(parm => parm != null);
 		}
+
+		internal static string AnyKeys(this RelaxedReadOnlyDictionary<string, string> source, params string[ ] keys)
+		{
+		foreach (var key in keys) {
+			if (source.ContainsKey(key)) return source[key];
+		}
+		return String.Empty;
+		}
 	}
 }
 

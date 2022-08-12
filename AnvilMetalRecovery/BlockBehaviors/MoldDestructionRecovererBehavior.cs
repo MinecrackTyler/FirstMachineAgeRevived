@@ -14,6 +14,10 @@ namespace AnvilMetalRecovery
 	public class MoldDestructionRecovererBehavior : BlockBehavior
 	{
 		public static readonly string BehaviorClassName = @"MoldDestructionRecoverer";
+		private readonly AssetLocation MetalBits_partial = new AssetLocation(GlobalConstants.DefaultDomain, @"metalbit");
+		private const int shavingValue = 5;
+
+
 
 		public MoldDestructionRecovererBehavior(Block block) : base(block)
 		{
@@ -41,16 +45,52 @@ namespace AnvilMetalRecovery
 		#if DEBUG
 		world.Api.Logger.VerboseDebug("{0} Ingot Mold(s) with L {1} Units, R {2} Units", ingotMold.quantityMolds, ingotMold.fillLevelLeft, ingotMold.fillLevelRight);
 		#endif
-		}
 
+		if ( ingotMold.fillLevelLeft >= shavingValue && ingotMold.contentsLeft != null) 
+			{
+			var ingotMetal = ingotMold.contentsLeft.Collectible.Variant[@"metal"];
+			SpawnMetalBits(world, pos, ingotMold.fillLevelLeft, ingotMetal);
+			}
+		
+		if ( ingotMold.fillLevelRight >= shavingValue && ingotMold.contentsRight != null) 
+			{
+			var ingotMetal = ingotMold.contentsLeft.Collectible.Variant[@"metal"];
+			SpawnMetalBits(world, pos, ingotMold.fillLevelRight, ingotMetal);
+			}
+
+		return;
+		}		
 
 		if (someBlockEntity is BlockEntityToolMold) {
 		var toolMold = someBlockEntity as BlockEntityToolMold;
 		#if DEBUG
 		world.Api.Logger.VerboseDebug("Tool Mold with {0} Units", toolMold.fillLevel);
 		#endif
+		if ( toolMold.fillLevel >= shavingValue && toolMold.metalContent != null) 
+			{
+				var metalCode = toolMold.metalContent.Collectible.Variant.AnyKeys(@"metal", @"material"); 
+				SpawnMetalBits(world, pos, toolMold.fillLevel, metalCode);
+			}		
 		}
 
+		}
+
+		internal void SpawnMetalBits(IWorldAccessor world, BlockPos pos, int unitQuantity, string baseMetalCode)
+		{	
+		if (unitQuantity > 0) 
+			{
+			int shavingQty = unitQuantity / shavingValue;
+			Item metalShavingsItem = world.Api.World.GetItem(MetalBits_partial.AppendPathVariant(baseMetalCode));
+
+			if (shavingQty >= 1 && metalShavingsItem != null) 
+				{
+				var metalShavingsStack = new ItemStack(metalShavingsItem, shavingQty);				
+				#if DEBUG
+				world.Api.Logger.VerboseDebug("Creating '{0}' @{1} *{2} Units",metalShavingsItem, pos, shavingQty);
+				#endif
+				world.Api.World.SpawnItemEntity(metalShavingsStack, pos.ToVec3d( ).Add(0.1d, 0, 0)); 			
+				}
+			}		
 		}
 	}
 }
