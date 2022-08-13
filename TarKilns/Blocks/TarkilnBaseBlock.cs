@@ -4,7 +4,7 @@ using Vintagestory.API.Common;
 
 namespace TarKilns
 {
-	public class TarkilnBaseBlock : Block
+	public class TarkilnBaseBlock : Block //No BaseMultipartBlock ?
 	{
 
 

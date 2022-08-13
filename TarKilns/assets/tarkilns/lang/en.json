@@ -1,0 +1,10 @@
+﻿{
+	"tarkilns:tarkiln_arch-*": "Mini-Arch",		
+	"tarkilns:tarkiln_base": "Tar collector",		
+    "tarkilns:tarkiln_side-*": "Tar-Kiln side",		
+    "tarkilns:tarkiln_topport-*": "Tar-Kiln Port",		
+
+    "tarkilns:blockdesc-tarkiln_base": "Base of the Tar-Kiln; collects tar into a container.",
+
+
+}

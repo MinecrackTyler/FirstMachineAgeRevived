@@ -6,7 +6,7 @@ using Vintagestory.GameContent;
 
 namespace TarKilns
 {
-	public class TarkilnBaseEntity : BlockEntity
+	public class TarkilnBaseEntity : BlockEntityContainer
 	{
 		
 	}

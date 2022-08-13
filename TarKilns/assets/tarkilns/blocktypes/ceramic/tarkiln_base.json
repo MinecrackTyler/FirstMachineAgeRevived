@@ -26,11 +26,11 @@
         multiblockStructure: { 
    			blockNumbers: {
 				"tarkiln-base": 1,
-				"tarkiln-side-north":2,			
-                "tarkiln-side-east": 3,			
-                "tarkiln-side-west": 4,			
-                "tarkiln-side-south":5,							
-                "topport-closed":6,
+				"tarkiln_side-north":2,			
+                "tarkiln_side-east": 3,			
+                "tarkiln_side-west": 4,			
+                "tarkiln_side-south":5,							
+                "tarkiln_topport-closed":6,
                 "game:claybricks-fire":7,
                 "game:gravel-*":8,
 				"game:air": 9
