@@ -89,6 +89,11 @@ namespace AnvilMetalRecovery
 			return checkCode.Valid && checkCode.Path.Split('-').First().Equals(term, StringComparison.OrdinalIgnoreCase);
 		}
 
+		internal static string PathEnding(this AssetLocation inputCode)
+		{
+		return inputCode.Path.Split('-').Last( );
+		}
+
 		internal static AssetLocation AppendPathVariant(this AssetLocation toAppend, string append)
 		{
 		var appendedCode = toAppend.Clone( );
@@ -110,4 +115,3 @@ namespace AnvilMetalRecovery
 		}
 	}
 }
-

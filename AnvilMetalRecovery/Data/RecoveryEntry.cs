@@ -12,8 +12,8 @@ namespace AnvilMetalRecovery
 		/// Metal Quantity (VOXELS)
 		/// </summary>
 		public uint Quantity;
-		public float Melting_Duration;
-		public int Melting_Point;
+		public float Melting_Duration;//TODO: Replace with 1.17 MetalAlloy mappings
+		public int Melting_Point;//TODO: Replace with 1.17 MetalAlloy mappings
 
 		public RecoveryEntry(AssetLocation coll, AssetLocation ingot, uint qty, float dur, int point)
 		{

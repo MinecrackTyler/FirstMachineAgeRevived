@@ -26,7 +26,7 @@ namespace AnvilMetalRecovery.Patches
 
 	if (original != null ) {
 		foreach(var patched in harmony.GetPatchedMethods()) 
-		{
+		{							
 		if (patched.Name == original.Name)return false; //SKIPS PATCHING, its already there
 		}
 	}
@@ -39,24 +39,47 @@ namespace AnvilMetalRecovery.Patches
 	private static void Prefix_OnSplit(Vec3i voxelPos, BlockEntityAnvil __instance)
 	{
 	var anvil = new SmithAssist(__instance);
+	#if DEBUG
+	anvil.Logger.VerboseDebug("Prefix_OnSplit");
+	#endif
 
 	if (anvil.IsShavable && anvil.Voxel(voxelPos.X, voxelPos.Y, voxelPos.Z) == EnumVoxelMaterial.Metal) {
-	#if DEBUG
-	anvil.Logger.VerboseDebug("{0}, Split into {1} @{2}, Total:{3}",anvil.OutputCode ,anvil.BaseMetal, voxelPos, anvil.SplitCount);
-	#endif
-	anvil.SplitCount++;
-	}
-		
+		#if DEBUG
+		anvil.Logger.VerboseDebug("{0}, Split into {1} @{2}, Total:{3}",anvil.OutputCode ,anvil.BaseMetal, voxelPos, anvil.SplitCount);
+		#endif
+		anvil.SplitCount++;
+		}		
 	}
 
+	[HarmonyPostfix]
+	[HarmonyPatch(nameof(BlockEntityAnvil.OnSplit))]
+	private static void Postfix_OnSplit(Vec3i voxelPos, BlockEntityAnvil __instance)
+	{
+	var anvil = new SmithAssist(__instance);
+	if (anvil.World.Side.IsClient( )) return;
+
+	#if DEBUG
+	anvil.Logger.VerboseDebug("Postfix_OnSplit");
+	#endif
+	if (anvil.WorkEntirelySplit( )) 
+		{
+		#if DEBUG
+		anvil.Logger.VerboseDebug("Work item entirely split up.");
+		#endif
+		anvil.IssueCancelStackEquivalent();//anvil.IssueShavings(null);		
+		anvil.ClearWork();
+		}
+	}
+
+	//internal void OnUseOver -->
 	[HarmonyPrefix]
 	[HarmonyPatch(nameof(BlockEntityAnvil.CheckIfFinished))]
 	private static void Prefix_CheckIfFinished(IPlayer byPlayer, BlockEntityAnvil __instance)
 	{
 	var anvil = new SmithAssist(__instance);
-	if (anvil.WorkMatchesRecipe( )) {
-	anvil.IssueShavings(byPlayer);
-	}
+		if (anvil.WorkMatchesRecipe( )) {
+		anvil.IssueShavings(byPlayer);		
+		}		
 	}
 
 	[HarmonyPostfix]
@@ -78,7 +101,7 @@ namespace AnvilMetalRecovery.Patches
 	*/
 		 
 
-	}
+	} /************** HARMONY CLASS ENDS *******************/
 
 	/// <summary>
 	/// Special tools for handling the Anvil's data/state, ect...
@@ -90,6 +113,9 @@ namespace AnvilMetalRecovery.Patches
 		internal const string splitCountKey = @"splitCount";
 		internal const int shavingValue = 5;
 
+		private AccessTools.FieldRef<BlockEntityAnvil, ItemStack> workItemStack_R = AccessTools.FieldRefAccess<BlockEntityAnvil, ItemStack>(@"workItemStack");
+		private AccessTools.FieldRef<BlockEntityAnvil, ItemStack> returnOnCancelStack_R = AccessTools.FieldRefAccess<BlockEntityAnvil, ItemStack>(@"returnOnCancelStack");
+
 		internal SmithAssist(BlockEntityAnvil a)
 		{
 		this.bea = a;
@@ -99,6 +125,13 @@ namespace AnvilMetalRecovery.Patches
 			get
 			{
 			return bea.Api.World.Logger;
+			}
+		}
+
+		internal IWorldAccessor World {
+			get
+			{
+			return bea.Api.World;
 			}
 		}
 
@@ -196,23 +229,29 @@ namespace AnvilMetalRecovery.Patches
 		if (this.SplitCount > 0) {
 		int shavingQty = ShavingQuantity;
 
-			if (shavingQty > 0) 
-			{			
-			Item metalShavingsItem = bea.Api.World.GetItem(MetalShavingsCode.AppendPathVariant(BaseMetal));
+		if (shavingQty > 0) 
+		{			
+		Item metalShavingsItem = World.GetItem(MetalShavingsCode.AppendPathVariant(BaseMetal));
 
-			if (metalShavingsItem != null) 
+		if (metalShavingsItem != null) 
 			{
-				ItemStack metalShavingsStack = new ItemStack(metalShavingsItem, shavingQty);
+			ItemStack metalShavingsStack = new ItemStack(metalShavingsItem, shavingQty);
 
-				if (byPlayer != null) {
-				if (byPlayer.InventoryManager.TryGiveItemstack(metalShavingsStack, false) == false) { bea.Api.World.SpawnItemEntity(metalShavingsStack, bea.Pos.ToVec3d().Add(0.1d,0,0) ); }
+			if (byPlayer != null) 
+				{
+				if (byPlayer.InventoryManager.TryGiveItemstack(metalShavingsStack, false) == false) 
+					{ World.SpawnItemEntity(metalShavingsStack, bea.Pos.ToVec3d( ).Add(0.1d, 0, 0)); }			
+				}
+				else 
+				{
+				//Just spew itemstack on top of anvil...Player ran off?
+				World.SpawnItemEntity(metalShavingsStack, bea.Pos.ToVec3d( ).Add(0.1d, 0, 0));
+				}
 				#if DEBUG
 				Logger.VerboseDebug("RecoveryAnvil: Smithing done - recover: {0} shavings of {1}", shavingQty, metalShavingsItem.Code);
 				#endif
-				}
 			}
-			else 
-				{
+			else {
 				Logger.Warning("Missing or Invalid Item: {0} ", MetalShavingsCode.WithPathAppendix("-" + BaseMaterial));
 				}		
 			}
@@ -242,6 +281,22 @@ namespace AnvilMetalRecovery.Patches
 		return true;
 		}
 
+		/// <summary>
+		/// If the Work voxels are _GONE_ and everything is split UP?
+		/// </summary>
+		/// <returns>If entirely split.</returns>
+		internal bool WorkEntirelySplit( )
+		{
+			if ( SplitCount > 0  && bea.SelectedRecipe != null) {		//Work-Item stack OK; for post split check...
+		foreach (EnumVoxelMaterial voxel in bea.Voxels) {
+			if (voxel == EnumVoxelMaterial.Metal || voxel == EnumVoxelMaterial.Slag) return false;		
+			}
+		return true;
+		}
+
+		return false;
+		}
+
 		internal bool PrefixMatcher(List<AssetLocation> nameList, AssetLocation target)
 		{
 		if (nameList == null || nameList.Count == 0 || target == null) return false;
@@ -251,6 +306,46 @@ namespace AnvilMetalRecovery.Patches
 		}
 
 		return false;
+		}
+
+		internal void IssueCancelStackEquivalent( )
+		{
+
+			if (bea.SelectedRecipeId > 0 && bea.SelectedRecipe != null ) 
+			{
+				var itemToVoxelLookup = MetalRecoverySystem.GetCachedLookupTable(World);
+				if (itemToVoxelLookup.ContainsKey(bea.SelectedRecipe.Output.Code)) {
+					var result = itemToVoxelLookup[bea.SelectedRecipe.Output.Code];
+					#if DEBUG
+					Logger.VerboseDebug("(old) Selected Recipe: {0} base-material: '{1}' worth {2} units; spawning", bea.SelectedRecipe.Output.Code, result.IngotCode, result.Quantity);
+					#endif
+
+					int shavingQty = ( int )(result.Quantity / MetalRecoverySystem.IngotVoxelDefault);
+
+					if (shavingQty > 0) {
+					Item metalShavingsItem = World.GetItem(MetalShavingsCode.AppendPathVariant(result.IngotCode.PathEnding()));
+
+					if (metalShavingsItem != null) {
+					ItemStack metalShavingsStack = new ItemStack(metalShavingsItem, shavingQty);					
+					World.SpawnItemEntity(metalShavingsStack, bea.Pos.ToVec3d( ).Add(0.1d, 0, 0));
+					}
+					}
+				}
+			}
+		}
+
+		internal void ClearWork( )
+		{
+		#if DEBUG
+		Logger.Debug("Manually Clearing Work Item stack & Anvil state...the hard way.");
+		#endif
+
+		workItemStack_R(bea) = null;//bea.workItemStack = null;
+		returnOnCancelStack_R(bea) = null; //Needed?
+		bea.Voxels = new byte[16, 6, 16];				
+		bea.rotation = 0;
+		bea.SelectedRecipeId = -1;
+		bea.MarkDirty(false, null);
 		}
 	}
 }
