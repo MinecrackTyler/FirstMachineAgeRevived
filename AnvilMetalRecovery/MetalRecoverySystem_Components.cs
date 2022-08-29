@@ -30,8 +30,8 @@ namespace AnvilMetalRecovery
 		continue;
 		}
 
-		CollectibleObject metalObject = recipie.Ingredient.Type == EnumItemClass.Item ? ServerAPI.World.GetItem(recipie.Ingredient.Code) : ServerAPI.World.GetBlock(recipie.Ingredient.Code) as CollectibleObject;
-		Item outputItem = ServerAPI.World.GetItem(recipie?.Output?.Code);
+		CollectibleObject metalObject = recipie.Ingredient.Type == EnumItemClass.Item ? ServerCore.World.GetItem(recipie.Ingredient.Code) : ServerCore.World.GetBlock(recipie.Ingredient.Code) as CollectibleObject;
+		Item outputItem = ServerCore.World.GetItem(recipie?.Output?.Code);
 
 		if (outputItem == null) {
 		#if DEBUG
@@ -69,9 +69,9 @@ namespace AnvilMetalRecovery
 		}
 		else {
 		//Tool-head map to Tool item; decode
-		var itemToolCode = ServerAPI.World.GridRecipes.FirstOrDefault(gr => gr.Ingredients.Any(crg => crg.Value.Code.Equals(outputItem.Code)) && gr.Enabled && gr.Output.Type == EnumItemClass.Item)?.Output.Code;
+		var itemToolCode = ServerCore.World.GridRecipes.FirstOrDefault(gr => gr.Ingredients.Any(crg => crg.Value.Code.Equals(outputItem.Code)) && gr.Enabled && gr.Output.Type == EnumItemClass.Item)?.Output.Code;
 		if (itemToolCode != null) {
-		var itemTool = ServerAPI.World.GetItem(itemToolCode);
+		var itemTool = ServerCore.World.GetItem(itemToolCode);
 		if (itemTool == null) {
 		#if DEBUG
 		Mod.Logger.Debug($"Missing Output Tool item, from: {recipie.Name.ToString( )}, skipping.");
@@ -133,7 +133,7 @@ namespace AnvilMetalRecovery
 		if (String.IsNullOrEmpty(hotbarData.PlayerUID) || String.IsNullOrEmpty(hotbarData.InventoryID)) return;
 
 		bool probablyHotbar = hotbarData.InventoryID.StartsWith(GlobalConstants.hotBarInvClassName, StringComparison.Ordinal);
-		var playerTarget = ServerAPI.World.PlayerByUid(hotbarData.PlayerUID);
+		var playerTarget = ServerCore.World.PlayerByUid(hotbarData.PlayerUID);
 		var spim = playerTarget.InventoryManager as ServerPlayerInventoryManager;												
 		var hotbarInv = playerTarget.InventoryManager.GetHotbarInventory( );
 		var hotSlot = hotbarInv[hotbarData.Inventory_SlotID];
@@ -144,11 +144,11 @@ namespace AnvilMetalRecovery
 			Mod.Logger.VerboseDebug("Directly inserting fragments into hotbar slot# {0}", hotbarData.Inventory_SlotID);
 			#endif
 
-			VariableMetalItem variableMetal = ServerAPI.World.GetItem(new AssetLocation(metalFragmentsCode)) as VariableMetalItem;
+			VariableMetalItem variableMetal = ServerCore.World.GetItem(new AssetLocation(metalFragmentsCode)) as VariableMetalItem;
 			ItemStack metalFragmentsStack = new ItemStack(variableMetal, 1);
 			variableMetal.ApplyMetalProperties(rec, ref metalFragmentsStack, CachedConfiguration.ToolRecoveryRate);
 			hotSlot.Itemstack = metalFragmentsStack;
-			hotSlot.Itemstack.ResolveBlockOrItem(ServerAPI.World);
+			hotSlot.Itemstack.ResolveBlockOrItem(ServerCore.World);
 			hotSlot.MarkDirty( );
 			spim.NotifySlot(playerTarget, hotSlot);
 			}							
@@ -158,13 +158,13 @@ namespace AnvilMetalRecovery
 			Mod.Logger.VerboseDebug("Hotbar-occupied (or crafting) slot#{0} so; shoving {1} in general direction of player...", hotbarData.Inventory_SlotID, hotbarData.ItemCode.ToShortString( ));
 			#endif
 
-			VariableMetalItem variableMetal = ServerAPI.World.GetItem(new AssetLocation(metalFragmentsCode)) as VariableMetalItem;
+			VariableMetalItem variableMetal = ServerCore.World.GetItem(new AssetLocation(metalFragmentsCode)) as VariableMetalItem;
 			ItemStack metalFragmentsStack = new ItemStack(variableMetal, 1);
 			variableMetal.ApplyMetalProperties(rec, ref metalFragmentsStack, CachedConfiguration.ToolRecoveryRate);
 				if (spim.TryGiveItemstack(metalFragmentsStack, true) == false) 
 					{
 					//Player with full Inv.
-					ServerAPI.World.SpawnItemEntity(metalFragmentsStack, playerTarget.Entity.Pos.XYZ);
+					ServerCore.World.SpawnItemEntity(metalFragmentsStack, playerTarget.Entity.Pos.XYZ);
 					}
 			}		
 		}
@@ -192,7 +192,7 @@ namespace AnvilMetalRecovery
 		private void ApplySmeltingPropertiesByCodeVariant(AssetLocation updatingCode, int ratioOverride = 1)
 		{
 		//ALL ????:'ingot-*' type items...
-		var ingotItems = ServerAPI.World.Items.Where(itm => itm.ItemId > 0 && itm.Code != null && itm.Code.BeginingOnly(@"ingot"));
+		var ingotItems = ServerCore.World.Items.Where(itm => itm.ItemId > 0 && itm.Code != null && itm.Code.BeginingOnly(@"ingot"));
 
 		#if DEBUG
 		this.Mod.Logger.VerboseDebug("found {0} Ingot type items", ingotItems.Count( ));
@@ -208,16 +208,16 @@ namespace AnvilMetalRecovery
 
 		metalSmeltProps.SmeltedRatio = ratioOverride;
 		AssetLocation shavingCode = updatingCode.AppendPathVariant(metalName);
-		var shavingEquivalentItem = ServerAPI.World.GetItem(shavingCode);
+		var shavingEquivalentItem = ServerCore.World.GetItem(shavingCode);
 		if (shavingEquivalentItem != null) {
 		shavingEquivalentItem.CombustibleProps = metalSmeltProps;
 		#if DEBUG
-		ServerAPI.Logger.VerboseDebug("Updated SmeltProps, for: {0}", shavingCode.ToString( ));
+		ServerCore.Logger.VerboseDebug("Updated SmeltProps, for: {0}", shavingCode.ToString( ));
 		#endif
 		}
 		else {
 		#if DEBUG
-		ServerAPI.Logger.VerboseDebug("Non-existant item: {0}", shavingCode.ToString( ));
+		ServerCore.Logger.VerboseDebug("Non-existant item: {0}", shavingCode.ToString( ));
 		#endif
 		}
 		}

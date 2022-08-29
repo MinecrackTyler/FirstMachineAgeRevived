@@ -39,7 +39,7 @@ namespace AnvilMetalRecovery
 		private RecoveryEntryTable itemToVoxelLookup = new RecoveryEntryTable();//Item Asset Code to: Ammount & Material
 
 		private ICoreAPI CoreAPI;
-		private ICoreServerAPI ServerAPI;
+
 		private ServerCoreAPI ServerCore { get; set; }
 		private ClientCoreAPI ClientCore { get; set; }
 
@@ -110,7 +110,18 @@ namespace AnvilMetalRecovery
 
 		RegisterItemMappings( );
 		RegisterBlockBehaviors( );
-		
+		if (api.Side.IsServer()) 
+			{
+			if (api is ServerCoreAPI) {
+				ServerCore = api as ServerCoreAPI;
+				}
+				ServerCore.Event.AssetsFinalizers += AttachExtraBlockBehaviors;
+			}
+		else 
+			{
+			ClientCore = api as ClientCoreAPI;
+			ClientCore.Event.LevelFinalize += PerformBlockClassSwaps;
+			}
 
 		#if DEBUG
 		//Harmony.DEBUG = true;
@@ -123,52 +134,36 @@ namespace AnvilMetalRecovery
 
 		public override void StartServerSide(ICoreServerAPI api)
 		{
-		this.ServerAPI = api;
 		
-
-		if (api is ServerCoreAPI) {
-		ServerCore = api as ServerCoreAPI;
-		}
-		else {
-		Mod.Logger.Error("Cannot access 'ServerCoreAPI' class:  API (implimentation) has changed, Contact Developer!");
-		return;
-		}
 		PrepareServersideConfig( );
 		PrepareDownlinkChannel( );
-		ServerAPI.Event.PlayerJoin += SendClientConfigMessage;
-		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.Shutdown, PersistServersideConfig);
-		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);		
-		PerformBlockClassSwaps();
-		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.RunGame, CacheRecoveryDataTable);
-		ServerAPI.Event.ServerRunPhase(EnumServerRunPhase.GameReady, AttachExtraBlockBehaviors);
+		ServerCore.Event.PlayerJoin += SendClientConfigMessage;
+		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.Shutdown, PersistServersideConfig);
+		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);				
+		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.RunGame, CacheRecoveryDataTable);		
 
 		SetupGeneralObservers( );		
 
 		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
 
 		#if DEBUG
-		ServerAPI.RegisterCommand("durability", "edit durability of item", " (Held tool) and #", EditDurability, Privilege.give);
+		ServerCore.RegisterCommand("durability", "edit durability of item", " (Held tool) and #", EditDurability, Privilege.give);
 		#endif
 					
 		}
 
 		public override void StartClientSide(ICoreClientAPI api)
 		{
-		base.StartClientSide(api);
-
-		if (api is ClientCoreAPI) {
-		ClientCore = api as ClientCoreAPI;
-		}
-		else {
-		Mod.Logger.Error("Cannot access 'ClientCoreAPI' class:  API (implimentation) has changed, Contact Developer!");
-		return;
-		}
+		base.StartClientSide(api);					
 		
-		ListenForServerConfigMessage( );
-		//ClientCore.Event.RegisterCallback(PerformBlockClassSwaps, 0);
-		PerformBlockClassSwaps();
+		ListenForServerConfigMessage( );				
 
 		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
+		}
+
+		public override void AssetsLoaded(ICoreAPI api)
+		{
+		if (api.Side.IsServer( )) { PerformBlockClassSwaps( );}
 		}
 
 
@@ -189,6 +184,9 @@ namespace AnvilMetalRecovery
 
 		private void PerformBlockClassSwaps()
 		{
+		#if DEBUG
+		Mod.Logger.Debug("PerformBlockClassSwaps");
+		#endif
 		if (CoreAPI.Side == EnumAppSide.Server)
 			this.ServerCore.ClassRegistryNative.ReplaceBlockClassType(BlockWateringCanPlus.BlockClassName, typeof(BlockWateringCanPlus));
 		else
@@ -202,7 +200,7 @@ namespace AnvilMetalRecovery
 				new AssetLocation(@"game",@"toolmold-burned-*"),
 		};		
 
-		var moldRecoverBehaviorType = ServerAPI.ClassRegistry.GetBlockBehaviorClass(MoldDestructionRecovererBehavior.BehaviorClassName);
+		var moldRecoverBehaviorType = ServerCore.ClassRegistry.GetBlockBehaviorClass(MoldDestructionRecovererBehavior.BehaviorClassName);
 		foreach (var assetName in mold_behaviorsAppendList) {
 		if (!assetName.IsWildCard) 
 				{ 
@@ -212,7 +210,7 @@ namespace AnvilMetalRecovery
 				#endif
 				}
 			else {
-					var searchResults = ServerAPI.World.SearchBlocks(assetName);
+					var searchResults = ServerCore.World.SearchBlocks(assetName);
 					if (searchResults != null && searchResults.Length > 0) {
 					#if DEBUG
 					Mod.Logger.VerboseDebug("Attaching Block-Behaviors, wildcard matches from '{0}'", assetName);
@@ -237,14 +235,14 @@ namespace AnvilMetalRecovery
 
 		private void PrepareServersideConfig( )
 		{
-		AMRConfig config = ServerAPI.LoadModConfig<AMRConfig>(_configFilename);
+		AMRConfig config = ServerCore.LoadModConfig<AMRConfig>(_configFilename);
 
 		if (config == null) 
 			{
 			//Regen default
 			Mod.Logger.Warning("Regenerating default config as it was missing / unparsable...");
-			ServerAPI.StoreModConfig<AMRConfig>(new AMRConfig(true), _configFilename);
-			config = ServerAPI.LoadModConfig<AMRConfig>(_configFilename);
+			ServerCore.StoreModConfig<AMRConfig>(new AMRConfig(true), _configFilename);
+			config = ServerCore.LoadModConfig<AMRConfig>(_configFilename);
 			}
 			else if( config.BlackList == null || config.BlackList.Count == 0)
 			{
@@ -259,13 +257,13 @@ namespace AnvilMetalRecovery
 		{
 		if (this.CachedConfiguration != null) {
 		Mod.Logger.Notification("Persisting configuration.");
-		ServerAPI.StoreModConfig<AMRConfig>(this.CachedConfiguration, _configFilename);
+		ServerCore.StoreModConfig<AMRConfig>(this.CachedConfiguration, _configFilename);
 		}
 		}
 
 		private void PrepareDownlinkChannel( )
 		{
-		_ConfigDownlink = ServerAPI.Network.RegisterChannel(_configFilename);
+		_ConfigDownlink = ServerCore.Network.RegisterChannel(_configFilename);
 		_ConfigDownlink.RegisterMessageType<AMRConfig>( );
 		}
 
@@ -309,7 +307,7 @@ namespace AnvilMetalRecovery
 		#if DEBUG
 		Mod.Logger.VerboseDebug("Adding Recovery entries table to Cache...");
 		#endif
-		ServerAPI.ObjectCache.Add(itemFilterListCacheKey, itemToVoxelLookup);
+		ServerCore.ObjectCache.Add(itemFilterListCacheKey, itemToVoxelLookup);
 		}
 	}
 

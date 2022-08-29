@@ -56,6 +56,13 @@ namespace AnvilMetalRecovery
 		{
 		throw new NotImplementedException( );
 		}
+
+		public IAttribute Clone( )
+		{
+		var newbie = new HotbarObserverData(this.InventoryID, this.Inventory_SlotID, this.ItemCode.Clone( ), this.PlayerUID);
+
+		return newbie;
+		}
 	}
 }
 
