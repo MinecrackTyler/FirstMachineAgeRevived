@@ -14,9 +14,9 @@ using Vintagestory.GameContent;
 using Vintagestory.Server;
 
 /* IDEAS / ISSUES
- * # Watering Can (molten-metal state) Ingot Cooling *Tssss*
- * # Ingot breaks -> Metal fragments / bits (or a blob?)
- * # Tool-break configurable ratio
+ * # DONE: Watering Can (molten-metal state) Ingot Cooling *Tssss*
+ * # WIP : Ingot breaks -> Metal fragments / bits (or a blob?)
+ * # DONE: Tool-break configurable ratio
 */
 namespace AnvilMetalRecovery
 {
@@ -108,19 +108,19 @@ namespace AnvilMetalRecovery
 		{
 		this.CoreAPI = api;
 
-		RegisterItemMappings( );
+		RegisterItemClassMappings( );		
+		//RegisterBlockClassMappings( );
 		RegisterBlockBehaviors( );
+
 		if (api.Side.IsServer()) 
 			{
 			if (api is ServerCoreAPI) {
 				ServerCore = api as ServerCoreAPI;
 				}
-				ServerCore.Event.AssetsFinalizers += AttachExtraBlockBehaviors;
 			}
 		else 
 			{
-			ClientCore = api as ClientCoreAPI;
-			ClientCore.Event.LevelFinalize += PerformBlockClassSwaps;
+			ClientCore = api as ClientCoreAPI;			
 			}
 
 		#if DEBUG
@@ -133,8 +133,7 @@ namespace AnvilMetalRecovery
 		}
 
 		public override void StartServerSide(ICoreServerAPI api)
-		{
-		
+		{		
 		PrepareServersideConfig( );
 		PrepareDownlinkChannel( );
 		ServerCore.Event.PlayerJoin += SendClientConfigMessage;
@@ -144,7 +143,7 @@ namespace AnvilMetalRecovery
 
 		SetupGeneralObservers( );		
 
-		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
+		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be running...");
 
 		#if DEBUG
 		ServerCore.RegisterCommand("durability", "edit durability of item", " (Held tool) and #", EditDurability, Privilege.give);
@@ -156,18 +155,29 @@ namespace AnvilMetalRecovery
 		{
 		base.StartClientSide(api);					
 		
-		ListenForServerConfigMessage( );				
+		ListenForServerConfigMessage( );						
 
-		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be installed...");
+		Mod.Logger.VerboseDebug("Anvil Metal Recovery - should be running...");
+		#if DEBUG
+		//ClientCore.Event.LevelFinalize += DebugStuffs;
+		#endif
 		}
 
 		public override void AssetsLoaded(ICoreAPI api)
 		{
-		if (api.Side.IsServer( )) { PerformBlockClassSwaps( );}
+		Mod.Logger.VerboseDebug("AssetsLoaded");		
 		}
 
 
-		private void RegisterItemMappings( )
+		public override void AssetsFinalize(ICoreAPI api)
+		{
+		Mod.Logger.VerboseDebug("AssetsFinalize");
+					
+		//PerformBlockClassSwaps( );
+		AttachExtraBlockBehaviors( ); 
+		}
+
+		private void RegisterItemClassMappings( )
 		{
 		this.CoreAPI.RegisterItemClass(@"VariableMetalItem", typeof(VariableMetalItem));
 		this.CoreAPI.RegisterItemClass(@"SmartSmeltableItem", typeof(SmartSmeltableItem));
@@ -180,18 +190,26 @@ namespace AnvilMetalRecovery
 		#endif
 		this.CoreAPI.RegisterBlockBehaviorClass(MoldDestructionRecovererBehavior.BehaviorClassName, typeof(MoldDestructionRecovererBehavior));
 		this.CoreAPI.RegisterCollectibleBehaviorClass(MoldDestructionRecovererBehavior.BehaviorClassName, typeof(MoldDestructionRecovererBehavior));
-		}			
+		}
 
+		/*
 		private void PerformBlockClassSwaps()
 		{
 		#if DEBUG
 		Mod.Logger.Debug("PerformBlockClassSwaps");
 		#endif
-		if (CoreAPI.Side == EnumAppSide.Server)
-			this.ServerCore.ClassRegistryNative.ReplaceBlockClassType(BlockWateringCanPlus.BlockClassName, typeof(BlockWateringCanPlus));
-		else
-			this.ClientCore.ClassRegistryNative.ReplaceBlockClassType(BlockWateringCanPlus.BlockClassName, typeof(BlockWateringCanPlus));
+		
+		if (ServerCore.World is ServerMain) {
+		var serverMain = ServerCore.World as ServerMain;
+		var wateringCanBlock = serverMain.GetBlock(BlockWateringCanPlus.TargetCode);
+		#if DEBUG
+		Mod.Logger.VerboseDebug("Change class from {0} to {1}", wateringCanBlock.Class, BlockWateringCanPlus.BlockClassName);
+		#endif
+		wateringCanBlock.Class = BlockWateringCanPlus.BlockClassName;
+		ServerCore.World.Blocks[wateringCanBlock.BlockId] = wateringCanBlock;//Mabey redundant?
 		}
+
+		}*/
 
 		private void AttachExtraBlockBehaviors()
 		{
@@ -310,7 +328,4 @@ namespace AnvilMetalRecovery
 		ServerCore.ObjectCache.Add(itemFilterListCacheKey, itemToVoxelLookup);
 		}
 	}
-
-
 }
-

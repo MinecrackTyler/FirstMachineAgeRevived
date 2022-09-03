@@ -43,7 +43,7 @@ namespace AnvilMetalRecovery
 		protected ICoreClientAPI ClientAPI { get { return this.api as ICoreClientAPI; } }
 
 		public readonly AssetLocation CoolSoundEffect = new AssetLocation(@"game", @"sounds/sizzle");
-		public static readonly string BlockClassName = @"BlockWateringCan";
+		public static readonly string BlockClassName = @"BlockWateringCanPlus";
 		public static readonly AssetLocation TargetCode = new AssetLocation(@"game", @"wateringcan-burned");
 
 		/// <summary>

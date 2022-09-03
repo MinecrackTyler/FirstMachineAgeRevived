@@ -86,8 +86,8 @@
     <Compile Include="Harmony\GenericItemMortalityDetector.cs" />
     <Compile Include="Data\AMR_Config.cs" />
     <Compile Include="Data\RecoveryEntryTable.cs" />
-    <Compile Include="Blocks\BlockWateringCanPlus.cs" />
     <Compile Include="BlockBehaviors\MoldDestructionRecovererBehavior.cs" />
+    <Compile Include="Harmony\WateringCanDaptor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
@@ -129,6 +129,7 @@
     </None>
     <None Include="assets\fma\patches\wateringcan_behavior.json">
     </None>
+    <None Include="Blocks\BlockWateringCanPlus.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />
