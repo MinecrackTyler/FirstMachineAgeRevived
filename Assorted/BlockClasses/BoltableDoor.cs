@@ -181,7 +181,7 @@ namespace FirstMachineAge
 		IBlockAccessor ba = world.BlockAccessor;
 
 			        
-		if (ba.GetBlockId(upperPos) == 0 && CanPlaceBlock(world, byPlayer, blockSel, ref failureCode)) {
+		if (ba.GetBlock(upperPos, BlockLayersAccess.SolidBlocks).BlockId == 0 && CanPlaceBlock(world, byPlayer, blockSel, ref failureCode)) {
 		BlockFacing[ ] horVer = SuggestedHVOrientation(byPlayer, blockSel);
 						
 		AssetLocation downBlockCode = CodeWithVariants(new Dictionary<string, string>( ) {

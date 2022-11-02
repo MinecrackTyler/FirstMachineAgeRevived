@@ -3,10 +3,10 @@
   "name": "Defensive Structures",
   "description" : "Defensive structures & barriers; ideal for outposts, castles, forts...",
   "authors": ["Melchior"],
-  "version": "0.1.6",
+  "version": "0.1.7-pr.0",
 	"ModID":"defensive",
   "dependencies": { 
-	"game": "1.16.0",
+	"game": "1.17.0",
 	"survival": ""
   },
   "website": "http://noname.nope"
