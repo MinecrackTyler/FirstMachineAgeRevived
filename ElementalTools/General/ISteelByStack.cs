@@ -4,15 +4,11 @@ using Vintagestory.API.Common;
 
 namespace ElementalTools
 {
-	public interface IAmSteel
+	public interface ISteelByStack
 	{
-		//Static read-only properties from Item Def.
-		string Name { get; }//Blister, Shear, Cast, Damascus, Wootz...mostly descriptive
-		bool Sharpenable { get; }
-		bool Hardenable { get; }
+		
+		//Rusty?
 
-		//Rust?
-		//Fracture rate?
 
 		/// <summary>
 		/// Read Sharpness; Dynamic properties from ItemStack - attribs
@@ -59,7 +55,7 @@ namespace ElementalTools
 		/// </summary>
 		/// <param name="donor">From here</param>
 		/// <param name="recipient">To here.</param>
-		void CopyAttributes(ItemStack donor, ItemStack recipient);
+		void CopyStackAttributes(ItemStack donor, ItemStack recipient);
 	}
 
 	/// <summary>

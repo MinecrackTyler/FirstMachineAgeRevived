@@ -13,33 +13,12 @@ using Vintagestory.API.Config;
 namespace ElementalTools
 {
 	/// <summary>
-	/// GENERIC Steel item. (Tool / Weapon / Armor...anything) [Possibly: Temperable and/or Hardenable ]
+	/// GENERIC Steel item. (Tool / Weapon ) [Possibly: Temperable and/or Hardenable ]
 	/// </summary>
-	public class SteelWrap<T>: SteelAssistItem, IAmSteel where T : Item, new()
-	{
-		private const float eutectoid_transition_temperature = 727f;//Celcius
-		private const float quenchTimeConstant = 180f;
-		private const float quench_min_temperature = 450f;//Celcius
-		private const string _timestampKey = @"timestamp";
+	public class SteelWrapItem<OrigItem>: SteelBaseItem where OrigItem : Item, new()
+	{		
+		private OrigItem WrappedItem;//Special placeholder replica - for calling ancestor (base) class
 
-		private Item WrappedItem;//Special placeholder replica - for calling ancestor class
-
-		internal const string hardenableKeyword = @"hardenable";
-		internal const string sharpenableKeyword = @"sharpenable";
-		internal const string metalNameKeyword = @"metalName";
-
-		internal const string hardnessKeyword = @"hardness";
-		internal const string sharpnessKeyword = @"sharpness";
-
-		internal const string durabilityKeyword = @"durability";
-
-		internal readonly BGRAColor_Int32 color_Rough = new BGRAColor_Int32(0xFF, 0x66, 0x00);
-		internal readonly BGRAColor_Int32 color_Dull = new BGRAColor_Int32(0xFF, 0xBE, 0x00);
-		internal readonly BGRAColor_Int32 color_Honed = new BGRAColor_Int32(0xE8, 0xFF, 0x00);
-		internal readonly BGRAColor_Int32 color_Keen = new BGRAColor_Int32(0x7D, 0xFF, 0x00);
-		internal readonly BGRAColor_Int32 color_Sharp = new BGRAColor_Int32(0x00, 0xFF, 0x12);
-		internal readonly BGRAColor_Int32 color_Razor = new BGRAColor_Int32(0x00, 0xFF, 0xD7);
-		internal readonly BGRAColor_Int32 color_Default = new BGRAColor_Int32(0xFF, 0x00, 0x00);
 
 
 		/*
@@ -62,14 +41,14 @@ namespace ElementalTools
 		public virtual bool MatchesForCrafting -- //Refect if trying to oversharpen
 		 * */
 
-		public SteelWrap( ) //Since It Invokes that for the new type of T anyways...
+		public SteelWrapItem( ) //Since It Invokes that for the new type of T anyways...
 		{
-		WrappedItem = new T();		
+		WrappedItem = new OrigItem();		
 		}
 
-		public SteelWrap(int itemId) : base(itemId)
+		public SteelWrapItem(int itemId) : base(itemId)
 		{
-		WrappedItem = new T();
+		WrappedItem = new OrigItem();
 		WrappedItem.ItemId = itemId;
 		WrappedItem.MaxStackSize = 1;
 		}
@@ -98,60 +77,12 @@ namespace ElementalTools
 		api.World.Logger.Error("Substituting class name from wrapped Item '{0}'", trueClassName);
 		}
 
-
-		WrappedItem = api.ClassRegistry.CreateItem(trueClassName);
-
-		WrappedItem.ItemId = this.ItemId;
-		WrappedItem.Code = this.Code.Clone( );
-		WrappedItem.Class = trueClassName;
-		WrappedItem.Textures = this.Textures;
-		WrappedItem.Variant = this.Variant;
-		WrappedItem.VariantStrict = this.VariantStrict;
-		WrappedItem.Tool = this?.Tool;
-		WrappedItem.Attributes = this?.Attributes?.Clone();
-		WrappedItem.MiningSpeed = this?.MiningSpeed;
-		WrappedItem.Shape = this.Shape;
-		WrappedItem.StorageFlags = this.StorageFlags;
-		WrappedItem.DamagedBy = this.DamagedBy;
-		WrappedItem.Durability = this.Durability;
-		WrappedItem.AttackPower = this.AttackPower;
-		WrappedItem.AttackRange = this.AttackRange;
-		WrappedItem.ToolTier = this.ToolTier;
-		WrappedItem.MaxStackSize = this.MaxStackSize;
-		WrappedItem.MaterialDensity = this.MaterialDensity;
-		WrappedItem.GuiTransform = this.GuiTransform;
-		WrappedItem.FpHandTransform = this.FpHandTransform;
-		WrappedItem.TpHandTransform = this.TpHandTransform;
-		WrappedItem.GroundTransform = this.GroundTransform;
-		
-		
-		WrappedItem.OnLoadedNative(api);//Hacky - but needed?
-		//WrappedItem.OnLoaded(api); // ItemScythe : ItemShears Needs this!
+		WrappedItem = ( OrigItem )api.ClassRegistry.CreateItem(trueClassName);//( T )api.World.Items[this.ItemId];// Old Item class (name) should still exist.
+				
+		OverwriteFields(WrappedItem);
 		}
 
-		#region Static Properties
-		public virtual bool Hardenable {
-			get
-			{
-			return this.Attributes[hardenableKeyword].AsBool(false);
-			}
-		}
-			
 
-		public virtual string Name {
-			get
-			{
-			return this.Attributes[metalNameKeyword].AsString("?");
-			}
-		}
-
-		public virtual bool Sharpenable {
-			get
-			{
-			return this.Attributes[sharpenableKeyword].AsBool(false);
-			}
-		}
-		#endregion
 
 
 
@@ -160,185 +91,40 @@ namespace ElementalTools
 		public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
 		{
 		if (inSlot == null || inSlot.Empty || inSlot.Inventory == null) {
+		#if DEBUG
 		api.World.Logger.Warning("GetHeldItemInfo -> Invetory / slot / stack: FUBAR!");
+		#endif
 		return;
 		}
 
-		WrappedItem?.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
-
-		var hardness = Hardness(inSlot.Itemstack);
-		var sharpness = Sharpness(inSlot.Itemstack);
-
-		dsc.AppendFormat("\nMetal: '{0}' ",Name);
-
-		if (this.Hardenable || hardness != HardnessState.Soft) {
-		dsc.AppendFormat(", Temper: {0}\n", hardness);
+		base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+		SteelAspects.GetHeldItemInfo(api, inSlot, dsc, world, withDebugInfo);
 		}
 
-		if (this.Sharpenable) {
-		dsc.AppendFormat(", Edge: {0}\n",  sharpness); 
-		}
 
-		}
 
-		public virtual SharpnessState Sharpness(IItemStack someStack)
-		{
-		if (someStack.Attributes != null && someStack.Attributes.HasAttribute(sharpnessKeyword)) {
-		byte[ ] bytes = new byte[1];
-		bytes = someStack.Attributes.GetBytes(sharpnessKeyword, bytes);
-	 	return bytes == null ? SharpnessState.Rough : ( SharpnessState )bytes[0];
-		}
 
-		return SharpnessState.Rough;		
-		}
 
-		public virtual void Sharpness(IItemStack someStack, SharpnessState set)
-		{
-		byte[ ] bytes = new byte[1];
-		bytes[0] = (byte)set;
-		someStack.Attributes.SetBytes(sharpnessKeyword, bytes);
-		}
-
-		public virtual SharpnessState Dull(IItemStack someStack)
-		{
-		if (someStack.Attributes != null && someStack.Attributes.HasAttribute(sharpnessKeyword)) {
-		byte[ ] bytes = new byte[1];
-		bytes = someStack.Attributes.GetBytes(sharpnessKeyword, bytes);
-		var state = ( SharpnessState )bytes[0];
-
-		if (state > SharpnessState.Rough) state--;
-
-		bytes[0] = ( byte )state;
-		someStack.Attributes.SetBytes(sharpnessKeyword, bytes);
-
-		return state;
-		}
-		return SharpnessState.Rough;
-		}
-
-		public virtual HardnessState Hardness(IItemStack someStack)
-		{
-		if (someStack.Attributes != null && someStack.Attributes.HasAttribute(hardnessKeyword)) {
-		byte[ ] bytes = new byte[1];
-		bytes = someStack.Attributes.GetBytes(hardnessKeyword, bytes);
-		return bytes == null ? HardnessState.Soft : ( HardnessState )bytes[0];
-		}
-
-		return HardnessState.Soft;
-		}
-
-		public virtual void Hardness(IItemStack someStack, HardnessState set)
-		{
-		byte[ ] bytes = new byte[1];
-		bytes[0] = ( byte )set;
-		someStack.Attributes.SetBytes(hardnessKeyword, bytes);
-		}
-
-		public virtual SharpnessState Sharpen(IItemStack someStack)
-		{
-		if (this.Sharpenable == false) {
-		api.World.Logger.VerboseDebug("Can't sharpen! {0}", this.Code);
-		return this.Sharpness(someStack);;
-		}
-
-		SharpnessState sharp = Sharpness(someStack);
-
-		if (sharp < SharpnessState.Razor) { Sharpness(someStack, ++sharp); }
-		//TODO: Play sound effect
-		#if DEBUG
-		api.World.Logger.VerboseDebug("Sharpness of '{1}' increased to: {0}", sharp, this.Code);
-		#endif
-
-		//TODO: If durability exists - decriment based on Hardnes Vs. Wear...
-		if (this.Durability > 1) {
-
-		var currentDur = GetDurability(someStack);
-		SetDurability(someStack,--currentDur);
-		}
-
-		return sharp;				
-		}
-
-		public virtual void CopyAttributes(ItemStack donor, ItemStack recipient)
-		{
-			
-		if (donor.Class == recipient.Class) {
-		var hI = (donor.Item as IAmSteel).Hardness(donor);
-		var sI = (donor.Item as IAmSteel).Sharpness(donor);
-
-		(recipient.Item as IAmSteel).Hardness(recipient, hI);
-		(recipient.Item as IAmSteel).Sharpness(recipient, sI);
-
-		if (donor.Item.Durability > 0) 
-			{
-			var wear = GetDurability(donor);
-
-			if (donor.Item.IsFerricMetal( ) && recipient.Item.IsSteelMetal( )) {
-			var percentWear = (wear / donor.Item.Durability);
-			SetDurability(recipient, recipient.Item.Durability * percentWear);
-			}
-			else SetDurability(recipient, wear);
-			}
-
-		}
-		}
 
 
 		/// <summary>
-		/// ???
+		/// Future use...
 		/// </summary>
 		/// <returns>The attack power.</returns>
 		/// <param name="withItemStack">With item stack.</param>
 		public override void OnHeldDropped(IWorldAccessor world, IPlayer byPlayer, ItemSlot slot, int quantity, ref EnumHandling handling)
 		{
-			//If Temperature > 450C - Set Timestamp?
-
-
 		WrappedItem.OnHeldDropped(world, byPlayer, slot, quantity, ref handling);
 		}
 
 		/// <summary>
-		/// Does Quench-hardening
+		/// For; Quench-harden...
 		/// </summary>
-		/// <returns>The ground idle.</returns>
-		/// <param name="entityItem">Entity item.</param>
+		/// <param name="entityItem">Entity item.(Itself)</param>
 		public override void OnGroundIdle(EntityItem entityItem)
 		{
-		if (api.Side.IsServer() && (entityItem.Swimming || entityItem.FeetInLiquid)) {
-				
-		if (!this.Hardenable) return;
-
-		float temperature = entityItem.Itemstack.Collectible.GetTemperature(api.World, entityItem.Itemstack);
-		//Track first moment in liquid;
-		this.SetTimestamp(entityItem);//Need to clear when NORMALIZING.
-
-		//Above 900C  - What should happen in this range; different phase of iron?
-
-		//temperature <= eutectoid_transition_temperature ||
-		if ( temperature >= quench_min_temperature ) 
-		{
-		//TODO: Thermal capacity & Transfer values for NON-Water fluids...and surfaces too!
-		var elapsedTime = this.GetTimestampElapsed(entityItem);
-		
-		uint quenchUnits = ( uint )Math.Round(elapsedTime.TotalMilliseconds / quenchTimeConstant, 0);  
-
-		if (quenchUnits < (uint)HardnessState.Brittle) {
-		this.Hardness(entityItem.Itemstack, ( HardnessState )quenchUnits);
-		}
-		else {
-		this.Hardness(entityItem.Itemstack, HardnessState.Brittle);
-		}
-
-		//Being that water conducts heat well - reduce Temperature _FASTER_
-		entityItem.Itemstack.Collectible.SetTemperature(api.World, entityItem.Itemstack, temperature - 15, false);
-
-		#if DEBUG
-		api.World.Logger.VerboseDebug("Quench process: {0}S elapsed @{1}C H:{2} ~ QU#{3}", elapsedTime.TotalSeconds, temperature, this.Hardness(entityItem.Itemstack), quenchUnits );
-		#endif
-		}
-		}
-
-		WrappedItem.OnGroundIdle(entityItem);
+		SteelAspects.QuenchHarden(this, entityItem, api);
+		base.OnGroundIdle(entityItem);
 		}
 
 		#endregion
@@ -355,7 +141,7 @@ namespace ElementalTools
 		float pctBoost = 0;//CONSIDER: Perhaps make this external?
 		switch (sharpness) {
 		case SharpnessState.Rough:
-			pctBoost = -0.35f;
+			pctBoost = -0.25f;
 			break;
 
 		case SharpnessState.Dull:
@@ -366,13 +152,13 @@ namespace ElementalTools
 			pctBoost = 0.10f;
 			break;
 		case SharpnessState.Keen:
-			pctBoost = 0.20f;
+			pctBoost = 0.15f;
 			break;
 		case SharpnessState.Sharp:
-			pctBoost = 0.25f;
+			pctBoost = 0.20f;
 			break;
 		case SharpnessState.Razor:
-			pctBoost = 0.30f;
+			pctBoost = 0.25f;
 			break;
 		}
 
@@ -414,7 +200,7 @@ namespace ElementalTools
 		bool catasptrophicFailure = world.Rand.Next(1, 1000) >= 999;
 		if (catasptrophicFailure) {
 		world.Logger.VerboseDebug("Catastrophic brittle fracture of {0} !", this.Code);
-		this.SetDurability(itemslot.Itemstack, 0);
+		SteelAspects.SetHitpoints(itemslot.Itemstack, 0);
 		this.DamageItem(world, byEntity, itemslot, 9999);
 		return;
 		}
@@ -428,7 +214,8 @@ namespace ElementalTools
 
 
 
-		public override bool OnBlockBrokenWith(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, BlockSelection blockSel)
+
+		public override bool OnBlockBrokenWith(IWorldAccessor world, Entity byEntity, ItemSlot itemslot, BlockSelection blockSel, float dropQuantityMultiplier = 1f)
 		{
 		if (api.Side.IsClient()) return true;
 
@@ -450,15 +237,16 @@ namespace ElementalTools
 		//Tool Specific special damage reduction rate: e.g. scythe, hoe, knife, here...
 		//By MiningSpeed 
 
-
+		#if DEBUG
 		api.World.Logger.VerboseDebug($"OnBlockBrokenWith:: (Weap:{weapon},Edge:{edged},OK: {recomendedUsage},T.T#{targetTier}) {byEntity.Code} -> {targetBlock.Code}");
+		#endif
 
 		if (recomendedUsage == false &&  hardness > HardnessState.Hard) {
 		bool catasptrophicFailure = world.Rand.Next(1, 1000) >= (999 - (targetTier * 5));
 		
 		if (catasptrophicFailure) {
 		world.Logger.VerboseDebug("Catastrophic brittle fracture of {0} !", this.Code);
-		this.SetDurability(itemslot.Itemstack, 0);
+		SteelAspects.SetHitpoints(itemslot.Itemstack, 0);
 		this.DamageItem(world, byEntity, itemslot, 9999);
 		return true;
 		}
@@ -522,7 +310,7 @@ namespace ElementalTools
 
 
 		/// <summary>
-		/// Advanced formula to calculate wear based on 'sharpness' and 'durability' inherint
+		/// Handle Sharpening by Item + Craft-Grid use
 		/// </summary>
 		/// <returns>The consumed by crafting.</returns>
 		/// <param name="allInputSlots">All input slots.</param>
@@ -572,7 +360,6 @@ namespace ElementalTools
 		return;
 		}
 
-
 		var steelItemSlot = (from inputSlot in allInputslots
 							 where inputSlot.Empty == false
 							 where inputSlot.Itemstack.Class == EnumItemClass.Item
@@ -585,33 +372,37 @@ namespace ElementalTools
 		                     where inputSlot.Itemstack.Collectible.IsSharpener()
 							 select inputSlot).SingleOrDefault( );
 
-		if (steelItemSlot != null) {
+		if (steelItemSlot != null) 
+		{
+			if (steelItemSlot.Itemstack.Item is ISteelByStack) 
+			{
+			var steelItem = steelItemSlot.Itemstack.Item;
 
-		if (steelItemSlot.Itemstack.Item is IAmSteel) {
-		var steelItem = steelItemSlot.Itemstack.Item;
+			#if DEBUG
+			api.World.Logger.VerboseDebug("Input (ingredient) Item {0} supports; Steel Interface ", steelItem.Code);
+			#endif
+			if (!outputSlot.Empty && outputSlot.Itemstack.Class == EnumItemClass.Item
+				&& outputSlot.Itemstack.Item is ISteelByStack) 
+				{
+				var outputItem = outputSlot.Itemstack.Item;
+				var fullMetalInterface = outputSlot.Itemstack.Item as ISteelByStack;
+				#if DEBUG
+				api.World.Logger.VerboseDebug("Output Item {0} supports; Steel Interface ", steelItem.Code);
+				#endif
 
-		api.World.Logger.VerboseDebug("Input (ingredient) Item {0} supports; Steel Interface ", steelItem.Code);
+				fullMetalInterface.CopyStackAttributes(steelItemSlot.Itemstack, outputSlot.Itemstack);
 
-		if (!outputSlot.Empty && outputSlot.Itemstack.Class == EnumItemClass.Item
-				&& outputSlot.Itemstack.Item is IAmSteel) {
-		var outputItem = outputSlot.Itemstack.Item;
-		var fullMetalInterface = outputSlot.Itemstack.Item as IAmSteel;
-		api.World.Logger.VerboseDebug("Output Item {0} supports; Steel Interface ", steelItem.Code);
-
-		fullMetalInterface.CopyAttributes(steelItemSlot.Itemstack, outputSlot.Itemstack);
-
-		if (sharpenerItemSlot != null) fullMetalInterface.Sharpen(outputSlot.Itemstack);
-		api.World.Logger.VerboseDebug("Attributes perpetuated from {0} to {1} ", steelItem.Code, outputItem.Code);
+				if (sharpenerItemSlot != null) fullMetalInterface.Sharpen(outputSlot.Itemstack);
+				#if DEBUG
+				api.World.Logger.VerboseDebug("Attributes perpetuated from {0} to {1} ", steelItem.Code, outputItem.Code);
+				#endif
+				}
+			}
 		}
 
-
 		}
 
-		}
-
-		}
-
-		public override float GetMiningSpeed(IItemStack itemstack, Block block)
+		public override float GetMiningSpeed(IItemStack itemstack, BlockSelection blockSel, Block block, IPlayer forPlayer)
 		{
 		var baseSpeed = 1f;
 		//Boost for Edged tools / weapons
@@ -652,25 +443,25 @@ namespace ElementalTools
 
 		switch (edge) {
 		case SharpnessState.Rough:
-			return this.color_Rough;
+			return SteelAspects.color_Rough;
 
 		case SharpnessState.Dull:
-			return this.color_Dull;
+			return SteelAspects.color_Dull;
 
 		case SharpnessState.Honed:
-			return this.color_Honed;
+			return SteelAspects.color_Honed;
 
 		case SharpnessState.Keen:
-			return this.color_Keen;
+			return SteelAspects.color_Keen;
 
 		case SharpnessState.Sharp:
-			return this.color_Sharp;
+			return SteelAspects.color_Sharp;
 
 		case SharpnessState.Razor:
-			return this.color_Razor;
+			return SteelAspects.color_Razor;
 		}
 
-		return this.color_Default;
+		return SteelAspects.color_Default;
 		}
 
 		#endregion
@@ -679,60 +470,27 @@ namespace ElementalTools
 		//Wire up all invokes >>> to NOT call Base - but (WrappedItem) T instead !
 		#region Wrapped_Calls
 
-		public override float OnBlockBreaking(IPlayer player, BlockSelection blockSel, ItemSlot itemslot, float remainingResistance, float dt, int counter)
-		{
-		return WrappedItem.OnBlockBreaking(player, blockSel, itemslot, remainingResistance, dt, counter);
-		}
+		public override float OnBlockBreaking(IPlayer player, BlockSelection blockSel, ItemSlot itemslot, float remainingResistance, float dt, int counter) => WrappedItem.OnBlockBreaking(player, blockSel, itemslot, remainingResistance, dt, counter);
 
-		public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling)
-		{
-		WrappedItem.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
-		}
+		public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handling) => WrappedItem.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handling);
 
-		public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
-		{
-		return WrappedItem.OnHeldInteractStep(secondsUsed, slot, byEntity, blockSel, entitySel);	
-		}
+		public override bool OnHeldInteractStep(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel) => WrappedItem.OnHeldInteractStep(secondsUsed, slot, byEntity, blockSel, entitySel);
 
-		public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel)
-		{
-		WrappedItem.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
-		}
+		public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel) => WrappedItem.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel);
 
-		public override int GetToolMode(ItemSlot slot, IPlayer byPlayer, BlockSelection blockSelection)
-		{
-		return WrappedItem.GetToolMode(slot, byPlayer, blockSelection);
-		}
+		public override int GetToolMode(ItemSlot slot, IPlayer byPlayer, BlockSelection blockSelection) => WrappedItem.GetToolMode(slot, byPlayer, blockSelection);
 
-		public override void SetToolMode(ItemSlot slot, IPlayer byPlayer, BlockSelection blockSelection, int toolMode)
-		{
-		WrappedItem.SetToolMode(slot, byPlayer, blockSelection, toolMode);
-		}
+		public override void SetToolMode(ItemSlot slot, IPlayer byPlayer, BlockSelection blockSelection, int toolMode) => WrappedItem.SetToolMode(slot, byPlayer, blockSelection, toolMode);
 
-		public override SkillItem[ ] GetToolModes(ItemSlot slot, IClientPlayer forPlayer, BlockSelection blockSel)
-		{
-		return WrappedItem.GetToolModes(slot, forPlayer, blockSel);
-		}
+		public override SkillItem[ ] GetToolModes(ItemSlot slot, IClientPlayer forPlayer, BlockSelection blockSel) => WrappedItem.GetToolModes(slot, forPlayer, blockSel);
 
-		public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handling)
-		{
-		WrappedItem.OnHeldAttackStart(slot, byEntity, blockSel, entitySel, ref handling);
-		}
+		public override void OnHeldAttackStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandHandling handling) => WrappedItem.OnHeldAttackStart(slot, byEntity, blockSel, entitySel, ref handling);
 
-		public override bool OnHeldAttackStep(float secondsPassed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSelection, EntitySelection entitySel)
-		{
-		return WrappedItem.OnHeldAttackStep(secondsPassed, slot, byEntity, blockSelection, entitySel);
-		}
+		public override bool OnHeldAttackStep(float secondsPassed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSelection, EntitySelection entitySel) => WrappedItem.OnHeldAttackStep(secondsPassed, slot, byEntity, blockSelection, entitySel);
 
-		public override void OnHeldAttackStop(float secondsPassed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSelection, EntitySelection entitySel)
-		{
-		WrappedItem.OnHeldAttackStop(secondsPassed, slot, byEntity, blockSelection, entitySel);
-		}
+		public override void OnHeldAttackStop(float secondsPassed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSelection, EntitySelection entitySel) => WrappedItem.OnHeldAttackStop(secondsPassed, slot, byEntity, blockSelection, entitySel);
 
-		public override bool OnHeldAttackCancel(float secondsPassed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSelection, EntitySelection entitySel, EnumItemUseCancelReason cancelReason)
-		{
-		return WrappedItem.OnHeldAttackCancel(secondsPassed, slot, byEntity, blockSelection, entitySel, cancelReason);
-		}
+		public override bool OnHeldAttackCancel(float secondsPassed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSelection, EntitySelection entitySel, EnumItemUseCancelReason cancelReason) => WrappedItem.OnHeldAttackCancel(secondsPassed, slot, byEntity, blockSelection, entitySel, cancelReason);
 
 
 		/*
@@ -766,7 +524,6 @@ namespace ElementalTools
 
 		public override float AppendPerishableInfoText(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world)
 		{
-		api.World.Logger.VerboseDebug("AppendPerishableInfoText - invoked");
 		return 0f;//HACK: to stop missing variables from causing a fault
 		}
 
@@ -774,28 +531,22 @@ namespace ElementalTools
 		#endregion
 
 
-		internal void SetDurability(IItemStack recipient, int wearLevel)
-		{
-		recipient.Attributes.SetInt(durabilityKeyword, wearLevel);
-		}
 
-		internal int GetDurability(IItemStack recipient)
-		{
-		return recipient.Attributes.GetInt(durabilityKeyword, recipient.Item.Durability);
-		}
 
-		internal void SetTimestamp(EntityItem entityItem)
+
+
+		protected void SetTimestamp(EntityItem entityItem)
 		{
 			
-		if (!entityItem.Attributes.HasAttribute(_timestampKey)) {
-			entityItem.Attributes.SetLong(_timestampKey, DateTime.Now.Ticks);
+		if (!entityItem.Attributes.HasAttribute(SteelAspects._timestampKey)) {
+			entityItem.Attributes.SetLong(SteelAspects._timestampKey, DateTime.Now.Ticks);
 		}
 		}
 
-		internal TimeSpan GetTimestampElapsed(EntityItem entityItem)
+		protected TimeSpan GetTimestampElapsed(EntityItem entityItem)
 		{
-		if (entityItem.Attributes.HasAttribute(_timestampKey)) {
-		var ts = TimeSpan.FromTicks(entityItem.Attributes.GetLong(_timestampKey));
+		if (entityItem.Attributes.HasAttribute(SteelAspects._timestampKey)) {
+		var ts = TimeSpan.FromTicks(entityItem.Attributes.GetLong(SteelAspects._timestampKey));
 		return ts.Subtract(TimeSpan.FromTicks(DateTime.Now.Ticks)).Negate();
 		}
 		return TimeSpan.Zero;

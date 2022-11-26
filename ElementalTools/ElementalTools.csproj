@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>ElementalTools</RootNamespace>
     <AssemblyName>ElementalTools</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,7 +20,7 @@
     <ConsolePause>false</ConsolePause>
     <CustomCommands>
       <CustomCommands>
-        <Command type="AfterBuild" command="7z -tzip a EraOfSteel_${ProjectConfig}.zip" workingdir="${TargetDir}" />
+        <Command type="AfterBuild" command="7z a -tzip -x!*.zip -aoa ${ProjectName}_${ProjectConfig}.zip" workingdir="${TargetDir}" />
         <Command type="AfterClean" command="rm -f *.zip" workingdir="${TargetDir}" />
       </CustomCommands>
     </CustomCommands>
@@ -62,6 +62,10 @@
       <HintPath>vs_libs\VSSurvivalMod.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>vs_libs\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ElementalToolsMod.cs" />
@@ -73,12 +77,19 @@
     <Compile Include="Block\PackCarburization.cs" />
     <Compile Include="BlockEntities\PackCarburizationEntity.cs" />
     <Compile Include="Helpers.cs" />
-    <Compile Include="General\IAmSteel.cs" />
-    <Compile Include="Items\SteeIWrapItem.cs" />
+    <Compile Include="General\ISteelByStack.cs" />
     <Compile Include="Items\ItemSharpeningStone.cs" />
     <Compile Include="Items\VariableWearRateTool.cs" />
     <Compile Include="ColorHelper.cs" />
     <Compile Include="General\SteelAssist.cs" />
+    <Compile Include="Renderers\PackCarburization_Renderer.cs" />
+    <Compile Include="General\ISteelThingInstance.cs" />
+    <Compile Include="General\SteelThingViaStack.cs" />
+    <Compile Include="Items\ItemConsolidatableCards.cs" />
+    <Compile Include="Items\Steel\SteeIWrapItem.cs" />
+    <Compile Include="Items\Steel\GenericSteelItem.cs" />
+    <Compile Include="General\ISteelBase.cs" />
+    <Compile Include="General\SteelAspects.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Items\" />
@@ -107,6 +118,10 @@
     <Folder Include="assets\fma\itemtypes\arms\heads\" />
     <Folder Include="assets\fma\recipes\smithing\" />
     <Folder Include="assets\fma\recipes\grid\weapon\" />
+    <Folder Include="Renderers\" />
+    <Folder Include="assets\fma\shapes\block\metal\" />
+    <Folder Include="assets\fma\textures\liquids\" />
+    <Folder Include="Items\Steel\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
@@ -302,6 +317,16 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="assets\fma\shapes\item\tools\drawplate.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\blocktypes\metal\crusie_lamp.json" />
+    <None Include="assets\fma\textures\metal\black_iron2.png" />
+    <None Include="assets\fma\textures\liquids\liquid_oil.png" />
+    <None Include="assets\fma\itemtypes\metallurgy\metal_cards.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="assets\fma\recipes\smithing\metal_cards.json" />
+    <None Include="assets\fma\shapes\item\arms\seax.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

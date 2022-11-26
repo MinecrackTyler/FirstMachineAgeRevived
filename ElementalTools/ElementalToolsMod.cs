@@ -63,9 +63,14 @@ namespace ElementalTools
 		return;
 		}
 		
-		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, PostLoadTweaks);				
+		//ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, PostLoadTweaks);				
 
 		Mod.Logger.VerboseDebug("The ERA of STEEL Begins!");		
+		}
+
+		public override void AssetsFinalize(ICoreAPI api)
+		{
+		PostLoadTweaks( );
 		}
 
 		public override void StartClientSide(ICoreClientAPI api)
@@ -94,7 +99,7 @@ namespace ElementalTools
 		/// <returns>The load tweaks.</returns>
 		private void PostLoadTweaks( )
 		{
-		Mod.Logger.Notification("Making a few changes to recipes...");
+		Mod.Logger.Notification("Making a few changes & additions to recipes...");
 		
 		#if DEBUG
 		Mod.Logger.VerboseDebug($"Total GridRecipies: {CoreAPI.World.GridRecipes.Count}");

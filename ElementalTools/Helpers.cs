@@ -33,37 +33,7 @@ namespace ElementalTools
 		return false;
 		}
 
-		/// <summary>
-		/// Match against:Variant(s){   metal,	material  } == 'iron'
-		/// </summary>
-		/// <returns>The ferric metal.</returns>
-		/// <param name="something">Something collectable.</param>
-		public static bool IsFerricMetal(this CollectibleObject something)
-		{
-		return something.Variant.KeyValueMatch(ElementalToolsSystem.MetalNameKey, ElementalToolsSystem.IronNameKey) ||
-				 something.Variant.KeyValueMatch(ElementalToolsSystem.MaterialNameKey, ElementalToolsSystem.IronNameKey);
-		}
 
-		/// <summary>
-		/// Match against:Variant(s){   metal,	material  } == 'steel'
-		/// </summary>
-		/// <returns>The Steel metal. </returns>
-		/// <param name="something">Something collectable.</param>
-		public static bool IsSteelMetal(this CollectibleObject something)
-		{
-		return something.Variant.KeyValueEndingMatch(ElementalToolsSystem.MetalNameKey, ElementalToolsSystem.SteelNameKey) ||
-				 something.Variant.KeyValueEndingMatch(ElementalToolsSystem.MaterialNameKey, ElementalToolsSystem.SteelNameKey);
-		}
-
-		/// <summary>
-		/// Using ItemSharpener class....
-		/// </summary>
-		/// <returns>If a sharpener.</returns>
-		/// <param name="something">Something.</param>
-		public static bool IsSharpener(this CollectibleObject something)
-		{
-			return String.Equals(something.Class, ElementalToolsSystem.sharpeningStoneItemKey, StringComparison.Ordinal);
-		}
 
 		public static AssetLocation AppendPaths(this AssetLocation assetLoc, params string[ ] morePaths)
 		{
@@ -94,49 +64,7 @@ namespace ElementalTools
 		return originalAsset.Code;
 		}
 
-		/// <summary>
-		/// Has Edge that can wear down...
-		/// </summary>
-		/// <returns>The impliment.</returns>
-		/// <param name="what">What.</param>
-		public static bool EdgedImpliment(this EnumTool? what)
-		{			
-		if (what != null || what.HasValue && (
-				what == EnumTool.Axe ||
-				what == EnumTool.Chisel ||
-				what == EnumTool.Hoe ||
-				what == EnumTool.Knife ||
-				what == EnumTool.Pickaxe ||
-				what == EnumTool.Saw ||
-				what == EnumTool.Scythe ||
-				what == EnumTool.Shears ||
-				what == EnumTool.Sickle ||
-				what == EnumTool.Spear ||
-				what == EnumTool.Sword)
-			) {
-		return true;
-		}
-		return false;
-		}
 
-		/// <summary>
-		/// Consider this as Weaspon Vs. Tool..?
-		/// </summary>
-		/// <returns>The impliment.</returns>
-		/// <param name="what">What.</param>
-		public static bool Weapons(this EnumTool? what)
-		{
-		if (what != null || what.HasValue && (
-				what == EnumTool.Axe || //Arguable
-				what == EnumTool.Bow ||
-				what == EnumTool.Knife ||
-				what == EnumTool.Spear ||
-				what == EnumTool.Sword)
-			) {
-		return true;
-		}
-		return false;
-		}
 
 		/// <summary>
 		/// Checks of Root term is match for Asset.
@@ -163,9 +91,12 @@ namespace ElementalTools
 		commonApi.RegisterItemClass(className, itemType);
 		}
 
+
+
+
 		#if DEFUNCT
 		//Why C# 7.0 ? WHY?!?!
-		public static T GetEnum<T>(this ITreeAttribute treeAttr, string keyword, T defaultValue = default(T)) where T : struct// enum
+		public static T GetEnum<T>(this ITreeAttribute treeAttr, string keyword, T defaultValue = default(T)) where T : enum
 		{
 		var enumType = typeof(T);
 
@@ -243,7 +174,7 @@ namespace ElementalTools
 		}
 
 		}
-#endif
+		#endif
 	}
 }
 

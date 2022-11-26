@@ -1,13 +1,13 @@
 ﻿{
   "type": "code",
   "name": "Era of STEEL.",
-  "description" : "Anchient techniques for making STEEL, in your very own forge - today!",
+  "description" : "The OLD technique for making steel items and Quench-Hardening them.",
   "authors": ["Melchior"],
   "ModID":"eraofsteel",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "dependencies": { 
-	"game": "1.13.4",
+	"game": "1.17.0",
 	"survival": ""
   },
-  "website": "http://nowebsite.nope"
+  "website": ""
 }

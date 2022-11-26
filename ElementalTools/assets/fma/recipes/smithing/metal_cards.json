@@ -1,0 +1,16 @@
+﻿{
+	ingredient: { type: "item", code: "ingot-iron" },
+	pattern: [
+    [
+		"## ## ## ##",
+		"## ## ## ##",
+		"## ## ## ##",
+		"",
+		"## ## ##",
+		"## ## ##",
+		"## ## ##",
+	]
+	],
+	name: "Metal Cards recipie",
+	output: { type: "item", code: "metal_cards-iron"  }
+}

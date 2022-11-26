@@ -1,0 +1,93 @@
+{
+	"editor": {
+		"allAngles": true,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 8,
+	"textureSizes": {
+	},
+	"textures": {
+		"blister_steel": "/home/librarian/Documents/Project/DotNet/First_Machine_Age/ElementalTools/assets/fma/textures/metal/blister_steel",
+		"handle": "item/tool/material/handle"
+	},
+	"elements": [
+		{
+			"name": "grip",
+			"from": [ 8.0, 0.125, 8.125 ], 
+			"to": [ 13.0, 1.125, 9.125 ], 
+			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
+			"rotationX": -45.0,
+			"faces": {
+				"north": { "texture": "#handle", "uv": [ 10.5, 4.75, 15.5, 5.75 ] },
+				"east": { "texture": "#handle", "uv": [ 12.5, 3.25, 13.5, 4.25 ] },
+				"south": { "texture": "#handle", "uv": [ 10.0, 3.25, 15.0, 4.25 ] },
+				"west": { "texture": "#handle", "uv": [ 8.0, 4.0, 9.0, 5.0 ] },
+				"up": { "texture": "#handle", "uv": [ 2.0, 4.25, 7.0, 5.25 ] },
+				"down": { "texture": "#handle", "uv": [ 8.5, 4.5, 13.5, 5.5 ] }
+			},
+			"children": [
+				{
+					"name": "BladeBack",
+					"from": [ -5.9, 0.471, -0.182 ], 
+					"to": [ 0.0, 0.571, 1.008 ], 
+					"rotationOrigin": [ 0.0, 0.5, 0.5 ],
+					"rotationX": -45.0,
+					"faces": {
+						"north": { "texture": "#blister_steel", "uv": [ 0.0, 0.0, 5.5, 0.25 ], "enabled": false },
+						"east": { "texture": "#blister_steel", "uv": [ 0.0, 0.0, 1.0, 0.25 ], "enabled": false },
+						"south": { "texture": "#blister_steel", "uv": [ 3.0, 2.75, 8.5, 3.0 ] },
+						"west": { "texture": "#blister_steel", "uv": [ 0.0, 0.0, 1.0, 0.25 ], "enabled": false },
+						"up": { "texture": "#blister_steel", "uv": [ 7.0, 5.0, 12.5, 6.0 ] },
+						"down": { "texture": "#blister_steel", "uv": [ 0.0, 0.0, 5.5, 1.0 ], "enabled": false }
+					}
+				},
+				{
+					"name": "BladeFront",
+					"from": [ -5.9, 0.54, -0.25 ], 
+					"to": [ 0.0, 0.66, 0.95 ], 
+					"rotationOrigin": [ 0.0, 0.6, 0.5 ],
+					"rotationX": -41.0,
+					"faces": {
+						"north": { "texture": "#blister_steel", "uv": [ 0.0, 0.0, 5.5, 0.25 ], "enabled": false },
+						"east": { "texture": "#blister_steel", "uv": [ 0.0, 0.0, 1.0, 0.25 ], "enabled": false },
+						"south": { "texture": "#blister_steel", "uv": [ 0.0, 0.0, 5.5, 0.25 ], "enabled": false },
+						"west": { "texture": "#blister_steel", "uv": [ 0.0, 0.0, 1.0, 0.25 ], "enabled": false },
+						"up": { "texture": "#blister_steel", "uv": [ 0.0, 0.0, 5.5, 1.0 ], "enabled": false },
+						"down": { "texture": "#blister_steel", "uv": [ 10.5, 7.0, 16.0, 8.0 ] }
+					}
+				},
+				{
+					"name": "Slope1",
+					"from": [ -7.089, -0.18, 0.42 ], 
+					"to": [ -5.589, 0.5, 0.52 ], 
+					"rotationOrigin": [ -5.7, 0.5, 0.5 ],
+					"rotationX": 45.0,
+					"faces": {
+						"north": { "texture": "#blister_steel", "uv": [ 1.0, 7.5, 2.5, 8.0 ], "rotation": 180 },
+						"east": { "texture": "#blister_steel", "uv": [ 8.5, 5.0, 9.0, 5.5 ], "enabled": false },
+						"south": { "texture": "#blister_steel", "uv": [ 6.5, 3.0, 8.0, 3.5 ], "enabled": false },
+						"west": { "texture": "#blister_steel", "uv": [ 9.0, 3.5, 9.5, 4.0 ], "enabled": false },
+						"up": { "texture": "#blister_steel", "uv": [ 8.0, 6.0, 9.5, 6.25 ], "enabled": false },
+						"down": { "texture": "#blister_steel", "uv": [ 5.0, 3.5, 6.5, 3.75 ], "enabled": false }
+					}
+				},
+				{
+					"name": "Slope2",
+					"from": [ -7.24, 0.56, 0.43 ], 
+					"to": [ -5.65, 1.14, 0.487 ], 
+					"rotationOrigin": [ -5.5, 0.5, 0.5 ],
+					"rotationX": 46.0,
+					"rotationZ": 25.0,
+					"faces": {
+						"north": { "texture": "#blister_steel", "uv": [ 1.0, 7.5, 2.5, 8.0 ], "rotation": 180 },
+						"east": { "texture": "#blister_steel", "uv": [ 8.5, 5.0, 9.0, 5.5 ], "enabled": false },
+						"south": { "texture": "#blister_steel", "uv": [ 6.5, 4.5, 8.0, 5.0 ] },
+						"west": { "texture": "#blister_steel", "uv": [ 3.5, 5.5, 4.0, 6.0 ] },
+						"up": { "texture": "#blister_steel", "uv": [ 3.0, 6.75, 4.5, 7.0 ] },
+						"down": { "texture": "#blister_steel", "uv": [ 5.0, 3.5, 6.5, 3.75 ], "enabled": false }
+					}
+				}
+			]
+		}
+	]}

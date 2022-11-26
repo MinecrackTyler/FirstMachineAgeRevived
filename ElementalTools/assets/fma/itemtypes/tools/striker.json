@@ -1,0 +1,106 @@
+{
+	"editor": {
+		"allAngles": true,
+		"entityTextureMode": false
+	},
+	"textureWidth": 16,
+	"textureHeight": 16,
+	"textureSizes": {
+	},
+	"textures": {
+		"steel": "block/metal/ingot/steel",
+		"flint2": "block/stone/flint"
+	},
+	"elements": [
+		{
+			"name": "Flint",
+			"from": [ 7.0, 0.0, 7.0 ], 
+			"to": [ 9.75, 1.25, 9.75 ], 
+			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
+			"rotationY": 11.0,
+			"faces": {
+				"north": { "texture": "#flint2", "uv": [ 0.0, 0.0, 2.5, 1.0 ] },
+				"east": { "texture": "#flint2", "uv": [ 8.5, 7.0, 11.0, 8.0 ] },
+				"south": { "texture": "#flint2", "uv": [ 5.5, 8.5, 8.0, 9.5 ] },
+				"west": { "texture": "#flint2", "uv": [ 3.5, 9.0, 6.0, 10.0 ] },
+				"up": { "texture": "#flint2", "uv": [ 6.0, 5.0, 8.5, 7.5 ] },
+				"down": { "texture": "#flint2", "uv": [ 1.5, 9.0, 4.0, 11.5 ] }
+			}
+		},
+		{
+			"name": "Striker1",
+			"from": [ 10.5, 0.0, 6.5 ], 
+			"to": [ 11.5, 1.0, 10.0 ], 
+			"rotationOrigin": [ 11.0, 0.0, 6.0 ],
+			"faces": {
+				"north": { "texture": "#steel", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+				"east": { "texture": "#steel", "uv": [ 4.0, 2.5, 7.5, 3.5 ] },
+				"south": { "texture": "#steel", "uv": [ 3.0, 4.0, 4.0, 5.0 ] },
+				"west": { "texture": "#steel", "uv": [ 6.0, 8.5, 9.5, 9.5 ] },
+				"up": { "texture": "#steel", "uv": [ 4.5, 7.5, 5.5, 11.0 ] },
+				"down": { "texture": "#steel", "uv": [ 2.5, 2.5, 3.5, 6.0 ] }
+			},
+			"children": [
+				{
+					"name": "Striker2",
+					"from": [ 1.0, 0.0, 0.0 ], 
+					"to": [ 2.5, 1.0, 0.5 ], 
+					"rotationOrigin": [ 1.0, 0.0, 0.0 ],
+					"faces": {
+						"north": { "texture": "#steel", "uv": [ 11.5, 6.5, 13.0, 7.5 ] },
+						"east": { "texture": "#steel", "uv": [ 0.0, 0.0, 0.5, 1.0 ] },
+						"south": { "texture": "#steel", "uv": [ 11.5, 7.5, 13.0, 8.5 ] },
+						"west": { "texture": "#steel", "uv": [ 6.0, 1.0, 6.5, 2.0 ] },
+						"up": { "texture": "#steel", "uv": [ 2.0, 4.5, 3.5, 5.0 ] },
+						"down": { "texture": "#steel", "uv": [ 1.5, 3.5, 3.0, 4.0 ] }
+					},
+					"children": [
+						{
+							"name": "Striker2e",
+							"from": [ 1.5, 0.0, 0.0 ], 
+							"to": [ 2.0, 1.0, 1.0 ], 
+							"rotationOrigin": [ 2.0, 0.0, 1.0 ],
+							"faces": {
+								"north": { "texture": "#steel", "uv": [ 9.5, 12.0, 10.0, 13.0 ] },
+								"east": { "texture": "#steel", "uv": [ 12.0, 9.5, 13.0, 10.5 ] },
+								"south": { "texture": "#steel", "uv": [ 7.0, 11.5, 7.5, 12.5 ] },
+								"west": { "texture": "#steel", "uv": [ 9.0, 9.0, 10.0, 10.0 ] },
+								"up": { "texture": "#steel", "uv": [ 4.5, 3.5, 5.0, 4.5 ] },
+								"down": { "texture": "#steel", "uv": [ 5.5, 4.0, 6.0, 5.0 ] }
+							}
+						}
+					]
+				},
+				{
+					"name": "Striker3",
+					"from": [ 1.0, 0.0, 3.0 ], 
+					"to": [ 2.5, 1.0, 3.5 ], 
+					"rotationOrigin": [ 1.0, 0.0, 2.0 ],
+					"faces": {
+						"north": { "texture": "#steel", "uv": [ 0.0, 0.0, 1.5, 1.0 ] },
+						"east": { "texture": "#steel", "uv": [ 0.0, 0.0, 0.5, 1.0 ] },
+						"south": { "texture": "#steel", "uv": [ 0.0, 0.0, 1.5, 1.0 ] },
+						"west": { "texture": "#steel", "uv": [ 0.0, 0.0, 0.5, 1.0 ] },
+						"up": { "texture": "#steel", "uv": [ 4.0, 4.5, 5.5, 5.0 ] },
+						"down": { "texture": "#steel", "uv": [ 2.0, 1.5, 3.5, 2.0 ] }
+					},
+					"children": [
+						{
+							"name": "Striker3e",
+							"from": [ 1.5, 0.0, -0.5 ], 
+							"to": [ 2.0, 1.0, 0.5 ], 
+							"rotationOrigin": [ 2.0, 0.0, 0.0 ],
+							"faces": {
+								"north": { "texture": "#steel", "uv": [ 0.0, 0.0, 0.5, 1.0 ] },
+								"east": { "texture": "#steel", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+								"south": { "texture": "#steel", "uv": [ 0.0, 0.0, 0.5, 1.0 ] },
+								"west": { "texture": "#steel", "uv": [ 0.0, 0.0, 1.0, 1.0 ] },
+								"up": { "texture": "#steel", "uv": [ 0.0, 0.0, 0.5, 1.0 ] },
+								"down": { "texture": "#steel", "uv": [ 0.0, 0.0, 0.5, 1.0 ] }
+							}
+						}
+					]
+				}
+			]
+		}
+	]}

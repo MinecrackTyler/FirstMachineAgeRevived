@@ -19,6 +19,7 @@ namespace ElementalTools
 		internal const string malletItemKey = @"ItemMallet";
 		internal const string sharpeningStoneItemKey = @"ItemSharpening_stone";
 		internal const string SteelPrefix = @"Steel";//Generic 'steel' of Unknown province...
+		internal const string consolidatableCardsKey = @"ConsolidatableCards";
 
 		internal const string pack_carburizationBlockKey = @"pack_carburization";
 		internal const string pack_stateFired = @"fired";
@@ -47,20 +48,25 @@ namespace ElementalTools
 		{
 		CoreAPI.RegisterItemClass(malletItemKey, typeof(ItemMallet));
 		CoreAPI.RegisterItemClass(sharpeningStoneItemKey, typeof(ItemSharpeningStone));
-				
+
+		CoreAPI.RegisterItemClass(consolidatableCardsKey, typeof(ItemConsolidatableCards));
+		
+		//stock VS steel'ified classes
+		CoreAPI.RegisterItemClass(@"Steel_Item", typeof(GenericSteelItem));
+		
 		//Steel Wrapped ItemCores.
-		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<Item>), SteelPrefix);
-		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemSword>), SteelPrefix );
-		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemChisel>), SteelPrefix);
-		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemAxe>), SteelPrefix);
-		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemSpear>), SteelPrefix);
-		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemCleaver>), SteelPrefix);
-		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemHammer>), SteelPrefix);
-		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemHoe>), SteelPrefix);
-		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemKnife>), SteelPrefix);
-		CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrap<ItemProspectingPick>), SteelPrefix);		
-		CoreAPI.NamePrefixed_RegisterItemClass(typeof(SteelWrap<ItemScythe>), SteelPrefix);
-		CoreAPI.NamePrefixed_RegisterItemClass(typeof(SteelWrap<ItemShears>), SteelPrefix);
+		//CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrapItem<Item>), SteelPrefix);
+		//CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrapItem<ItemSword>), SteelPrefix );
+		//CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrapItem<ItemChisel>), SteelPrefix);
+		//CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrapItem<ItemAxe>), SteelPrefix);
+		//CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrapItem<ItemSpear>), SteelPrefix);
+		//CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrapItem<ItemCleaver>), SteelPrefix);
+		//CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrapItem<ItemHammer>), SteelPrefix);
+		//CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrapItem<ItemHoe>), SteelPrefix);
+		//CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrapItem<ItemKnife>), SteelPrefix);
+		//CoreAPI.NamePrefixed_RegisterItemClass( typeof(SteelWrapItem<ItemProspectingPick>), SteelPrefix);		
+		//CoreAPI.NamePrefixed_RegisterItemClass(typeof(SteelWrapItem<ItemScythe>), SteelPrefix);
+		//CoreAPI.NamePrefixed_RegisterItemClass(typeof(SteelWrapItem<ItemShears>), SteelPrefix);
 		//CoreAPI.NamePrefixed_RegisterItemClass(typeof(SteelWrap<ItemSaw>), SteelPrefix);
 		//CoreAPI.NamePrefixed_RegisterItemClass(typeof(SteelWrap<ItemShovel>), SteelPrefix);
 		//CoreAPI.NamePrefixed_RegisterItemClass(typeof(SteelWrap<ItemArrow>), SteelPrefix);//Merging of Steel ammo - TODO!
@@ -195,7 +201,7 @@ namespace ElementalTools
 
 		}
 
-		private void GenerateSteelToolEquivalentGridRecipies( )
+		private void GenerateSteelToolEquivalentGridRecipies( )//Revisit!
 		{
 		uint results = 0;
 		var ironTools = new string[ ]{
@@ -336,7 +342,7 @@ namespace ElementalTools
 
 /**** Terminology *************
  * Wrought Iron  -> Blister Steel [Pack carburization / Cementation ]
- * Blister Steel -> Shear Steel [Smithing (Welding) ]
+ * Blister Steel -> Shear Steel [Smithing (Welding/Consolidation) ]
  * Shear Steel -> Cast Steel [ Bessemer process / Open-hearth /.... ] 
  * Pig Iron -> Cast Iron [ Blast furnace / .... ]
  * Cast Iron -> Steel-clad Cast Iron [ "fining" furnace; Decarburization, re-heat in air @900C]
@@ -352,6 +358,8 @@ attributes: {
 },	
 
 * Item: Sickle - 2x2 hand-held harvest tool (works on reeds, crops, grass, any plants)
+* Item: Mattock - Half Pickaxe, Half Shovel; All-Tool.
+* Item: Seax - larger stabbier Knife, thats still a knife.
 * Sort out how Arrow's work with item merging...
 
  ******************************/

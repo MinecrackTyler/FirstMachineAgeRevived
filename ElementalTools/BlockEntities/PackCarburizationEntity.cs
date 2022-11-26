@@ -49,7 +49,7 @@ namespace ElementalTools
 		this.Temperature -= 1f;//Rain? Compute vs. ambient temp / biome, on snow/ice...	   
 		}
 
-		if (!internalInventory.IsEmpty) {
+		if (!internalInventory.Empty) {
 		foreach (ItemSlot slot in internalInventory) {
 
 		if (slot.Empty) continue;
@@ -77,7 +77,7 @@ namespace ElementalTools
 		 */
 		dsc.Append("Contents: \n");
 
-		if (internalInventory.IsEmpty) {
+		if (internalInventory.Empty) {
 		dsc.Append("Nothing.\n");
 		}
 		else {

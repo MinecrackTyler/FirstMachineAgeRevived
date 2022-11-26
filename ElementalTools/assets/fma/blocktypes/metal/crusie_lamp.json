@@ -1,0 +1,57 @@
+﻿{
+	code: "crusie_lamp",
+	behaviors: [
+	 { name: "UnstableFalling", properties: { 
+		attachableFaces: ["up", "down"],
+		impactDamageMul: 10,
+		attachmentAreas: {
+			"down": { x1: 7, y1: 15, z1: 7, x2: 8, y2: 15, z2: 8 },
+			"up": { x1: 7, y1: 0, z1: 7, x2: 8, y2: 0, z2: 8 }
+		}
+	 }}
+	],	
+	creativeinventory: { "decorative": ["*"] },
+	textures: {
+		"fuel": { base:"block/candle" },
+		"iron": { base: "block/metal/black_iron2" },
+		"wick": { base:"block/candle" },
+	},
+	shape: { base: "block/metal/crusie_lamp" },
+	drawtype: "json",
+	blockmaterial: "Metal",
+	sidesolid: { all: false },
+	sideopaque: { all: false },
+	resistance: 3,
+	lightHsv: [9, 3, 16],
+	lightAbsorption: 0,
+	collisionSelectionBox: { x1: 0.0625, y1: 0, z1: 0.0625, x2: 0.9375, y2: 1, z2: 0.9375 },
+	sounds: {
+		hit: "block/chandelier-hit",
+		break: "block/chandelier-break",
+	},
+	particleProperties: [
+		{
+		posOffset: [
+			{ avg: 0.5, var: 0 },{ avg: 0.7, var: 0 },{ avg: 0.7, var: 0 }
+		],
+		velocity: [
+			{ avg: 0.07, var: 0.06 },{ avg: 0.1, var: 0 },{ avg: 0.1, var: 0 }
+		],
+		hsvaColor: [
+			{ avg: 48, var: 0 }, { avg: 1, var: 0 },
+			{ avg: 1, var: 0 }, { avg: 132, var: 123 }
+		],
+		quantity: { avg: 5, var: 0 },
+		lifeLength: { avg: 0.14, var: 0.07 },
+		gravityEffect: { avg: -0.12, var: -0.03 },
+		size: { avg: 0.02, var: 0.01 },
+		particleModel: "Quad",
+		sizeEvolve: { transform: "linear", factor: 0.1 },
+		opacityEvolve: { transform: "quadratic", factor: -20 },
+		dieInLiquid: true,
+		terrainCollision: false,
+		windAffectednes: 0.5,
+		vertexFlags: 255
+		}
+	],
+}

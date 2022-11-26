@@ -8,13 +8,15 @@ using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
+using Vintagestory.API.Client;
+
 
 namespace ElementalTools
 {
 	/// <summary>
 	///Breakable Carburization 'box'; for Steel making.
 	/// </summary>
-	public class PackCarburization : BlockContainer
+	public class PackCarburization : BlockContainer, IInFirepitRendererSupplier
 	{
 		public const string steelTransitionTempKey = @"SteelTransitionTemp";
 		public const string steelTransitionTimeKey = @"SteelTransitionTime";
@@ -388,6 +390,20 @@ namespace ElementalTools
 			return Lang.Get(this.Code.Domain +":block-"+this.Code.Path);//Domain needed...
 		}
 
+		#region Firepit
+
+		public IInFirepitRenderer GetRendererWhenInFirepit(ItemStack stack, BlockEntityFirepit firepit, bool forOutputSlot)
+		{
+		return new PackCarburization_Renderer(this.api as ICoreClientAPI, stack, firepit.Pos, forOutputSlot);
+		}
+
+		public EnumFirepitModel GetDesiredFirepitModel(ItemStack stack, BlockEntityFirepit firepit, bool forOutputSlot)
+		{
+		return EnumFirepitModel.Normal;//Or Wide?
+		}
+
+		#endregion
+
 		private void SetOutputOverride(ItemStack containerStack, string overrideCode)
 		{
 		if (!string.IsNullOrEmpty(overrideCode)) {
@@ -413,6 +429,8 @@ namespace ElementalTools
 		}
 		return 0;
 		}
+
+
 	}
 }
 

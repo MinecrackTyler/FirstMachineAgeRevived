@@ -8,8 +8,7 @@ using System.Text;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
 
-namespace ElementalTools
-{
+
 	[StructLayout(LayoutKind.Explicit, Size = 4, Pack = 1)]
 	public struct RGBAColor_Int32 
 	{
@@ -97,5 +96,5 @@ namespace ElementalTools
 
 
 
-}
+
 

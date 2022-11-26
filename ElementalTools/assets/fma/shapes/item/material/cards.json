@@ -8,14 +8,14 @@
 	"textureSizes": {
 	},
 	"textures": {
-		"blister_steel": "fma:metal/blister_steel"
 	},
 	"elements": [
 		{
 			"name": "card1",
-			"from": [ 6.5, 0.0, 4.0 ], 
-			"to": [ 9.5, 2.0, 5.0 ], 
+			"from": [ 6.4, 0.0, 4.1 ], 
+			"to": [ 9.4, 2.0, 5.1 ], 
 			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
+			"rotationY": 3.0,
 			"faces": {
 				"north": { "texture": "#blister_steel", "uv": [ 7.0, 6.0, 10.0, 8.0 ] },
 				"east": { "texture": "#blister_steel", "uv": [ 5.5, 2.0, 6.5, 4.0 ] },
@@ -46,6 +46,7 @@
 			"to": [ 9.5, 2.0, 7.5 ], 
 			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
 			"rotationX": -5.0,
+			"rotationY": -6.0,
 			"faces": {
 				"north": { "texture": "#blister_steel", "uv": [ 7.0, 6.0, 10.0, 8.0 ] },
 				"east": { "texture": "#blister_steel", "uv": [ 6.0, 2.0, 7.0, 4.0 ] },
@@ -72,8 +73,8 @@
 		},
 		{
 			"name": "card5",
-			"from": [ 6.5, 0.0, 8.75 ], 
-			"to": [ 9.5, 2.0, 9.75 ], 
+			"from": [ 6.5, -0.1, 8.75 ], 
+			"to": [ 9.5, 1.9, 9.75 ], 
 			"rotationOrigin": [ 8.0, 0.0, 8.0 ],
 			"rotationX": -7.0,
 			"faces": {
@@ -87,8 +88,8 @@
 		},
 		{
 			"name": "card6",
-			"from": [ 6.5, 0.0, 10.0 ], 
-			"to": [ 9.5, 1.0, 12.0 ], 
+			"from": [ 6.5, 0.0, 9.9 ], 
+			"to": [ 9.5, 1.0, 11.9 ], 
 			"rotationOrigin": [ 8.0, 0.0, 7.0 ],
 			"rotationY": -3.0,
 			"faces": {
@@ -102,8 +103,8 @@
 		},
 		{
 			"name": "card7",
-			"from": [ 6.5, -2.5, 13.0 ], 
-			"to": [ 9.5, -0.5, 14.0 ], 
+			"from": [ 6.5, -2.5, 12.9 ], 
+			"to": [ 9.5, -0.5, 13.9 ], 
 			"rotationOrigin": [ 8.0, -2.0, 8.0 ],
 			"rotationX": -28.0,
 			"faces": {

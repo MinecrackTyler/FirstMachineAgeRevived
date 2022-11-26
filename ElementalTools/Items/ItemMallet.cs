@@ -10,7 +10,7 @@ namespace ElementalTools
 	public class ItemMallet : VariableWearRateTool
 	{
 		
-
+		//IDEA: Smash unfired clay shapes/pottery back into a pile of source-clay items
 
 	}
 }
