@@ -100,7 +100,9 @@ namespace ElementalTools
 		shader.ModelMatrix = carbpack_ModelMatrix
 			.Identity( )
 			.Translate(pos.X - camPos.X + 0.001f, pos.Y - camPos.Y, pos.Z - camPos.Z - 0.001f)
-			.Translate(0f, 1 / 16f, 0f)
+			.Translate(0f, 1 / 16f, 0.05f)
+			.RotateZDeg(10f)//Tip Pack 'up' at angle
+			.RotateXDeg(10f)
 			.Values;
 
 		shader.ViewMatrix = renderAPI.CameraMatrixOriginf;
@@ -114,7 +116,7 @@ namespace ElementalTools
 
 		public void OnUpdate(float temperature)
 		{
-		//Correct GLOW INCANDESCENT level?
+		//FIX: make GLOW INCANDESCENT  !
 		this.glowLevel = ( int )(temperature / 100);
 		}
 	}

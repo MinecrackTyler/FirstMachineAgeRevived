@@ -1,12 +1,12 @@
 ﻿{
   "type": "code",
   "name": "Era of STEEL.",
-  "description" : "The OLD technique for making steel items and Quench-Hardening them.",
+  "description" : "Anchient methods for making steel tools & arms; plus Quench-Hardening",
   "authors": ["Melchior"],
   "ModID":"eraofsteel",
-  "version": "0.1.4",
+  "version": "0.1.4-pre.0",
   "dependencies": { 
-	"game": "1.17.0",
+	"game": "1.17.9",
 	"survival": ""
   },
   "website": ""

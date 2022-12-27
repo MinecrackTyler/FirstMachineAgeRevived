@@ -173,16 +173,19 @@ namespace ElementalTools
 		}					
 		var steelInfo = inSlot.Itemstack.AsSteelThing( );
 
-		dsc.AppendFormat(Lang.Get(@"prop-metal", Lang.GetUnformatted(@"metalname-" + steelInfo.BaseMetalName)));
+		dsc.AppendFormat(Lang.Get(@"fma:prop-metal", Lang.GetUnformatted(@"fma:metalname-" + steelInfo.BaseMetalName)));
 
 		if (steelInfo.Hardenable || steelInfo.Hardness != HardnessState.Soft) {
-			dsc.AppendFormat(Lang.Get(@"prop-temper", Lang.GetUnformatted(@"hardness-" +  (int)steelInfo.Hardness)));
-		}
+			dsc.Append(@"<font color='#007F7F'>");
+			dsc.AppendFormat(Lang.Get(@"fma:prop-temper", Lang.GetUnformatted(@"fma:hardness-" +  (int)steelInfo.Hardness)));
+			dsc.Append("</font>");
+			}
 
-		if (steelInfo.Sharpenable) {		
-			dsc.AppendFormat(Lang.Get(@"prop-edge", Lang.GetUnformatted(@"sharpness-" + ( int )steelInfo.Sharpness)));
-		}
-
+		if (steelInfo.Sharpenable) {
+			dsc.Append(@"<font color='#5C8282'>");
+			dsc.AppendFormat(Lang.Get(@"fma:prop-edge", Lang.GetUnformatted(@"fma:sharpness-" + ( int )steelInfo.Sharpness)));
+			dsc.Append("</font>");
+			}
 		}
 
 		/// <summary>

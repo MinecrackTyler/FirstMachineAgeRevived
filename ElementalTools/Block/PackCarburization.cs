@@ -27,6 +27,8 @@ namespace ElementalTools
 
 		internal const float maxInnerTemperature = 1000f;
 
+		private PackCarburization_Renderer _cachedRenderer;
+
 		//Recipie Options #1: Charcoal & Bonemeal & Blue-clay
 		//Recipie Options #2: Leather & Fat & Blue-clay
 
@@ -393,13 +395,14 @@ namespace ElementalTools
 		#region Firepit
 
 		public IInFirepitRenderer GetRendererWhenInFirepit(ItemStack stack, BlockEntityFirepit firepit, bool forOutputSlot)
-		{
-		return new PackCarburization_Renderer(this.api as ICoreClientAPI, stack, firepit.Pos, forOutputSlot);
+		{			
+		_cachedRenderer = _cachedRenderer ?? new PackCarburization_Renderer(this.api as ICoreClientAPI, stack, firepit.Pos, forOutputSlot);
+		return _cachedRenderer;
 		}
 
 		public EnumFirepitModel GetDesiredFirepitModel(ItemStack stack, BlockEntityFirepit firepit, bool forOutputSlot)
 		{
-		return EnumFirepitModel.Normal;//Or Wide?
+		return EnumFirepitModel.Wide;
 		}
 
 		#endregion
