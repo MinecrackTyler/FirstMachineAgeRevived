@@ -8,6 +8,7 @@
 		}        
 	},
 	storageFlags: 5,
+	dimensions: { width: 0.26, height: 0.26, length: 0.26 },
 	shape: { base: "fma:item/metal/fragments" },
 	textures: {
 		"metal": { base: "game:block/metal/plate/gold" },

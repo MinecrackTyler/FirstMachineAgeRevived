@@ -1,27 +1,69 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 using Vintagestory.API.Common;
 
 namespace AnvilMetalRecovery
 {
-	public struct RecoveryEntry
+	public class RecoveryEntry
 	{
 		public readonly AssetLocation CollectableCode;
-		public AssetLocation IngotCode;
-		/// <summary>
-		/// Metal Quantity (VOXELS)
-		/// </summary>
-		public uint Quantity;
-		public float Melting_Duration;//TODO: Replace with 1.17 MetalAlloy mappings
-		public int Melting_Point;//TODO: Replace with 1.17 MetalAlloy mappings
+		public Dictionary<AssetLocation, uint> MaterialComposition;//e.g. 50x Ingot-Copper, 10x Ingot-Zinc...
 
-		public RecoveryEntry(AssetLocation coll, AssetLocation ingot, uint qty, float dur, int point)
+		public AssetLocation PrimaryMaterial 
+		{
+			get {
+			return MaterialComposition.First().Key;
+			}
+		}
+
+		public uint FirstQuantity {
+			get
+			{
+			return MaterialComposition.First( ).Value;
+			}
+		}
+
+		public uint TotalQuantity 
+		{
+			get
+			{
+			return ( uint )MaterialComposition.Sum(mt => mt.Value);
+			}
+		}
+
+		public bool MultiComponent 
+		{
+			get
+			{
+			return MaterialComposition.Count > 1;
+			}
+		}
+
+		/// <summary>
+		/// Initializes a singluar entry recovery entry for 1:1 items
+		/// </summary>
+		/// <param name="coll">Coll.</param>
+		/// <param name="ingot">Ingot.</param>
+		/// <param name="qty">Qty.</param>
+		public RecoveryEntry(AssetLocation coll, AssetLocation ingot, uint qty)
 		{
 		CollectableCode = coll.Clone();
-		IngotCode = ingot.Clone();
-		Quantity = qty;
-		Melting_Duration = dur;
-		Melting_Point = point;
+		MaterialComposition = new Dictionary<AssetLocation, uint>( );
+		MaterialComposition.Add(ingot, qty);
+		}
+
+		/// <summary>
+		/// Initializes a singluar entry recovery entry for 1:2 items
+		/// </summary>
+		public RecoveryEntry(AssetLocation coll, AssetLocation ingotA, uint qtyA,AssetLocation ingotB, uint qtyB)
+		{
+		CollectableCode = coll.Clone( );
+		MaterialComposition = new Dictionary<AssetLocation, uint>( );
+		MaterialComposition.Add(ingotA, qtyA);
+		MaterialComposition.Add(ingotB, qtyB);
 		}
 	}
 }

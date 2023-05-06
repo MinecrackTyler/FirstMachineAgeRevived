@@ -1,0 +1,34 @@
+﻿[
+{
+    "file": "game:config/remaps.json",
+    "op": "add",    
+    "side": "server",
+    "path": "/fma:v0.1.18-rc.3",
+    "value": [
+        	"/iir map fma:metal_shaving-copper game:metalbit-copper",			
+            "/iir map fma:metal_shaving-bismuth game:metalbit-bismuth ",
+            "/iir map fma:metal_shaving-bismuthbronze game:metalbit-bismuthbronze ",
+            "/iir map fma:metal_shaving-blackbronze game:metalbit-blackbronze ",
+            "/iir map fma:metal_shaving-brass game:metalbit-brass ",
+            "/iir map fma:metal_shaving-chromium game:metalbit-chromium ",
+            "/iir map fma:metal_shaving-gold game:metalbit-gold ",
+            "/iir map fma:metal_shaving-iron game:metalbit-iron ",
+            "/iir map fma:metal_shaving-meteoriciron game:metalbit-meteoriciron ",
+            "/iir map fma:metal_shaving-lead game:metalbit-lead ",
+            "/iir map fma:metal_shaving-molybdochalkos game:metalbit-molybdochalkos ",
+            "/iir map fma:metal_shaving-platinum game:metalbit-platinum ",
+            "/iir map fma:metal_shaving-rhodium game:metalbit-rhodium ",
+            "/iir map fma:metal_shaving-silver game:metalbit-silver ",
+            "/iir map fma:metal_shaving-stainlesssteel game:metalbit-stainlesssteel ",
+            "/iir map fma:metal_shaving-steel game:metalbit-steel ",
+            "/iir map fma:metal_shaving-tin game:metalbit-tin ",
+            "/iir map fma:metal_shaving-tinbronze game:metalbit-tinbronze ",
+            "/iir map fma:metal_shaving-titanium game:metalbit-titanium ",
+            "/iir map fma:metal_shaving-uranium game:metalbit-uranium ",
+            "/iir map fma:metal_shaving-zinc game:metalbit-zinc ",
+            "/iir map fma:metal_shaving-blistersteel game:metalbit-blistersteel ",
+            "/iir map fma:metal_shaving-leadsolder game:metalbit-leadsolder ",
+            "/iir map fma:metal_shaving-silversolder game:metalbit-silversolder "
+        ]
+}
+]

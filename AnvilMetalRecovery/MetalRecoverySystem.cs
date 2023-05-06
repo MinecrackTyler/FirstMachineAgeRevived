@@ -15,8 +15,9 @@ using Vintagestory.Server;
 
 /* IDEAS / ISSUES
  * # DONE: Watering Can (molten-metal state) Ingot Cooling *Tssss*
- * # WIP : Ingot breaks -> Metal fragments / bits (or a blob?)
+ * # WIP : Mold breaks -> Metal fragments : bits...
  * # DONE: Tool-break configurable ratio
+ * # IDEA: Recycling Bench block/tool
 */
 namespace AnvilMetalRecovery
 {
@@ -36,7 +37,8 @@ namespace AnvilMetalRecovery
 
 		public event Action AMR_DataReady;
 
-		private RecoveryEntryTable itemToVoxelLookup = new RecoveryEntryTable();//Item Asset Code to: Ammount & Material
+		protected RecoveryEntryTable itemToVoxelLookup = new RecoveryEntryTable();//Item Asset Code to: Ammount & Material
+		public static Dictionary<string, MetalInfo> MetalProperties;//for easy lookup
 
 		private ICoreAPI CoreAPI;
 
@@ -115,7 +117,7 @@ namespace AnvilMetalRecovery
 		if (api.Side.IsServer()) 
 			{
 			if (api is ServerCoreAPI) {
-				ServerCore = api as ServerCoreAPI;
+				ServerCore = api as ServerCoreAPI;				
 				}
 			}
 		else 
@@ -138,7 +140,8 @@ namespace AnvilMetalRecovery
 		PrepareDownlinkChannel( );
 		ServerCore.Event.PlayerJoin += SendClientConfigMessage;
 		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.Shutdown, PersistServersideConfig);
-		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);				
+		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, UnravelMetalProperties);
+		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.GameReady, MaterialDataGathering);		
 		ServerCore.Event.ServerRunPhase(EnumServerRunPhase.RunGame, CacheRecoveryDataTable);		
 
 		SetupGeneralObservers( );		
@@ -172,9 +175,11 @@ namespace AnvilMetalRecovery
 		public override void AssetsFinalize(ICoreAPI api)
 		{
 		Mod.Logger.VerboseDebug("AssetsFinalize");
-					
-		//PerformBlockClassSwaps( );
-		AttachExtraBlockBehaviors( ); 
+
+		if (api.Side.IsServer()) 
+			{
+			AttachExtraBlockBehaviors( );
+			}
 		}
 
 		private void RegisterItemClassMappings( )
@@ -192,24 +197,7 @@ namespace AnvilMetalRecovery
 		this.CoreAPI.RegisterCollectibleBehaviorClass(MoldDestructionRecovererBehavior.BehaviorClassName, typeof(MoldDestructionRecovererBehavior));
 		}
 
-		/*
-		private void PerformBlockClassSwaps()
-		{
-		#if DEBUG
-		Mod.Logger.Debug("PerformBlockClassSwaps");
-		#endif
-		
-		if (ServerCore.World is ServerMain) {
-		var serverMain = ServerCore.World as ServerMain;
-		var wateringCanBlock = serverMain.GetBlock(BlockWateringCanPlus.TargetCode);
-		#if DEBUG
-		Mod.Logger.VerboseDebug("Change class from {0} to {1}", wateringCanBlock.Class, BlockWateringCanPlus.BlockClassName);
-		#endif
-		wateringCanBlock.Class = BlockWateringCanPlus.BlockClassName;
-		ServerCore.World.Blocks[wateringCanBlock.BlockId] = wateringCanBlock;//Mabey redundant?
-		}
 
-		}*/
 
 		private void AttachExtraBlockBehaviors()
 		{

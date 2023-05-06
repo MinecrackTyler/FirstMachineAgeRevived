@@ -14,6 +14,7 @@ namespace AnvilMetalRecovery
 	public class VariableMetalItem : Item
 	{
 		private const string default_IngotCode = @"game:ingot-copper";
+		private const string default_MetalbitCode = @"metalbit-";
 		private const string metalQuantityKey = @"metalQuantity";
 		private const string metalIngotCodeKey = @"metalIngotCode";
 
@@ -91,47 +92,43 @@ namespace AnvilMetalRecovery
 		var metalQuantity = ( int )Math.Floor(MetalQuantity(inSlot.Itemstack) * AnvilMetalRecoveryMod.CachedConfiguration.VoxelEquivalentValue);
 		var props = RegenerateCombustablePropsFromStack(inSlot.Itemstack);
 
+		base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
+
 		dsc.AppendLine(Lang.Get("fma:itemdesc-item-metal_fragments"));
 		dsc.AppendLine(Lang.Get("fma:metal_worth", metalQuantity, metalName));
 		}
 
-
-		//TODO: Merge - to the New metal V.S. stock metal bits...?
-		//TryMergeStacks ???
-		//virtual bool CanBePlacedInto(ItemStack stack, ItemSlot slot) //?
-		//virtual void OnModifiedInInventorySlot //Only for new-Inserts (?)
-
 		public void ApplyMetalProperties(RecoveryEntry recoveryData, ref ItemStack contStack, float percentAdjust = 1.0f)
 		{
-		contStack.Attributes.SetInt(metalQuantityKey, ( int )(recoveryData.Quantity * percentAdjust));
-		contStack.Attributes.SetString(metalIngotCodeKey, recoveryData.IngotCode.ToString( ));
+		contStack.Attributes.SetInt(metalQuantityKey, ( int )(recoveryData.TotalQuantity * percentAdjust));
+		contStack.Attributes.SetString(metalIngotCodeKey, recoveryData.PrimaryMaterial.ToString( ));
 
 		RegenerateCombustablePropsFromStack(contStack);
 		}
 
+		//Why is this actually done...? whole item isn't smeltable now...
 		protected CombustibleProperties RegenerateCombustablePropsFromStack(ItemStack contStack)
 		{
 		if (contStack == null ) return null;
 		//if (contStack.Class == EnumItemClass.Item && contStack.Item.CombustibleProps != null) return contStack.Item.CombustibleProps;
 
-		var metalCode = MetalIngotCode(contStack);
+		var metalAssetCode = MetalIngotCode(contStack);
 		var metalUnits = MetalQuantity(contStack);
 
-		if (metalCode != null || metalUnits > 0)
+		if (metalAssetCode != null && metalUnits > 0)				
+		if (MetalRecoverySystem.MetalProperties.ContainsKey(metalAssetCode.PathEnding()))
 		{
-		var sourceMetalItem = api.World.GetItem(metalCode);
+		var sourceInfo = MetalRecoverySystem.MetalProperties[metalAssetCode.PathEnding( )];//Mabey more...rustic lookup?
 
-		if (sourceMetalItem == null || sourceMetalItem.IsMissing || sourceMetalItem.CombustibleProps == null) return null;
-		
 		var aCombustibleProps = new CombustibleProperties( ) {
 			SmeltingType = EnumSmeltType.Smelt,
-			MeltingPoint = sourceMetalItem.CombustibleProps.MeltingPoint,
-			MeltingDuration = sourceMetalItem.CombustibleProps.MeltingDuration,
-			HeatResistance = sourceMetalItem.CombustibleProps.HeatResistance,
-			MaxTemperature = sourceMetalItem.CombustibleProps.MaxTemperature,
-			SmokeLevel = sourceMetalItem.CombustibleProps.SmokeLevel,
+			MeltingPoint = ( int )sourceInfo.MeltingPoint,
+			MeltingDuration = sourceInfo.MeltingDuration,
+			//HeatResistance = 500, //sourceInfo.SpecificHeatCapacity & Formula...?
+			MaxTemperature = ( int )sourceInfo.BoilingPoint,
+			//SmokeLevel = sourceInfo.SmokeLevel,
 			SmeltedRatio = 100,
-			SmeltedStack = new JsonItemStack( ) { Type = EnumItemClass.Item, Code = sourceMetalItem.Code.Clone( ), Quantity = (int)Math.Floor(metalUnits * AnvilMetalRecoveryMod.CachedConfiguration.VoxelEquivalentValue) }
+			SmeltedStack = new JsonItemStack( ) { Type = EnumItemClass.Item, Code = metalAssetCode.Clone( ), Quantity = (int)Math.Floor(metalUnits * AnvilMetalRecoveryMod.CachedConfiguration.VoxelEquivalentValue) }
 		};
 		aCombustibleProps.SmeltedStack.Resolve(api.World, "VariableMetalItem_regen", true);
 		
@@ -168,7 +165,9 @@ namespace AnvilMetalRecovery
 			var metalCode = MetalCode(inputStack);
 			var metalUnits = MetalQuantity(inputStack);
 
-			Item metalBits = api.World.GetItem(new AssetLocation(GlobalConstants.DefaultDomain, @"metalbit-" + metalCode));
+			//TODO: Smarter lookup here - allow for 3rd party metals
+			Item metalBits = api.World.GetItem(new AssetLocation(GlobalConstants.DefaultDomain, default_MetalbitCode + metalCode));
+			//This whole scenario can't work for multi-material items...spawn remainder of items in grid, or on craft?
 			if (metalBits != null) 
 				{
 				gridRecipe.Output.Quantity = ( int )(Math.Round(metalUnits * AnvilMetalRecoveryMod.CachedConfiguration.VoxelEquivalentValue) / 5);

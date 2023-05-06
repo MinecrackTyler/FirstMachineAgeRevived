@@ -77,7 +77,7 @@ namespace AnvilMetalRecovery
 
 		internal void SpawnMetalBits(IWorldAccessor world, BlockPos pos, int unitQuantity, string baseMetalCode)
 		{	
-		if (unitQuantity > 0) 
+			if (unitQuantity > 0 && pos != null && !string.IsNullOrEmpty(baseMetalCode)) 
 			{
 			int shavingQty = unitQuantity / shavingValue;
 			Item metalShavingsItem = world.Api.World.GetItem(MetalBits_partial.AppendPathVariant(baseMetalCode));

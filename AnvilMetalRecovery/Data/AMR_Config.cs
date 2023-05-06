@@ -14,14 +14,14 @@ namespace AnvilMetalRecovery
 		{
 		ToolFragmentRecovery = true;
 		VoxelEquivalentValue = MetalRecoverySystem.IngotVoxelDefault;
-		ToolRecoveryRate = 0.95f;
+		ToolRecoveryRate = 0.85f;
 		}
 
 		public AMRConfig(bool setDefaultBL) 
 		{
 		ToolFragmentRecovery = true;
 		VoxelEquivalentValue = MetalRecoverySystem.IngotVoxelDefault;
-		ToolRecoveryRate = 0.95f;
+		ToolRecoveryRate = 0.85f;
 		if (setDefaultBL) {
 		BlackList = new List<AssetLocation> {					
 					new AssetLocation(@"game:metalplate"),

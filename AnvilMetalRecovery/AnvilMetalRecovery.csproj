@@ -88,6 +88,7 @@
     <Compile Include="Data\RecoveryEntryTable.cs" />
     <Compile Include="BlockBehaviors\MoldDestructionRecovererBehavior.cs" />
     <Compile Include="Harmony\WateringCanDaptor.cs" />
+    <Compile Include="Data\MetalInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="modinfo.json">
@@ -130,6 +131,8 @@
     <None Include="assets\fma\patches\wateringcan_behavior.json">
     </None>
     <None Include="Blocks\BlockWateringCanPlus.cs" />
+    <None Include="assets\fma\patches\old_item_remapping.json">
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />

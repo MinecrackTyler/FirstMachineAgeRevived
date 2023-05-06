@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
+using Newtonsoft.Json.Linq;
 
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
@@ -16,9 +18,37 @@ namespace AnvilMetalRecovery
 {
 	public partial class MetalRecoverySystem : ModSystem
 	{
+		private void UnravelMetalProperties( )
+		{
+		MetalProperties = new Dictionary<string, MetalInfo>( );
+		var metalAsset = ServerCore.Assets.TryGet("game:worldproperties/block/metal.json",true);
+		JObject originalJson = JObject.Parse(metalAsset.ToText());
+		var variants = originalJson.SelectToken(@"variants").Children( ).ToList( );
+
+		foreach (var variant in variants) 
+			{
+			var metalI = variant.ToObject<MetalInfo>();
+
+			if (!MetalProperties.ContainsKey(metalI.Code)) MetalProperties.Add(metalI.Code, metalI);
+
+				#if DEBUG
+				Mod.Logger.Debug($"parsed '{metalI.Code}' T:{metalI.Tier}, {(metalI.Elemental ?"Element":"Alloy")} Melt:{metalI.MeltingPoint}℃");
+				#endif
+			}
+
+
+		}
+
+		/// <summary>
+		/// Materials the data gathering.
+		/// </summary>
+		/// <remarks>
+		/// Sum, tally Voxels in smthing recipes for all 'metal'-ingot derived items
+		/// </remarks>
+		/// <returns>The data gathering.</returns>
 		private void MaterialDataGathering( )
 		{
-		//Count out Voxels in smthing recipes for all metal-ingot(?) derived items;
+		//TODO: FIX 3rd-PARTY MOD COMPATIBILITY !!!		
 		var examineList = this.SmithingRecipies.Where(sr => sr.Enabled && sr.Ingredient.Type == EnumItemClass.Item && sr.Output.Type == EnumItemClass.Item);
 
 		foreach (var recipie in examineList) {
@@ -43,7 +73,8 @@ namespace AnvilMetalRecovery
 		if (metalObject != null && metalObject.CombustibleProps != null && metalObject.CombustibleProps.SmeltingType == EnumSmeltType.Smelt && metalObject.CombustibleProps.SmeltedRatio > 0) {
 		//Item Input Has a metal Unit value...(Smeltable)	
 		//Resolve?
-		int setVoxels = 0;
+		int setVoxels = 0, meltPoint = 0;
+		float meltDur = 0;
 		setVoxels = recipie.Voxels.OfType<bool>( ).Count(vox => vox);							
 
 		#if DEBUG
@@ -56,16 +87,13 @@ namespace AnvilMetalRecovery
 		Mod.Logger.Warning($"Duplicate recipie '{recipie.Name}' output item: '{outputItem.Code.ToString()}'");				
 		}
 		else {
-		itemToVoxelLookup.Add(new RecoveryEntry(outputItem.Code, metalObject.Code,
-							                                              ( uint )(setVoxels / recipie.Output.Quantity),
-																			  metalObject.CombustibleProps.MeltingDuration,
-																		  metalObject.CombustibleProps.MeltingPoint)
-							 );
+		LookupMetalCode(metalObject.Code, out meltDur, out meltPoint);
+
+		itemToVoxelLookup.Add(new RecoveryEntry(outputItem.Code, metalObject.Code, ( uint )(setVoxels / recipie.Output.Quantity)));
 			#if DEBUG
 			Mod.Logger.VerboseDebug($"Mapped: ('tool') '{outputItem.Code}' -> ('tool') '{outputItem.Code}'");
 			#endif
-			}
-						
+			}						
 		}
 		else {
 		//Tool-head map to Tool item; decode
@@ -83,12 +111,10 @@ namespace AnvilMetalRecovery
 		if (itemToVoxelLookup.ContainsKey(itemToolCode)) {
 		Mod.Logger.Warning($"Duplicate recipie '{recipie.Name}' output tool-item: '{itemToolCode.ToString( )}'");
 		}
-		else
-		itemToVoxelLookup.Add( new RecoveryEntry(itemToolCode.Clone( ), metalObject.Code,
-																	  ( uint )(setVoxels / recipie.Output.Quantity),
-																		  metalObject.CombustibleProps.MeltingDuration,
-																	  metalObject.CombustibleProps.MeltingPoint)
-						 );
+		else {
+		LookupMetalCode(metalObject.Code, out meltDur, out meltPoint);
+		itemToVoxelLookup.Add(new RecoveryEntry(itemToolCode.Clone( ), metalObject.Code, ( uint )(setVoxels / recipie.Output.Quantity)));
+		}
 		#if DEBUG
 		Mod.Logger.VerboseDebug($"Mapped: (head) '{outputItem.Code}' -> (tool) '{itemToolCode}'");
 		#endif
@@ -98,7 +124,7 @@ namespace AnvilMetalRecovery
 		}
 		}
 
-		Mod.Logger.Event("tallied {0} smithables totaling {1} metal units from {2} smithing recipies!", itemToVoxelLookup.Count, itemToVoxelLookup.Sum(ie => ie.Quantity), this.SmithingRecipies.Count);
+		Mod.Logger.Event("tallied {0} smithables totaling {1} metal units from {2} smithing recipies!", itemToVoxelLookup.Count, itemToVoxelLookup.Sum(ie => ie.TotalQuantity), this.SmithingRecipies.Count);
 		}
 
 		private bool SmithingRecipieValidator(SmithingRecipe aRecipie )
@@ -127,7 +153,7 @@ namespace AnvilMetalRecovery
 				
 		RecoveryEntry rec = itemToVoxelLookup[hotbarData.ItemCode];
 		#if DEBUG
-		Mod.Logger.VerboseDebug("broken-item {0} abs. WORTH: {1:F1}*{2} units", hotbarData.ItemCode.ToString( ), (rec.Quantity * CachedConfiguration.VoxelEquivalentValue), rec.IngotCode.ToShortString( ));
+		Mod.Logger.VerboseDebug("broken-item {0} abs. WORTH: {1:F1}*{2} units", hotbarData.ItemCode.ToString( ), (rec.TotalQuantity * CachedConfiguration.VoxelEquivalentValue), rec.PrimaryMaterial.ToShortString( ));
 		#endif
 
 		if (String.IsNullOrEmpty(hotbarData.PlayerUID) || String.IsNullOrEmpty(hotbarData.InventoryID)) return;
@@ -222,6 +248,19 @@ namespace AnvilMetalRecovery
 		}
 		}
 
+		}
+
+		private bool LookupMetalCode(AssetLocation metalAssetCode, out float melting_duration, out int melting_point)
+		{
+		melting_duration = 30f;//same for ALL metals?
+		melting_point = 0;
+		string metalName = metalAssetCode.PathEnding();//Better be an Ingot!
+		if (MetalProperties.ContainsKey(metalName)) {		
+		melting_point = ( int )MetalProperties[metalName].MeltingPoint;
+		return true;
+		}
+
+		return false;
 		}
 	}
 }

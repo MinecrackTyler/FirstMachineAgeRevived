@@ -91,6 +91,8 @@ namespace AnvilMetalRecovery.Patches
 		if (anvil.BaseMaterial != null && anvil.SplitCount > 0) 
 		{			
 		dsc.AppendFormat("[ {0} ] : {1} × {2}\n", anvil.SplitCount, Lang.GetUnformatted($"game:item-metalbit-{anvil.BaseMetal}"), anvil.ShavingQuantity);
+		} else 	if (anvil.IsShavable == false) {
+		dsc.AppendLine( Lang.GetUnformatted($"fma:cant_recover"));
 		}
 	}
 
@@ -317,13 +319,13 @@ namespace AnvilMetalRecovery.Patches
 				if (itemToVoxelLookup.ContainsKey(bea.SelectedRecipe.Output.Code)) {
 					var result = itemToVoxelLookup[bea.SelectedRecipe.Output.Code];
 					#if DEBUG
-					Logger.VerboseDebug("(old) Selected Recipe: {0} base-material: '{1}' worth {2} units; spawning", bea.SelectedRecipe.Output.Code, result.IngotCode, result.Quantity);
+					Logger.VerboseDebug("(old) Selected Recipe: {0} base-material: '{1}' worth {2} units; spawning", bea.SelectedRecipe.Output.Code, result.PrimaryMaterial, result.TotalQuantity);
 					#endif
 
-					int shavingQty = ( int )(result.Quantity / MetalRecoverySystem.IngotVoxelDefault);
+					int shavingQty = ( int )(result.TotalQuantity / MetalRecoverySystem.IngotVoxelDefault);
 
 					if (shavingQty > 0) {
-					Item metalShavingsItem = World.GetItem(MetalShavingsCode.AppendPathVariant(result.IngotCode.PathEnding()));
+					Item metalShavingsItem = World.GetItem(MetalShavingsCode.AppendPathVariant(result.PrimaryMaterial.PathEnding()));
 
 					if (metalShavingsItem != null) {
 					ItemStack metalShavingsStack = new ItemStack(metalShavingsItem, shavingQty);					
