@@ -4,7 +4,7 @@
   "description" : "Get back smithing discards, broken tool scrap, failed molds; and MORE!",
   "authors": ["Melchior"],
   "ModID":"metalrecovery",
-  "version": "0.1.19-pre.0",
+  "version": "0.1.19-pre.1",
   "dependencies": { 
 	"game": "1.18.0",
 	"survival": ""

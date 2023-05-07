@@ -89,8 +89,7 @@ namespace AnvilMetalRecovery
 		public override void GetHeldItemInfo(ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
 		{
 		var metalName = MetalName(inSlot.Itemstack);
-		var metalQuantity = ( int )Math.Floor(MetalQuantity(inSlot.Itemstack) * AnvilMetalRecoveryMod.CachedConfiguration.VoxelEquivalentValue);
-		var props = RegenerateCombustablePropsFromStack(inSlot.Itemstack);
+		var metalQuantity = ( int )Math.Floor(MetalQuantity(inSlot.Itemstack) * AnvilMetalRecoveryMod.CachedConfiguration.VoxelEquivalentValue);		
 
 		base.GetHeldItemInfo(inSlot, dsc, world, withDebugInfo);
 
@@ -101,43 +100,10 @@ namespace AnvilMetalRecovery
 		public void ApplyMetalProperties(RecoveryEntry recoveryData, ref ItemStack contStack, float percentAdjust = 1.0f)
 		{
 		contStack.Attributes.SetInt(metalQuantityKey, ( int )(recoveryData.TotalQuantity * percentAdjust));
-		contStack.Attributes.SetString(metalIngotCodeKey, recoveryData.PrimaryMaterial.ToString( ));
-
-		RegenerateCombustablePropsFromStack(contStack);
+		contStack.Attributes.SetString(metalIngotCodeKey, recoveryData.PrimaryMaterial.ToString( ));					
 		}
 
-		//Why is this actually done...? whole item isn't smeltable now...
-		protected CombustibleProperties RegenerateCombustablePropsFromStack(ItemStack contStack)
-		{
-		if (contStack == null ) return null;
-		//if (contStack.Class == EnumItemClass.Item && contStack.Item.CombustibleProps != null) return contStack.Item.CombustibleProps;
 
-		var metalAssetCode = MetalIngotCode(contStack);
-		var metalUnits = MetalQuantity(contStack);
-
-		if (metalAssetCode != null && metalUnits > 0)				
-		if (MetalRecoverySystem.MetalProperties.ContainsKey(metalAssetCode.PathEnding()))
-		{
-		var sourceInfo = MetalRecoverySystem.MetalProperties[metalAssetCode.PathEnding( )];//Mabey more...rustic lookup?
-
-		var aCombustibleProps = new CombustibleProperties( ) {
-			SmeltingType = EnumSmeltType.Smelt,
-			MeltingPoint = ( int )sourceInfo.MeltingPoint,
-			MeltingDuration = sourceInfo.MeltingDuration,
-			//HeatResistance = 500, //sourceInfo.SpecificHeatCapacity & Formula...?
-			MaxTemperature = ( int )sourceInfo.BoilingPoint,
-			//SmokeLevel = sourceInfo.SmokeLevel,
-			SmeltedRatio = 100,
-			SmeltedStack = new JsonItemStack( ) { Type = EnumItemClass.Item, Code = metalAssetCode.Clone( ), Quantity = (int)Math.Floor(metalUnits * AnvilMetalRecoveryMod.CachedConfiguration.VoxelEquivalentValue) }
-		};
-		aCombustibleProps.SmeltedStack.Resolve(api.World, "VariableMetalItem_regen", true);
-		
-		
-		
-		return aCombustibleProps;
-		}
-		return null;
-		}
 
 		/// <summary>
 		/// Bend Crafting output result - to Dynamic  item
