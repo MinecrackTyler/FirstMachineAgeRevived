@@ -1,22 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{805B37F5-F87D-4A63-BD3F-66AE59F1C998}</ProjectGuid>
+    <TargetFramework>net7.0</TargetFramework>
     <OutputType>Library</OutputType>
     <RootNamespace>FirstMachineAge</RootNamespace>
-    <AssemblyName>Assorted</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyTitle>Assorted</AssemblyTitle>
+    <Copyright>librarian</Copyright>
+    <AssemblyVersion>1.0.*</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <CustomCommands>
       <CustomCommands>
@@ -26,10 +20,7 @@
     </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <CustomCommands>
       <CustomCommands>
@@ -39,58 +30,37 @@
     </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="cairo-sharp">
-      <HintPath>vs_libs\cairo-sharp.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\lib\cairo-sharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="protobuf-net">
-      <HintPath>vs_libs\protobuf-net.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\lib\protobuf-net.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VintagestoryAPI">
-      <HintPath>vs_libs\VintagestoryAPI.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\VintagestoryAPI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VintagestoryLib">
-      <HintPath>vs_libs\VintagestoryLib.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\VintagestoryLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VSCreativeMod">
-      <HintPath>vs_libs\VSCreativeMod.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\mods\VSCreativeMod.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VSEssentials">
-      <HintPath>vs_libs\VSEssentials.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\mods\VSEssentials.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VSSurvivalMod">
-      <HintPath>vs_libs\VSSurvivalMod.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>vs_libs\Newtonsoft.Json.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\mods\VSSurvivalMod.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Enums.NET">
-      <HintPath>vs_libs\Enums.NET.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\lib\Enums.NET.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe">
-      <HintPath>vs_libs\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AssortedModLoader.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BlockClasses\BoltableDoor.cs" />
-    <Compile Include="BlockEntityClasses\BoltableDoorBlockEntity.cs" />
-    <Compile Include="BlockBehaviors\BlockBehaviorFreeReinforcement.cs" />
-    <Compile Include="Helpers.cs" />
-    <Compile Include="BlockBehaviors\BlockBehaviorVerticalOrientation.cs" />
-    <Compile Include="BlockClasses\CollapsingBlock.cs" />
-    <Compile Include="BlockClasses\FalseWall.cs" />
-    <Compile Include="BlockBehaviors\BlockBehaviorNeedSides.cs" />
-    <Compile Include="BlockClasses\RectangularBrazier.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BlockClasses\" />
@@ -106,182 +76,180 @@
     <Folder Include="assets\defensive\itemtypes\metal\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\defensive\blocktypes\metal\grille_horizontal.json">
+    <None Update="assets\defensive\blocktypes\metal\grille_horizontal.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\blocktypes\metal\grille_vertical.json">
+    <None Update="assets\defensive\blocktypes\metal\grille_vertical.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\blocktypes\stone\slot_vert.json">
+    <None Update="assets\defensive\blocktypes\stone\slot_vert.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\blocktypes\wood\boltable_door.json">
+    <None Update="assets\defensive\blocktypes\wood\boltable_door.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\lang\en.json">
+    <None Update="assets\defensive\lang\en.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\recipes\smithing\grille_v.json">
+    <None Update="assets\defensive\recipes\smithing\grille_v.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\metal\grille_horizontal.json">
+    <None Update="assets\defensive\shapes\block\metal\grille_horizontal.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\metal\grille_vertical.json">
+    <None Update="assets\defensive\shapes\block\metal\grille_vertical.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\metal\strut_vert.json" />
-    <None Include="assets\defensive\shapes\block\stone\slot_vert.json">
+    <None Update="assets\defensive\shapes\block\stone\slot_vert.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\wood\heavydoor_lower_closed_left.json">
+    <None Update="assets\defensive\shapes\block\wood\heavydoor_lower_closed_left.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\wood\heavydoor_lower_opened_left.json">
+    <None Update="assets\defensive\shapes\block\wood\heavydoor_lower_opened_left.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\wood\heavydoor_upper_closed_left.json">
+    <None Update="assets\defensive\shapes\block\wood\heavydoor_upper_closed_left.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\wood\heavydoor_upper_opened_left.json">
+    <None Update="assets\defensive\shapes\block\wood\heavydoor_upper_opened_left.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\textures\metal\iron_rusty.png">
+    <None Update="assets\defensive\textures\metal\iron_rusty.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="modinfo.json">
+    <None Update="modinfo.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\recipes\smithing\grille_h.json">
+    <None Update="assets\defensive\recipes\smithing\grille_h.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\recipes\grid\heavydoor.json">
+    <None Update="assets\defensive\recipes\grid\heavydoor.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\wood\heavydoor_inv.json">
+    <None Update="assets\defensive\shapes\block\wood\heavydoor_inv.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\stone\slot_hole.json">
+    <None Update="assets\defensive\shapes\block\stone\slot_hole.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\blocktypes\stone\slot_hole.json">
+    <None Update="assets\defensive\blocktypes\stone\slot_hole.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\metal\brazier2.json">
-    </None>
-    <None Include="assets\defensive\blocktypes\metal\brazier.json">
+    <None Update="assets\defensive\blocktypes\metal\brazier.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\stone\brick_w_candle.json">
+    <None Update="assets\defensive\shapes\block\stone\brick_w_candle.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\stone\climbing_slab.json">
+    <None Update="assets\defensive\shapes\block\stone\climbing_slab.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\blocktypes\stone\sconse_brick.json">
-    </None>
-    <None Include="assets\defensive\shapes\block\wood\false_floor.json">
+    <None Update="assets\defensive\shapes\block\wood\false_floor.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\blocktypes\wood\false_floor.json">
+    <None Update="assets\defensive\blocktypes\wood\false_floor.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\recipes\grid\false_floor.json">
+    <None Update="assets\defensive\recipes\grid\false_floor.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\stone\false_wall_lower.json">
+    <None Update="assets\defensive\shapes\block\stone\false_wall_lower.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\blocktypes\stone\false_wall.json">
+    <None Update="assets\defensive\blocktypes\stone\false_wall.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\stone\false_wall_upper.json">
+    <None Update="assets\defensive\shapes\block\stone\false_wall_upper.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\ceramic\candle_wall-holder.json">
+    <None Update="assets\defensive\shapes\block\ceramic\candle_wall-holder.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\textures\ceramic\semi_t_cera.png">
+    <None Update="assets\defensive\textures\ceramic\semi_t_cera.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\stone\false_wall_inv.json">
+    <None Update="assets\defensive\shapes\block\stone\false_wall_inv.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\blocktypes\ceramic\enclosed_candle.json">
+    <None Update="assets\defensive\blocktypes\ceramic\enclosed_candle.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\recipes\grid\stone_hole.json">
+    <None Update="assets\defensive\recipes\grid\stone_hole.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\recipes\grid\stone_slit.json">
+    <None Update="assets\defensive\recipes\grid\stone_slit.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\recipes\grid\false_wall.json">
+    <None Update="assets\defensive\recipes\grid\false_wall.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\recipes\grid\enclosed_candle.json">
+    <None Update="assets\defensive\recipes\grid\enclosed_candle.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\blocktypes\metal\crusie_lamp.json">
+    <None Update="assets\defensive\blocktypes\metal\crusie_lamp.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\metal\crusie_lamp.json">
+    <None Update="assets\defensive\shapes\block\metal\crusie_lamp.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\textures\metal\black_iron2.png">
+    <None Update="assets\defensive\textures\metal\black_iron2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\textures\liquids\liquid_oil.png">
+    <None Update="assets\defensive\textures\liquids\liquid_oil.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\wood\log_cornercade.json">
+    <None Update="assets\defensive\shapes\block\wood\log_cornercade.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\wood\log_topcade.json">
+    <None Update="assets\defensive\shapes\block\wood\log_topcade.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\wood\log_barricade.json">
+    <None Update="assets\defensive\shapes\block\wood\log_barricade.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\blocktypes\wood\log_barricade.json">
+    <None Update="assets\defensive\blocktypes\wood\log_barricade.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\wood\log_barricade2.json">
+    <None Update="assets\defensive\shapes\block\wood\log_barricade2.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\blocktypes\wood\log_topcade.json">
+    <None Update="assets\defensive\blocktypes\wood\log_topcade.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\blocktypes\wood\log_cornercade.json">
+    <None Update="assets\defensive\blocktypes\wood\log_cornercade.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\recipes\grid\log_barricade.json">
+    <None Update="assets\defensive\recipes\grid\log_barricade.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\recipes\grid\log_topcade.json">
+    <None Update="assets\defensive\recipes\grid\log_topcade.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\recipes\grid\log_cornercade.json">
+    <None Update="assets\defensive\recipes\grid\log_cornercade.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\recipes\smithing\crusie_lamp.json">
+    <None Update="assets\defensive\recipes\smithing\crusie_lamp.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\itemtypes\metal\crusie_shell.json">
+    <None Update="assets\defensive\itemtypes\metal\crusie_shell.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\recipes\grid\crusie_lamp.json">
+    <None Update="assets\defensive\recipes\grid\crusie_lamp.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\shapes\block\metal\brazier3.json">
+    <None Update="assets\defensive\shapes\block\metal\brazier3.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="modicon.png">
+    <None Update="modicon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\defensive\recipes\smithing\brazier.json">
+    <None Update="assets\defensive\recipes\smithing\brazier.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <PackageReference Include="Enums.NET" Version="5.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
 </Project>

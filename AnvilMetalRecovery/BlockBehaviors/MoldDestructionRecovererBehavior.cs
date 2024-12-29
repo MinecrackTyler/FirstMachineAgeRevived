@@ -43,7 +43,7 @@ namespace AnvilMetalRecovery
 		if (someBlockEntity is BlockEntityIngotMold) {
 		var ingotMold = someBlockEntity as BlockEntityIngotMold;
 		#if DEBUG
-		world.Api.Logger.VerboseDebug("{0} Ingot Mold(s) with L {1} Units, R {2} Units", ingotMold.quantityMolds, ingotMold.fillLevelLeft, ingotMold.fillLevelRight);
+		//world.Api.Logger.VerboseDebug("{0} Ingot Mold(s) with L {1} Units, R {2} Units", ingotMold.quantityMolds, ingotMold.fillLevelLeft, ingotMold.fillLevelRight);
 		#endif
 
 		if ( ingotMold.fillLevelLeft >= shavingValue && ingotMold.contentsLeft != null) 

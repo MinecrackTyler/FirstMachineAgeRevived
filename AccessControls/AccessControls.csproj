@@ -1,22 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{180853A2-7E1D-4876-9D1E-AA8608D701C3}</ProjectGuid>
+    <TargetFramework>net7.0</TargetFramework>
     <OutputType>Library</OutputType>
     <RootNamespace>FirstMachineAge</RootNamespace>
-    <AssemblyName>AccessControls</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyTitle>AccessControls</AssemblyTitle>
+    <Copyright>Melchior</Copyright>
+    <AssemblyVersion>1.0.*</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <CustomCommands>
       <CustomCommands>
@@ -26,57 +20,34 @@
     </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="VintagestoryAPI">
-      <HintPath>..\FirstMachineAge_Common\vs_libs\VintagestoryAPI.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\VintagestoryAPI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VSEssentials">
-      <HintPath>..\FirstMachineAge_Common\vs_libs\VSEssentials.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\mods\VSEssentials.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VSCreativeMod">
-      <HintPath>..\FirstMachineAge_Common\vs_libs\VSCreativeMod.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\mods\VSCreativeMod.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VSSurvivalMod">
-      <HintPath>..\FirstMachineAge_Common\vs_libs\VSSurvivalMod.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\mods\VSSurvivalMod.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="protobuf-net">
-      <HintPath>..\FirstMachineAge_Common\vs_libs\protobuf-net.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\lib\protobuf-net.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VintagestoryLib">
-      <HintPath>..\FirstMachineAge_Common\vs_libs\VintagestoryLib.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\VintagestoryLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AccessControlMod.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="behaviors\BlockBehaviorComplexLockable.cs" />
-    <Compile Include="GUIs\GuiDialog_ComboLock.cs" />
-    <Compile Include="items\ItemCombolock.cs" />
-    <Compile Include="LocksmithCmd.cs" />
-    <Compile Include="GroupLocksCmd.cs" />
-    <Compile Include="items\GenericLock.cs" />
-    <Compile Include="items\GenericKey.cs" />
-    <Compile Include="data\AccessControlNode.cs" />
-    <Compile Include="data\LockStatus.cs" />
-    <Compile Include="data\LockKinds.cs" />
-    <Compile Include="data\ACLPersisted.cs" />
-    <Compile Include="data\LockGUIMessage.cs" />
-    <Compile Include="data\LockCacheNode.cs" />
-    <Compile Include="AccessControls_Internals.cs" />
-    <Compile Include="items\ItemKeylock.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />
@@ -92,37 +63,32 @@
     <Folder Include="assets\fma\shapes\item\access_controls\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\fma\itemtypes\locks\combolock.json">
+    <None Update="assets\fma\itemtypes\locks\combolock.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\textures\locks\brass_symbols.png">
+    <None Update="assets\fma\textures\locks\brass_symbols.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="modinfo.json">
+    <None Update="modinfo.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\locks\key.json">
+    <None Update="assets\fma\itemtypes\locks\key.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\shapes\item\access_controls\combo_lock1.json">
+    <None Update="assets\fma\shapes\item\access_controls\combo_lock1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\shapes\item\access_controls\key1.json">
+    <None Update="assets\fma\shapes\item\access_controls\key1.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\shapes\item\access_controls\barrel_lock.json">
+    <None Update="assets\fma\shapes\item\access_controls\barrel_lock.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\locks\keylock.json">
+    <None Update="assets\fma\itemtypes\locks\keylock.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FirstMachineAge_Common\Common.csproj">
-      <Project>{DE0A4E7D-E5FA-441D-A11A-8279E6AC5BBC}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\FirstMachineAge_Common\Common.csproj" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

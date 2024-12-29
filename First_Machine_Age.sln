@@ -1,17 +1,17 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "FirstMachineAge_Common\Common.csproj", "{DE0A4E7D-E5FA-441D-A11A-8279E6AC5BBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "FirstMachineAge_Common\Common.csproj", "{DE0A4E7D-E5FA-441D-A11A-8279E6AC5BBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccessControls", "AccessControls\AccessControls.csproj", "{180853A2-7E1D-4876-9D1E-AA8608D701C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccessControls", "AccessControls\AccessControls.csproj", "{180853A2-7E1D-4876-9D1E-AA8608D701C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnvilMetalRecovery", "AnvilMetalRecovery\AnvilMetalRecovery.csproj", "{3EC9A581-655C-4F68-898C-4E773C292082}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AnvilMetalRecovery", "AnvilMetalRecovery\AnvilMetalRecovery.csproj", "{3EC9A581-655C-4F68-898C-4E773C292082}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assorted", "Assorted\Assorted.csproj", "{805B37F5-F87D-4A63-BD3F-66AE59F1C998}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Assorted", "Assorted\Assorted.csproj", "{805B37F5-F87D-4A63-BD3F-66AE59F1C998}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PsudeoTarget", "PsudeoTarget\PsudeoTarget.csproj", "{DF81DB59-817A-48BA-88CC-8173E6D2919D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PsudeoTarget", "PsudeoTarget\PsudeoTarget.csproj", "{DF81DB59-817A-48BA-88CC-8173E6D2919D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElementalTools", "ElementalTools\ElementalTools.csproj", "{EA9BA3EC-EF08-4192-A844-4D3F398B1FFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElementalTools", "ElementalTools\ElementalTools.csproj", "{EA9BA3EC-EF08-4192-A844-4D3F398B1FFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

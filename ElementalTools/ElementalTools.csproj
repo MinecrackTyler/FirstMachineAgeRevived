@@ -1,22 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EA9BA3EC-EF08-4192-A844-4D3F398B1FFF}</ProjectGuid>
+    <TargetFramework>net7.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <RootNamespace>ElementalTools</RootNamespace>
-    <AssemblyName>ElementalTools</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyTitle>Era_Of_Steel</AssemblyTitle>
+    <Description>Mod plugin for V.S.</Description>
+    <Configuration>DEBUG</Configuration>
+    <Product>First_Machine_Age_component</Product>
+    <Copyright>Melchior</Copyright>
+    <AssemblyVersion>1.0.*</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <CustomCommands>
       <CustomCommands>
@@ -26,70 +22,43 @@
     </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>vs_libs\Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="protobuf-net">
-      <HintPath>vs_libs\protobuf-net.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\lib\protobuf-net.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VintagestoryAPI">
-      <HintPath>vs_libs\VintagestoryAPI.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\VintagestoryAPI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VintagestoryLib">
-      <HintPath>vs_libs\VintagestoryLib.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\VintagestoryLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VSCreativeMod">
-      <HintPath>vs_libs\VSCreativeMod.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\mods\VSCreativeMod.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VSEssentials">
-      <HintPath>vs_libs\VSEssentials.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\mods\VSEssentials.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="VSSurvivalMod">
-      <HintPath>vs_libs\VSSurvivalMod.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\mods\VSSurvivalMod.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="0Harmony">
-      <HintPath>vs_libs\0Harmony.dll</HintPath>
+      <HintPath>$(VINTAGE_STORY)\lib\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ElementalToolsMod.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Assignments.cs" />
-    <Compile Include="Items\ItemMallet.cs">
+    <Compile Update="Items\ItemMallet.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="Block\PackCarburization.cs" />
-    <Compile Include="BlockEntities\PackCarburizationEntity.cs" />
-    <Compile Include="Helpers.cs" />
-    <Compile Include="General\ISteelByStack.cs" />
-    <Compile Include="Items\ItemSharpeningStone.cs" />
-    <Compile Include="Items\VariableWearRateTool.cs" />
-    <Compile Include="ColorHelper.cs" />
-    <Compile Include="General\SteelAssist.cs" />
-    <Compile Include="Renderers\PackCarburization_Renderer.cs" />
-    <Compile Include="General\ISteelThingInstance.cs" />
-    <Compile Include="General\SteelThingViaStack.cs" />
-    <Compile Include="Items\ItemConsolidatableCards.cs" />
-    <Compile Include="Items\Steel\SteeIWrapItem.cs" />
-    <Compile Include="Items\Steel\GenericSteelItem.cs" />
-    <Compile Include="General\ISteelBase.cs" />
-    <Compile Include="General\SteelAspects.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Items\" />
@@ -124,214 +93,203 @@
     <Folder Include="Items\Steel\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="modinfo.json">
+    <None Update="modinfo.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\mallet.json">
+    <None Update="assets\fma\itemtypes\tools\mallet.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\lang\en.json">
+    <None Update="assets\fma\lang\en.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\recipes\grid\tool\mallet.json">
+    <None Update="assets\fma\recipes\grid\tool\mallet.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\shapes\item\tools\mallet.json">
+    <None Update="assets\fma\shapes\item\tools\mallet.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\shapes\item\tools\bit_brace.json">
-    </None>
-    <None Include="assets\fma\blocktypes\metallurgy\pack_carburization.json">
+    <None Update="assets\fma\blocktypes\metallurgy\pack_carburization.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\shapes\block\metallurgy\pack_carburization.json">
+    <None Update="assets\fma\shapes\block\metallurgy\pack_carburization.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\recipes\grid\metallurgy\pack_carburization.json">
+    <None Update="assets\fma\recipes\grid\metallurgy\pack_carburization.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\metallurgy\carburization_powder.json">
+    <None Update="assets\fma\itemtypes\metallurgy\carburization_powder.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\recipes\grid\metallurgy\carburization_powder.json">
+    <None Update="assets\fma\recipes\grid\metallurgy\carburization_powder.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\textures\metallurgy\carb_pwd.png">
+    <None Update="assets\fma\textures\metallurgy\carb_pwd.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\textures\metal\blister_steel.png">
+    <None Update="assets\fma\textures\metal\blister_steel.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="assets\fma\blocktypes\metal\blister_steel_slips.json" />
-    <None Include="assets\fma\blocktypes\metal\shear_steel_ingot.json" />
-    <None Include="assets\fma\recipes\grid\remapping\blister_steel_mappings.json">
     </None>
-    <None Include="assets\fma\itemtypes\arms\swords.json">
+    <None Update="assets\fma\itemtypes\arms\swords.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\shapes\item\arms\gladii.json">
+    <None Update="assets\fma\shapes\item\arms\gladii.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\textures\metal\shear_steel.png">
+    <None Update="assets\fma\textures\metal\shear_steel.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\shapes\item\tools\sharpening_stone.json">
+    <None Update="assets\fma\shapes\item\tools\sharpening_stone.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\sharpening_stone.json">
+    <None Update="assets\fma\itemtypes\tools\sharpening_stone.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\recipes\grid\tool\sharpening_stone.json">
+    <None Update="assets\fma\recipes\grid\tool\sharpening_stone.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\shapes\item\tools\files.json" />
-    <None Include="assets\fma\itemtypes\tools\chisel.json">
+    <None Update="assets\fma\itemtypes\tools\chisel.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\axe.json">
+    <None Update="assets\fma\itemtypes\tools\axe.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\shapes\item\material\cards.json">
+    <None Update="assets\fma\shapes\item\material\cards.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\shapes\item\tools\striker.json">
+    <None Update="assets\fma\shapes\item\tools\striker.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\config\handbook\primitive_steelmaking.json">
+    <None Update="assets\fma\config\handbook\primitive_steelmaking.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\pickaxe.json">
+    <None Update="assets\fma\itemtypes\tools\pickaxe.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\shovel.json">
+    <None Update="assets\fma\itemtypes\tools\shovel.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\knife.json">
+    <None Update="assets\fma\itemtypes\tools\knife.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\prospectingpick.json">
+    <None Update="assets\fma\itemtypes\tools\prospectingpick.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\scythe.json">
+    <None Update="assets\fma\itemtypes\tools\scythe.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\saw.json">
+    <None Update="assets\fma\itemtypes\tools\saw.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\cleaver.json">
+    <None Update="assets\fma\itemtypes\tools\cleaver.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\hammer.json">
+    <None Update="assets\fma\itemtypes\tools\hammer.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\shears.json">
+    <None Update="assets\fma\itemtypes\tools\shears.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\hoe.json">
+    <None Update="assets\fma\itemtypes\tools\hoe.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\arms\spear.json">
+    <None Update="assets\fma\itemtypes\arms\spear.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\shapes\item\arms\dory.json">
+    <None Update="assets\fma\shapes\item\arms\dory.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\entities\spears.json">
+    <None Update="assets\fma\entities\spears.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\heads\hammer_head.json">
+    <None Update="assets\fma\itemtypes\tools\heads\hammer_head.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\heads\hoe_head.json">
+    <None Update="assets\fma\itemtypes\tools\heads\hoe_head.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\arms\heads\sword_blades.json">
+    <None Update="assets\fma\itemtypes\arms\heads\sword_blades.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\arms\heads\arrow_heads.json">
+    <None Update="assets\fma\itemtypes\arms\heads\arrow_heads.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\heads\pickaxe_head.json">
+    <None Update="assets\fma\itemtypes\tools\heads\pickaxe_head.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\heads\shovel_head.json">
+    <None Update="assets\fma\itemtypes\tools\heads\shovel_head.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\heads\propick_head.json">
+    <None Update="assets\fma\itemtypes\tools\heads\propick_head.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\heads\saw_blade.json">
+    <None Update="assets\fma\itemtypes\tools\heads\saw_blade.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\heads\scythe_head.json">
+    <None Update="assets\fma\itemtypes\tools\heads\scythe_head.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\heads\axe_head.json">
+    <None Update="assets\fma\itemtypes\tools\heads\axe_head.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\entities\arrows.json" />
-    <None Include="assets\fma\recipes\smithing\gladii_swordblade.json">
+    <None Update="assets\fma\recipes\smithing\gladii_swordblade.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\arms\arrows.json" />
-    <None Include="assets\fma\recipes\grid\weapon\swords.json">
+    <None Update="assets\fma\recipes\grid\weapon\swords.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\recipes\grid\weapon\spears.json">
+    <None Update="assets\fma\recipes\grid\weapon\spears.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\recipes\grid\tool\hoes.json">
+    <None Update="assets\fma\recipes\grid\tool\hoes.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\recipes\grid\tool\hammers.json">
+    <None Update="assets\fma\recipes\grid\tool\hammers.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\recipes\grid\tool\axes.json">
+    <None Update="assets\fma\recipes\grid\tool\axes.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\recipes\grid\tool\saws.json">
+    <None Update="assets\fma\recipes\grid\tool\saws.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\recipes\grid\tool\scythes.json">
+    <None Update="assets\fma\recipes\grid\tool\scythes.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\recipes\grid\tool\knives.json">
+    <None Update="assets\fma\recipes\grid\tool\knives.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\recipes\grid\tool\shovels.json">
+    <None Update="assets\fma\recipes\grid\tool\shovels.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\recipes\grid\tool\pickaxes.json">
+    <None Update="assets\fma\recipes\grid\tool\pickaxes.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\recipes\grid\tool\propicks.json">
+    <None Update="assets\fma\recipes\grid\tool\propicks.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\tools\heads\knife_blades.json">
+    <None Update="assets\fma\itemtypes\tools\heads\knife_blades.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\itemtypes\arms\heads\spear_tip.json">
+    <None Update="assets\fma\itemtypes\arms\heads\spear_tip.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\recipes\smithing\dory_speartip.json">
+    <None Update="assets\fma\recipes\smithing\dory_speartip.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\shapes\item\tools\drawplate.json">
+    <None Update="assets\fma\shapes\item\tools\drawplate.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\blocktypes\metal\crusie_lamp.json" />
-    <None Include="assets\fma\textures\metal\black_iron2.png" />
-    <None Include="assets\fma\textures\liquids\liquid_oil.png" />
-    <None Include="assets\fma\itemtypes\metallurgy\metal_cards.json">
+    <None Update="assets\fma\itemtypes\metallurgy\metal_cards.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\fma\recipes\smithing\metal_cards.json" />
-    <None Include="assets\fma\shapes\item\arms\seax.json">
+    <None Update="assets\fma\shapes\item\arms\seax.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="modicon.png">
+    <None Update="modicon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
 </Project>
