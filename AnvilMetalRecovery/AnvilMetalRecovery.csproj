@@ -8,7 +8,7 @@
     <Configuration>DEBUG</Configuration>
     <Product>First_Machine_Age_component</Product>
     <Copyright>Melchior</Copyright>
-    <AssemblyVersion>0.1.9</AssemblyVersion>
+    <AssemblyVersion>0.2.0</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug</OutputPath>

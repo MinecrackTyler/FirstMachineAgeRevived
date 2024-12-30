@@ -19,11 +19,9 @@ namespace FirstMachineAge
 		public const string CollapsingBlockEntityNameKey = @"CollapsingBlockEntity";
 
 
-		public override bool AllowRuntimeReload {
-			get { return false; }
-		}
+        //public override bool AllowRuntimeReload => false;
 
-		public override bool ShouldLoad(EnumAppSide forSide)
+        public override bool ShouldLoad(EnumAppSide forSide)
 		{
 			return forSide.IsClient() || forSide.IsServer();
 		}

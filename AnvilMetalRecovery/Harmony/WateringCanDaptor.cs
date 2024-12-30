@@ -118,12 +118,12 @@ namespace AnvilMetalRecovery.Patches
 		var rightSide = AimAtRight(blockSel.HitPosition);
 		var ingotMold = someBlockEntity as BlockEntityIngotMold;
 
-		if (rightSide && (ingotMold.fillLevelRight > 0 && ingotMold.TemperatureRight > flashPointTemp)) {
-		if (server) CoolContents(ingotMold.contentsRight); else GenerateSpecialEffects(blockSel.Position, blockSel.HitPosition, byEntity as EntityPlayer);
+		if (rightSide && (ingotMold.FillLevelRight > 0 && ingotMold.TemperatureRight > flashPointTemp)) {
+		if (server) CoolContents(ingotMold.ContentsRight); else GenerateSpecialEffects(blockSel.Position, blockSel.HitPosition, byEntity as EntityPlayer);
 		ingotMold.MarkDirty( );
 		}
-		else if (ingotMold.fillLevelLeft > 0 && ingotMold.TemperatureLeft > flashPointTemp) {
-		if (server) CoolContents(ingotMold.contentsLeft); else GenerateSpecialEffects(blockSel.Position, blockSel.HitPosition, byEntity as EntityPlayer);
+		else if (ingotMold.FillLevelLeft > 0 && ingotMold.TemperatureLeft > flashPointTemp) {
+		if (server) CoolContents(ingotMold.ContentsLeft); else GenerateSpecialEffects(blockSel.Position, blockSel.HitPosition, byEntity as EntityPlayer);
 		ingotMold.MarkDirty( );
 		}
 		return;
@@ -131,8 +131,8 @@ namespace AnvilMetalRecovery.Patches
 
 		if (someBlockEntity is BlockEntityToolMold) {
 		var toolMold = someBlockEntity as BlockEntityToolMold;
-		if (toolMold.fillLevel > 0 && toolMold.Temperature > flashPointTemp) {
-		if (server) CoolContents(toolMold.metalContent); else GenerateSpecialEffects(blockSel.Position, blockSel.HitPosition, byEntity as EntityPlayer);
+		if (toolMold.FillLevel > 0 && toolMold.Temperature > flashPointTemp) {
+		if (server) CoolContents(toolMold.MetalContent); else GenerateSpecialEffects(blockSel.Position, blockSel.HitPosition, byEntity as EntityPlayer);
 		toolMold.MarkDirty( );
 		}
 		return;

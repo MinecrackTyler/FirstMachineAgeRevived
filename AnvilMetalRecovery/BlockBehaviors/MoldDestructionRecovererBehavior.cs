@@ -43,19 +43,19 @@ namespace AnvilMetalRecovery
 		if (someBlockEntity is BlockEntityIngotMold) {
 		var ingotMold = someBlockEntity as BlockEntityIngotMold;
 		#if DEBUG
-		//world.Api.Logger.VerboseDebug("{0} Ingot Mold(s) with L {1} Units, R {2} Units", ingotMold.quantityMolds, ingotMold.fillLevelLeft, ingotMold.fillLevelRight);
+		world.Api.Logger.VerboseDebug("{0} Ingot Mold(s) with L {1} Units, R {2} Units", ingotMold.QuantityMolds, ingotMold.FillLevelLeft, ingotMold.FillLevelRight);
 		#endif
 
-		if ( ingotMold.fillLevelLeft >= shavingValue && ingotMold.contentsLeft != null) 
+		if ( ingotMold.FillLevelLeft >= shavingValue && ingotMold.ContentsLeft != null) 
 			{
-			var ingotMetal = ingotMold.contentsLeft.Collectible.Variant[@"metal"];
-			SpawnMetalBits(world, pos, ingotMold.fillLevelLeft, ingotMetal);
+			var ingotMetal = ingotMold.ContentsLeft.Collectible.Variant[@"metal"];
+			SpawnMetalBits(world, pos, ingotMold.FillLevelLeft, ingotMetal);
 			}
 		
-		if ( ingotMold.fillLevelRight >= shavingValue && ingotMold.contentsRight != null) 
+		if ( ingotMold.FillLevelRight >= shavingValue && ingotMold.ContentsRight != null) 
 			{
-			var ingotMetal = ingotMold.contentsLeft.Collectible.Variant[@"metal"];
-			SpawnMetalBits(world, pos, ingotMold.fillLevelRight, ingotMetal);
+			var ingotMetal = ingotMold.ContentsLeft.Collectible.Variant[@"metal"];
+			SpawnMetalBits(world, pos, ingotMold.FillLevelRight, ingotMetal);
 			}
 
 		return;
@@ -64,12 +64,12 @@ namespace AnvilMetalRecovery
 		if (someBlockEntity is BlockEntityToolMold) {
 		var toolMold = someBlockEntity as BlockEntityToolMold;
 		#if DEBUG
-		world.Api.Logger.VerboseDebug("Tool Mold with {0} Units", toolMold.fillLevel);
+		world.Api.Logger.VerboseDebug("Tool Mold with {0} Units", toolMold.FillLevel);
 		#endif
-		if ( toolMold.fillLevel >= shavingValue && toolMold.metalContent != null) 
+		if ( toolMold.FillLevel >= shavingValue && toolMold.MetalContent != null) 
 			{
-				var metalCode = toolMold.metalContent.Collectible.Variant.AnyKeys(@"metal", @"material"); 
-				SpawnMetalBits(world, pos, toolMold.fillLevel, metalCode);
+				var metalCode = toolMold.MetalContent.Collectible.Variant.AnyKeys(@"metal", @"material"); 
+				SpawnMetalBits(world, pos, toolMold.FillLevel, metalCode);
 			}		
 		}
 
