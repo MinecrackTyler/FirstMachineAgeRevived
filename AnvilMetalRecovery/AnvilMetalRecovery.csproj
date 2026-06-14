@@ -1,137 +1,141 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <OutputType>Library</OutputType>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <AssemblyTitle>AnvilMetalRecovery</AssemblyTitle>
-    <Description>Mod plugin for V.S.</Description>
-    <Configuration>DEBUG</Configuration>
-    <Product>First_Machine_Age_component</Product>
-    <Copyright>Melchior</Copyright>
-    <AssemblyVersion>0.2.0</AssemblyVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
-    <ConsolePause>false</ConsolePause>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="AfterBuild" command="7z a -tzip -x!*.zip -aoa ${ProjectName}_${ProjectConfig}.zip" workingdir="${TargetDir}" />
-        <Command type="AfterClean" command="rm -f *.zip" workingdir="${TargetDir}" />
-      </CustomCommands>
-    </CustomCommands>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin\Release</OutputPath>
-    <ConsolePause>false</ConsolePause>
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="AfterBuild" command="7z a -tzip -x!*.zip -aoa ${ProjectName}_${ProjectConfig}.zip" workingdir="${TargetDir}" />
-        <Command type="AfterClean" command="rm -f *.zip" workingdir="${TargetDir}" />
-      </CustomCommands>
-    </CustomCommands>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="VintagestoryAPI">
-      <HintPath>$(VINTAGE_STORY)\VintagestoryAPI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="VintagestoryLib">
-      <HintPath>$(VINTAGE_STORY)\VintagestoryLib.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="VSCreativeMod">
-      <HintPath>$(VINTAGE_STORY)\mods\VSCreativeMod.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="VSEssentials">
-      <HintPath>$(VINTAGE_STORY)\mods\VSEssentials.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="VSSurvivalMod">
-      <HintPath>$(VINTAGE_STORY)\mods\VSSurvivalMod.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="0Harmony">
-      <HintPath>$(VINTAGE_STORY)\lib\0Harmony.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="protobuf-net">
-      <HintPath>$(VINTAGE_STORY)\lib\protobuf-net.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="modinfo.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="assets\fma\itemtypes\metal\metal_shavings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="assets\fma\shapes\item\metal\metal_shavings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="assets\fma\lang\en.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="assets\fma\lang\pt-br.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="modicon.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="assets\fma\shapes\item\metal\fragments.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="assets\fma\itemtypes\metal\fragments.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="BlockEntities\MetalRecovery_BlockEntityAnvil.cs" />
-    <None Update="assets\fma\lang\de.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="EntityBehaviors\HotbarObserverBehavior.cs" />
-    <None Update="assets\fma\recipes\grid\variableMetal_smash.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="assets\fma\lang\ru.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Blocks\BlockWateringCanPlus.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="assets\" />
-    <Folder Include="assets\fma\" />
-    <Folder Include="assets\fma\shapes\" />
-    <Folder Include="assets\fma\itemtypes\" />
-    <Folder Include="assets\fma\itemtypes\metal\" />
-    <Folder Include="assets\fma\shapes\item\" />
-    <Folder Include="assets\fma\shapes\item\metal\" />
-    <Folder Include="assets\fma\lang\" />
-    <Folder Include="BlockEntities\" />
-    <Folder Include="assets\fma\shapes\item\tools\" />
-    <Folder Include="assets\fma\itemtypes\tools\" />
-    <Folder Include="assets\fma\recipes\" />
-    <Folder Include="assets\fma\recipes\grid\" />
-    <Folder Include="assets\fma\recipes\grid\tool\" />
-    <Folder Include="EntityBehaviors\" />
-    <Folder Include="assets\fma\patches\" />
-    <Folder Include="Data\" />
-    <Folder Include="Items\" />
-    <Folder Include="Harmony\" />
-    <Folder Include="CollectableBehaviors\" />
-    <Folder Include="Blocks\" />
-    <Folder Include="assets\fma\sounds\" />
-    <Folder Include="assets\fma\sounds\sfx\" />
-    <Folder Include="BlockBehaviors\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="BlockEntities\MetalRecovery_BlockEntityAnvil.cs" />
-    <Compile Remove="Blocks\BlockWateringCanPlus.cs" />
-    <Compile Remove="CollectableBehaviors\DirectSprayCooler_Behavior.cs" />
-    <Compile Remove="EntityBehaviors\HotbarObserverBehavior.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <OutputType>Library</OutputType>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <AssemblyTitle>AnvilMetalRecovery</AssemblyTitle>
+        <Description>Mod plugin for V.S.</Description>
+        <Configuration>RELEASE</Configuration>
+        <Product>First_Machine_Age_component</Product>
+        <Copyright>Melchior</Copyright>
+        <AssemblyVersion>0.2.0</AssemblyVersion>
+        <VINTAGE_STORY>/opt/vintagestory/</VINTAGE_STORY>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <OutputPath>bin\Debug</OutputPath>
+        <DefineConstants>DEBUG;</DefineConstants>
+        <ConsolePause>false</ConsolePause>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <OutputPath>bin\Release</OutputPath>
+        <ConsolePause>false</ConsolePause>
+    </PropertyGroup>
+
+    <Target Name="ZipModAfterBuild" AfterTargets="Build">
+        <Exec Command="cd $(TargetDir) &amp;&amp; zip -r $(ProjectName)_$(Configuration).zip . -x *.zip" />
+    </Target>
+
+    <Target Name="CleanModZips" AfterTargets="Clean">
+        <Exec Command="rm -f $(TargetDir)*.zip" />
+    </Target>
+
+    <ItemGroup>
+        <Reference Include="VintagestoryAPI">
+            <HintPath>$(VINTAGE_STORY)\VintagestoryAPI.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="VintagestoryLib">
+            <HintPath>$(VINTAGE_STORY)\VintagestoryLib.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="VSCreativeMod">
+            <HintPath>$(VINTAGE_STORY)\Mods\VSCreativeMod.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="VSEssentials">
+            <HintPath>$(VINTAGE_STORY)\Mods\VSEssentials.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="VSSurvivalMod">
+            <HintPath>$(VINTAGE_STORY)\Mods\VSSurvivalMod.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="0Harmony">
+            <HintPath>$(VINTAGE_STORY)\Lib\0Harmony.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="protobuf-net">
+            <HintPath>$(VINTAGE_STORY)\Lib\protobuf-net.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="modinfo.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="assets\fma\itemtypes\metal\metal_shavings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="assets\fma\shapes\item\metal\metal_shavings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="assets\fma\lang\en.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="assets\fma\lang\pt-br.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="modicon.png">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="assets\fma\shapes\item\metal\fragments.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="assets\fma\itemtypes\metal\fragments.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Include="BlockEntities\MetalRecovery_BlockEntityAnvil.cs"/>
+        <None Update="assets\fma\lang\de.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Include="EntityBehaviors\HotbarObserverBehavior.cs"/>
+        <None Update="assets\fma\recipes\grid\variableMetal_smash.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="assets\fma\lang\ru.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Include="Blocks\BlockWateringCanPlus.cs"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="assets\"/>
+        <Folder Include="assets\fma\"/>
+        <Folder Include="assets\fma\shapes\"/>
+        <Folder Include="assets\fma\itemtypes\"/>
+        <Folder Include="assets\fma\itemtypes\metal\"/>
+        <Folder Include="assets\fma\shapes\item\"/>
+        <Folder Include="assets\fma\shapes\item\metal\"/>
+        <Folder Include="assets\fma\lang\"/>
+        <Folder Include="BlockEntities\"/>
+        <Folder Include="assets\fma\shapes\item\tools\"/>
+        <Folder Include="assets\fma\itemtypes\tools\"/>
+        <Folder Include="assets\fma\recipes\"/>
+        <Folder Include="assets\fma\recipes\grid\"/>
+        <Folder Include="assets\fma\recipes\grid\tool\"/>
+        <Folder Include="EntityBehaviors\"/>
+        <Folder Include="assets\fma\patches\"/>
+        <Folder Include="Data\"/>
+        <Folder Include="Items\"/>
+        <Folder Include="Harmony\"/>
+        <Folder Include="CollectableBehaviors\"/>
+        <Folder Include="Blocks\"/>
+        <Folder Include="assets\fma\sounds\"/>
+        <Folder Include="assets\fma\sounds\sfx\"/>
+        <Folder Include="BlockBehaviors\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Remove="BlockEntities\MetalRecovery_BlockEntityAnvil.cs"/>
+        <Compile Remove="Blocks\BlockWateringCanPlus.cs"/>
+        <Compile Remove="CollectableBehaviors\DirectSprayCooler_Behavior.cs"/>
+        <Compile Remove="EntityBehaviors\HotbarObserverBehavior.cs"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+    </ItemGroup>
 </Project>

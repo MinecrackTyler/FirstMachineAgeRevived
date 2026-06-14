@@ -1,43 +1,106 @@
 ﻿{
-	code: "metal_fragments",
-	class:"VariableMetalItem",
-	maxstacksize: 1,
-	attributes: {
-		handbook: {
-			exclude: true
-		}        
-	},
-	storageFlags: 5,
-	dimensions: { width: 0.26, height: 0.26, length: 0.26 },
-	shape: { base: "fma:item/metal/fragments" },
-	textures: {
-		"metal": { base: "game:block/metal/plate/gold" },
-	},
-	creativeinventory: { "general": ["*"], "items": ["*"] },
-	materialDensity: 9000,		
-	guiTransform: {
-		translation: { x: 4, y: 0, z: 0 },
-		rotation: { x: 135, y: 18, z: 2 },
-		origin: { x: 0.5, y: 0.1, z: 0.5 },
-		scale: 2.69
-	},
-	fpHandTransform: {
-		translation: { x: 0, y: 0.1, z: 0 },
-		rotation: { x: 16, y: 29, z: -4 },
-		origin: { x: 0.5, y: 0.1, z: 0.5 },
-		scale: 2.15
-	},
-	tpHandTransform: {
-		translation: { x: -0.77, y: -0.15, z: -0.64 },
-		rotation: { x: 0, y: -71, z: 18 },
-		origin: { x: 0.5, y: 0.1, z: 0.5 },
-		scale: 0.75
-	},
-	groundTransform: {
-		translation: { x: 0, y: 0, z: 0 },
-		rotation: { x: 0, y: 0, z: 0 },
-		origin: { x: 0.5, y: 0, z: 0.5 },
-		scale: 4.8
-	}
+  code: "metal_fragments",
+  class: "VariableMetalItem",
+  maxstacksize: 1,
+  attributes: {
+    handbook: {
+      exclude: true
+    }
+  },
+  storageFlags: 5,
+  dimensions: {
+    width: 0.26,
+    height: 0.26,
+    length: 0.26
+  },
+  shape: {
+    base: "fma:item/metal/fragments"
+  },
+  textures: {
+    "metal": {
+      base: "game:block/metal/plate/gold"
+    }
+  },
+  creativeinventory: {
+    "general": [
+      "*"
+    ],
+    "items": [
+      "*"
+    ]
+  },
+  materialDensity: 9000,
+  guiTransform: {
+    translation: {
+      x: 4,
+      y: 0,
+      z: 0
+    },
+    rotation: {
+      x: 135,
+      y: 18,
+      z: 2
+    },
+    origin: {
+      x: 0.5,
+      y: 0.1,
+      z: 0.5
+    },
+    scale: 2.69
+  },
+  fpHandTransform: {
+    translation: {
+      x: 0,
+      y: 0.1,
+      z: 0
+    },
+    rotation: {
+      x: 16,
+      y: 29,
+      z: -4
+    },
+    origin: {
+      x: 0.5,
+      y: 0.1,
+      z: 0.5
+    },
+    scale: 2.15
+  },
+  tpHandTransform: {
+    translation: {
+      x: -0.77,
+      y: -0.15,
+      z: -0.64
+    },
+    rotation: {
+      x: 0,
+      y: -71,
+      z: 18
+    },
+    origin: {
+      x: 0.5,
+      y: 0.1,
+      z: 0.5
+    },
+    scale: 0.75
+  },
+  groundTransform: {
+    translation: {
+      x: 0,
+      y: 0,
+      z: 0
+    },
+    rotation: {
+      x: 0,
+      y: 0,
+      z: 0
+    },
+    origin: {
+      x: 0.5,
+      y: 0,
+      z: 0.5
+    },
+    scale: 4.8
+  }
 }
 

@@ -1,34 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-
 using Vintagestory.API.Common;
 
-namespace AnvilMetalRecovery
+namespace AnvilMetalRecovery;
+
+public class RecoveryEntryTable : KeyedCollection<AssetLocation, RecoveryEntry>
 {
-	public class RecoveryEntryTable : KeyedCollection<AssetLocation, RecoveryEntry>
+	public ICollection<AssetLocation> Keys => Dictionary.Keys;
+
+	protected override AssetLocation GetKeyForItem(RecoveryEntry item)
 	{
-		protected override AssetLocation GetKeyForItem(RecoveryEntry item) => item.CollectableCode;
+		return item.CollectableCode;
+	}
 
-		public void AddReplace(RecoveryEntry entry)
-		{
-		if (Contains(entry.CollectableCode)) { Remove(entry.CollectableCode); }
+	public void AddReplace(RecoveryEntry entry)
+	{
+		if (Contains(entry.CollectableCode)) Remove(entry.CollectableCode);
 		Add(entry);
-		}
+	}
 
-		public ICollection<AssetLocation> Keys 
-		{
-			get
-			{
-			return this.Dictionary.Keys;
-			}
-		}
-
-		public bool ContainsKey(AssetLocation code)
-		{
-		if (this.Dictionary == null || this.Dictionary.Keys == null ) return false;
-		return this.Dictionary.ContainsKey(code);
-		}
+	public bool ContainsKey(AssetLocation code)
+	{
+		if (Dictionary == null || Dictionary.Keys == null) return false;
+		return Dictionary.ContainsKey(code);
 	}
 }
-

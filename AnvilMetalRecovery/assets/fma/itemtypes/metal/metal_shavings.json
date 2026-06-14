@@ -1,56 +1,124 @@
 ﻿{
-	code: "metal_shaving",	
-	class: "SmartSmeltableItem",
-	maxstacksize: 128,
-    dimensions: { width: 0.09, height: 0.09, length: 0.09 },
-	attributes: {		
-		handbook: {
-			excludeByType: {
-			"*-chromium": true,
-			"*-platinum": true,
-			"*-titanium": true,
-			"*-rhodium": true,
-			"*-stainlessteel": true,
-            "*-blistersteel":true,
-			"*-uranium": true
-			}
-		},	
-		ratio: 20,
-	},
-	variantgroups: [
-		{ code: "metal", states: ["blistersteel"], loadFromProperties: "game:block/metal" },
-	],	
-	storageFlags: 5,
-
-	shape: { base: "fma:item/metal/metal_shavings" },
-	textures: {
-		"metal": { base: "game:block/metal/ingot/{metal}" },
-	},
-	creativeinventory: { "general": ["*"], "items": ["*"] },
-	materialDensity: 9000,		
-	guiTransform: {
-        rotate: true,
-		translation: { x: -3, y: 0, z: 0 },
-		rotation: { x: 149, y: -30, z: 7 },
-		origin: { x: 0.5, y: 0.1, z: 0.5 },
-		scale: 3.02
-	},
-	fpHandTransform: {
-		translation: { x: 0, y: 0.1, z: 0 },
-		rotation: { x: 65, y: 21, z: -6 },
-		origin: { x: 0.5, y: 0.1, z: 0.5 },
-		scale: 2.15
-	},
-	tpHandTransform: {
-		translation: { x: -0.77, y: -0.15, z: -0.64 },
-		rotation: { x: 0, y: -71, z: 18 },
-		origin: { x: 0.5, y: 0.1, z: 0.5 },
-		scale: 0.75
-	},
-	groundTransform: {
-		translation: { x: 0, y: 0, z: 0 },
-		rotation: { x: 0, y: 0, z: 0 },
-		origin: { x: 0.5, y: 0, z: 0.5 },
-		scale: 4.8
-	}
+  code: "metal_shaving",
+  class: "SmartSmeltableItem",
+  maxstacksize: 128,
+  dimensions: {
+    width: 0.09,
+    height: 0.09,
+    length: 0.09
+  },
+  attributes: {
+    handbook: {
+      excludeByType: {
+        "*-chromium": true,
+        "*-platinum": true,
+        "*-titanium": true,
+        "*-rhodium": true,
+        "*-stainlessteel": true,
+        "*-blistersteel": true,
+        "*-uranium": true
+      }
+    },
+    ratio: 20
+  },
+  variantgroups: [
+    {
+      code: "metal",
+      states: [
+        "blistersteel"
+      ],
+      loadFromProperties: "game:block/metal"
+    }
+  ],
+  storageFlags: 5,
+  shape: {
+    base: "fma:item/metal/metal_shavings"
+  },
+  textures: {
+    "metal": {
+      base: "game:block/metal/ingot/{metal}"
+    }
+  },
+  creativeinventory: {
+    "general": [
+      "*"
+    ],
+    "items": [
+      "*"
+    ]
+  },
+  materialDensity: 9000,
+  guiTransform: {
+    rotate: true,
+    translation: {
+      x: -3,
+      y: 0,
+      z: 0
+    },
+    rotation: {
+      x: 149,
+      y: -30,
+      z: 7
+    },
+    origin: {
+      x: 0.5,
+      y: 0.1,
+      z: 0.5
+    },
+    scale: 3.02
+  },
+  fpHandTransform: {
+    translation: {
+      x: 0,
+      y: 0.1,
+      z: 0
+    },
+    rotation: {
+      x: 65,
+      y: 21,
+      z: -6
+    },
+    origin: {
+      x: 0.5,
+      y: 0.1,
+      z: 0.5
+    },
+    scale: 2.15
+  },
+  tpHandTransform: {
+    translation: {
+      x: -0.77,
+      y: -0.15,
+      z: -0.64
+    },
+    rotation: {
+      x: 0,
+      y: -71,
+      z: 18
+    },
+    origin: {
+      x: 0.5,
+      y: 0.1,
+      z: 0.5
+    },
+    scale: 0.75
+  },
+  groundTransform: {
+    translation: {
+      x: 0,
+      y: 0,
+      z: 0
+    },
+    rotation: {
+      x: 0,
+      y: 0,
+      z: 0
+    },
+    origin: {
+      x: 0.5,
+      y: 0,
+      z: 0.5
+    },
+    scale: 4.8
+  }
 }
