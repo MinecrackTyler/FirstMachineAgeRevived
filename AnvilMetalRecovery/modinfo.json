@@ -8,8 +8,8 @@
     "MinecrackTyler"
   ],
   "ModID": "metalrecoveryrevivedrevived",
-  "version": "0.1.22",
+  "version": "0.1.23",
   "dependencies": {
-    "game": "1.22.3"
+    "game": "1.23.0-pre.1"
   }
 }

@@ -9,7 +9,7 @@
         <Product>First_Machine_Age_component</Product>
         <Copyright>Melchior</Copyright>
         <AssemblyVersion>0.2.0</AssemblyVersion>
-        <VINTAGE_STORY>/opt/vintagestory/</VINTAGE_STORY>
+        <VINTAGE_STORY>/home/tylerb/Downloads/vintagestory/</VINTAGE_STORY>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
